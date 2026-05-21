@@ -1,1 +1,869 @@
-<h1>smoke test</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wander — Travel Guide</title>
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #fdfaf5;
+      --ink:     #1a1a18;
+      --muted:   #6b6b64;
+      --accent:  #c8773a;
+      --accent2: #3a7cc8;
+      --border:  #e2ddd5;
+      --radius:  12px;
+      --serif:   "Georgia", "Times New Roman", serif;
+      --sans:    system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--sans);
+      background: var(--cream);
+      color: var(--ink);
+      line-height: 1.6;
+    }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 2rem;
+      background: rgba(253, 250, 245, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-weight: normal;
+      letter-spacing: 0.04em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.875rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 90vh;
+      min-height: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      background: linear-gradient(160deg, #d4c9b8 0%, #a89f8e 100%);
+    }
+
+    /* Layered abstract landscape shape */
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      overflow: hidden;
+    }
+
+    .hero-bg svg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      padding: 0 1.5rem;
+    }
+
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.8);
+      margin-bottom: 1rem;
+    }
+
+    .hero h1 {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: normal;
+      color: #fff;
+      line-height: 1.1;
+      text-shadow: 0 2px 24px rgba(0,0,0,0.18);
+      margin-bottom: 1.25rem;
+    }
+
+    .hero p {
+      max-width: 480px;
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 2rem;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 2rem;
+      border-radius: 100px;
+      font-size: 0.875rem;
+      letter-spacing: 0.05em;
+      text-decoration: none;
+      font-weight: 500;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .btn-outline {
+      border: 1.5px solid rgba(255,255,255,0.7);
+      color: #fff;
+      margin-left: 0.75rem;
+    }
+
+    /* ── Section helpers ──────────────────────────────────────── */
+    section { padding: 5rem 2rem; }
+
+    .section-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 0.6rem;
+    }
+
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: normal;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-subtitle {
+      max-width: 520px;
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Destinations grid ────────────────────────────────────── */
+    #destinations { background: var(--sand); }
+
+    .dest-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .dest-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      transition: transform 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+    }
+
+    .dest-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+    }
+
+    .dest-thumb {
+      width: 100%;
+      aspect-ratio: 4/3;
+      display: block;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .dest-thumb svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .dest-body { padding: 1.25rem; }
+
+    .dest-tag {
+      font-size: 0.7rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .dest-title {
+      font-family: var(--serif);
+      font-size: 1.25rem;
+      margin: 0.3rem 0 0.5rem;
+    }
+
+    .dest-desc {
+      font-size: 0.9rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .dest-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .dest-meta span { display: flex; align-items: center; gap: 0.3rem; }
+
+    /* ── Featured article ─────────────────────────────────────── */
+    #featured { background: var(--cream); }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 700px) {
+      .featured-grid { grid-template-columns: 1fr; }
+    }
+
+    .featured-visual {
+      border-radius: var(--radius);
+      overflow: hidden;
+      aspect-ratio: 4/3;
+      background: #c9c0b4;
+    }
+
+    .featured-visual svg { width: 100%; height: 100%; display: block; }
+
+    .featured-text blockquote {
+      font-family: var(--serif);
+      font-size: 1.4rem;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.5;
+      margin-bottom: 1.5rem;
+      padding-left: 1.25rem;
+      border-left: 3px solid var(--accent);
+    }
+
+    .featured-text p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .author-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 600;
+      flex-shrink: 0;
+    }
+
+    .author-info strong { font-size: 0.9rem; }
+    .author-info small { color: var(--muted); font-size: 0.8rem; display: block; }
+
+    /* ── Tips ─────────────────────────────────────────────────── */
+    #tips { background: var(--sand); }
+
+    .tips-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .tip-card {
+      background: var(--cream);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .tip-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: var(--accent);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+
+    .tip-card h3 {
+      font-size: 0.95rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .tip-card p {
+      font-size: 0.85rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── Newsletter ───────────────────────────────────────────── */
+    #newsletter {
+      background: var(--ink);
+      color: #fff;
+      text-align: center;
+      padding: 6rem 2rem;
+    }
+
+    #newsletter .section-label { color: #c8a87a; }
+    #newsletter .section-title { color: #fff; margin-bottom: 0.75rem; }
+    #newsletter .section-subtitle { color: rgba(255,255,255,0.6); margin: 0 auto 2.5rem; }
+
+    .email-form {
+      display: flex;
+      gap: 0.75rem;
+      max-width: 440px;
+      margin: 0 auto;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .email-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 0.75rem 1.25rem;
+      border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.08);
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .email-form input::placeholder { color: rgba(255,255,255,0.4); }
+    .email-form input:focus { border-color: var(--accent); }
+
+    .email-form button {
+      padding: 0.75rem 1.75rem;
+      border-radius: 100px;
+      border: none;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .email-form button:hover { background: #b5682c; transform: translateY(-1px); }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--cream);
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    footer .footer-links { display: flex; gap: 1.5rem; }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────────── -->
+  <nav>
+    <a class="nav-logo" href="#">Wander</a>
+    <ul class="nav-links">
+      <li><a href="#destinations">Destinations</a></li>
+      <li><a href="#featured">Stories</a></li>
+      <li><a href="#tips">Tips</a></li>
+      <li><a href="#newsletter">Newsletter</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-bg" aria-hidden="true">
+      <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sky -->
+        <defs>
+          <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#8fb3d9"/>
+            <stop offset="100%" stop-color="#c9b89a"/>
+          </linearGradient>
+          <linearGradient id="sun-glow" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+            <stop offset="0%" stop-color="#f9d48c" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#f9d48c" stop-opacity="0"/>
+          </linearGradient>
+          <radialGradient id="sun-radial" cx="60%" cy="38%" r="30%">
+            <stop offset="0%" stop-color="#fde68a" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="transparent"/>
+          </radialGradient>
+        </defs>
+        <rect width="1440" height="900" fill="url(#sky)"/>
+        <ellipse cx="870" cy="340" rx="260" ry="260" fill="url(#sun-radial)"/>
+        <!-- Distant mountains -->
+        <polygon points="0,560 220,320 420,480 600,300 780,440 960,280 1140,420 1320,310 1440,390 1440,900 0,900" fill="#7a8e78" opacity="0.55"/>
+        <!-- Mid mountains -->
+        <polygon points="0,640 180,450 350,580 520,430 700,560 900,400 1080,520 1260,440 1440,500 1440,900 0,900" fill="#5c7055" opacity="0.7"/>
+        <!-- Foreground hills -->
+        <path d="M0,720 Q200,660 400,700 Q600,740 800,680 Q1000,620 1200,680 Q1350,720 1440,700 L1440,900 L0,900 Z" fill="#3d5c3a" opacity="0.85"/>
+        <!-- Water reflection -->
+        <ellipse cx="720" cy="820" rx="320" ry="40" fill="#8fb3d9" opacity="0.3"/>
+      </svg>
+    </div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Discover the world</span>
+      <h1>The art of<br/>slow travel</h1>
+      <p>Curated guides to extraordinary places — written by people who actually live there.</p>
+      <a href="#destinations" class="btn btn-primary">Explore destinations</a>
+      <a href="#featured" class="btn btn-outline">Read stories</a>
+    </div>
+  </section>
+
+  <!-- ── Destinations ─────────────────────────────────────────── -->
+  <section id="destinations">
+    <div class="section-inner">
+      <p class="section-label">Where to next</p>
+      <h2 class="section-title">Featured destinations</h2>
+      <p class="section-subtitle">Hand-picked places that reward the curious traveller willing to wander off the beaten path.</p>
+
+      <div class="dest-grid">
+
+        <!-- Card 1 — Kyoto -->
+        <article class="dest-card">
+          <div class="dest-thumb" aria-hidden="true">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="ky-sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#c9d9f0"/>
+                  <stop offset="100%" stop-color="#e8d5c4"/>
+                </linearGradient>
+              </defs>
+              <rect width="400" height="300" fill="url(#ky-sky)"/>
+              <!-- Cherry blossom trees -->
+              <rect x="60" y="160" width="8" height="80" fill="#7a5c48"/>
+              <ellipse cx="64" cy="152" rx="32" ry="28" fill="#f4b8c8" opacity="0.9"/>
+              <ellipse cx="52" cy="145" rx="22" ry="18" fill="#f9c8d4" opacity="0.8"/>
+              <ellipse cx="76" cy="148" rx="20" ry="16" fill="#f4b8c8" opacity="0.75"/>
+
+              <rect x="320" y="140" width="8" height="100" fill="#7a5c48"/>
+              <ellipse cx="324" cy="130" rx="38" ry="32" fill="#f4b8c8" opacity="0.85"/>
+              <ellipse cx="308" cy="122" rx="26" ry="22" fill="#f9c8d4" opacity="0.8"/>
+
+              <!-- Pagoda -->
+              <polygon points="180,60 220,60 200,30" fill="#c8503c"/>
+              <rect x="172" y="60" width="56" height="10" fill="#c8503c"/>
+              <polygon points="164,70 236,70 200,45" fill="#c8503c"/>
+              <rect x="158" y="70" width="84" height="12" fill="#c8503c"/>
+              <polygon points="152,82 248,82 200,58" fill="#c8503c"/>
+              <rect x="146" y="82" width="108" height="14" fill="#c8503c"/>
+              <rect x="185" y="96" width="30" height="60" fill="#e8c87a"/>
+              <!-- Pond -->
+              <ellipse cx="200" cy="250" rx="120" ry="24" fill="#8fbbd0" opacity="0.6"/>
+              <!-- Ground -->
+              <rect x="0" y="230" width="400" height="70" fill="#7a9f6a" opacity="0.6"/>
+              <!-- Petals -->
+              <circle cx="120" cy="180" r="3" fill="#f9c8d4" opacity="0.8"/>
+              <circle cx="155" cy="200" r="2" fill="#f4b8c8" opacity="0.7"/>
+              <circle cx="260" cy="175" r="3" fill="#f9c8d4" opacity="0.8"/>
+              <circle cx="290" cy="195" r="2" fill="#f4b8c8" opacity="0.7"/>
+            </svg>
+          </div>
+          <div class="dest-body">
+            <span class="dest-tag">Japan</span>
+            <h3 class="dest-title">Kyoto in spring</h3>
+            <p class="dest-desc">Ancient temples draped in cherry blossoms. Wander stone paths at dusk while incense drifts from moss-covered shrines.</p>
+            <div class="dest-meta">
+              <span>🕑 Best: Mar–May</span>
+              <span>✈️ 13 hr flight</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 2 — Amalfi Coast -->
+        <article class="dest-card">
+          <div class="dest-thumb" aria-hidden="true">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="am-sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#5da0d0"/>
+                  <stop offset="100%" stop-color="#a8cfe0"/>
+                </linearGradient>
+                <linearGradient id="am-sea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#2a7fc0"/>
+                  <stop offset="100%" stop-color="#1a5a90"/>
+                </linearGradient>
+              </defs>
+              <rect width="400" height="300" fill="url(#am-sky)"/>
+              <rect y="200" width="400" height="100" fill="url(#am-sea)"/>
+              <!-- Cliffs -->
+              <polygon points="0,280 0,160 80,120 160,150 200,100 280,130 360,90 400,110 400,280" fill="#8a7a5e"/>
+              <!-- Houses stacked on cliffs -->
+              <rect x="20" y="145" width="24" height="20" fill="#f5e6d0"/>
+              <polygon points="20,145 44,145 32,132" fill="#e05050"/>
+              <rect x="50" y="130" width="22" height="22" fill="#fad8a0"/>
+              <polygon points="50,130 72,130 61,118" fill="#d04040"/>
+              <rect x="78" y="115" width="20" height="20" fill="#d4e8f0"/>
+              <polygon points="78,115 98,115 88,103" fill="#e05050"/>
+              <rect x="210" y="100" width="22" height="20" fill="#f5e6d0"/>
+              <polygon points="210,100 232,100 221,88" fill="#c83c3c"/>
+              <rect x="238" y="110" width="20" height="20" fill="#fad8a0"/>
+              <polygon points="238,110 258,110 248,98" fill="#e05050"/>
+              <rect x="275" y="90" width="22" height="22" fill="#d4e8f0"/>
+              <polygon points="275,90 297,90 286,78" fill="#d04040"/>
+              <!-- Boats -->
+              <ellipse cx="140" cy="240" rx="20" ry="7" fill="#fff" opacity="0.85"/>
+              <rect x="138" y="230" width="2" height="16" fill="#7a5c48"/>
+              <polygon points="140,230 160,237 140,237" fill="#e8c87a" opacity="0.8"/>
+              <!-- Waves -->
+              <path d="M0,215 Q50,208 100,215 Q150,222 200,215 Q250,208 300,215 Q350,222 400,215" stroke="#fff" stroke-width="1.5" fill="none" opacity="0.4"/>
+            </svg>
+          </div>
+          <div class="dest-body">
+            <span class="dest-tag">Italy</span>
+            <h3 class="dest-title">Amalfi Coast</h3>
+            <p class="dest-desc">Pastel villages clinging to cliffs above a sapphire sea. Each hairpin turn reveals another impossibly beautiful view.</p>
+            <div class="dest-meta">
+              <span>🕑 Best: May–Sep</span>
+              <span>✈️ 10 hr flight</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 3 — Patagonia -->
+        <article class="dest-card">
+          <div class="dest-thumb" aria-hidden="true">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="pt-sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#b8d0e8"/>
+                  <stop offset="100%" stop-color="#d4c8b8"/>
+                </linearGradient>
+              </defs>
+              <rect width="400" height="300" fill="url(#pt-sky)"/>
+              <!-- Clouds -->
+              <ellipse cx="100" cy="60" rx="60" ry="22" fill="#fff" opacity="0.8"/>
+              <ellipse cx="130" cy="52" rx="45" ry="18" fill="#fff" opacity="0.9"/>
+              <ellipse cx="300" cy="80" rx="50" ry="18" fill="#fff" opacity="0.7"/>
+              <!-- Torres del Paine peaks -->
+              <polygon points="140,280 170,120 200,280" fill="#6a7880"/>
+              <polygon points="170,120 200,140 200,280 170,280" fill="#7a8a94"/>
+              <polygon points="200,280 210,110 240,280" fill="#6a7880"/>
+              <polygon points="210,110 240,130 240,280 210,280" fill="#7a8a94"/>
+              <!-- Snow caps -->
+              <polygon points="170,120 182,135 158,135" fill="#f0f0f0"/>
+              <polygon points="210,110 222,126 198,126" fill="#f0f0f0"/>
+              <!-- Glacier lake -->
+              <ellipse cx="200" cy="262" rx="180" ry="24" fill="#6aa8c0" opacity="0.75"/>
+              <!-- Steppe -->
+              <rect x="0" y="260" width="400" height="40" fill="#8aac60" opacity="0.7"/>
+              <!-- Guanaco silhouette -->
+              <ellipse cx="80" cy="258" rx="16" ry="9" fill="#a07848"/>
+              <rect x="85" y="249" width="5" height="12" fill="#a07848"/>
+              <circle cx="90" cy="245" r="5" fill="#a07848"/>
+            </svg>
+          </div>
+          <div class="dest-body">
+            <span class="dest-tag">Chile / Argentina</span>
+            <h3 class="dest-title">Patagonia</h3>
+            <p class="dest-desc">Jagged granite towers, turquoise lakes, and vast windswept steppes. The world's most dramatic landscape at the end of the earth.</p>
+            <div class="dest-meta">
+              <span>🕑 Best: Nov–Mar</span>
+              <span>✈️ 17 hr flight</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Card 4 — Morocco -->
+        <article class="dest-card">
+          <div class="dest-thumb" aria-hidden="true">
+            <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="mo-sky" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stop-color="#e8c87a"/>
+                  <stop offset="100%" stop-color="#d47840"/>
+                </linearGradient>
+              </defs>
+              <rect width="400" height="300" fill="url(#mo-sky)"/>
+              <!-- Sun -->
+              <circle cx="340" cy="60" r="35" fill="#f9e080" opacity="0.9"/>
+              <!-- Dunes -->
+              <path d="M0,280 Q80,200 160,240 Q240,280 320,210 Q380,170 400,200 L400,300 L0,300 Z" fill="#c8a050"/>
+              <path d="M0,300 Q100,240 200,270 Q300,300 400,250 L400,300 Z" fill="#b88a3a"/>
+              <!-- Kasbah / medina silhouette -->
+              <rect x="60" y="160" width="30" height="60" fill="#a87848" opacity="0.85"/>
+              <rect x="90" y="150" width="20" height="70" fill="#c09060" opacity="0.9"/>
+              <!-- Arch detail -->
+              <rect x="95" y="185" width="10" height="20" fill="#7a5030"/>
+              <path d="M95,185 Q100,177 105,185" fill="#7a5030"/>
+              <rect x="100" y="140" width="10" height="12" fill="#a87848"/>
+              <!-- Minaret -->
+              <rect x="130" y="130" width="22" height="90" fill="#c09060"/>
+              <rect x="128" y="128" width="26" height="6" fill="#a87848"/>
+              <rect x="128" y="112" width="26" height="18" fill="#b89050"/>
+              <rect x="126" y="110" width="30" height="4" fill="#a87848"/>
+              <polygon points="141,100 152,110 130,110" fill="#c09060"/>
+              <!-- More buildings -->
+              <rect x="180" y="175" width="28" height="50" fill="#b89060" opacity="0.8"/>
+              <rect x="215" y="165" width="20" height="60" fill="#a07840" opacity="0.85"/>
+              <!-- Camel silhouette -->
+              <ellipse cx="310" cy="235" rx="25" ry="12" fill="#8a6030"/>
+              <rect x="298" y="220" width="7" height="18" fill="#8a6030"/>
+              <rect x="325" y="222" width="7" height="18" fill="#8a6030"/>
+              <ellipse cx="330" cy="220" rx="10" ry="8" fill="#8a6030"/>
+              <rect x="334" y="212" width="4" height="10" fill="#8a6030"/>
+              <circle cx="338" cy="210" r="4" fill="#8a6030"/>
+              <!-- Hump -->
+              <ellipse cx="314" cy="222" rx="10" ry="7" fill="#9a7040"/>
+            </svg>
+          </div>
+          <div class="dest-body">
+            <span class="dest-tag">Morocco</span>
+            <h3 class="dest-title">Sahara & Medinas</h3>
+            <p class="dest-desc">Sleep under a billion stars in the Sahara, then lose yourself in the labyrinthine medinas of Fez and Marrakech.</p>
+            <div class="dest-meta">
+              <span>🕑 Best: Oct–Apr</span>
+              <span>✈️ 8 hr flight</span>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured article ─────────────────────────────────────── -->
+  <section id="featured">
+    <div class="section-inner">
+      <p class="section-label">From the journal</p>
+      <h2 class="section-title">48 hours in Lisbon</h2>
+
+      <div class="featured-grid">
+        <div class="featured-visual" aria-hidden="true">
+          <svg viewBox="0 0 560 420" xmlns="http://www.w3.org/2000/svg" width="100%" height="100%">
+            <defs>
+              <linearGradient id="li-sky" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#7aafdc"/>
+                <stop offset="100%" stop-color="#c9d8e8"/>
+              </linearGradient>
+            </defs>
+            <rect width="560" height="420" fill="url(#li-sky)"/>
+            <!-- River Tagus at bottom -->
+            <rect y="340" width="560" height="80" fill="#4a90c0" opacity="0.6"/>
+            <path d="M0,350 Q140,340 280,350 Q420,360 560,350 L560,420 L0,420 Z" fill="#3a80b0" opacity="0.5"/>
+            <!-- Hilly cityscape -->
+            <polygon points="0,380 0,240 60,200 120,230 180,190 240,210 300,180 360,200 420,175 480,195 540,170 560,180 560,380" fill="#c8b89a"/>
+            <!-- Buildings -->
+            <rect x="20" y="230" width="32" height="120" fill="#e8d8c0"/>
+            <rect x="24" y="234" width="6" height="8" fill="#7a9fd0"/>
+            <rect x="32" y="234" width="6" height="8" fill="#7a9fd0"/>
+            <rect x="24" y="248" width="6" height="8" fill="#7a9fd0"/>
+            <rect x="32" y="248" width="6" height="8" fill="#7a9fd0"/>
+
+            <rect x="70" y="200" width="28" height="150" fill="#d4c8b0"/>
+            <rect x="74" y="205" width="5" height="7" fill="#9ab8d4"/>
+            <rect x="81" y="205" width="5" height="7" fill="#9ab8d4"/>
+
+            <rect x="110" y="210" width="36" height="140" fill="#e0d0b8"/>
+            <!-- Azulejo tile pattern suggestion -->
+            <rect x="113" y="214" width="7" height="9" fill="#7ab0d0"/>
+            <rect x="122" y="214" width="7" height="9" fill="#7ab0d0"/>
+            <rect x="131" y="214" width="7" height="9" fill="#7ab0d0"/>
+            <rect x="113" y="225" width="7" height="9" fill="#5a90b8"/>
+            <rect x="122" y="225" width="7" height="9" fill="#5a90b8"/>
+            <rect x="131" y="225" width="7" height="9" fill="#5a90b8"/>
+
+            <!-- Castelo de São Jorge on hilltop -->
+            <polygon points="280,180 220,260 340,260" fill="#9a8a70"/>
+            <rect x="240" y="210" width="12" height="50" fill="#a89878"/>
+            <polygon points="240,210 252,210 246,200" fill="#8a7a60"/>
+            <rect x="268" y="200" width="12" height="60" fill="#b0a080"/>
+            <rect x="288" y="215" width="12" height="45" fill="#a89878"/>
+            <!-- Battlements -->
+            <rect x="238" y="208" width="4" height="4" fill="#8a7a60"/>
+            <rect x="244" y="208" width="4" height="4" fill="#8a7a60"/>
+            <rect x="250" y="208" width="4" height="4" fill="#8a7a60"/>
+
+            <!-- Tram -->
+            <rect x="380" y="300" width="50" height="28" rx="3" fill="#f5c030"/>
+            <rect x="382" y="304" width="10" height="8" fill="#7ab0d0"/>
+            <rect x="394" y="304" width="10" height="8" fill="#7ab0d0"/>
+            <rect x="406" y="304" width="10" height="8" fill="#7ab0d0"/>
+            <circle cx="392" cy="330" r="5" fill="#444"/>
+            <circle cx="418" cy="330" r="5" fill="#444"/>
+            <!-- Tram wire -->
+            <line x1="380" y1="295" x2="430" y2="295" stroke="#888" stroke-width="1"/>
+
+            <!-- Ponte 25 de Abril (bridge silhouette) -->
+            <line x1="430" y1="345" x2="560" y2="345" stroke="#c83c3c" stroke-width="6"/>
+            <rect x="460" y="290" width="8" height="56" fill="#c83c3c"/>
+            <rect x="520" y="300" width="8" height="46" fill="#c83c3c"/>
+            <line x1="464" y1="290" x2="440" y2="345" stroke="#c83c3c" stroke-width="2"/>
+            <line x1="464" y1="290" x2="490" y2="345" stroke="#c83c3c" stroke-width="2"/>
+            <line x1="524" y1="300" x2="500" y2="345" stroke="#c83c3c" stroke-width="2"/>
+            <line x1="524" y1="300" x2="548" y2="345" stroke="#c83c3c" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="featured-text">
+          <blockquote>"There is something about Lisbon's golden light at dusk — the way it catches the azulejos — that makes you feel like time has slowed to a gentle, aching halt."</blockquote>
+          <p>Start your morning in Alfama, where neighbours still hang laundry between centuries-old facades and fado drifts from open windows. Ride Tram 28 uphill to the castle. By afternoon, descend to Bairro Alto for custard tarts still warm from the oven at Pastéis de Belém. End your day watching the sun melt into the Tagus from a miradouro.</p>
+          <p>Lisbon rewards those who wander without a map. Every steep lane is a discovery; every tiled doorway, a small work of art.</p>
+          <div class="author-row">
+            <div class="avatar">MF</div>
+            <div class="author-info">
+              <strong>Maria Fonseca</strong>
+              <small>Local contributor · Lisbon, Portugal</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Travel tips ───────────────────────────────────────────── -->
+  <section id="tips">
+    <div class="section-inner">
+      <p class="section-label">Smart travel</p>
+      <h2 class="section-title">Essential tips</h2>
+      <p class="section-subtitle">Practical wisdom from seasoned travellers to make every journey smoother.</p>
+
+      <div class="tips-grid">
+        <div class="tip-card">
+          <div class="tip-icon">🗺️</div>
+          <h3>Go offline-first</h3>
+          <p>Download Maps.me or Google Maps offline regions before you land. Connectivity is never guaranteed when you need it most.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🌤️</div>
+          <h3>Travel shoulder-season</h3>
+          <p>May and September offer summer weather at half the crowds and prices. The locals are friendlier when they're not exhausted.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">💳</div>
+          <h3>Carry two cards</h3>
+          <p>A Charles Schwab debit (no ATM fees worldwide) plus one backup credit card. Never rely on a single payment method abroad.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🎒</div>
+          <h3>Pack a day bag</h3>
+          <p>A small 15–20 L daypack lets you leave your main luggage at the hotel and explore unburdened, even on day trips.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🍽️</div>
+          <h3>Eat where locals eat</h3>
+          <p>Walk three blocks from any major landmark and prices halve. Follow the lunch crowd — they know exactly where the best food is.</p>
+        </div>
+        <div class="tip-card">
+          <div class="tip-icon">🔌</div>
+          <h3>Universal adapter</h3>
+          <p>One compact universal adapter beats carrying multiple country-specific plugs. Look for one with USB-C pass-through charging.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Newsletter ────────────────────────────────────────────── -->
+  <section id="newsletter">
+    <div class="section-inner">
+      <p class="section-label">Stay inspired</p>
+      <h2 class="section-title">The Wander letter</h2>
+      <p class="section-subtitle">Monthly dispatches: one destination, one story, one practical guide — no noise.</p>
+      <form class="email-form" onsubmit="handleSubscribe(event)">
+        <input type="email" placeholder="your@email.com" required />
+        <button type="submit">Subscribe</button>
+      </form>
+      <p id="subscribe-msg" style="margin-top:1rem;font-size:0.85rem;color:#c8a87a;min-height:1.2em;"></p>
+    </div>
+  </section>
+
+  <!-- ── Footer ────────────────────────────────────────────────── -->
+  <footer>
+    <span>© 2025 Wander Travel Guide. All rights reserved.</span>
+    <nav class="footer-links">
+      <a href="#">About</a>
+      <a href="#">Write for us</a>
+      <a href="#">Privacy</a>
+      <a href="#">Contact</a>
+    </nav>
+  </footer>
+
+  <script>
+    function handleSubscribe(e) {
+      e.preventDefault();
+      const msg = document.getElementById('subscribe-msg');
+      msg.textContent = '✓ You\'re on the list — first issue lands next month.';
+      e.target.reset();
+    }
+  </script>
+
+</body>
+</html>
