@@ -1,1 +1,740 @@
-<h1>smoke test</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wander — Travel Guide</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: transparent;
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    .nav.scrolled {
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: white;
+      transition: color 0.3s;
+    }
+    .nav.scrolled .nav__logo { color: var(--ink); }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: white; }
+    .nav.scrolled .nav__links a { color: var(--ash); }
+    .nav.scrolled .nav__links a:hover { color: var(--ink); }
+
+    /* ── Hero ─────────────────────────────────────────────────── */
+    .hero {
+      position: relative; height: 100vh; min-height: 600px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%),
+        url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80') center/cover no-repeat;
+    }
+    .hero__content {
+      position: relative; z-index: 2;
+      padding: 0 40px 80px;
+      max-width: 680px;
+    }
+    .hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 16px;
+    }
+    .hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 300;
+      line-height: 1.05;
+      color: white;
+      margin-bottom: 20px;
+    }
+    .hero__title em { font-style: italic; }
+    .hero__sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.8);
+      max-width: 420px;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid white;
+      color: white;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: white; color: var(--ink); }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
+
+    /* ── Scroll hint ──────────────────────────────────────────── */
+    .hero__scroll {
+      position: absolute; bottom: 32px; right: 40px; z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+    .hero__scroll::after {
+      content: '';
+      width: 1px; height: 48px;
+      background: rgba(255,255,255,0.4);
+      animation: scrollLine 1.6s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%   { transform: scaleY(0); transform-origin: top; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform: scaleY(1); transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; }
+    }
+
+    /* ── Section header ───────────────────────────────────────── */
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 40px;
+      border-bottom: 1px solid var(--stone);
+      padding-bottom: 16px;
+    }
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+    }
+    .section-header a {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .section-header a:hover { opacity: 0.7; }
+
+    /* ── Featured strip ───────────────────────────────────────── */
+    .featured {
+      padding: 96px 0 80px;
+      background: var(--cream);
+    }
+    .featured__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 20px;
+    }
+    .dest-card {
+      position: relative; overflow: hidden;
+      cursor: pointer;
+    }
+    .dest-card:hover .dest-card__img { transform: scale(1.04); }
+    .dest-card__img {
+      height: 100%;
+      min-height: 220px;
+      transition: transform 0.5s ease;
+    }
+    .dest-card--hero { grid-column: 1 / 3; grid-row: 1 / 3; }
+    .dest-card--hero .dest-card__img { min-height: 520px; }
+    .dest-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);
+    }
+    .dest-card__body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 24px;
+    }
+    .dest-card__region {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 6px;
+    }
+    .dest-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: white;
+      line-height: 1.15;
+    }
+    .dest-card--hero .dest-card__name { font-size: 2.4rem; }
+    .dest-card__tag {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 5px 12px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: rgba(255,255,255,0.18);
+      color: white;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+
+    /* ── Curated list ─────────────────────────────────────────── */
+    .curated {
+      padding: 80px 0;
+      background: var(--sand);
+    }
+    .curated__list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+    .guide-card {
+      background: var(--cream);
+      display: flex; flex-direction: column;
+      transition: transform 0.2s;
+    }
+    .guide-card:hover { transform: translateY(-4px); }
+    .guide-card__img-wrap { overflow: hidden; aspect-ratio: 4/3; }
+    .guide-card__img { height: 100%; transition: transform 0.5s ease; }
+    .guide-card:hover .guide-card__img { transform: scale(1.05); }
+    .guide-card__body { padding: 24px; flex: 1; display: flex; flex-direction: column; }
+    .guide-card__cat {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .guide-card__title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+    .guide-card__excerpt {
+      font-size: 0.88rem;
+      color: var(--ash);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .guide-card__footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--stone);
+    }
+    .guide-card__meta {
+      font-size: 0.75rem;
+      color: var(--ash);
+    }
+    .guide-card__link {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      transition: opacity 0.2s;
+    }
+    .guide-card__link:hover { opacity: 0.65; }
+
+    /* ── Region strip ─────────────────────────────────────────── */
+    .regions {
+      padding: 80px 0;
+      background: var(--cream);
+    }
+    .regions__row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 12px;
+    }
+    .region-pill {
+      position: relative; overflow: hidden;
+      aspect-ratio: 3/4;
+      cursor: pointer;
+    }
+    .region-pill:hover .region-pill__img { transform: scale(1.07); }
+    .region-pill__img {
+      height: 100%;
+      transition: transform 0.5s ease;
+    }
+    .region-pill__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+    }
+    .region-pill__label {
+      position: absolute; bottom: 16px; left: 0; right: 0;
+      text-align: center;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: white;
+    }
+
+    /* ── Quote / pull ─────────────────────────────────────────── */
+    .pullquote {
+      padding: 100px 40px;
+      background: var(--teal);
+      text-align: center;
+    }
+    .pullquote__text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: white;
+      max-width: 800px;
+      margin: 0 auto 24px;
+      line-height: 1.45;
+    }
+    .pullquote__attr {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Newsletter ───────────────────────────────────────────── */
+    .newsletter {
+      padding: 96px 0;
+      background: var(--sand);
+    }
+    .newsletter__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .newsletter__copy h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 16px;
+    }
+    .newsletter__copy p {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.75;
+    }
+    .newsletter__form {
+      display: flex; flex-direction: column; gap: 12px;
+    }
+    .newsletter__form input[type="email"] {
+      padding: 14px 18px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .newsletter__form input[type="email"]::placeholder { color: #b0a898; }
+    .newsletter__form input[type="email"]:focus { border-color: var(--teal); }
+    .newsletter__note {
+      font-size: 0.72rem;
+      color: var(--ash);
+      line-height: 1.6;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+      .hero__content { padding: 0 24px 60px; }
+
+      .featured__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .dest-card--hero { grid-column: 1 / 3; }
+
+      .curated__list  { grid-template-columns: 1fr 1fr; }
+      .regions__row   { grid-template-columns: repeat(3, 1fr); }
+
+      .newsletter__inner { grid-template-columns: 1fr; gap: 36px; }
+
+      .footer__grid   { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .featured__grid { grid-template-columns: 1fr; }
+      .dest-card--hero { grid-column: 1; }
+      .curated__list  { grid-template-columns: 1fr; }
+      .regions__row   { grid-template-columns: repeat(2, 1fr); }
+      .footer__grid   { grid-template-columns: 1fr; }
+      .pullquote      { padding: 64px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="#" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="#destinations">Destinations</a></li>
+      <li><a href="#guides">Guides</a></li>
+      <li><a href="#regions">Regions</a></li>
+      <li><a href="#newsletter">Newsletter</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Hero ─────────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero__bg"></div>
+    <div class="hero__content">
+      <p class="hero__eyebrow">Volume XII — Summer 2026</p>
+      <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
+      <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
+      <a href="#destinations" class="btn">Explore destinations</a>
+    </div>
+    <div class="hero__scroll">Scroll</div>
+  </section>
+
+  <!-- ── Featured Destinations ─────────────────────────────────── -->
+  <section class="featured" id="destinations">
+    <div class="container">
+      <div class="section-header">
+        <h2>Featured destinations</h2>
+        <a href="#">View all</a>
+      </div>
+      <div class="featured__grid">
+
+        <!-- Hero card -->
+        <article class="dest-card dest-card--hero">
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80" alt="Amalfi Coast, Italy" />
+          <div class="dest-card__overlay"></div>
+          <div class="dest-card__body">
+            <p class="dest-card__region">Southern Italy</p>
+            <h3 class="dest-card__name">Amalfi Coast</h3>
+            <span class="dest-card__tag">Editor's pick</span>
+          </div>
+        </article>
+
+        <!-- Small card 1 -->
+        <article class="dest-card">
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&q=80" alt="Kyoto, Japan" />
+          <div class="dest-card__overlay"></div>
+          <div class="dest-card__body">
+            <p class="dest-card__region">Japan</p>
+            <h3 class="dest-card__name">Kyoto</h3>
+          </div>
+        </article>
+
+        <!-- Small card 2 -->
+        <article class="dest-card">
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80" alt="Santorini, Greece" />
+          <div class="dest-card__overlay"></div>
+          <div class="dest-card__body">
+            <p class="dest-card__region">Greece</p>
+            <h3 class="dest-card__name">Santorini</h3>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Travel Guides ─────────────────────────────────────────── -->
+  <section class="curated" id="guides">
+    <div class="container">
+      <div class="section-header">
+        <h2>Latest guides</h2>
+        <a href="#">Browse all</a>
+      </div>
+      <div class="curated__list">
+
+        <article class="guide-card">
+          <div class="guide-card__img-wrap">
+            <img class="guide-card__img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80" alt="Patagonia" />
+          </div>
+          <div class="guide-card__body">
+            <p class="guide-card__cat">Adventure</p>
+            <h3 class="guide-card__title">A week at the end of the world: Patagonia</h3>
+            <p class="guide-card__excerpt">Wind-scoured peaks, electric-blue glaciers, and trails that push your legs for days. Our complete guide to W Trek planning, accommodation, and gear.</p>
+            <div class="guide-card__footer">
+              <span class="guide-card__meta">12 min read</span>
+              <a href="#" class="guide-card__link">Read guide</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <div class="guide-card__img-wrap">
+            <img class="guide-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" />
+          </div>
+          <div class="guide-card__body">
+            <p class="guide-card__cat">Culture</p>
+            <h3 class="guide-card__title">Rajasthan by rail: the golden cities</h3>
+            <p class="guide-card__excerpt">From the pink walls of Jaipur to the blue labyrinth of Jodhpur, a two-week rail journey through India's most regal state.</p>
+            <div class="guide-card__footer">
+              <span class="guide-card__meta">9 min read</span>
+              <a href="#" class="guide-card__link">Read guide</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="guide-card">
+          <div class="guide-card__img-wrap">
+            <img class="guide-card__img" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80" alt="Norwegian fjords" />
+          </div>
+          <div class="guide-card__body">
+            <p class="guide-card__cat">Scenic</p>
+            <h3 class="guide-card__title">Norway's fjords in the midnight sun</h3>
+            <p class="guide-card__excerpt">Long, golden evenings on still water, surrounded by walls of granite. When to go, where to stay, and how to reach the most serene corners.</p>
+            <div class="guide-card__footer">
+              <span class="guide-card__meta">7 min read</span>
+              <a href="#" class="guide-card__link">Read guide</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pull quote ─────────────────────────────────────────────── -->
+  <blockquote class="pullquote">
+    <p class="pullquote__text">"Travel is the only thing you buy that makes you richer — not in possessions, but in perspectives."</p>
+    <cite class="pullquote__attr">Wander editorial</cite>
+  </blockquote>
+
+  <!-- ── Regions ────────────────────────────────────────────────── -->
+  <section class="regions" id="regions">
+    <div class="container">
+      <div class="section-header">
+        <h2>Explore by region</h2>
+        <a href="#">All regions</a>
+      </div>
+      <div class="regions__row">
+
+        <div class="region-pill">
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Europe" />
+          <div class="region-pill__overlay"></div>
+          <p class="region-pill__label">Europe</p>
+        </div>
+
+        <div class="region-pill">
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1540126034813-121bf29033d2?w=600&q=80" alt="Asia" />
+          <div class="region-pill__overlay"></div>
+          <p class="region-pill__label">Asia</p>
+        </div>
+
+        <div class="region-pill">
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" alt="Americas" />
+          <div class="region-pill__overlay"></div>
+          <p class="region-pill__label">Americas</p>
+        </div>
+
+        <div class="region-pill">
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=600&q=80" alt="Africa" />
+          <div class="region-pill__overlay"></div>
+          <p class="region-pill__label">Africa</p>
+        </div>
+
+        <div class="region-pill">
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80" alt="Oceania" />
+          <div class="region-pill__overlay"></div>
+          <p class="region-pill__label">Oceania</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Newsletter ─────────────────────────────────────────────── -->
+  <section class="newsletter" id="newsletter">
+    <div class="container">
+      <div class="newsletter__inner">
+        <div class="newsletter__copy">
+          <h2>Stories for the road ahead</h2>
+          <p>Every two weeks we send a beautifully crafted letter with destination profiles, packing wisdom, and the occasional hidden gem. No noise — just things worth reading.</p>
+        </div>
+        <form class="newsletter__form" onsubmit="return false;">
+          <input type="email" placeholder="your@email.com" aria-label="Email address" />
+          <button type="submit" class="btn btn--teal">Subscribe — it's free</button>
+          <p class="newsletter__note">No spam, ever. Unsubscribe in one click. We respect your inbox.</p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="#">Destinations</a></li>
+            <li><a href="#">Guides</a></li>
+            <li><a href="#">Regions</a></li>
+            <li><a href="#">Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="#">Itineraries</a></li>
+            <li><a href="#">Packing lists</a></li>
+            <li><a href="#">Visa info</a></li>
+            <li><a href="#">Budget tips</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="#">About</a></li>
+            <li><a href="#">Write for us</a></li>
+            <li><a href="#">Newsletter</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Sticky nav background on scroll
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+  </script>
+
+</body>
+</html>
