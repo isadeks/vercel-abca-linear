@@ -463,6 +463,127 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Surprise Me ─────────────────────────────────────────── */
+    .surprise {
+      padding: 96px 0;
+      background: var(--ink);
+      text-align: center;
+    }
+    .surprise__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 16px;
+    }
+    .surprise__heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 300;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .surprise__heading em { font-style: italic; color: var(--teal-lt); }
+    .surprise__sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.55);
+      max-width: 480px;
+      margin: 0 auto 40px;
+      line-height: 1.75;
+    }
+    .surprise__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 40px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--teal);
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      font-family: var(--font-sans);
+    }
+    .surprise__btn:hover  { background: #22665c; }
+    .surprise__btn:active { transform: scale(0.97); }
+    .surprise__btn svg { flex-shrink: 0; transition: transform 0.35s; }
+    .surprise__btn:hover svg { transform: rotate(180deg); }
+
+    .surprise__result {
+      margin-top: 56px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.45s ease, transform 0.45s ease;
+      pointer-events: none;
+    }
+    .surprise__result.visible {
+      opacity: 1;
+      transform: none;
+      pointer-events: auto;
+    }
+    .surprise__card {
+      display: inline-block;
+      max-width: 520px;
+      width: 100%;
+      text-align: left;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .surprise__card-img-wrap {
+      overflow: hidden;
+      aspect-ratio: 16/9;
+    }
+    .surprise__card-img {
+      height: 100%;
+      width: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .surprise__card:hover .surprise__card-img { transform: scale(1.04); }
+    .surprise__card-body { padding: 28px 32px 32px; }
+    .surprise__card-region {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal-lt);
+      margin-bottom: 8px;
+    }
+    .surprise__card-name {
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 12px;
+      line-height: 1.1;
+    }
+    .surprise__card-desc {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.58);
+      line-height: 1.75;
+      margin-bottom: 20px;
+    }
+    .surprise__card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .surprise__tag {
+      padding: 4px 12px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.55);
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -502,6 +623,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="#surprise">Surprise Me</a></li>
     </ul>
   </nav>
 
@@ -668,6 +790,41 @@
     </div>
   </section>
 
+  <!-- ── Surprise Me ──────────────────────────────────────────────── -->
+  <section class="surprise" id="surprise">
+    <div class="container">
+      <p class="surprise__eyebrow">Feeling spontaneous?</p>
+      <h2 class="surprise__heading">Let the world <em>choose</em> for you</h2>
+      <p class="surprise__sub">Can't decide where to go next? Hit the button and we'll pick a destination at random — you might just find your new favourite place.</p>
+      <button class="surprise__btn" id="surpriseBtn" type="button" aria-label="Pick a random destination">
+        <!-- dice icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="2" width="20" height="20" rx="3"/>
+          <circle cx="8"  cy="8"  r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="16" cy="8"  r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="12" cy="12" r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="8"  cy="16" r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="16" cy="16" r="1.3" fill="currentColor" stroke="none"/>
+        </svg>
+        Surprise me
+      </button>
+
+      <div class="surprise__result" id="surpriseResult" aria-live="polite">
+        <div class="surprise__card" id="surpriseCard">
+          <div class="surprise__card-img-wrap">
+            <img class="surprise__card-img" id="surpriseImg" src="" alt="" />
+          </div>
+          <div class="surprise__card-body">
+            <p class="surprise__card-region" id="surpriseRegion"></p>
+            <h3 class="surprise__card-name" id="surpriseName"></h3>
+            <p class="surprise__card-desc" id="surpriseDesc"></p>
+            <div class="surprise__card-tags" id="surpriseTags"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Newsletter ─────────────────────────────────────────────── -->
   <section class="newsletter" id="newsletter">
     <div class="container">
@@ -734,6 +891,141 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Surprise Me ──────────────────────────────────────────────
+    const DESTINATIONS = [
+      {
+        name: 'Japan',
+        region: 'East Asia',
+        desc: 'Ancient temples and futuristic skylines share the same street. Wander through Kyoto\'s bamboo groves by morning and Tokyo\'s neon canyons by night.',
+        tags: ['Culture', 'Food', 'Architecture'],
+        img: 'https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=900&q=80',
+      },
+      {
+        name: 'Morocco',
+        region: 'North Africa',
+        desc: 'Labyrinthine medinas, rose-tinted desert dunes, and mint tea poured from a height. A sensory overload in the very best sense.',
+        tags: ['Desert', 'Markets', 'History'],
+        img: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?w=900&q=80',
+      },
+      {
+        name: 'New Zealand',
+        region: 'Oceania',
+        desc: 'Fjords carved by ancient glaciers, glowing glow-worm caves, and hiking trails that feel like the edge of the earth. Adventure is the baseline here.',
+        tags: ['Adventure', 'Hiking', 'Nature'],
+        img: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=900&q=80',
+      },
+      {
+        name: 'Portugal',
+        region: 'Southern Europe',
+        desc: 'Fado echoes off azulejo-tiled walls while Atlantic waves thunder at the foot of sea-cliffs. Europe\'s most melancholic and most beautiful corner.',
+        tags: ['Coastal', 'Food & Wine', 'Architecture'],
+        img: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=900&q=80',
+      },
+      {
+        name: 'Peru',
+        region: 'South America',
+        desc: 'The Inca citadel at sunrise, the Amazon at dusk, and ceviche in Lima that will ruin all other seafood forever.',
+        tags: ['History', 'Adventure', 'Food'],
+        img: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=900&q=80',
+      },
+      {
+        name: 'Iceland',
+        region: 'Northern Europe',
+        desc: 'Auroras over obsidian lava fields, geysers erupting every few minutes, and hot springs that feel designed by a dream. Entirely unlike anywhere else.',
+        tags: ['Northern Lights', 'Nature', 'Scenic'],
+        img: 'https://images.unsplash.com/photo-1520769669658-f07657f5a307?w=900&q=80',
+      },
+      {
+        name: 'Vietnam',
+        region: 'Southeast Asia',
+        desc: 'From the emerald karsts of Ha Long Bay to the lantern-lit streets of Hoi An, Vietnam rewards the curious at every turn.',
+        tags: ['Food', 'Culture', 'Scenery'],
+        img: 'https://images.unsplash.com/photo-1557750255-c76072a7aad1?w=900&q=80',
+      },
+      {
+        name: 'Tanzania',
+        region: 'East Africa',
+        desc: 'The Serengeti migration, Kilimanjaro\'s snow-capped summit, and the spice-scented streets of Stone Town. Africa in its most elemental form.',
+        tags: ['Safari', 'Wildlife', 'Mountains'],
+        img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=900&q=80',
+      },
+      {
+        name: 'Greece',
+        region: 'Mediterranean',
+        desc: 'Whitewashed villages tumbling down caldera cliffs, wine the colour of amber, and ruins where democracy was born.',
+        tags: ['Islands', 'History', 'Food & Wine'],
+        img: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=900&q=80',
+      },
+      {
+        name: 'Canada',
+        region: 'North America',
+        desc: 'Turquoise glacier-fed lakes, wilderness big enough to get genuinely lost in, and cities that somehow feel both wild and cosmopolitan.',
+        tags: ['Wilderness', 'Mountains', 'Lakes'],
+        img: 'https://images.unsplash.com/photo-1503614472-8c93d56e92ce?w=900&q=80',
+      },
+      {
+        name: 'India',
+        region: 'South Asia',
+        desc: 'The Taj Mahal at first light, chaotic bazaars full of colour and noise, and cuisine that changes completely every hundred kilometres.',
+        tags: ['Culture', 'Food', 'Monuments'],
+        img: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=900&q=80',
+      },
+      {
+        name: 'Chile',
+        region: 'South America',
+        desc: 'From the Atacama\'s alien landscapes to Patagonia\'s jagged granite spires, Chile runs the full length of a continent — and packs in everything.',
+        tags: ['Adventure', 'Desert', 'Trekking'],
+        img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=900&q=80',
+      },
+    ];
+
+    let lastIndex = -1;
+
+    function pickRandom() {
+      let idx;
+      do { idx = Math.floor(Math.random() * DESTINATIONS.length); }
+      while (idx === lastIndex && DESTINATIONS.length > 1);
+      lastIndex = idx;
+      return DESTINATIONS[idx];
+    }
+
+    const surpriseBtn    = document.getElementById('surpriseBtn');
+    const surpriseResult = document.getElementById('surpriseResult');
+    const surpriseImg    = document.getElementById('surpriseImg');
+    const surpriseRegion = document.getElementById('surpriseRegion');
+    const surpriseName   = document.getElementById('surpriseName');
+    const surpriseDesc   = document.getElementById('surpriseDesc');
+    const surpriseTags   = document.getElementById('surpriseTags');
+
+    surpriseBtn.addEventListener('click', () => {
+      const dest = pickRandom();
+
+      // Reset animation
+      surpriseResult.classList.remove('visible');
+
+      // Fill in content
+      surpriseImg.src    = dest.img;
+      surpriseImg.alt    = dest.name;
+      surpriseRegion.textContent = dest.region;
+      surpriseName.textContent   = dest.name;
+      surpriseDesc.textContent   = dest.desc;
+      surpriseTags.innerHTML = dest.tags
+        .map(t => `<span class="surprise__tag">${t}</span>`)
+        .join('');
+
+      // Trigger animation on next frame
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          surpriseResult.classList.add('visible');
+        });
+      });
+
+      // Smooth-scroll to result
+      setTimeout(() => {
+        surpriseResult.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }, 60);
+    });
   </script>
 
 </body>
