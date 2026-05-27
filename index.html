@@ -490,6 +490,125 @@
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
+
+    /* ── Surprise Me ──────────────────────────────────────────── */
+    .surprise {
+      padding: 120px 40px;
+      background: #111110;
+      text-align: center;
+    }
+    .surprise__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 24px;
+    }
+    .surprise__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 6vw, 5rem);
+      font-weight: 300;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 28px;
+    }
+    .surprise__title em { font-style: italic; }
+    .surprise__sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      max-width: 520px;
+      margin: 0 auto 48px;
+      line-height: 1.75;
+    }
+    .btn--surprise {
+      display: inline-flex; align-items: center; gap: 12px;
+      padding: 18px 48px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      background: var(--teal);
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn--surprise:hover { background: #22665c; transform: translateY(-2px); }
+    .btn--surprise:active { transform: translateY(0); }
+    .btn--surprise svg {
+      width: 20px; height: 20px;
+      flex-shrink: 0;
+    }
+
+    /* Destination reveal card */
+    .surprise__reveal {
+      max-width: 560px;
+      margin: 64px auto 0;
+      background: #1c1b19;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      pointer-events: none;
+    }
+    .surprise__reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .surprise__reveal-img {
+      width: 100%;
+      height: 320px;
+      object-fit: cover;
+      display: block;
+    }
+    .surprise__reveal-body {
+      padding: 36px 40px 40px;
+      text-align: left;
+    }
+    .surprise__reveal-region {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 10px;
+    }
+    .surprise__reveal-name {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 300;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .surprise__reveal-desc {
+      font-size: 0.92rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .surprise__reveal-tags {
+      display: flex; flex-wrap: wrap; gap: 10px;
+    }
+    .surprise__reveal-tag {
+      padding: 7px 16px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.55);
+    }
+
+    @media (max-width: 560px) {
+      .surprise { padding: 80px 24px; }
+      .surprise__reveal-body { padding: 24px; }
+      .surprise__reveal-name { font-size: 2.2rem; }
+      .surprise__reveal-img { height: 220px; }
+    }
   </style>
 </head>
 <body>
@@ -501,6 +620,7 @@
       <li><a href="#destinations">Destinations</a></li>
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
+      <li><a href="#surprise">Surprise Me</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -668,6 +788,34 @@
     </div>
   </section>
 
+  <!-- ── Surprise Me ──────────────────────────────────────────────── -->
+  <section class="surprise" id="surprise">
+    <p class="surprise__eyebrow">Feeling spontaneous?</p>
+    <h2 class="surprise__title">Let the world <em>choose</em> for you</h2>
+    <p class="surprise__sub">Can't decide where to go next? Hit the button and we'll pick a destination at random — you might just find your new favourite place.</p>
+    <button class="btn btn--surprise" id="surpriseBtn" onclick="surpriseMe()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="2" width="20" height="20" rx="3"/>
+        <circle cx="8"  cy="8"  r="1.2" fill="currentColor" stroke="none"/>
+        <circle cx="16" cy="8"  r="1.2" fill="currentColor" stroke="none"/>
+        <circle cx="8"  cy="16" r="1.2" fill="currentColor" stroke="none"/>
+        <circle cx="16" cy="16" r="1.2" fill="currentColor" stroke="none"/>
+        <circle cx="12" cy="12" r="1.2" fill="currentColor" stroke="none"/>
+      </svg>
+      Surprise me
+    </button>
+
+    <div class="surprise__reveal" id="surpriseReveal" aria-live="polite">
+      <img class="surprise__reveal-img" id="surpriseImg" src="" alt="" />
+      <div class="surprise__reveal-body">
+        <p class="surprise__reveal-region" id="surpriseRegion"></p>
+        <h3 class="surprise__reveal-name" id="surpriseName"></h3>
+        <p class="surprise__reveal-desc" id="surpriseDesc"></p>
+        <div class="surprise__reveal-tags" id="surpriseTags"></div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Newsletter ─────────────────────────────────────────────── -->
   <section class="newsletter" id="newsletter">
     <div class="container">
@@ -734,6 +882,109 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Surprise Me ─────────────────────────────────────────────
+    const destinations = [
+      {
+        region: 'South Asia',
+        name: 'India',
+        desc: 'The Taj Mahal at first light, chaotic bazaars full of colour and noise, and cuisine that changes completely every hundred kilometres.',
+        tags: ['Culture', 'Food', 'Monuments'],
+        img: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=80',
+        alt: 'Taj Mahal, India',
+      },
+      {
+        region: 'East Asia',
+        name: 'Japan',
+        desc: 'Ancient temples draped in moss, bullet trains slicing through bamboo forests, and a quiet ceremony in everything from tea to ramen.',
+        tags: ['Temples', 'Food', 'Nature'],
+        img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80',
+        alt: 'Fushimi Inari, Kyoto, Japan',
+      },
+      {
+        region: 'Southern Europe',
+        name: 'Amalfi Coast',
+        desc: 'Pastel villages clinging to cliff-sides above a turquoise sea, with lemon groves and the scent of salt and basil on every breeze.',
+        tags: ['Coastal', 'Scenery', 'Food'],
+        img: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80',
+        alt: 'Amalfi Coast, Italy',
+      },
+      {
+        region: 'South America',
+        name: 'Patagonia',
+        desc: 'Wind-scoured peaks, electric-blue glaciers, and trails that humble you with their beauty. The world at its most untamed.',
+        tags: ['Adventure', 'Hiking', 'Wildlife'],
+        img: 'https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1200&q=80',
+        alt: 'Torres del Paine, Patagonia',
+      },
+      {
+        region: 'North Africa',
+        name: 'Morocco',
+        desc: 'Labyrinthine medinas alive with spice merchants, riads hidden behind plain walls, and the Sahara just a drive away.',
+        tags: ['Culture', 'Desert', 'Architecture'],
+        img: 'https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=1200&q=80',
+        alt: 'Moroccan landscape',
+      },
+      {
+        region: 'Scandinavia',
+        name: 'Norwegian Fjords',
+        desc: 'Long, golden evenings on still water, surrounded by walls of granite, and a silence so complete it feels sacred.',
+        tags: ['Scenic', 'Nature', 'Hiking'],
+        img: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1200&q=80',
+        alt: 'Norwegian fjords',
+      },
+      {
+        region: 'Aegean',
+        name: 'Santorini',
+        desc: 'Bone-white buildings tumbling toward a caldera that glows like molten copper at sunset. Romance distilled into an island.',
+        tags: ['Romantic', 'Coastal', 'Sunsets'],
+        img: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1200&q=80',
+        alt: 'Santorini, Greece',
+      },
+      {
+        region: 'Oceania',
+        name: 'New Zealand',
+        desc: 'Otherworldly landscapes that stretch from geothermal wonderlands to fiords carved by ancient glaciers — all within a few hours\' drive.',
+        tags: ['Adventure', 'Nature', 'Scenic'],
+        img: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=1200&q=80',
+        alt: 'New Zealand landscape',
+      },
+    ];
+
+    let lastIndex = -1;
+
+    function surpriseMe() {
+      let idx;
+      do { idx = Math.floor(Math.random() * destinations.length); } while (idx === lastIndex && destinations.length > 1);
+      lastIndex = idx;
+      const dest = destinations[idx];
+
+      const reveal  = document.getElementById('surpriseReveal');
+      const img     = document.getElementById('surpriseImg');
+      const region  = document.getElementById('surpriseRegion');
+      const name    = document.getElementById('surpriseName');
+      const desc    = document.getElementById('surpriseDesc');
+      const tagsEl  = document.getElementById('surpriseTags');
+
+      // Reset animation so it re-triggers
+      reveal.classList.remove('visible');
+
+      // Small delay so CSS transition re-fires even when already revealed
+      requestAnimationFrame(() => {
+        img.src    = dest.img;
+        img.alt    = dest.alt;
+        region.textContent = dest.region;
+        name.textContent   = dest.name;
+        desc.textContent   = dest.desc;
+        tagsEl.innerHTML   = dest.tags.map(t => `<span class="surprise__reveal-tag">${t}</span>`).join('');
+
+        requestAnimationFrame(() => {
+          reveal.classList.add('visible');
+          // Scroll reveal into view smoothly
+          reveal.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      });
+    }
   </script>
 
 </body>
