@@ -463,8 +463,138 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Surprise Me ─────────────────────────────────────────── */
+    .surprise {
+      padding: 100px 40px;
+      background: var(--ink);
+      text-align: center;
+    }
+    .surprise__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 24px;
+    }
+    .surprise__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 6vw, 5rem);
+      font-weight: 300;
+      line-height: 1.08;
+      color: white;
+      margin-bottom: 28px;
+    }
+    .surprise__title em { font-style: italic; }
+    .surprise__body {
+      font-size: 1rem;
+      color: rgba(255,255,255,0.52);
+      max-width: 520px;
+      margin: 0 auto 44px;
+      line-height: 1.8;
+    }
+    .surprise__btn {
+      padding: 18px 48px;
+      font-size: 0.8rem;
+      letter-spacing: 0.16em;
+      gap: 14px;
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+    .surprise__btn:hover {
+      background: #22665c;
+      border-color: #22665c;
+      color: white;
+    }
+    .surprise__result {
+      margin-top: 64px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: surpriseFadeUp 0.5s ease both;
+    }
+    @keyframes surpriseFadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .surprise__card {
+      background: #1e1c1a;
+      border: 1px solid rgba(255,255,255,0.1);
+      overflow: hidden;
+      text-align: left;
+    }
+    .surprise__card-img {
+      width: 100%;
+      height: 380px;
+      object-fit: cover;
+      display: block;
+    }
+    .surprise__card-body {
+      padding: 32px 36px 40px;
+    }
+    .surprise__card-region {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.42);
+      margin-bottom: 10px;
+    }
+    .surprise__card-name {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 5vw, 3.2rem);
+      font-weight: 400;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .surprise__card-desc {
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+    .surprise__card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .surprise__tag {
+      padding: 8px 18px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      border: 1px solid rgba(255,255,255,0.22);
+      background: transparent;
+      cursor: default;
+    }
+    .surprise__again {
+      margin-top: 32px;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 0;
+      font-family: var(--font-sans);
+    }
+    .surprise__again:hover { color: rgba(255,255,255,0.85); }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
+      .surprise { padding: 72px 24px; }
+      .surprise__card-img { height: 260px; }
+      .surprise__card-body { padding: 24px; }
+
       .nav { padding: 18px 24px; }
       .nav__links { display: none; }
       .hero__content { padding: 0 24px 60px; }
@@ -489,6 +619,9 @@
       .regions__row   { grid-template-columns: repeat(2, 1fr); }
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
+      .surprise       { padding: 56px 20px; }
+      .surprise__card-img { height: 200px; }
+      .surprise__btn  { padding: 16px 32px; }
     }
   </style>
 </head>
@@ -502,6 +635,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="#surprise">Surprise Me</a></li>
     </ul>
   </nav>
 
@@ -668,6 +802,47 @@
     </div>
   </section>
 
+  <!-- ── Surprise Me ───────────────────────────────────────────── -->
+  <section class="surprise" id="surprise">
+    <p class="surprise__eyebrow">Feeling spontaneous?</p>
+    <h2 class="surprise__title">Let the world <em>choose</em> for you</h2>
+    <p class="surprise__body">Can't decide where to go next? Hit the button and we'll pick a destination at random — you might just find your new favourite place.</p>
+    <button class="btn surprise__btn" id="surpriseBtn" onclick="pickCountry()">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="2" y="2" width="16" height="16" rx="2"/>
+        <circle cx="6.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="13.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="6.5" cy="13.5" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="13.5" cy="13.5" r="1" fill="currentColor" stroke="none"/>
+        <circle cx="10" cy="10" r="1" fill="currentColor" stroke="none"/>
+      </svg>
+      Surprise me
+    </button>
+
+    <div class="surprise__result" id="surpriseResult" style="display:none;">
+      <div class="surprise__card" id="surpriseCard">
+        <img class="surprise__card-img" id="surpriseImg" src="" alt="" />
+        <div class="surprise__card-body">
+          <p class="surprise__card-region" id="surpriseRegion"></p>
+          <h3 class="surprise__card-name" id="surpriseName"></h3>
+          <p class="surprise__card-desc" id="surpriseDesc"></p>
+          <div class="surprise__card-tags" id="surpriseTags"></div>
+        </div>
+      </div>
+      <button class="surprise__again" onclick="pickCountry()">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="2" y="2" width="16" height="16" rx="2"/>
+          <circle cx="6.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="13.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="6.5" cy="13.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="13.5" cy="13.5" r="1" fill="currentColor" stroke="none"/>
+          <circle cx="10" cy="10" r="1" fill="currentColor" stroke="none"/>
+        </svg>
+        Pick another destination
+      </button>
+    </div>
+  </section>
+
   <!-- ── Newsletter ─────────────────────────────────────────────── -->
   <section class="newsletter" id="newsletter">
     <div class="container">
@@ -734,6 +909,122 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Surprise Me ──────────────────────────────────────────────
+    const destinations = [
+      {
+        region: 'South Asia',
+        name: 'India',
+        desc: 'The Taj Mahal at first light, chaotic bazaars full of colour and noise, and cuisine that changes completely every hundred kilometres.',
+        tags: ['Culture', 'Food', 'Monuments'],
+        img: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=80',
+        alt: 'Taj Mahal, India'
+      },
+      {
+        region: 'Southern Europe',
+        name: 'Portugal',
+        desc: 'Cobblestone hills draped in faded azulejo tiles, salt-crusted cliffs facing the Atlantic, and the lingering melancholy of fado.',
+        tags: ['Architecture', 'Food', 'Coastal'],
+        img: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&q=80',
+        alt: 'Lisbon, Portugal'
+      },
+      {
+        region: 'East Asia',
+        name: 'Japan',
+        desc: 'Ancient temples set against neon-lit cities, forest bathing in cedar groves, and a food culture so precise it borders on art.',
+        tags: ['Culture', 'Food', 'Nature'],
+        img: 'https://images.unsplash.com/photo-1533929736458-ca588d08c8be?w=1200&q=80',
+        alt: 'Kyoto, Japan'
+      },
+      {
+        region: 'South America',
+        name: 'Peru',
+        desc: 'Inca citadels veiled in cloud forest, the vast silence of the altiplano, and ceviche so fresh it redefines the word.',
+        tags: ['History', 'Adventure', 'Food'],
+        img: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1200&q=80',
+        alt: 'Machu Picchu, Peru'
+      },
+      {
+        region: 'East Africa',
+        name: 'Tanzania',
+        desc: 'The Serengeti migration at dawn, the spice-scented alleys of Zanzibar, and Kilimanjaro\'s snow cone above the clouds.',
+        tags: ['Safari', 'Nature', 'Beaches'],
+        img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=1200&q=80',
+        alt: 'Serengeti, Tanzania'
+      },
+      {
+        region: 'Northern Europe',
+        name: 'Norway',
+        desc: 'Ink-dark fjords framed by white snow, the aurora snaking overhead, and summer evenings that never quite become night.',
+        tags: ['Scenic', 'Hiking', 'Arctic'],
+        img: 'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=1200&q=80',
+        alt: 'Norwegian fjords'
+      },
+      {
+        region: 'Southeast Asia',
+        name: 'Vietnam',
+        desc: 'Karst peaks rising from jade water in Ha Long Bay, lantern-lit streets of Hội An, and a street-food culture that defines the country.',
+        tags: ['Scenery', 'Food', 'History'],
+        img: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80',
+        alt: 'Ha Long Bay, Vietnam'
+      },
+      {
+        region: 'South America',
+        name: 'Colombia',
+        desc: 'Walled colonial cities drenched in bougainvillea, coffee farms climbing emerald mountains, and a warmth that outlasts your stay.',
+        tags: ['Culture', 'Coffee', 'Nature'],
+        img: 'https://images.unsplash.com/photo-1583037189850-1921ae7c6c22?w=1200&q=80',
+        alt: 'Cartagena, Colombia'
+      },
+      {
+        region: 'Southern Europe',
+        name: 'Greece',
+        desc: 'Whitewashed cubes cascading to cobalt seas, meals that stretch till midnight, and ruins that remind you civilisation is young.',
+        tags: ['Islands', 'History', 'Food'],
+        img: 'https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80',
+        alt: 'Santorini, Greece'
+      },
+      {
+        region: 'Oceania',
+        name: 'New Zealand',
+        desc: 'Glaciers that calve into fiords, geothermal landscapes that bubble and hiss, and wine country rolling under impossible skies.',
+        tags: ['Nature', 'Adventure', 'Scenic'],
+        img: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=1200&q=80',
+        alt: 'New Zealand landscape'
+      }
+    ];
+
+    let lastIndex = -1;
+
+    function pickCountry() {
+      // Avoid repeating the same destination twice in a row
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * destinations.length);
+      } while (idx === lastIndex && destinations.length > 1);
+      lastIndex = idx;
+
+      const d = destinations[idx];
+
+      document.getElementById('surpriseImg').src = d.img;
+      document.getElementById('surpriseImg').alt = d.alt;
+      document.getElementById('surpriseRegion').textContent = d.region;
+      document.getElementById('surpriseName').textContent = d.name;
+      document.getElementById('surpriseDesc').textContent = d.desc;
+
+      const tagsEl = document.getElementById('surpriseTags');
+      tagsEl.innerHTML = d.tags.map(t => `<span class="surprise__tag">${t}</span>`).join('');
+
+      const result = document.getElementById('surpriseResult');
+      // Re-trigger animation on repeat clicks
+      result.style.display = 'block';
+      result.style.animation = 'none';
+      result.offsetHeight; // reflow
+      result.style.animation = '';
+
+      // Smooth scroll to result
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
   </script>
 
 </body>
