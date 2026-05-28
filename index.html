@@ -463,10 +463,200 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Nav auth buttons ─────────────────────────────────────── */
+    .nav__auth {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav__btn {
+      display: inline-flex; align-items: center;
+      padding: 8px 18px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid rgba(255,255,255,0.6);
+      background: transparent;
+      color: rgba(255,255,255,0.9);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .nav__btn:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: white;
+      color: white;
+    }
+    .nav__btn--solid {
+      background: white;
+      border-color: white;
+      color: var(--ink);
+    }
+    .nav__btn--solid:hover {
+      background: var(--stone);
+      border-color: var(--stone);
+    }
+    .nav.scrolled .nav__btn {
+      border-color: var(--stone);
+      color: var(--ash);
+    }
+    .nav.scrolled .nav__btn:hover {
+      border-color: var(--ink);
+      color: var(--ink);
+      background: rgba(0,0,0,0.04);
+    }
+    .nav.scrolled .nav__btn--solid {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .nav.scrolled .nav__btn--solid:hover {
+      background: #22665c;
+      border-color: #22665c;
+    }
+
+    /* ── Auth modal ───────────────────────────────────────────── */
+    .modal-backdrop {
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(26,23,20,0.6);
+      backdrop-filter: blur(6px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s, visibility 0.25s;
+    }
+    .modal-backdrop.is-open {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal {
+      position: relative;
+      background: var(--cream);
+      width: 100%;
+      max-width: 420px;
+      padding: 48px 40px 40px;
+      transform: translateY(16px);
+      transition: transform 0.25s;
+    }
+    .modal-backdrop.is-open .modal {
+      transform: translateY(0);
+    }
+    .modal__close {
+      position: absolute; top: 16px; right: 20px;
+      background: none; border: none;
+      font-size: 1.4rem;
+      color: var(--ash);
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal__close:hover { color: var(--ink); }
+    .modal__eyebrow {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .modal__title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 28px;
+      line-height: 1.15;
+    }
+    .modal__field {
+      display: flex; flex-direction: column; gap: 6px;
+      margin-bottom: 16px;
+    }
+    .modal__label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .modal__input {
+      padding: 12px 14px;
+      border: 1px solid var(--stone);
+      background: white;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .modal__input::placeholder { color: #b0a898; }
+    .modal__input:focus { border-color: var(--teal); }
+    .modal__submit {
+      width: 100%;
+      margin-top: 24px;
+      padding: 14px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--teal);
+      border: none;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .modal__submit:hover { background: #22665c; }
+    .modal__footer {
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: var(--ash);
+      text-align: center;
+    }
+    .modal__footer a {
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      padding-bottom: 1px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .modal__footer a:hover { opacity: 0.7; }
+    .modal__divider {
+      display: flex; align-items: center; gap: 12px;
+      margin: 20px 0;
+      font-size: 0.72rem;
+      color: var(--ash);
+    }
+    .modal__divider::before,
+    .modal__divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--stone);
+    }
+    .modal__success {
+      display: none;
+      text-align: center;
+      padding: 12px 0 4px;
+    }
+    .modal__success-icon {
+      font-size: 2.4rem;
+      margin-bottom: 12px;
+    }
+    .modal__success p {
+      font-size: 0.92rem;
+      color: var(--ash);
+      line-height: 1.65;
+    }
+    .modal__success strong {
+      font-weight: 500;
+      color: var(--ink);
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
       .nav__links { display: none; }
+      .nav__btn { padding: 7px 14px; font-size: 0.7rem; }
       .hero__content { padding: 0 24px 60px; }
 
       .featured__grid {
@@ -503,6 +693,10 @@
       <li><a href="#regions">Regions</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
+    <div class="nav__auth">
+      <button class="nav__btn" id="openLogin" aria-haspopup="dialog">Log in</button>
+      <button class="nav__btn nav__btn--solid" id="openSignup" aria-haspopup="dialog">Sign up</button>
+    </div>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
@@ -728,12 +922,153 @@
     </div>
   </footer>
 
+  <!-- ── Login modal ───────────────────────────────────────────── -->
+  <div class="modal-backdrop" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <div class="modal">
+      <button class="modal__close" aria-label="Close">&times;</button>
+      <p class="modal__eyebrow">Welcome back</p>
+      <h2 class="modal__title" id="loginTitle">Log in to<br/>your account</h2>
+
+      <form id="loginForm" onsubmit="handleLogin(event)">
+        <div class="modal__field">
+          <label class="modal__label" for="loginEmail">Email</label>
+          <input class="modal__input" type="email" id="loginEmail" placeholder="your@email.com" required autocomplete="email" />
+        </div>
+        <div class="modal__field">
+          <label class="modal__label" for="loginPassword">Password</label>
+          <input class="modal__input" type="password" id="loginPassword" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="modal__submit">Log in</button>
+      </form>
+
+      <div class="modal__success" id="loginSuccess">
+        <div class="modal__success-icon">✓</div>
+        <p><strong>You're logged in!</strong><br/>Welcome back to Wander.</p>
+      </div>
+
+      <p class="modal__footer">
+        Don't have an account? <a id="switchToSignup">Create one</a>
+      </p>
+    </div>
+  </div>
+
+  <!-- ── Sign-up modal ──────────────────────────────────────────── -->
+  <div class="modal-backdrop" id="signupModal" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+    <div class="modal">
+      <button class="modal__close" aria-label="Close">&times;</button>
+      <p class="modal__eyebrow">Join Wander</p>
+      <h2 class="modal__title" id="signupTitle">Create your<br/>account</h2>
+
+      <form id="signupForm" onsubmit="handleSignup(event)">
+        <div class="modal__field">
+          <label class="modal__label" for="signupName">Full name</label>
+          <input class="modal__input" type="text" id="signupName" placeholder="Jane Smith" required autocomplete="name" />
+        </div>
+        <div class="modal__field">
+          <label class="modal__label" for="signupEmail">Email</label>
+          <input class="modal__input" type="email" id="signupEmail" placeholder="your@email.com" required autocomplete="email" />
+        </div>
+        <div class="modal__field">
+          <label class="modal__label" for="signupPassword">Password</label>
+          <input class="modal__input" type="password" id="signupPassword" placeholder="Min. 8 characters" required minlength="8" autocomplete="new-password" />
+        </div>
+        <button type="submit" class="modal__submit">Create account</button>
+      </form>
+
+      <div class="modal__success" id="signupSuccess">
+        <div class="modal__success-icon">✓</div>
+        <p><strong>Account created!</strong><br/>Welcome to Wander. Your journey starts here.</p>
+      </div>
+
+      <p class="modal__footer">
+        Already have an account? <a id="switchToLogin">Log in</a>
+      </p>
+    </div>
+  </div>
+
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Modal helpers ────────────────────────────────────────────
+    function openModal(id) {
+      const backdrop = document.getElementById(id);
+      backdrop.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      // Focus first input
+      const first = backdrop.querySelector('input');
+      if (first) setTimeout(() => first.focus(), 50);
+    }
+
+    function closeModal(id) {
+      const backdrop = document.getElementById(id);
+      backdrop.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+
+    function closeAllModals() {
+      closeModal('loginModal');
+      closeModal('signupModal');
+    }
+
+    // ── Open / close triggers ────────────────────────────────────
+    document.getElementById('openLogin').addEventListener('click', () => openModal('loginModal'));
+    document.getElementById('openSignup').addEventListener('click', () => openModal('signupModal'));
+
+    // Close on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
+      backdrop.addEventListener('click', e => {
+        if (e.target === backdrop) closeAllModals();
+      });
+    });
+
+    // Close buttons
+    document.querySelectorAll('.modal__close').forEach(btn => {
+      btn.addEventListener('click', () => closeAllModals());
+    });
+
+    // Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') closeAllModals();
+    });
+
+    // Switch links
+    document.getElementById('switchToSignup').addEventListener('click', () => {
+      closeModal('loginModal');
+      openModal('signupModal');
+    });
+    document.getElementById('switchToLogin').addEventListener('click', () => {
+      closeModal('signupModal');
+      openModal('loginModal');
+    });
+
+    // ── Form handlers (demo — no real auth) ─────────────────────
+    function showSuccess(formId, successId) {
+      document.getElementById(formId).style.display = 'none';
+      const success = document.getElementById(successId);
+      success.style.display = 'block';
+      // Auto-close after 2 seconds
+      setTimeout(() => {
+        closeAllModals();
+        // Reset for next open
+        document.getElementById(formId).style.display = '';
+        document.getElementById(formId).reset();
+        success.style.display = 'none';
+      }, 2000);
+    }
+
+    function handleLogin(e) {
+      e.preventDefault();
+      showSuccess('loginForm', 'loginSuccess');
+    }
+
+    function handleSignup(e) {
+      e.preventDefault();
+      showSuccess('signupForm', 'signupSuccess');
+    }
   </script>
 
 </body>
