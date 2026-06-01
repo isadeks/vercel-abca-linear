@@ -463,6 +463,143 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Surprise Me ──────────────────────────────────────────── */
+    .surprise {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+    .surprise__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .surprise__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .surprise__heading {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .surprise__sub {
+      font-size: 0.95rem;
+      color: var(--ash);
+      max-width: 440px;
+      line-height: 1.75;
+      margin-bottom: 40px;
+    }
+    .btn--surprise {
+      background: var(--coral);
+      border-color: var(--coral);
+      color: white;
+      font-size: 0.85rem;
+      padding: 16px 36px;
+      letter-spacing: 0.14em;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .btn--surprise:hover { background: #b5503a; border-color: #b5503a; color: white; }
+    .surprise__dice {
+      display: inline-block;
+      font-size: 1.1rem;
+      transition: transform 0.3s;
+    }
+    .btn--surprise:hover .surprise__dice { transform: rotate(180deg); }
+
+    /* Result card */
+    .surprise__result {
+      display: none;
+      margin-top: 56px;
+      width: 100%;
+      max-width: 680px;
+      animation: fadeInUp 0.45s ease both;
+    }
+    .surprise__result.visible { display: block; }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .country-card {
+      position: relative;
+      overflow: hidden;
+      background: var(--ink);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+    }
+    .country-card__img {
+      width: 100%;
+      height: 360px;
+      object-fit: cover;
+      opacity: 0.75;
+      transition: opacity 0.4s, transform 0.6s ease;
+    }
+    .country-card:hover .country-card__img { opacity: 0.85; transform: scale(1.03); }
+    .country-card__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.1) 55%, transparent 100%);
+    }
+    .country-card__body {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 32px;
+      text-align: left;
+    }
+    .country-card__region {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 8px;
+    }
+    .country-card__name {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      color: white;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .country-card__fact {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.75);
+      line-height: 1.65;
+      max-width: 480px;
+    }
+    .country-card__actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+    }
+    .country-card__flag {
+      position: absolute; top: 24px; right: 24px;
+      font-size: 2.8rem;
+      line-height: 1;
+      filter: drop-shadow(0 2px 6px rgba(0,0,0,0.4));
+    }
+    .surprise__again {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .surprise__again:hover { color: var(--ink); }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -502,6 +639,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="#surprise">Surprise Me</a></li>
     </ul>
   </nav>
 
@@ -668,6 +806,37 @@
     </div>
   </section>
 
+  <!-- ── Surprise Me ──────────────────────────────────────────────── -->
+  <section class="surprise" id="surprise">
+    <div class="container">
+      <div class="surprise__inner">
+        <p class="surprise__eyebrow">Feeling adventurous?</p>
+        <h2 class="surprise__heading">Surprise me</h2>
+        <p class="surprise__sub">Can't decide where to go next? Let fate decide. One click and we'll whisk you away to a random corner of the world.</p>
+        <button class="btn btn--surprise" id="surpriseBtn" onclick="pickRandomCountry()">
+          <span class="surprise__dice">🎲</span> Pick a random country
+        </button>
+
+        <div class="surprise__result" id="surpriseResult">
+          <div class="country-card" id="countryCard">
+            <img class="country-card__img" id="countryImg" src="" alt="" />
+            <div class="country-card__overlay"></div>
+            <span class="country-card__flag" id="countryFlag"></span>
+            <div class="country-card__body">
+              <p class="country-card__region" id="countryRegion"></p>
+              <h3 class="country-card__name" id="countryName"></h3>
+              <p class="country-card__fact" id="countryFact"></p>
+              <div class="country-card__actions">
+                <a href="#guides" class="btn btn--teal" style="font-size:0.75rem;padding:12px 22px;">Explore guides</a>
+              </div>
+            </div>
+          </div>
+          <button class="surprise__again" onclick="pickRandomCountry()">Surprise me again →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Newsletter ─────────────────────────────────────────────── -->
   <section class="newsletter" id="newsletter">
     <div class="container">
@@ -696,10 +865,10 @@
         <div>
           <p class="footer__heading">Explore</p>
           <ul class="footer__links">
-            <li><a href="#">Destinations</a></li>
-            <li><a href="#">Guides</a></li>
-            <li><a href="#">Regions</a></li>
-            <li><a href="#">Stories</a></li>
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#guides">Guides</a></li>
+            <li><a href="#regions">Regions</a></li>
+            <li><a href="#surprise">Surprise Me</a></li>
           </ul>
         </div>
         <div>
@@ -734,6 +903,139 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Surprise Me ──────────────────────────────────────────────
+    const COUNTRIES = [
+      {
+        name: 'Japan',
+        region: 'East Asia',
+        flag: '🇯🇵',
+        fact: 'A land of ancient temples, neon-lit cities, and cherry blossoms that bloom for barely two weeks a year. Every season feels like a different country.',
+        img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80',
+        alt: 'Mount Fuji with cherry blossoms, Japan'
+      },
+      {
+        name: 'Morocco',
+        region: 'North Africa',
+        flag: '🇲🇦',
+        fact: 'Labyrinthine medinas, golden sand dunes, and blue-washed mountain villages. Morocco is where the Atlantic meets the Sahara in spectacular fashion.',
+        img: 'https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=1200&q=80',
+        alt: 'Colourful streets of Chefchaouen, Morocco'
+      },
+      {
+        name: 'Peru',
+        region: 'South America',
+        flag: '🇵🇪',
+        fact: 'Home to Machu Picchu, the Amazon rainforest, and some of the world\'s most celebrated cuisine. Peru packs more variety into one country than most continents.',
+        img: 'https://images.unsplash.com/photo-1587595431973-160d0d94add1?w=1200&q=80',
+        alt: 'Machu Picchu ruins in the Andes, Peru'
+      },
+      {
+        name: 'Iceland',
+        region: 'Northern Europe',
+        flag: '🇮🇸',
+        fact: 'Geysers, volcanoes, glaciers, and the Northern Lights — all packed into an island smaller than the UK. No other place looks quite like it.',
+        img: 'https://images.unsplash.com/photo-1476610182048-b716b8518aae?w=1200&q=80',
+        alt: 'Northern Lights over a glacier lagoon in Iceland'
+      },
+      {
+        name: 'Vietnam',
+        region: 'Southeast Asia',
+        flag: '🇻🇳',
+        fact: 'From the emerald bays of Ha Long to the lantern-lit streets of Hội An, Vietnam offers 3,000 km of coastline and a cuisine that rivals any in the world.',
+        img: 'https://images.unsplash.com/photo-1528127269322-539801943592?w=1200&q=80',
+        alt: 'Ha Long Bay limestone karsts at sunrise, Vietnam'
+      },
+      {
+        name: 'Portugal',
+        region: 'Southern Europe',
+        flag: '🇵🇹',
+        fact: 'The westernmost edge of continental Europe rewards visitors with crumbling castles, wild Atlantic surf, and the most soulful music you\'ve never heard: fado.',
+        img: 'https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&q=80',
+        alt: 'Colourful tiled buildings in Lisbon, Portugal'
+      },
+      {
+        name: 'New Zealand',
+        region: 'Oceania',
+        flag: '🇳🇿',
+        fact: 'Two islands that contain virtually every landscape on Earth — fjords, volcanoes, beaches, rainforests — and fewer people than London.',
+        img: 'https://images.unsplash.com/photo-1469521669194-babb45599def?w=1200&q=80',
+        alt: 'Milford Sound fiord, New Zealand'
+      },
+      {
+        name: 'Ethiopia',
+        region: 'East Africa',
+        flag: '🇪🇹',
+        fact: 'One of the oldest civilisations on Earth. Rock-hewn churches, the cradle of coffee, and a highland landscape unlike anywhere else on the continent.',
+        img: 'https://images.unsplash.com/photo-1580019542155-247062e19ce4?w=1200&q=80',
+        alt: 'Lalibela rock-hewn churches, Ethiopia'
+      },
+      {
+        name: 'Colombia',
+        region: 'South America',
+        flag: '🇨🇴',
+        fact: 'A country in full bloom — colonial Cartagena, the coffee-clad Andes, and the Caribbean coast have turned Colombia into one of travel\'s great redemption stories.',
+        img: 'https://images.unsplash.com/photo-1566501206188-5dd0cf160a0e?w=1200&q=80',
+        alt: 'Colourful buildings in Cartagena, Colombia'
+      },
+      {
+        name: 'Georgia',
+        region: 'Caucasus',
+        flag: '🇬🇪',
+        fact: 'Ancient wine culture, fortress-dotted mountain passes, and Tbilisi\'s wonderfully chaotic Old Town make Georgia one of Europe\'s most underrated gems.',
+        img: 'https://images.unsplash.com/photo-1565008576549-57569a49b85a?w=1200&q=80',
+        alt: 'Ananuri fortress on the Military Highway, Georgia'
+      },
+      {
+        name: 'Oman',
+        region: 'Middle East',
+        flag: '🇴🇲',
+        fact: 'Dramatic wadis, grand forts, and frankincense-scented souqs — Oman offers genuine Arabian adventure without the crowds, with some of the friendliest locals on Earth.',
+        img: 'https://images.unsplash.com/photo-1609600657584-10e830fa9d3d?w=1200&q=80',
+        alt: 'Wadi Shab canyon, Oman'
+      },
+      {
+        name: 'Taiwan',
+        region: 'East Asia',
+        flag: '🇹🇼',
+        fact: 'Towering mountains, buzzing night markets, hot-spring towns, and a street food culture so revered that chefs fly in just to eat. Taiwan punches far above its size.',
+        img: 'https://images.unsplash.com/photo-1470004914212-05527e49370b?w=1200&q=80',
+        alt: 'Jiufen village lights at night, Taiwan'
+      }
+    ];
+
+    let lastIndex = -1;
+
+    function pickRandomCountry() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * COUNTRIES.length);
+      } while (idx === lastIndex && COUNTRIES.length > 1);
+      lastIndex = idx;
+
+      const c = COUNTRIES[idx];
+
+      // Update card content
+      const img = document.getElementById('countryImg');
+      img.style.opacity = '0';
+      img.src = c.img;
+      img.alt = c.alt;
+      img.onload = () => { img.style.opacity = ''; };
+
+      document.getElementById('countryFlag').textContent   = c.flag;
+      document.getElementById('countryRegion').textContent = c.region;
+      document.getElementById('countryName').textContent   = c.name;
+      document.getElementById('countryFact').textContent   = c.fact;
+
+      // Show result with re-trigger animation
+      const result = document.getElementById('surpriseResult');
+      result.classList.remove('visible');
+      void result.offsetWidth; // reflow to restart animation
+      result.classList.add('visible');
+
+      // Smooth scroll to result
+      result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
   </script>
 
 </body>
