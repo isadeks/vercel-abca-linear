@@ -496,7 +496,7 @@
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
-    <a href="#" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__logo">Wander</a>
     <ul class="nav__links">
       <li><a href="#destinations">Destinations</a></li>
       <li><a href="#guides">Guides</a></li>
@@ -522,38 +522,44 @@
     <div class="container">
       <div class="section-header">
         <h2>Featured destinations</h2>
-        <a href="#">View all</a>
+        <a href="#destinations">View all</a>
       </div>
       <div class="featured__grid">
 
         <!-- Hero card -->
         <article class="dest-card dest-card--hero">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80" alt="Amalfi Coast, Italy" />
+          <a href="#guides">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80" alt="Amalfi Coast, Italy" />
+          </a>
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Southern Italy</p>
-            <h3 class="dest-card__name">Amalfi Coast</h3>
+            <h3 class="dest-card__name"><a href="#guides">Amalfi Coast</a></h3>
             <span class="dest-card__tag">Editor's pick</span>
           </div>
         </article>
 
         <!-- Small card 1 -->
         <article class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&q=80" alt="Kyoto, Japan" />
+          <a href="#guides">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1555400038-63f5ba517a47?w=800&q=80" alt="Kyoto, Japan" />
+          </a>
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Japan</p>
-            <h3 class="dest-card__name">Kyoto</h3>
+            <h3 class="dest-card__name"><a href="#guides">Kyoto</a></h3>
           </div>
         </article>
 
         <!-- Small card 2 -->
         <article class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80" alt="Santorini, Greece" />
+          <a href="#guides">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=800&q=80" alt="Santorini, Greece" />
+          </a>
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Greece</p>
-            <h3 class="dest-card__name">Santorini</h3>
+            <h3 class="dest-card__name"><a href="#guides">Santorini</a></h3>
           </div>
         </article>
 
@@ -566,21 +572,23 @@
     <div class="container">
       <div class="section-header">
         <h2>Latest guides</h2>
-        <a href="#">Browse all</a>
+        <a href="#guides">Browse all</a>
       </div>
       <div class="curated__list">
 
         <article class="guide-card">
-          <div class="guide-card__img-wrap">
-            <img class="guide-card__img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80" alt="Patagonia" />
-          </div>
+          <a href="patagonia-guide.html">
+            <div class="guide-card__img-wrap">
+              <img class="guide-card__img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=800&q=80" alt="Patagonia" />
+            </div>
+          </a>
           <div class="guide-card__body">
             <p class="guide-card__cat">Adventure</p>
-            <h3 class="guide-card__title">A week at the end of the world: Patagonia</h3>
+            <h3 class="guide-card__title"><a href="patagonia-guide.html">A week at the end of the world: Patagonia</a></h3>
             <p class="guide-card__excerpt">Wind-scoured peaks, electric-blue glaciers, and trails that push your legs for days. Our complete guide to W Trek planning, accommodation, and gear.</p>
             <div class="guide-card__footer">
               <span class="guide-card__meta">12 min read</span>
-              <a href="#" class="guide-card__link">Read guide</a>
+              <a href="patagonia-guide.html" class="guide-card__link">Read guide</a>
             </div>
           </div>
         </article>
@@ -603,16 +611,18 @@
         </article>
 
         <article class="guide-card">
-          <div class="guide-card__img-wrap">
-            <img class="guide-card__img" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80" alt="Norwegian fjords" />
-          </div>
+          <a href="norway-guide.html">
+            <div class="guide-card__img-wrap">
+              <img class="guide-card__img" src="https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80" alt="Norwegian fjords" />
+            </div>
+          </a>
           <div class="guide-card__body">
             <p class="guide-card__cat">Scenic</p>
-            <h3 class="guide-card__title">Norway's fjords in the midnight sun</h3>
+            <h3 class="guide-card__title"><a href="norway-guide.html">Norway's fjords in the midnight sun</a></h3>
             <p class="guide-card__excerpt">Long, golden evenings on still water, surrounded by walls of granite. When to go, where to stay, and how to reach the most serene corners.</p>
             <div class="guide-card__footer">
               <span class="guide-card__meta">7 min read</span>
-              <a href="#" class="guide-card__link">Read guide</a>
+              <a href="norway-guide.html" class="guide-card__link">Read guide</a>
             </div>
           </div>
         </article>
@@ -632,39 +642,39 @@
     <div class="container">
       <div class="section-header">
         <h2>Explore by region</h2>
-        <a href="#">All regions</a>
+        <a href="#regions">All regions</a>
       </div>
       <div class="regions__row">
 
-        <div class="region-pill">
+        <a class="region-pill" href="#guides">
           <img class="region-pill__img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Europe" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Europe</p>
-        </div>
+        </a>
 
-        <div class="region-pill">
+        <a class="region-pill" href="#guides">
           <img class="region-pill__img" src="https://images.unsplash.com/photo-1540126034813-121bf29033d2?w=600&q=80" alt="Asia" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Asia</p>
-        </div>
+        </a>
 
-        <div class="region-pill">
+        <a class="region-pill" href="patagonia-guide.html">
           <img class="region-pill__img" src="https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?w=600&q=80" alt="Americas" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Americas</p>
-        </div>
+        </a>
 
-        <div class="region-pill">
+        <a class="region-pill" href="#guides">
           <img class="region-pill__img" src="https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=600&q=80" alt="Africa" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Africa</p>
-        </div>
+        </a>
 
-        <div class="region-pill">
+        <a class="region-pill" href="#guides">
           <img class="region-pill__img" src="https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80" alt="Oceania" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Oceania</p>
-        </div>
+        </a>
 
       </div>
     </div>
@@ -698,34 +708,34 @@
         <div>
           <p class="footer__heading">Explore</p>
           <ul class="footer__links">
-            <li><a href="#">Destinations</a></li>
-            <li><a href="#">Guides</a></li>
-            <li><a href="#">Regions</a></li>
-            <li><a href="#">Stories</a></li>
+            <li><a href="#destinations">Destinations</a></li>
+            <li><a href="#guides">Guides</a></li>
+            <li><a href="#regions">Regions</a></li>
+            <li><a href="#guides">Stories</a></li>
           </ul>
         </div>
         <div>
           <p class="footer__heading">Plan</p>
           <ul class="footer__links">
-            <li><a href="#">Itineraries</a></li>
-            <li><a href="#">Packing lists</a></li>
-            <li><a href="#">Visa info</a></li>
-            <li><a href="#">Budget tips</a></li>
+            <li><a href="patagonia-guide.html">Itineraries</a></li>
+            <li><a href="rajasthan-guide.html">Packing lists</a></li>
+            <li><a href="norway-guide.html">Visa info</a></li>
+            <li><a href="rajasthan-guide.html">Budget tips</a></li>
           </ul>
         </div>
         <div>
           <p class="footer__heading">Company</p>
           <ul class="footer__links">
-            <li><a href="#">About</a></li>
-            <li><a href="#">Write for us</a></li>
-            <li><a href="#">Newsletter</a></li>
-            <li><a href="#">Contact</a></li>
+            <li><a href="#newsletter">About</a></li>
+            <li><a href="#newsletter">Write for us</a></li>
+            <li><a href="#newsletter">Newsletter</a></li>
+            <li><a href="#newsletter">Contact</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__bottom">
         <span>&copy; 2026 Wander. All rights reserved.</span>
-        <span><a href="#">Privacy</a> &nbsp;·&nbsp; <a href="#">Terms</a></span>
+        <span><a href="#newsletter">Privacy</a> &nbsp;·&nbsp; <a href="#newsletter">Terms</a></span>
       </div>
     </div>
   </footer>
