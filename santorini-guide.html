@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Santorini: Greece's Volcanic Island — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1496442226666-8d4d0e62e6e9?w=1600&q=80" alt="Santorini, Greece" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">Island &nbsp;·&nbsp; Greece</p>
+      <h1 class="guide-hero__title">Santorini:<br/>Greece's volcanic island</h1>
+      <p class="guide-hero__meta">8 min read &nbsp;·&nbsp; Five-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Born from one of the largest volcanic eruptions in recorded history, Santorini sits inside the flooded caldera of an ancient supervolcano — a crescent of white and blue perched on dark cliffs above a sea that sparkles like hammered silver. No island in the Mediterranean delivers a more dramatic first impression.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Santorini?</h2>
+        <p>The island is famous for a reason, and that reason is the view. The caldera's inner edge is lined with cliff-top villages — most famously Oia and Fira — where whitewashed Cycladic architecture tumbles down volcanic rock, capped with the cobalt-blue domed churches that have become one of the most recognisable images in travel photography. At sunset, the cliffs turn amber and rose as the sun drops into the caldera, and the light stays golden long after dark.</p>
+        <p>Beyond the postcard imagery, Santorini rewards those who explore its quieter side: the black-sand beaches of the south, the ancient settlement of Akrotiri (a Bronze Age city preserved by the eruption like a Minoan Pompeii), and a wine culture unlike anywhere else in the world, producing distinctive whites from vines grown in ashy volcanic soil.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>The path from Fira to Oia along the caldera rim is one of the world's great walks — approximately 10 kilometres of clifftop trail with non-stop views. Allow 3–4 hours and start in the morning to arrive in Oia in time for a late lunch. The path can be slippery in places; proper footwear is recommended. Return to Fira by bus.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The villages</h2>
+        <p>Each of Santorini's main villages has a distinct character. Oia is the most beautiful and most photographed — its narrow lanes, infinity pools, and cave houses carved into the cliff draw enormous crowds at sunset. Arriving early in the morning gives you two hours of relative peace before the day visitors arrive. Fira, the capital, is more commercial but lively and well-connected. Pyrgos, the highest village, offers views in every direction and fewer crowds.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Oia</h3>
+          <p class="city-card__desc">The most iconic village — whitewashed lanes, blue domes, and infinity pools on the caldera rim. Arrive before 9 am for empty streets, and find a viewpoint early on the evening of your sunset visit.</p>
+          <span class="city-card__detail">2 nights recommended</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Fira</h3>
+          <p class="city-card__desc">The island's capital: lively, well-connected, with excellent museums and a wide range of restaurants. The cable car from the old port to Fira is the classic arrival for those coming by ferry.</p>
+          <span class="city-card__detail">1 night recommended</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Akrotiri</h3>
+          <p class="city-card__desc">A remarkably preserved Bronze Age settlement buried by volcanic ash around 1600 BC. Multi-storey buildings, frescoes, and everyday objects paint a vivid picture of Minoan life — an unmissable morning excursion.</p>
+          <span class="city-card__detail">Morning excursion</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Red &amp; Black Beaches</h3>
+          <p class="city-card__desc">The volcanic beaches of the south coast — Red Beach with its towering ochre cliffs, and Perissa and Perivolos with long stretches of black volcanic sand and organised sunbeds. Cooler and less crowded than the caldera villages.</p>
+          <span class="city-card__detail">Afternoon destination</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&q=80" alt="Santorini caldera at sunset" />
+        <figcaption>The caldera at sunset from Oia — the crowds are real, but the light makes it worth every effort to claim a viewpoint an hour in advance.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Late April through June and September through October are ideal — warm, clear, and substantially less crowded than July and August. The summer peak brings the island to near-capacity; restaurants are fully booked, roads are congested, and the famous Oia sunset viewpoint becomes a battle for position. Shoulder season visitors see the same island in far more civilised conditions.</p>
+        <p>November through March is quiet and atmospheric — many businesses close, but those that remain often offer extraordinary value and a glimpse of real island life. The climate is mild by northern European standards, though evenings require a jacket.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>Santorini has two distinct accommodation categories: cave houses and villas carved into the caldera cliff (spectacular views, usually in Oia or Fira, at premium prices) and conventional hotels in the interior and on the east coast (more affordable, closer to the beaches, without caldera views). For a first visit, spending at least two nights in a caldera-view property repays the cost — waking to that panorama at dawn is one of the island's defining experiences. Mystique, Canaves Oia, and Katikies are among the most celebrated properties.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Santorini is one of Greece's most expensive islands. Budget accommodation starts at €50–90 per night in the interior; caldera-view cave houses begin at €200 and rise steeply. Meals range from €15–25 per person at local tavernas to €80–120 per person at caldera-view restaurants. Daily budget excluding accommodation: €60–100 for modest spending; €150–250 for the full experience.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; wine</h2>
+        <p>Santorini's volcanic soil produces an extraordinary indigenous white wine grape, Assyrtiko — a dry, mineral, citrus-sharp wine unlike anything else in Greece. The Santo Wines and Venetsanos wineries both have spectacular caldera-view tasting terraces. Locally grown cherry tomatoes (tomataki) are another speciality — intensely sweet due to the mineral-rich volcanic soil, they appear in salads, sauces, and the small sun-dried fritters sold as street food throughout the island.</p>
+        <p>The island's food scene has matured alongside its tourism industry. For excellent value, seek out simple psarotavernes (fish tavernas) in Ammoudi Bay below Oia, where the catch comes in daily from the caldera's fishing boats.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to Patagonia's wild south — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
