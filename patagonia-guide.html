@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Week at the End of the World: Patagonia — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#guides" class="nav__back">← All guides</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?w=1600&q=80" alt="Torres del Paine, Patagonia" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">Adventure &nbsp;·&nbsp; South America</p>
+      <h1 class="guide-hero__title">A week at the end<br/>of the world: Patagonia</h1>
+      <p class="guide-hero__meta">12 min read &nbsp;·&nbsp; One-week itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Wind-scoured granite towers, electric-blue glaciers calving into jade lakes, and trails that push your legs for days. Patagonia sits at the bottom of the world and rewards every kilometre with scenery that defies description.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Patagonia?</h2>
+        <p>Few places on Earth feel as genuinely remote as Patagonia. Shared between the southern reaches of Chile and Argentina, this vast region encompasses some of the most dramatic landscapes on the planet — the jagged spires of Torres del Paine, the grinding immensity of the Perito Moreno Glacier, and the wild Fuegian channels that stretch towards Antarctica.</p>
+        <p>The rewards are proportional to the effort. Getting here takes time and planning, but that journey is part of the experience. Once in the park, you join a community of hikers from every corner of the world who have come for the same reason: to stand in weather that means it, beneath mountains that look too dramatic to be real.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Book refugio and campsite accommodation for the W Trek at least three to four months in advance through the official CONAF-approved operators (Fantastico Sur and Vertice Patagonia). Spots fill early, especially for December and January. Arrivals by air land at Punta Arenas or Puerto Natales — Puerto Natales is closer and the better base.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The W Trek</h2>
+        <p>The classic route through Torres del Paine traces a W-shape across the park over four to five days. Most trekkers walk it west to east, finishing at the Mirador Las Torres viewpoint on the final morning — saving the signature view for last is a decision you will not regret.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Valle del Francés</h3>
+          <p class="city-card__desc">A hanging valley of crumbling peaks and dangling glaciers at the heart of the W. The constant crack of avalanches echoes off granite walls that rise 2,000 metres above the trail.</p>
+          <span class="city-card__detail">Day 2 highlight</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Grey Glacier</h3>
+          <p class="city-card__desc">The western arm of the W ends at Lago Grey, where colossal blue icebergs drift in the shallows and the glacier tongue stretches back into the Southern Patagonian Ice Field.</p>
+          <span class="city-card__detail">Day 1 destination</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Mirador Las Torres</h3>
+          <p class="city-card__desc">The iconic view — three granite pillars rising above a moraine lake. A steep 2.5-hour ascent from Refugio Las Torres, best attempted at dawn before wind and cloud build.</p>
+          <span class="city-card__detail">Day 4 highlight</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Puerto Natales</h3>
+          <p class="city-card__desc">The trekking capital of Patagonia, a windswept town on Última Esperanza Sound. Excellent gear shops, hearty restaurants, and the best place to recover with a craft beer and a plate of lamb.</p>
+          <span class="city-card__detail">Gateway town</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1531761535209-180857e963b9?w=1200&q=80" alt="Torres del Paine granite towers reflected in lake, Patagonia" />
+        <figcaption>The Torres del Paine at first light — a 90-minute pre-dawn hike from Refugio Las Torres earns you this reflection in the moraine lake below.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>The trekking season runs November through March (Southern Hemisphere summer). December and January offer the longest daylight and warmest temperatures but are also the busiest months. November and March are excellent alternatives — fewer crowds, lower prices, and equally stunning scenery. April brings autumn colour to the lenga beech forests; trails are quieter but some facilities close.</p>
+        <p>Weather in Patagonia is famously unpredictable. Sunshine, rain, hail, and gale-force winds can arrive within the same afternoon. Pack layers regardless of the forecast and treat any calm morning as a gift.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>Inside Torres del Paine, accommodation splits between <em>refugios</em> (hut-style lodges with bunk beds, meals, and hot showers) and designated campsites. The refugios are comfortable and social — shared dinners become easy conversation between trekkers of all nationalities. For a more immersive experience, camping under Patagonian stars is unforgettable, provided you carry the right gear.</p>
+        <p>Outside the park, Puerto Natales has a full range of options from backpacker hostels to boutique hotels. For those who want luxury with the landscape, the Explora Patagonia lodge inside the park is widely considered one of the finest wilderness hotels in South America.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>W Trek accommodation (refugio bed + dinner + breakfast) runs approximately CLP 80,000–120,000 (USD 85–130) per person per night. Camping is cheaper at CLP 15,000–25,000 (USD 16–27). Park entrance fees add CLP 21,000 (USD 22) for foreigners. Budget at least USD 150–200 per day all-in for a comfortable guided experience.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; gear</h2>
+        <p>Refugio meals are hearty and filling — thick soups, slow-roasted lamb, and generous breakfasts. If camping, carry calorie-dense food from Puerto Natales; there are no resupply points on the trail. A quality waterproof jacket, trekking poles, and well-broken-in boots are non-negotiable. Puerto Natales has good gear rental shops if you'd rather not carry equipment on the flight down.</p>
+        <p>The local lamb (cordero) is exceptional throughout Patagonia. In Puerto Natales, look for restaurants that slow-roast a whole animal over an open fire — it is one of South America's finest meals.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Rajasthan's golden cities to Norwegian fjords — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
