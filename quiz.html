@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Where Should I Go? — Wander</title>
+  <meta name="description" content="Answer 8 quick questions and discover which destination matches your travel personality." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    button { font-family: var(--font-sans); cursor: pointer; border: none; background: none; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: 0.06em; color: var(--ink); }
+    .nav__back { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); transition: opacity 0.2s; }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Quiz wrapper ─────────────────────────────────────────── */
+    .quiz-wrap {
+      min-height: calc(100vh - 65px);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Intro screen ─────────────────────────────────────────── */
+    .screen { display: none; }
+    .screen.active { display: flex; flex: 1; }
+
+    #screen-intro {
+      background: var(--sand);
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px;
+    }
+    .intro__inner {
+      max-width: 640px;
+      text-align: center;
+    }
+    .intro__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 20px;
+    }
+    .intro__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.8rem, 6vw, 4.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .intro__title em { font-style: italic; }
+    .intro__sub {
+      font-size: 1rem;
+      color: var(--ash);
+      line-height: 1.75;
+      max-width: 480px;
+      margin: 0 auto 36px;
+    }
+    .intro__meta {
+      display: flex;
+      gap: 28px;
+      justify-content: center;
+      margin-bottom: 40px;
+    }
+    .intro__meta-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--ash);
+    }
+    .intro__meta-item svg { flex-shrink: 0; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 32px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: white;
+      background: var(--teal);
+      transition: background 0.2s, border-color 0.2s;
+      cursor: pointer;
+    }
+    .btn:hover { background: #22665c; border-color: #22665c; }
+    .btn--outline {
+      background: transparent;
+      color: var(--teal);
+    }
+    .btn--outline:hover { background: var(--teal-lt); border-color: var(--teal); color: var(--teal); }
+    .btn--ghost {
+      background: transparent;
+      border-color: var(--stone);
+      color: var(--ash);
+    }
+    .btn--ghost:hover { border-color: var(--ash); color: var(--ink); background: transparent; }
+
+    /* ── Question screen ──────────────────────────────────────── */
+    #screen-quiz {
+      flex-direction: column;
+    }
+
+    .quiz-progress-bar {
+      height: 3px;
+      background: var(--stone);
+    }
+    .quiz-progress-bar__fill {
+      height: 100%;
+      background: var(--teal);
+      transition: width 0.4s ease;
+    }
+
+    .quiz-layout {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 320px 1fr;
+    }
+
+    /* Left panel */
+    .quiz-sidebar {
+      background: var(--sand);
+      padding: 48px 40px;
+      border-right: 1px solid var(--stone);
+      display: flex;
+      flex-direction: column;
+    }
+    .quiz-sidebar__logo {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 48px;
+      letter-spacing: 0.04em;
+    }
+    .quiz-steps {
+      list-style: none;
+      flex: 1;
+    }
+    .quiz-steps__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--stone);
+      transition: opacity 0.2s;
+    }
+    .quiz-steps__item:last-child { border-bottom: none; }
+    .quiz-steps__item.done .quiz-steps__num { background: var(--teal); color: white; border-color: var(--teal); }
+    .quiz-steps__item.done .quiz-steps__label { color: var(--teal); }
+    .quiz-steps__item.current .quiz-steps__num { border-color: var(--ink); color: var(--ink); font-weight: 500; }
+    .quiz-steps__item.current .quiz-steps__label { color: var(--ink); font-weight: 500; }
+    .quiz-steps__item.future { opacity: 0.4; }
+    .quiz-steps__num {
+      width: 26px; height: 26px;
+      border: 1px solid var(--stone);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.72rem;
+      color: var(--ash);
+      flex-shrink: 0;
+    }
+    .quiz-steps__check {
+      width: 26px; height: 26px;
+      display: none;
+      align-items: center; justify-content: center;
+      flex-shrink: 0;
+      color: white;
+    }
+    .quiz-steps__item.done .quiz-steps__num { display: none; }
+    .quiz-steps__item.done .quiz-steps__check {
+      display: flex;
+      background: var(--teal);
+      border-radius: 50%;
+    }
+    .quiz-steps__label {
+      font-size: 0.82rem;
+      color: var(--ash);
+    }
+    .quiz-sidebar__tip {
+      margin-top: 32px;
+      padding: 16px;
+      background: var(--teal-lt);
+      font-size: 0.78rem;
+      color: var(--teal);
+      line-height: 1.6;
+    }
+    .quiz-sidebar__tip strong { display: block; margin-bottom: 4px; font-weight: 500; }
+
+    /* Right panel — question area */
+    .quiz-main {
+      padding: 56px 64px;
+      display: flex;
+      flex-direction: column;
+    }
+    .quiz-main__counter {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 20px;
+    }
+    .quiz-main__question {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 300;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .quiz-main__hint {
+      font-size: 0.85rem;
+      color: var(--ash);
+      margin-bottom: 40px;
+    }
+
+    .answer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 48px;
+    }
+    .answer-btn {
+      position: relative;
+      padding: 20px 20px 20px 52px;
+      background: white;
+      border: 1.5px solid var(--stone);
+      text-align: left;
+      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      cursor: pointer;
+    }
+    .answer-btn:hover {
+      border-color: var(--teal);
+      transform: translateY(-1px);
+    }
+    .answer-btn.selected {
+      border-color: var(--teal);
+      background: var(--teal-lt);
+    }
+    .answer-btn__letter {
+      position: absolute;
+      top: 20px; left: 20px;
+      width: 20px; height: 20px;
+      border: 1px solid var(--stone);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.68rem;
+      font-weight: 500;
+      color: var(--ash);
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    .answer-btn.selected .answer-btn__letter {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .answer-btn__label {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+      line-height: 1.3;
+    }
+    .answer-btn__sub {
+      font-size: 0.78rem;
+      color: var(--ash);
+      line-height: 1.5;
+    }
+
+    .quiz-nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: auto;
+    }
+    .quiz-nav__back {
+      padding: 12px 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      border: 1px solid var(--stone);
+      transition: border-color 0.2s, color 0.2s;
+      cursor: pointer;
+    }
+    .quiz-nav__back:hover { border-color: var(--ash); color: var(--ink); }
+    .quiz-nav__next {
+      padding: 14px 32px;
+    }
+
+    /* ── Result screen ────────────────────────────────────────── */
+    #screen-result {
+      flex-direction: column;
+    }
+    .result-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .result-hero__bg {
+      position: absolute; inset: 0;
+      transition: opacity 0.6s ease;
+    }
+    .result-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.6) 100%);
+    }
+    .result-hero__content {
+      position: relative; z-index: 2;
+      height: 100%;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 80px 56px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      width: 100%;
+    }
+    .result-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .result-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(3rem, 6vw, 5rem);
+      font-weight: 300;
+      color: white;
+      line-height: 1.05;
+      margin-bottom: 8px;
+    }
+    .result-hero__region {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+    }
+
+    .result-body {
+      background: var(--cream);
+      padding: 72px 0 96px;
+    }
+    .result-body__inner {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 64px;
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 0 40px;
+    }
+
+    .result-main__label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 20px;
+    }
+    .result-main__rationale {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--ink);
+      margin-bottom: 32px;
+    }
+    .result-cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    /* Score breakdown */
+    .result-breakdown {
+      margin-top: 56px;
+      padding-top: 40px;
+      border-top: 1px solid var(--stone);
+    }
+    .result-breakdown__title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 24px;
+    }
+    .trait-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .trait-item {
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .trait-item__label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .trait-item__value {
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+
+    /* Sidebar */
+    .result-sidebar__section {
+      margin-bottom: 40px;
+    }
+    .result-sidebar__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--stone);
+      margin-bottom: 20px;
+    }
+    .runner-up-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .runner-up {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .runner-up__img {
+      width: 64px; height: 64px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .runner-up__info { flex: 1; min-width: 0; }
+    .runner-up__name {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      font-weight: 400;
+      margin-bottom: 2px;
+      line-height: 1.2;
+    }
+    .runner-up__region {
+      font-size: 0.72rem;
+      color: var(--ash);
+      letter-spacing: 0.08em;
+    }
+    .runner-up__link {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .runner-up__link:hover { opacity: 0.65; }
+    .runner-up__soon {
+      font-size: 0.72rem;
+      color: var(--ash);
+      letter-spacing: 0.08em;
+    }
+
+    /* Share row */
+    .share-row {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .share-input-wrap { position: relative; }
+    .share-input {
+      width: 100%;
+      padding: 11px 44px 11px 14px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      color: var(--ash);
+      outline: none;
+    }
+    .share-copy-btn {
+      position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; cursor: pointer;
+      color: var(--teal);
+      padding: 4px;
+      display: flex; align-items: center;
+    }
+    .share-copy-btn:hover { opacity: 0.7; }
+    .share-copied {
+      font-size: 0.75rem;
+      color: var(--teal);
+      display: none;
+    }
+    .share-copied.visible { display: block; }
+    .retake-btn {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      border: 1px solid var(--stone);
+      padding: 10px 16px;
+      transition: border-color 0.2s, color 0.2s;
+      cursor: pointer;
+      background: none;
+      font-family: var(--font-sans);
+    }
+    .retake-btn:hover { border-color: var(--ash); color: var(--ink); }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 960px) {
+      .quiz-layout { grid-template-columns: 1fr; }
+      .quiz-sidebar { display: none; }
+      .quiz-main { padding: 40px 32px; }
+      .answer-grid { grid-template-columns: 1fr; }
+
+      .result-hero__content { padding: 0 32px 40px; }
+      .result-body__inner { grid-template-columns: 1fr; padding: 0 24px; }
+    }
+    @media (max-width: 640px) {
+      .nav { padding: 18px 24px; }
+      .quiz-main { padding: 32px 24px; }
+      .intro__meta { flex-direction: column; gap: 12px; align-items: center; }
+      .result-hero { height: 50vh; }
+      .result-hero__content { padding: 0 24px 32px; }
+      .trait-list { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Back to home</a>
+  </nav>
+
+  <div class="quiz-wrap">
+
+    <!-- ── Intro ──────────────────────────────────────────────── -->
+    <section class="screen active" id="screen-intro">
+      <div class="intro__inner">
+        <p class="intro__eyebrow">Destination finder</p>
+        <h1 class="intro__title">Where should<br/><em>you</em> go?</h1>
+        <p class="intro__sub">Not sure where to go next? Answer eight quick questions about your ideal trip — pace, climate, budget, activities — and we'll match you to a destination worth reading about.</p>
+        <div class="intro__meta">
+          <span class="intro__meta-item">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor"/><path d="M7.5 4v4l2.5 1.5" stroke="currentColor" stroke-linecap="round"/></svg>
+            ~90 seconds
+          </span>
+          <span class="intro__meta-item">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><path d="M2 12L7.5 3 13 12H2Z" stroke="currentColor" stroke-linejoin="round"/><path d="M7.5 8v3" stroke="currentColor" stroke-linecap="round"/></svg>
+            8 questions
+          </span>
+          <span class="intro__meta-item">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6.5" stroke="currentColor"/><path d="M5 7.5h5M8.5 5.5l2 2-2 2" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            No login needed
+          </span>
+        </div>
+        <button class="btn" id="start-btn">
+          Find my destination
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── Quiz ───────────────────────────────────────────────── -->
+    <section class="screen" id="screen-quiz">
+      <div class="quiz-progress-bar"><div class="quiz-progress-bar__fill" id="progress-fill"></div></div>
+      <div class="quiz-layout">
+
+        <!-- Sidebar -->
+        <aside class="quiz-sidebar">
+          <p class="quiz-sidebar__logo">Wander</p>
+          <ol class="quiz-steps" id="quiz-steps"></ol>
+          <div class="quiz-sidebar__tip" id="sidebar-tip">
+            <strong>Tip</strong>
+            Go with your gut — there are no right answers, just better matches.
+          </div>
+        </aside>
+
+        <!-- Main question area -->
+        <main class="quiz-main">
+          <p class="quiz-main__counter" id="q-counter">Question 1 of 8</p>
+          <h2 class="quiz-main__question" id="q-text"></h2>
+          <p class="quiz-main__hint" id="q-hint"></p>
+          <div class="answer-grid" id="answer-grid"></div>
+          <div class="quiz-nav">
+            <button class="quiz-nav__back" id="nav-back">← Back</button>
+            <button class="btn quiz-nav__next" id="nav-next" disabled>Next →</button>
+          </div>
+        </main>
+
+      </div>
+    </section>
+
+    <!-- ── Result ─────────────────────────────────────────────── -->
+    <section class="screen" id="screen-result">
+      <div class="result-hero">
+        <div class="result-hero__bg" id="result-bg"></div>
+        <div class="result-hero__overlay"></div>
+        <div class="result-hero__content">
+          <p class="result-hero__eyebrow">Your match</p>
+          <h2 class="result-hero__title" id="result-name"></h2>
+          <p class="result-hero__region" id="result-region"></p>
+        </div>
+      </div>
+
+      <div class="result-body">
+        <div class="result-body__inner">
+
+          <div class="result-main">
+            <p class="result-main__label">Why you'll love it</p>
+            <p class="result-main__rationale" id="result-rationale"></p>
+            <div class="result-cta-row">
+              <a href="#" class="btn" id="result-guide-link">Read the guide →</a>
+              <a href="destinations.html" class="btn btn--outline">Browse all destinations</a>
+            </div>
+
+            <div class="result-breakdown" id="result-breakdown">
+              <h3 class="result-breakdown__title">Your travel profile</h3>
+              <div class="trait-list" id="trait-list"></div>
+            </div>
+          </div>
+
+          <aside>
+            <div class="result-sidebar__section">
+              <p class="result-sidebar__heading">Runner-up destinations</p>
+              <ul class="runner-up-list" id="runner-up-list"></ul>
+            </div>
+
+            <div class="result-sidebar__section">
+              <p class="result-sidebar__heading">Share your result</p>
+              <div class="share-row">
+                <div class="share-input-wrap">
+                  <input type="text" class="share-input" id="share-url" readonly />
+                  <button class="share-copy-btn" id="copy-btn" title="Copy link" aria-label="Copy link">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="8" height="9" rx="1" stroke="currentColor"/><path d="M3 11V3a1 1 0 011-1h8" stroke="currentColor" stroke-linecap="round"/></svg>
+                  </button>
+                </div>
+                <p class="share-copied" id="copy-confirm">Link copied to clipboard!</p>
+                <button class="retake-btn" id="retake-btn">Retake quiz</button>
+              </div>
+            </div>
+          </aside>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /.quiz-wrap -->
+
+  <script>
+  /* ================================================================
+     QUIZ DATA
+     ================================================================ */
+
+  const QUESTIONS = [
+    {
+      text: "How do you prefer to travel?",
+      hint: "Think about your ideal day-to-day pace on a trip.",
+      stepLabel: "Pace",
+      tip: "Slow travellers often discover the most memorable moments.",
+      answers: [
+        { label: "Slow & serendipitous",   sub: "Long lunches, wandering without a plan, staying put" },
+        { label: "A balanced mix",          sub: "Some structure, room for spontaneity" },
+        { label: "Packed & purposeful",     sub: "Itinerary in hand, max sights, busy days" },
+      ]
+    },
+    {
+      text: "What's your ideal climate?",
+      hint: "The weather can make or break a trip.",
+      stepLabel: "Climate",
+      tip: "Mediterranean climate: warm summers, mild winters — no extremes.",
+      answers: [
+        { label: "Hot & sunny",           sub: "Beach weather, blue skies, dry heat" },
+        { label: "Mild & Mediterranean",  sub: "Warm but not scorching, pleasant evenings" },
+        { label: "Cool & dramatic",       sub: "Crisp air, moody skies, northern light" },
+      ]
+    },
+    {
+      text: "How important is food to you?",
+      hint: "Be honest — it's a judgement-free zone.",
+      stepLabel: "Food",
+      tip: "Some of the world's best food cities are also its most affordable.",
+      answers: [
+        { label: "It's the whole point",   sub: "Markets, restaurants, cooking classes — yes to all" },
+        { label: "Very important",         sub: "Eating well matters, but not obsessively" },
+        { label: "Fuel for adventures",    sub: "Happy with simple, practical meals" },
+      ]
+    },
+    {
+      text: "How does your budget feel?",
+      hint: "No judgement — this helps match value to experience.",
+      stepLabel: "Budget",
+      tip: "Some of the most rewarding destinations are genuinely affordable.",
+      answers: [
+        { label: "Tight — max value",      sub: "Every dollar counts; budget travel done well" },
+        { label: "Moderate",               sub: "Some treats, smart choices overall" },
+        { label: "Generous",               sub: "Comfort matters; happy to splurge for quality" },
+      ]
+    },
+    {
+      text: "What does your perfect day involve?",
+      hint: "Pick the option that excites you most.",
+      stepLabel: "Activities",
+      tip: "Don't rule out culture — even adventurers love a great museum.",
+      answers: [
+        { label: "Hiking, trekking, wild swimming",  sub: "Physical challenge, raw landscapes, outdoors" },
+        { label: "Museums, temples, markets",         sub: "History, art, local life, sensory richness" },
+        { label: "Beaches, pools, boat trips",        sub: "Relaxation, water, sun-drenched scenery" },
+      ]
+    },
+    {
+      text: "Who are you travelling with?",
+      hint: "The right destination changes depending on your group.",
+      stepLabel: "Group",
+      tip: "Travelling solo unlocks a totally different experience of a place.",
+      answers: [
+        { label: "Solo",         sub: "Just me — full freedom, full responsibility" },
+        { label: "With a partner",  sub: "Romantic trip for two" },
+        { label: "With friends",    sub: "A group looking for shared adventures" },
+        { label: "With family",     sub: "Mix of ages, needs variety and accessibility" },
+      ]
+    },
+    {
+      text: "How long is your trip?",
+      hint: "Some destinations reward longer stays.",
+      stepLabel: "Duration",
+      tip: "Two weeks opens up destinations that are hard to appreciate quickly.",
+      answers: [
+        { label: "Long weekend (3–5 days)",  sub: "Short but sweet; quality over quantity" },
+        { label: "One week",                 sub: "A proper trip with time to breathe" },
+        { label: "Two weeks or more",        sub: "Deep dive — time to get genuinely lost" },
+      ]
+    },
+    {
+      text: "What landscape speaks to you?",
+      hint: "Your dream backdrop for photos, walks, and reflective moments.",
+      stepLabel: "Landscape",
+      tip: "Great landscapes are where memories crystallise.",
+      answers: [
+        { label: "Dramatic coastlines",        sub: "Cliffs, coves, turquoise water, fishing villages" },
+        { label: "Mountains & glaciers",        sub: "Soaring peaks, fjords, windswept valleys" },
+        { label: "Ancient cities & temples",    sub: "Layered history, sacred spaces, narrow alleys" },
+        { label: "Desert, dunes & colour",      sub: "Arid beauty, saturated hues, open horizons" },
+      ]
+    },
+  ];
+
+  /* ================================================================
+     DESTINATIONS
+     Each destination has a score vector matching answers above.
+     Format: [q0, q1, q2, q3, q4, q5, q6, q7] where each value
+     is an array of points for answer[0], answer[1], answer[2], ...
+     ================================================================ */
+
+  const DESTINATIONS = [
+    {
+      id: 'amalfi',
+      name: 'Amalfi Coast',
+      country: 'Italy',
+      region: 'Southern Europe',
+      url: 'amalfi-guide.html',
+      hasGuide: true,
+      img: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=200&q=70',
+      rationale: "The Amalfi Coast is a near-perfect match for your travel profile. Your preference for warm, unhurried days aligns beautifully with its culture of long lunches on terracotta terraces, clifftop promenades, and gelato-paced afternoons. The food here is extraordinary — fresh seafood, hand-rolled pasta, and limoncello made from the lemons that grow wild on the cliff face. Pair that with some of Europe's most dramatic coastal scenery, and you have a trip that feels both effortless and unforgettable.",
+      scores: [
+        [3, 2, 1],   // pace: slow=3, balanced=2, packed=1
+        [2, 3, 0],   // climate: hot=2, mild=3, cool=0
+        [3, 2, 0],   // food: obsessive=3, important=2, fuel=0
+        [0, 2, 3],   // budget: tight=0, moderate=2, generous=3
+        [0, 1, 3],   // activities: adventure=0, culture=1, beach=3
+        [1, 3, 1, 1],// group: solo=1, couple=3, friends=1, family=1
+        [2, 3, 2],   // duration: weekend=2, week=3, 2wk=2
+        [3, 0, 0, 0],// landscape: coast=3, mtn=0, city=0, desert=0
+      ]
+    },
+    {
+      id: 'kyoto',
+      name: 'Kyoto',
+      country: 'Japan',
+      region: 'East Asia',
+      url: 'kyoto-guide.html',
+      hasGuide: true,
+      img: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=200&q=70',
+      rationale: "Kyoto is made for travellers who want to feel the weight of centuries beneath their feet. Its 1,600 temples, minimalist tea houses, and bamboo groves reward those who move at a considered pace and come with genuine curiosity. The food scene is extraordinary — from intricate kaiseki menus to humble bowls of ramen at 7am. Japan rewards attentive visitors, and your travel profile suggests someone who won't miss a thing.",
+      scores: [
+        [2, 3, 2],
+        [0, 3, 1],
+        [3, 3, 0],
+        [0, 2, 2],
+        [1, 3, 1],
+        [2, 2, 1, 2],
+        [1, 3, 3],
+        [0, 1, 3, 0],
+      ]
+    },
+    {
+      id: 'santorini',
+      name: 'Santorini',
+      country: 'Greece',
+      region: 'Southern Europe',
+      url: 'santorini-guide.html',
+      hasGuide: true,
+      img: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=200&q=70',
+      rationale: "Santorini is one of those places that looks almost too beautiful to be real — whitewashed walls, blue domes, and the caldera stretching into the Aegean below. Your preference for warmth, relaxation, and coastal scenery makes this Greek island a near-perfect fit. Add local wine, fresh grilled octopus, and sunsets that stop conversation mid-sentence, and the case is made.",
+      scores: [
+        [3, 2, 0],
+        [3, 3, 0],
+        [2, 2, 1],
+        [0, 2, 3],
+        [0, 1, 3],
+        [0, 3, 1, 1],
+        [3, 3, 1],
+        [3, 1, 0, 0],
+      ]
+    },
+    {
+      id: 'patagonia',
+      name: 'Patagonia',
+      country: 'Chile / Argentina',
+      region: 'South America',
+      url: 'patagonia-guide.html',
+      hasGuide: true,
+      img: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=200&q=70',
+      rationale: "Patagonia calls to those who want to earn their views. It's not a place for passive tourists — it's for people who accept the wind, the mud, and the 5am starts, and who find something deeply satisfying about arriving at a lookout on foot with aching legs. Your preference for physical challenge, dramatic landscapes, and a longer trip aligns perfectly with the W Trek or the Carretera Austral. Bring good boots and a book — the evenings are long.",
+      scores: [
+        [1, 2, 2],
+        [0, 1, 3],
+        [0, 1, 3],
+        [1, 2, 2],
+        [3, 0, 0],
+        [2, 1, 3, 1],
+        [0, 2, 3],
+        [0, 3, 0, 0],
+      ]
+    },
+    {
+      id: 'rajasthan',
+      name: 'Rajasthan',
+      country: 'India',
+      region: 'South Asia',
+      url: 'rajasthan-guide.html',
+      hasGuide: true,
+      img: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=200&q=70',
+      rationale: "Rajasthan is India at its most theatrical. Cities painted impossible shades of pink, blue, and gold; palace hotels where you sleep in royal suites; bazaars heaped with spices, textiles, and silver. Your desire for immersive culture, a generous sense of discovery, and genuine value for money makes this northwestern state a destination that will overwhelm you in the best possible way. Two weeks barely scratches the surface.",
+      scores: [
+        [2, 2, 2],
+        [2, 2, 0],
+        [3, 2, 0],
+        [3, 2, 1],
+        [1, 3, 0],
+        [2, 2, 2, 2],
+        [0, 2, 3],
+        [0, 0, 2, 3],
+      ]
+    },
+    {
+      id: 'norway',
+      name: "Norway's Fjords",
+      country: 'Norway',
+      region: 'Northern Europe',
+      url: 'norway-guide.html',
+      hasGuide: true,
+      img: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=200&q=70',
+      rationale: "Norway's fjords offer something rare: genuine scale and silence in equal measure. Walls of granite rise straight from still, dark water; villages cling to impossible slopes; the midnight sun turns 10pm into golden hour. Your appreciation for dramatic, cool landscapes, scenic photography, and unhurried exploration makes Scandinavia one of the most rewarding places on earth — expensive, certainly, but worth every krone.",
+      scores: [
+        [2, 2, 1],
+        [0, 1, 3],
+        [0, 1, 3],
+        [0, 1, 3],
+        [2, 1, 2],
+        [2, 2, 2, 1],
+        [1, 2, 3],
+        [2, 3, 0, 0],
+      ]
+    },
+    {
+      id: 'thailand',
+      name: 'Thailand',
+      country: 'Thailand',
+      region: 'Southeast Asia',
+      url: 'destinations.html',
+      hasGuide: false,
+      img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1528181304800-259b08848526?w=200&q=70',
+      rationale: "Thailand packs extraordinary variety into one country — ancient temples and night markets in Chiang Mai, pristine islands in the south, and Bangkok's relentless, electric chaos. It's one of the world's great value destinations, with incredible street food, warm hospitality, and a natural ease that makes solo and group travellers alike feel immediately at home.",
+      scores: [
+        [2, 2, 2],
+        [3, 2, 0],
+        [3, 2, 1],
+        [3, 2, 1],
+        [1, 2, 3],
+        [2, 2, 3, 3],
+        [1, 2, 3],
+        [2, 0, 1, 1],
+      ]
+    },
+    {
+      id: 'portugal',
+      name: 'Portugal',
+      country: 'Portugal',
+      region: 'Southern Europe',
+      url: 'destinations.html',
+      hasGuide: false,
+      img: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=200&q=70',
+      rationale: "Portugal is quietly becoming one of Europe's most beloved destinations — for good reason. Lisbon's tiled streets, the vine-covered Douro valley, the wild Atlantic coast of the Alentejo, and warm, unfussy hospitality throughout. Food here punches well above its price point: grilled fish, pastéis de nata, and vinho verde that costs almost nothing.",
+      scores: [
+        [3, 2, 1],
+        [1, 3, 1],
+        [3, 2, 1],
+        [2, 3, 2],
+        [0, 2, 2],
+        [2, 2, 2, 2],
+        [2, 3, 2],
+        [2, 0, 2, 0],
+      ]
+    },
+    {
+      id: 'morocco',
+      name: 'Morocco',
+      country: 'Morocco',
+      region: 'North Africa',
+      url: 'destinations.html',
+      hasGuide: false,
+      img: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?w=200&q=70',
+      rationale: "Morocco is a full-sensory experience from the moment you step into a medina — spice souks, mosaic courtyards, the call to prayer echoing off ancient walls. It's a country of extraordinary contrasts: blue-painted Chefchaouen, the red city of Marrakesh, and the vast silence of the Sahara. Affordable, fascinating, and endlessly photogenic.",
+      scores: [
+        [1, 2, 3],
+        [2, 2, 0],
+        [3, 2, 1],
+        [3, 2, 1],
+        [1, 3, 1],
+        [2, 2, 2, 2],
+        [1, 2, 3],
+        [0, 1, 2, 3],
+      ]
+    },
+    {
+      id: 'iceland',
+      name: 'Iceland',
+      country: 'Iceland',
+      region: 'Northern Europe',
+      url: 'destinations.html',
+      hasGuide: false,
+      img: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1508193638397-1c4234db14d8?w=200&q=70',
+      rationale: "Iceland is one of the most dramatic landscapes on earth — active volcanoes, black-sand beaches, waterfalls that fall from nowhere, and the northern lights shimmering overhead in winter. It rewards active travellers who want to feel genuinely small in front of nature's scale. Expensive, but the kind of place that changes your frame of reference permanently.",
+      scores: [
+        [1, 2, 2],
+        [0, 0, 3],
+        [0, 1, 3],
+        [0, 1, 2],
+        [3, 0, 1],
+        [2, 2, 3, 1],
+        [1, 2, 2],
+        [1, 3, 0, 0],
+      ]
+    },
+    {
+      id: 'vietnam',
+      name: 'Vietnam',
+      country: 'Vietnam',
+      region: 'Southeast Asia',
+      url: 'destinations.html',
+      hasGuide: false,
+      img: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=200&q=70',
+      rationale: "Vietnam rewards those who move with intention — from the lantern-lit streets of Hội An to the karst cliffs of Hạ Long Bay to the incredible street food of Hanoi. It's one of the most affordable countries in Asia, with extraordinary regional cuisine, friendly locals, and a landscape that shifts dramatically as you travel north to south.",
+      scores: [
+        [1, 2, 3],
+        [2, 2, 1],
+        [3, 3, 1],
+        [3, 2, 1],
+        [1, 2, 2],
+        [2, 2, 2, 2],
+        [1, 2, 3],
+        [1, 1, 2, 1],
+      ]
+    },
+    {
+      id: 'peru',
+      name: 'Peru',
+      country: 'Peru',
+      region: 'South America',
+      url: 'destinations.html',
+      hasGuide: false,
+      img: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1400&q=80',
+      thumbImg: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=200&q=70',
+      rationale: "Peru combines two of the world's great draws: the high Andes and one of the most exciting food cities on earth. Lima's restaurant scene punches far above any expectation; Cusco is an extraordinary living museum; and the Inca Trail to Machu Picchu remains one of the world's great multi-day walks. A trip that earns its superlatives.",
+      scores: [
+        [1, 2, 3],
+        [0, 1, 2],
+        [2, 2, 2],
+        [2, 2, 1],
+        [3, 2, 0],
+        [2, 2, 3, 2],
+        [0, 1, 3],
+        [0, 3, 2, 1],
+      ]
+    },
+  ];
+
+  /* ================================================================
+     SCORING ENGINE
+     ================================================================ */
+
+  function scoreDestinations(answers) {
+    return DESTINATIONS.map(dest => {
+      let total = 0;
+      answers.forEach((answerIdx, qIdx) => {
+        if (answerIdx >= 0 && dest.scores[qIdx] && dest.scores[qIdx][answerIdx] !== undefined) {
+          total += dest.scores[qIdx][answerIdx];
+        }
+      });
+      return { dest, score: total };
+    }).sort((a, b) => b.score - a.score);
+  }
+
+  /* trait labels derived from answers */
+  const TRAIT_LABELS = [
+    { label: 'Travel pace',  fn: a => ['Slow & serendipitous', 'Balanced mix', 'Packed & purposeful'][a] },
+    { label: 'Climate',      fn: a => ['Hot & sunny', 'Mild & Mediterranean', 'Cool & dramatic'][a] },
+    { label: 'Food',         fn: a => ['Culinary-led', 'Food-conscious', 'Fuel-focused'][a] },
+    { label: 'Budget',       fn: a => ['Budget-conscious', 'Moderate', 'Generous'][a] },
+    { label: 'Activities',   fn: a => ['Adventure & outdoors', 'Culture & history', 'Beach & relaxation'][a] },
+    { label: 'Travelling as',fn: a => ['Solo', 'Couple', 'Group of friends', 'Family'][a] },
+    { label: 'Trip length',  fn: a => ['Long weekend', 'One week', '2+ weeks'][a] },
+    { label: 'Landscape',    fn: a => ['Coastlines', 'Mountains & glaciers', 'Cities & temples', 'Desert & dunes'][a] },
+  ];
+
+  /* ================================================================
+     STATE
+     ================================================================ */
+
+  let currentQ = 0;
+  const answers = new Array(QUESTIONS.length).fill(-1);
+
+  /* ================================================================
+     SCREEN MANAGEMENT
+     ================================================================ */
+
+  function showScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  /* ================================================================
+     BUILD SIDEBAR STEPS
+     ================================================================ */
+
+  function buildSidebar() {
+    const ol = document.getElementById('quiz-steps');
+    ol.innerHTML = QUESTIONS.map((q, i) => `
+      <li class="quiz-steps__item ${i === 0 ? 'current' : 'future'}" data-step="${i}">
+        <span class="quiz-steps__num">${i + 1}</span>
+        <span class="quiz-steps__check" aria-hidden="true">
+          <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path d="M2 6l3 3 5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span class="quiz-steps__label">${q.stepLabel}</span>
+      </li>`).join('');
+  }
+
+  function updateSidebar(qIdx) {
+    document.querySelectorAll('.quiz-steps__item').forEach((el, i) => {
+      el.classList.remove('done', 'current', 'future');
+      if (i < qIdx) el.classList.add('done');
+      else if (i === qIdx) el.classList.add('current');
+      else el.classList.add('future');
+    });
+    document.getElementById('sidebar-tip').innerHTML =
+      `<strong>Tip</strong>${QUESTIONS[qIdx].tip}`;
+  }
+
+  /* ================================================================
+     RENDER QUESTION
+     ================================================================ */
+
+  function renderQuestion(qIdx) {
+    const q = QUESTIONS[qIdx];
+    currentQ = qIdx;
+
+    document.getElementById('q-counter').textContent = `Question ${qIdx + 1} of ${QUESTIONS.length}`;
+    document.getElementById('q-text').textContent = q.text;
+    document.getElementById('q-hint').textContent = q.hint;
+
+    const fill = ((qIdx) / QUESTIONS.length) * 100;
+    document.getElementById('progress-fill').style.width = fill + '%';
+
+    const grid = document.getElementById('answer-grid');
+    const letters = ['A', 'B', 'C', 'D'];
+    grid.innerHTML = q.answers.map((ans, i) => `
+      <button class="answer-btn ${answers[qIdx] === i ? 'selected' : ''}"
+              data-qidx="${qIdx}" data-aidx="${i}">
+        <span class="answer-btn__letter">${letters[i]}</span>
+        <span class="answer-btn__label">${ans.label}</span>
+        <span class="answer-btn__sub">${ans.sub}</span>
+      </button>`).join('');
+
+    document.getElementById('nav-next').disabled = answers[qIdx] < 0;
+    document.getElementById('nav-back').disabled = qIdx === 0;
+    document.getElementById('nav-back').style.opacity = qIdx === 0 ? '0.3' : '1';
+
+    // Update Next label on last question
+    const nextBtn = document.getElementById('nav-next');
+    nextBtn.textContent = qIdx === QUESTIONS.length - 1 ? 'See my result →' : 'Next →';
+
+    updateSidebar(qIdx);
+  }
+
+  /* ================================================================
+     ANSWER SELECTION
+     ================================================================ */
+
+  document.getElementById('answer-grid').addEventListener('click', e => {
+    const btn = e.target.closest('.answer-btn');
+    if (!btn) return;
+    const qIdx = parseInt(btn.dataset.qidx);
+    const aIdx = parseInt(btn.dataset.aidx);
+    answers[qIdx] = aIdx;
+    document.querySelectorAll('.answer-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    document.getElementById('nav-next').disabled = false;
+  });
+
+  /* ================================================================
+     NAVIGATION
+     ================================================================ */
+
+  document.getElementById('nav-next').addEventListener('click', () => {
+    if (answers[currentQ] < 0) return;
+    if (currentQ < QUESTIONS.length - 1) {
+      renderQuestion(currentQ + 1);
+    } else {
+      showResult();
+    }
+  });
+
+  document.getElementById('nav-back').addEventListener('click', () => {
+    if (currentQ > 0) renderQuestion(currentQ - 1);
+  });
+
+  document.getElementById('start-btn').addEventListener('click', () => {
+    showScreen('screen-quiz');
+    buildSidebar();
+    renderQuestion(0);
+  });
+
+  document.getElementById('retake-btn').addEventListener('click', () => {
+    answers.fill(-1);
+    currentQ = 0;
+    showScreen('screen-quiz');
+    buildSidebar();
+    renderQuestion(0);
+    history.replaceState(null, '', window.location.pathname);
+  });
+
+  /* ================================================================
+     SHOW RESULT
+     ================================================================ */
+
+  function showResult() {
+    const ranked = scoreDestinations(answers);
+    const winner = ranked[0].dest;
+    const runnerUps = ranked.slice(1, 4).map(r => r.dest);
+
+    // Hero
+    document.getElementById('result-bg').style.cssText =
+      `background: url('${winner.img}') center/cover no-repeat;`;
+    document.getElementById('result-name').textContent = winner.name;
+    document.getElementById('result-region').textContent = winner.region + ' · ' + winner.country;
+    document.getElementById('result-rationale').textContent = winner.rationale;
+
+    // Guide link
+    const guideLink = document.getElementById('result-guide-link');
+    if (winner.hasGuide) {
+      guideLink.href = winner.url;
+      guideLink.textContent = 'Read the guide →';
+      guideLink.style.display = '';
+    } else {
+      guideLink.style.display = 'none';
+    }
+
+    // Trait profile
+    const traitEl = document.getElementById('trait-list');
+    traitEl.innerHTML = answers.map((a, i) => `
+      <div class="trait-item">
+        <span class="trait-item__label">${TRAIT_LABELS[i].label}</span>
+        <span class="trait-item__value">${a >= 0 ? TRAIT_LABELS[i].fn(a) : '—'}</span>
+      </div>`).join('');
+
+    // Runner-ups
+    const ruList = document.getElementById('runner-up-list');
+    ruList.innerHTML = runnerUps.map(d => `
+      <li class="runner-up">
+        <img class="runner-up__img" src="${d.thumbImg}" alt="${d.name}" loading="lazy" />
+        <div class="runner-up__info">
+          <p class="runner-up__name">${d.name}</p>
+          <p class="runner-up__region">${d.region}</p>
+        </div>
+        ${d.hasGuide
+          ? `<a href="${d.url}" class="runner-up__link">Read →</a>`
+          : `<span class="runner-up__soon">Guide soon</span>`}
+      </li>`).join('');
+
+    // Shareable permalink — encode answers as compact string in hash
+    const encoded = answers.join('');
+    const shareUrl = window.location.origin + window.location.pathname + '#' + encoded;
+    document.getElementById('share-url').value = shareUrl;
+    history.replaceState(null, '', '#' + encoded);
+
+    document.getElementById('progress-fill').style.width = '100%';
+
+    showScreen('screen-result');
+  }
+
+  /* ================================================================
+     COPY LINK
+     ================================================================ */
+
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const url = document.getElementById('share-url').value;
+    navigator.clipboard.writeText(url).then(() => {
+      const el = document.getElementById('copy-confirm');
+      el.classList.add('visible');
+      setTimeout(() => el.classList.remove('visible'), 2500);
+    });
+  });
+
+  /* ================================================================
+     RESTORE FROM URL HASH (shareable permalink)
+     ================================================================ */
+
+  (function restoreFromHash() {
+    const hash = window.location.hash.replace('#', '');
+    if (!hash || !/^\d+$/.test(hash) || hash.length !== QUESTIONS.length) return;
+    const parsed = hash.split('').map(Number);
+    // Validate all indices are in range
+    const valid = parsed.every((a, i) => a >= 0 && a < QUESTIONS[i].answers.length);
+    if (!valid) return;
+    parsed.forEach((a, i) => { answers[i] = a; });
+    showResult();
+  })();
+
+  </script>
+</body>
+</html>

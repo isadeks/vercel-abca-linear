@@ -140,6 +140,62 @@
     }
     .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
 
+    /* ── Quiz CTA banner ──────────────────────────────────────── */
+    .quiz-cta {
+      background: var(--ink);
+      padding: 72px 0;
+    }
+    .quiz-cta__inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+    }
+    .quiz-cta__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .quiz-cta__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: white;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .quiz-cta__title em { font-style: italic; }
+    .quiz-cta__sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+      max-width: 500px;
+    }
+    .quiz-cta__meta {
+      display: flex;
+      gap: 20px;
+      margin-top: 16px;
+    }
+    .quiz-cta__meta-item {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.06em;
+    }
+    .btn--white {
+      background: white;
+      border-color: white;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .btn--white:hover { background: var(--sand); border-color: var(--sand); color: var(--ink); }
+    @media (max-width: 700px) {
+      .quiz-cta__inner { grid-template-columns: 1fr; }
+      .quiz-cta__meta { flex-wrap: wrap; }
+    }
+
     /* ── Scroll hint ──────────────────────────────────────────── */
     .hero__scroll {
       position: absolute; bottom: 32px; right: 40px; z-index: 2;
@@ -501,6 +557,7 @@
       <li><a href="#destinations">Destinations</a></li>
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -515,6 +572,32 @@
       <a href="#destinations" class="btn">Explore destinations</a>
     </div>
     <div class="hero__scroll">Scroll</div>
+  </section>
+
+  <!-- ── Quiz CTA ─────────────────────────────────────────────── -->
+  <section class="quiz-cta">
+    <div class="container">
+      <div class="quiz-cta__inner">
+        <div>
+          <p class="quiz-cta__eyebrow">Destination finder</p>
+          <h2 class="quiz-cta__title">Not sure where<br/>to go <em>next?</em></h2>
+          <p class="quiz-cta__sub">Answer eight questions about your ideal trip — pace, climate, food, budget — and we'll match you to a destination worth reading about.</p>
+          <div class="quiz-cta__meta">
+            <span class="quiz-cta__meta-item">~90 seconds</span>
+            <span class="quiz-cta__meta-item">·</span>
+            <span class="quiz-cta__meta-item">8 questions</span>
+            <span class="quiz-cta__meta-item">·</span>
+            <span class="quiz-cta__meta-item">No login needed</span>
+          </div>
+        </div>
+        <div>
+          <a href="quiz.html" class="btn btn--white">
+            Where should I go?
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- ── Featured Destinations ─────────────────────────────────── -->
@@ -719,10 +802,10 @@
         <div>
           <p class="footer__heading">Plan</p>
           <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
             <li><a href="#guides">Itineraries</a></li>
             <li><a href="#guides">Packing lists</a></li>
             <li><a href="contact.html">Visa info</a></li>
-            <li><a href="#guides">Budget tips</a></li>
           </ul>
         </div>
         <div>
