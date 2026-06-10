@@ -1,1 +1,3 @@
 # vercel-abca-linear
+
+This repository hosts a static travel website built with plain HTML and CSS, deployed on Vercel. It features destination guides for locations including Kyoto, Santorini, the Amalfi Coast, Rajasthan, Patagonia, and Norway, along with a personality quiz to help travelers discover their ideal destination. The site includes pages for destinations, about, contact, privacy policy, and terms of service, all interconnected with consistent navigation and styled with a cohesive travel-themed design that emphasizes beautiful imagery and engaging content for adventure-seeking globetrotters exploring the world's most captivating places.
