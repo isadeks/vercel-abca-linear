@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Marrakesh: Morocco's Rose-Red Imperial City — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1539020140153-e479b8c22e70?w=1600&q=80" alt="Marrakesh, Morocco" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">Culture &nbsp;·&nbsp; Morocco</p>
+      <h1 class="guide-hero__title">Marrakesh:<br/>Morocco's rose-red imperial city</h1>
+      <p class="guide-hero__meta">10 min read &nbsp;·&nbsp; Five-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Marrakesh arrives all at once — a riot of colour, spice, and sound that resolves, on closer acquaintance, into something layered and ancient. The city has been drawing travellers, traders, and pilgrims for nearly a thousand years, and its medina still operates on a logic that belongs entirely to itself: a labyrinth of souks, riads, and shrines where every alley leads somewhere unexpected.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Marrakesh?</h2>
+        <p>Few cities in the world deliver such an immediate and total immersion in a different culture. From the moment you step into the medina's narrow derbs — the private lanes that branch off the main arteries like capillaries — you are inside a living city that has changed less than almost anywhere in the Arab world. The architecture is a study in controlled revelation: blank walls of pale terracotta giving way to ornate doorways that open onto hidden garden courtyards, fountains, and zellige tilework of breathtaking intricacy.</p>
+        <p>Djemaa el-Fna, the great square at the heart of the medina, is unlike any public space on earth: by day it is a souk of orange juice vendors, henna artists, and snake charmers; by night it becomes one of the world's great open-air theatre performances, with dozens of food stalls, storytellers, musicians, and acrobats creating a perpetual spectacle that UNESCO has listed as an Intangible Cultural Heritage of Humanity.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Navigation inside the medina is deliberately disorienting — narrow derbs were designed to slow down invaders, and they work equally well on tourists with Google Maps. Download an offline map before you arrive and accept that you will get lost; this is part of the experience. A petit taxi (the small orange metered cabs) is the easiest way to move between the medina and the Ville Nouvelle. Agree on a price before getting in, or insist on the meter.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The neighbourhoods</h2>
+        <p>Marrakesh divides clearly between the ancient medina — a UNESCO World Heritage Site — and the modern city that grew around it. Within the medina, each district has its own character and specialisation; the souks alone could occupy a full day of exploration, with separate quarters for leatherworkers, dyers, metalworkers, carpenters, and weavers. Beyond the medina walls, the Ville Nouvelle offers a different but equally compelling face of the city.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">The Medina</h3>
+          <p class="city-card__desc">The walled old city is the heart of Marrakesh — a dense network of souks, mosques, and riads centred on Djemaa el-Fna. The Bahia Palace, Saadian Tombs, and the Ben Youssef Madrasa are its unmissable monuments.</p>
+          <span class="city-card__detail">Full-day exploration</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Gueliz</h3>
+          <p class="city-card__desc">The French-built Ville Nouvelle district, laid out in the early twentieth century with wide boulevards, art deco buildings, and excellent restaurants. A quieter base for those who prefer order to labyrinth, with galleries and design shops along Rue de la Liberté.</p>
+          <span class="city-card__detail">Afternoon wander</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">The Kasbah</h3>
+          <p class="city-card__desc">The southern quarter of the medina, once the fortified residence of the sultan's court. The Kasbah Mosque's minaret — striped in green and white — is one of the city's finest; the Saadian Tombs nearby are a marvel of sixteenth-century craftsmanship hidden for centuries behind a sealed wall.</p>
+          <span class="city-card__detail">Morning visit</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Palmeraie</h3>
+          <p class="city-card__desc">A vast palm grove on the city's northern edge, planted according to legend by Arab soldiers discarding date pits during the original conquest. Today it is dotted with luxury hotels and private villas — the best place to find quiet, a pool, and the Atlas Mountains on the horizon.</p>
+          <span class="city-card__detail">Afternoon retreat</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1597149160849-ba9d3e68a6fe?w=1200&q=80" alt="Djemaa el-Fna square at dusk, Marrakesh" />
+        <figcaption>Djemaa el-Fna as dusk falls — the square transforms from a daytime market into one of the world's great nocturnal spectacles, with dozens of food stalls and performers filling the air with smoke, music, and light.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>March, April, October, and November are the ideal months — temperatures sit comfortably between 18°C and 26°C, the light is golden, and the city is not yet overwhelmed by summer visitors. Spring also brings the almond and rose blossoms of the surrounding countryside. The Roses Festival in El Kelaa des M'Gouna (a short drive towards the Atlas) in late April or early May is one of Morocco's most atmospheric regional celebrations.</p>
+        <p>Summer (June–August) is possible but hot — temperatures regularly reach 38–42°C in July and August, and the medina's narrow alleyways offer little relief. Winter is mild and pleasant by European standards (15–20°C in December and January), making Marrakesh one of the better warm-weather escapes from a northern European winter. The Atlas Mountains are snow-capped from November to March and occasionally skiable — a surreal contrast to the desert city below.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>Staying in a riad — a traditional Moroccan courtyard house, often converted into a boutique guesthouse — is one of Marrakesh's defining pleasures. From the street, a riad reveals nothing; step through its carved cedar door and you enter a world of mosaic fountains, orange trees, and hand-painted ceilings open to the sky. The best riads are concentrated in the northern medina around the Mouassine and Bab Doukkala neighbourhoods. For something grander, La Mamounia — the legendary palace hotel set in twelve acres of walled garden on the edge of the medina — has been the city's most romantic address since 1923.</p>
+        <p>Those who prefer modern amenities over medina immersion will find excellent design hotels in Gueliz. The Palmeraie offers large resort properties, ideal for families or those combining city exploration with pool days and atlas excursions.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Marrakesh is excellent value by European standards. Budget travellers staying in hostel dorms or basic riads can manage on 400–600 MAD (€35–55) per day. A comfortable mid-range riad, restaurant meals, and museum entry runs 1,000–1,800 MAD (€90–165) per day. La Mamounia and comparable palace hotels start from 5,000 MAD (€450) per night. Medina entrance to monuments — Bahia Palace, Saadian Tombs, Ben Youssef Madrasa — costs 70–100 MAD (€6–9) each.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Moroccan cuisine is among the most complex and fragrant in the world — a layering of spice, preserved ingredients, and slow-cooking techniques that reflects centuries of Berber, Arab, Andalusian, and sub-Saharan influence. Tagine, the slow-braised stew cooked in its distinctive conical clay vessel, is the foundation: lamb with prunes and almonds, chicken with preserved lemon and olives, or kefta with eggs and spiced tomato are the essential versions. Couscous, served on Fridays as a communal meal, is another cornerstone — the hand-rolled Moroccan version, steamed three times and served with seven vegetables, bears little resemblance to the instant variety elsewhere.</p>
+        <p>Pastilla — a flaky warqa pastry filled with pigeon (or chicken), almonds, and egg, dusted with cinnamon and icing sugar — is Marrakesh's most celebrated dish and a study in contrasts: savoury and sweet, crisp and yielding. For dessert, chebakia (sesame cookies fried in honey) and seffa (vermicelli with butter, cinnamon, and powdered sugar) satisfy in very different ways. Mint tea, poured from height to create a froth and sweetened generously, is offered everywhere — refusing is considered impolite; accepting graciously is always the right move.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to the Amalfi Coast's cliffside villages — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
