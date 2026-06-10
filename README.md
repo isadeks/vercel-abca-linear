@@ -9,3 +9,5 @@ A static travel-guide website deployed on Vercel.
 - `quiz.html` — "Where Should I Go?" personality quiz
 - `about.html`, `contact.html`, `privacy.html`, `terms.html` — Site pages
 - `*-guide.html` — Individual destination travel guides
+
+<!-- Dep B: appended line -->
