@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lisbon: Portugal's City of Light — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1558642452-9d2a7deb7f62?w=1600&q=80" alt="Lisbon, Portugal" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">City &nbsp;·&nbsp; Portugal</p>
+      <h1 class="guide-hero__title">Lisbon:<br/>Portugal's city of light</h1>
+      <p class="guide-hero__meta">9 min read &nbsp;·&nbsp; Four-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Draped across seven hills above the wide mouth of the Tagus, Lisbon is one of Europe's oldest and most beguiling capitals — a city of faded grandeur and vivid present tense, where ancient miradouros (viewpoints) overlook a skyline of terracotta rooftops, ornate azulejo tiles clad every wall, and the scent of grilled sardines drifts up from harbourside tascas on warm evenings.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Lisbon?</h2>
+        <p>Lisbon rewards visitors with a rare combination: genuine history layered into every cobblestone street, a food culture that punches far above its international profile, and a pace of life that never quite tips into the frantic. The city is compact enough to explore on foot — or by the iconic yellow trams that groan up its steepest inclines — yet varied enough that a week still leaves you wanting more.</p>
+        <p>The great earthquake of 1755 destroyed much of the medieval city, and the Pombaline rebuilding that followed gave Lisbon its distinctive grid of broad downtown streets and its unique architectural identity: a blend of Moorish echoes, Manueline extravagance, and restrained eighteenth-century rationalism. That palimpsest of influences is what makes the city feel so singularly itself — neither straightforwardly Mediterranean nor fully Atlantic, but something in between.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Lisbon's hills are beautiful but relentless. The city's historic lifts (elevadores) and funiculars — Elevador de Santa Justa, Ascensor da Bica, Ascensor do Lavra — were built precisely for this reason and remain in regular use. A 24-hour Viva Viagem card covers all public transport including trams, buses, the metro, and the lifts. Comfortable shoes are non-negotiable; the calçada portuguesa (mosaic cobblestone) is slippery when wet.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The neighbourhoods</h2>
+        <p>Lisbon is a city of distinct quarters, each with its own texture. The contrast between old and new, working-class and gentrified, is part of what keeps it interesting — explore more than one neighbourhood and you begin to understand the city's particular contradictions.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Alfama</h3>
+          <p class="city-card__desc">The oldest surviving district — a Moorish labyrinth of steep lanes, laundry lines, and small bars where fado drifts from open doors at night. Climb to the Castelo de São Jorge for the panoramic view, then lose yourself in the alleys below. Authentic but increasingly touristy; visit early morning for the lived-in version.</p>
+          <span class="city-card__detail">Evenings for fado</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Baixa &amp; Chiado</h3>
+          <p class="city-card__desc">The Pombaline grid at the city's heart — elegant pedestrian streets of bookshops, patisseries, and the landmark Café A Brasileira. Praça do Comércio opens to the Tagus with grand eighteenth-century arcades. Chiado rises west into boutiques and one of Europe's oldest bookshops, Livraria Bertrand, open since 1732.</p>
+          <span class="city-card__detail">Shopping &amp; coffee</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Belém</h3>
+          <p class="city-card__desc">Four kilometres west of the centre, Belém is where the Age of Discoveries is written in stone. The Jerónimos Monastery is Manueline architecture at its most extraordinary — a wedding cake of maritime carving in cream limestone. The Torre de Belém stands at the water's edge, and the Pastéis de Belém bakery has been making custard tarts to its original recipe since 1837.</p>
+          <span class="city-card__detail">Morning half-day</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Bairro Alto</h3>
+          <p class="city-card__desc">By day, a quiet residential grid of fado venues and small independent restaurants; by night, Lisbon's social centre — narrow streets fill with people moving between bars that spill their clientele onto the pavement. The neighbourhood best exemplifies Lisbon's capacity for unhurried nocturnal sociability, a culture locals call the noite lisboeta.</p>
+          <span class="city-card__detail">Nightlife hub</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1513735539099-cf2b0a2fce59?w=1200&q=80" alt="Lisbon rooftops and the Tagus river" />
+        <figcaption>The terracotta rooftops of Alfama tumbling toward the Tagus — a view best appreciated from the Miradouro da Graça in the golden hour before sunset.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Lisbon's climate is one of the most agreeable in Europe. Spring (March to May) is ideal — mild temperatures, the city's jacaranda trees in violet bloom, and crowds that haven't yet reached summer density. June brings the Festas de Lisboa, the city's great popular festival centred on the June saints' days, when the streets fill with grilled sardines, paper decorations, and dancing that continues until dawn.</p>
+        <p>July and August are hot and busy; the city handles the volume well, but accommodation prices peak and the most famous restaurants require advance booking. September and October offer warm days, lower prices, and a slower pace as summer visitors leave — arguably the best time of year. Winter is mild by European standards; January and February bring occasional rain but also empty museums and the best value of the year.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Lisbon remains good value by Western European capitals standards. Budget accommodation starts at €30–60 per night in a guesthouse or hostel; mid-range hotels run €80–150; boutique properties in Alfama or Chiado, €150–300. A full meal at a neighbourhood tasca — soup, main, wine, dessert — costs €12–20 per person. Coffee is a serious institution: an espresso (bica) rarely exceeds €0.90 at a local café. Daily budget excluding accommodation: €50–80 for comfortable, unhurried travel.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Portuguese food is one of Europe's most underrated culinary traditions — humble in presentation, serious in flavour, and built on exceptional raw materials. Bacalhau (salt cod) appears in over a hundred preparations; the caldo verde (kale and potato soup with chorizo) is the national comfort dish; grilled sardines in summer are unavoidable and should not be avoided. Petiscos — small shared dishes in the Spanish tapas tradition — have become the dominant format for casual eating, and the city's many tabernas do them well.</p>
+        <p>The wine scene is equally strong. Vinho verde from the north — light, slightly sparkling, distinctly fresh — is the summer staple. Alentejo reds are rich and food-friendly. And the ginjinha (sour cherry liqueur), served from tiny hole-in-the-wall bars near Rossio square, is an essential local ritual that costs under €2 a glass and tastes of another century entirely.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Fado</h2>
+        <p>No visit to Lisbon is complete without an evening of fado — the city's distinctive musical tradition, listed by UNESCO as Intangible Cultural Heritage. Rooted in Alfama and Mouraria, fado is music of saudade: a Portuguese concept of longing that resists direct translation. A skilled fadista accompanied by Portuguese guitarra and viola baixo can fill a small restaurant with something close to collective emotion. The best houses are intimate and unhurried; Casa de Linhares, Tasca do Chico, and Sr. Fado are among the most authentic. Avoid tourist-oriented shows on Rua Augusta — they capture the form but not the feeling.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to Patagonia's granite towers — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
