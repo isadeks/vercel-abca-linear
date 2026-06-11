@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Porto: Portugal's Soul on the Douro — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1600&q=80" alt="Porto, Portugal — colourful tiled facades along the Douro" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">City &nbsp;·&nbsp; Portugal</p>
+      <h1 class="guide-hero__title">Porto:<br/>Portugal's soul on the Douro</h1>
+      <p class="guide-hero__meta">9 min read &nbsp;·&nbsp; Four-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Stacked on granite hills above a river the colour of dark honey, Porto is one of Europe's most lived-in cities — a place of worn azulejo tiles, baroque church towers, wine cellars that have aged for centuries, and a fierce civic pride that the locals call <em>saudade</em> wrapped in stone and salt air.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Porto?</h2>
+        <p>Porto rewards visitors who go looking for the city rather than the postcard. Its Unesco-listed Ribeira waterfront is spectacular, yes — a cascade of medieval townhouses in faded ochre and terracotta pressing up against the Douro's north bank — but the city's true character lives a little further from the river: in the tiled facades of Bolhão market, in the Art Nouveau bookshop that inspired Harry Potter, in the wine lodges of Vila Nova de Gaia where barrels of tawny port mature in the Atlantic breeze.</p>
+        <p>Porto is also one of Western Europe's most affordable capitals, with a restaurant and bar culture that punches far above its price point. Bacalhau — salt cod prepared in what locals insist are 365 different ways — defines the table, alongside perfectly grilled sardines in summer, richly sauced tripas, and the legendary francesinha sandwich that has converted sceptics for decades. Wine is both an industry and a way of life here: vinho verde from the Minho to the north, and port from the Douro Valley to the east, converge on this compact, hilly city.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Porto is a city of steep hills and staircase streets — comfortable walking shoes are essential. The metro system is excellent and covers the airport, the beach at Matosinhos, and the historic centre. Buy a reloadable Andante card on arrival. For crossing the river to the port wine lodges of Gaia, the lower-level bridge (Ponte de Dom Luís I) is the most dramatic crossing on foot; the upper level carries the metro.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The neighbourhoods</h2>
+        <p>Porto divides naturally into distinct quarters, each with its own rhythm. The Ribeira along the waterfront is the most visited, but Cedofeita and the Bonfim neighbourhood to the east have become the centres of a creative revival — independent bookshops, concept stores, natural wine bars, and restaurants redefining Portuguese cuisine in small converted spaces. Getting lost between neighbourhoods, following the tram lines or the sound of fado drifting from a window, is among the city's best pleasures.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Ribeira</h3>
+          <p class="city-card__desc">The medieval waterfront quarter, a Unesco World Heritage site since 1996. Narrow lanes of medieval townhouses drop to the riverside quays where fishing boats once unloaded their catch and wine barges — the <em>rabelos</em> — arrived from the Douro Valley. Best explored at dawn or after dinner when the crowds thin.</p>
+          <span class="city-card__detail">Historic heart</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Foz do Douro</h3>
+          <p class="city-card__desc">Where the Douro meets the Atlantic, Foz is Porto's seaside neighbourhood — broad promenades, granite sea walls, and the Castelo do Queijo fortress at the river's mouth. On warm evenings the esplanade fills with families, cyclists, and the best sunset views in the city.</p>
+          <span class="city-card__detail">Coastal escape</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Bolhão</h3>
+          <p class="city-card__desc">Porto's revered covered market — recently restored to its 1914 iron-and-tile glory — sits at the centre of the city's commercial soul. The surrounding streets are lined with century-old specialty shops: bacalhau merchants, cheese sellers, Portuguese linen houses, and the original <em>garrafeiras</em> stocking port and vinho verde.</p>
+          <span class="city-card__detail">Market district</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Cedofeita</h3>
+          <p class="city-card__desc">Porto's creative quarter spreads west of the city centre along Rua de Cedofeita and into the grid of streets around it. Art galleries, independent bookshops, vintage clothing, and the city's best natural wine bars fill low-rent townhouses in a neighbourhood that feels genuinely Porto rather than staged for tourism.</p>
+          <span class="city-card__detail">Creative quarter</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1513735492246-483525079686?w=1200&q=80" alt="Porto Ribeira waterfront and Dom Luís I bridge at dusk" />
+        <figcaption>The Ribeira waterfront at dusk, with the double-deck iron arches of Ponte de Dom Luís I framing the port wine lodges of Gaia on the opposite bank.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Porto is a year-round city, but its best months are May, June, September, and October — warm and bright without the humidity of July and August, when the Atlantic coast can bring sea mist and unexpected grey mornings even in high summer. The city's famous <em>São João</em> festival on the night of 23–24 June is one of Europe's great street parties: the entire city takes to the hills with plastic hammers and grilled sardines, fireworks arc over the Douro, and the distinction between locals and visitors dissolves entirely for a single euphoric night.</p>
+        <p>Winter in Porto is mild by northern European standards and carries a particular atmospheric quality — the granite and azulejo tiles darken with rain, candles appear in café windows, and the wine lodges of Gaia offer unhurried tastings without queues. November through February is quiet, affordable, and genuinely rewarding for the visitor willing to lean into the city's melancholy beauty.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>The city's accommodation has expanded dramatically in recent years, from intimate guesthouses in converted townhouses in the Bonfim neighbourhood to design hotels in restored industrial buildings. For atmosphere, the area around the Sé cathedral and the Ribeira offers proximity to the historic centre; for a quieter, more residential experience, Cedofeita or the streets around Jardim do Morro in Gaia are worth considering. The Yeatman in Vila Nova de Gaia, perched above the port wine lodges with panoramic views of Porto across the river, is the city's most celebrated luxury property.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Porto remains one of Western Europe's best-value city breaks. Budget travellers staying in guesthouses and eating at tascas (traditional taverns) can live well on €60–80 per day. Mid-range visitors should budget €120–180 per day. A glass of vinho verde costs €2–3 at a neighbourhood café; a full bacalhau dinner with wine at a traditional restaurant rarely exceeds €25–30 per person. Port wine lodge tours run €15–25 including tastings.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; wine</h2>
+        <p>Porto's food culture is rooted in the honest and the abundant. The francesinha — a layered sandwich of cured meats and melted cheese, submerged in a spiced tomato-and-beer sauce — is the city's signature dish, and every neighbourhood has its own preferred address for it. Bacalhau (salt cod) is the national obsession, appearing as everything from croquettes at the counter of a café to bacalhau à Gomes de Sá, a baked dish of salt cod with potatoes, onion, and egg that is quietly one of Portugal's finest plates.</p>
+        <p>Across the river in Gaia, the great port wine houses — Graham's, Taylor's, Ramos Pinto, Sandeman — open their lodges for tours and tastings that trace the wine's journey from the Douro's schist terraces to barrel to bottle. A visit to at least one is obligatory; the hilltop terraces above the lodges offer the finest panoramas of Porto's roofline, particularly at golden hour when the city turns the colour of tawny itself.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to Patagonia's wild south — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
