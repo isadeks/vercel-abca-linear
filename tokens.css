@@ -1,0 +1,93 @@
+/*
+ * tokens.css — Wander brand design tokens
+ *
+ * CSS custom properties inferred from the existing Wander site pages.
+ * Import this file before any component styles to unlock the full token system.
+ *
+ * Naming convention: --w-<category>-<scale-or-role>
+ *
+ * Categories:
+ *   color      — palette & semantic roles
+ *   space      — spacing scale (4 px base, ×1.5 progression)
+ *   font-size  — type-scale steps
+ *   font-family — typeface stacks
+ *   radius     — border-radius
+ */
+
+:root {
+
+  /* ─────────────────────────────────────────────────────────────
+   * COLOR
+   * Brand palette: warm neutrals + teal primary + coral accent
+   * ───────────────────────────────────────────────────────────── */
+
+  /* Semantic / action */
+  --w-color-primary:        #2a7a6f;   /* teal — links, CTAs, highlights  */
+  --w-color-primary-light:  #d5ecea;   /* teal wash — tag backgrounds      */
+  --w-color-primary-dark:   #22665c;   /* teal hover state                 */
+  --w-color-secondary:      #c9624a;   /* coral — secondary accent         */
+
+  /* Ink (text) */
+  --w-color-ink:            #1a1714;   /* near-black — body & headings     */
+  --w-color-ink-muted:      #6b6560;   /* ash — secondary / supporting text*/
+
+  /* Surfaces & borders */
+  --w-color-surface:        #faf8f4;   /* cream — page background          */
+  --w-color-surface-alt:    #f5f0e8;   /* sand — card & section background */
+  --w-color-border:         #e8e0d0;   /* stone — dividers & input borders */
+
+
+  /* ─────────────────────────────────────────────────────────────
+   * SPACING
+   * 4 px base, roughly ×1.5–2 each step.
+   * --w-space-1  =  4 px   (tight internal padding, icon gaps)
+   * --w-space-2  =  8 px   (compact gaps, badge padding)
+   * --w-space-3  = 16 px   (inline padding, small gaps)
+   * --w-space-4  = 24 px   (container gutters, card padding)
+   * --w-space-5  = 40 px   (section sub-units, nav padding)
+   * --w-space-6  = 72 px   (section vertical rhythm)
+   * ───────────────────────────────────────────────────────────── */
+
+  --w-space-1:  0.25rem;    /*  4 px */
+  --w-space-2:  0.5rem;     /*  8 px */
+  --w-space-3:  1rem;       /* 16 px */
+  --w-space-4:  1.5rem;     /* 24 px */
+  --w-space-5:  2.5rem;     /* 40 px */
+  --w-space-6:  4.5rem;     /* 72 px */
+
+
+  /* ─────────────────────────────────────────────────────────────
+   * TYPE SCALE
+   * Base: 16 px (1 rem). Steps tuned to match heading/body usage
+   * observed across site pages.
+   * --w-font-size-1  = 0.75 rem  / 12 px  — labels, meta, captions
+   * --w-font-size-2  = 0.875 rem / 14 px  — small body, nav links
+   * --w-font-size-3  = 1 rem     / 16 px  — body copy (default)
+   * --w-font-size-4  = 1.5 rem   / 24 px  — sub-headings, card titles
+   * --w-font-size-5  = 2.5 rem   / 40 px  — page/section headings
+   * ───────────────────────────────────────────────────────────── */
+
+  --w-font-size-1:  0.75rem;    /* 12 px */
+  --w-font-size-2:  0.875rem;   /* 14 px */
+  --w-font-size-3:  1rem;       /* 16 px */
+  --w-font-size-4:  1.5rem;     /* 24 px */
+  --w-font-size-5:  2.5rem;     /* 40 px */
+
+
+  /* ─────────────────────────────────────────────────────────────
+   * TYPEFACES
+   * ───────────────────────────────────────────────────────────── */
+
+  --w-font-family-serif: 'Cormorant Garamond', Georgia, serif;
+  --w-font-family-sans:  'Inter', system-ui, sans-serif;
+
+
+  /* ─────────────────────────────────────────────────────────────
+   * BORDER RADIUS
+   * The site uses near-flat surfaces; 4 px is the only explicit
+   * radius in the codebase.
+   * ───────────────────────────────────────────────────────────── */
+
+  --w-radius: 4px;
+
+}
