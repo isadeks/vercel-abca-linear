@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+
+    /* ── Auth layout ──────────────────────────────────────────── */
+    .auth-page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* Left panel — scenic image */
+    .auth-page__visual {
+      position: relative;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.45) 100%),
+        url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80') center/cover no-repeat;
+    }
+    .auth-page__visual-inner {
+      position: absolute;
+      bottom: 60px;
+      left: 56px;
+      right: 56px;
+    }
+    .auth-page__visual-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 14px;
+    }
+    .auth-page__visual-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: white;
+      line-height: 1.35;
+    }
+
+    /* Right panel — form */
+    .auth-page__form-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 48px 60px;
+      background: var(--cream);
+    }
+
+    .auth-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .auth-form__header {
+      margin-bottom: 36px;
+    }
+    .auth-form__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .auth-form__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .auth-form__title em { font-style: italic; }
+
+    /* Tabs — Sign in / Sign up */
+    .auth-tabs {
+      display: flex;
+      border-bottom: 1px solid var(--stone);
+      margin-bottom: 32px;
+      gap: 0;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px 0;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--ash);
+      border: none;
+      background: none;
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .auth-tab:hover { color: var(--ink); }
+    .auth-tab.active {
+      color: var(--teal);
+      border-bottom-color: var(--teal);
+    }
+
+    /* Form fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-group input {
+      padding: 13px 16px;
+      border: 1px solid var(--stone);
+      background: white;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder { color: #b0a898; }
+    .form-group input:focus { border-color: var(--teal); }
+
+    /* Display-name field — only shown on sign-up */
+    .form-group--signup { display: none; }
+    .form-group--signup.visible { display: flex; }
+
+    /* Error message */
+    .form-error {
+      font-size: 0.8rem;
+      color: var(--coral);
+      margin-bottom: 16px;
+      min-height: 1.2em;
+      display: none;
+    }
+    .form-error.visible { display: block; }
+
+    /* Submit button */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 28px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      width: 100%;
+    }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+
+    /* Footer note */
+    .auth-form__footer-note {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: var(--ash);
+      text-align: center;
+      line-height: 1.6;
+    }
+    .auth-form__footer-note a {
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      transition: opacity 0.2s;
+    }
+    .auth-form__footer-note a:hover { opacity: 0.7; }
+
+    /* Toggle link inside note */
+    .auth-toggle-link {
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .auth-toggle-link:hover { opacity: 0.7; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 28px 0;
+    }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+      .auth-page { grid-template-columns: 1fr; }
+      .auth-page__visual { display: none; }
+      .auth-page__form-panel { padding: 100px 32px 60px; }
+    }
+
+    @media (max-width: 480px) {
+      .auth-page__form-panel { padding: 88px 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="index.html#newsletter">Newsletter</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Auth page ────────────────────────────────────────────── -->
+  <main class="auth-page">
+
+    <!-- Visual / scenic panel -->
+    <div class="auth-page__visual" role="presentation">
+      <div class="auth-page__visual-inner">
+        <p class="auth-page__visual-eyebrow">Wander — your travel companion</p>
+        <p class="auth-page__visual-quote">"The world is vast,<br/><em>and you've only just begun.</em>"</p>
+      </div>
+    </div>
+
+    <!-- Form panel -->
+    <div class="auth-page__form-panel">
+      <div class="auth-form">
+
+        <div class="auth-form__header">
+          <p class="auth-form__eyebrow" id="form-eyebrow">Welcome back</p>
+          <h1 class="auth-form__title" id="form-title">Sign <em>in</em></h1>
+        </div>
+
+        <!-- Sign-in / Sign-up tabs -->
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active"
+                  id="tab-signin"
+                  role="tab"
+                  aria-selected="true"
+                  aria-controls="auth-form-fields"
+                  onclick="switchMode('signin')">Sign in</button>
+          <button class="auth-tab"
+                  id="tab-signup"
+                  role="tab"
+                  aria-selected="false"
+                  aria-controls="auth-form-fields"
+                  onclick="switchMode('signup')">Sign up</button>
+        </div>
+
+        <!-- Form -->
+        <form id="auth-form-fields" novalidate onsubmit="handleSubmit(event)">
+
+          <!-- Email (always visible) -->
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   placeholder="your@email.com"
+                   autocomplete="email"
+                   required />
+          </div>
+
+          <!-- Display name (sign-up only) -->
+          <div class="form-group form-group--signup" id="group-display-name">
+            <label for="display-name">Display name</label>
+            <input type="text"
+                   id="display-name"
+                   name="displayName"
+                   placeholder="How should we call you?"
+                   autocomplete="name" />
+          </div>
+
+          <!-- Inline error -->
+          <p class="form-error" id="form-error" role="alert"></p>
+
+          <!-- Submit -->
+          <button type="submit" class="btn btn--teal" id="submit-btn">
+            Sign in
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+        </form>
+
+        <p class="auth-form__footer-note" id="footer-note">
+          Don't have an account?
+          <span class="auth-toggle-link" onclick="switchMode('signup')">Create one</span>
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- auth.js must come before the inline script -->
+  <script src="auth.js"></script>
+  <script>
+    'use strict';
+
+    // ── Mode state ───────────────────────────────────────────────
+    var currentMode = 'signin';
+
+    /**
+     * Switch between 'signin' and 'signup' modes,
+     * updating tab state, labels, and field visibility.
+     * @param {'signin'|'signup'} mode
+     */
+    function switchMode(mode) {
+      currentMode = mode;
+      var isSignup = mode === 'signup';
+
+      // Tabs
+      document.getElementById('tab-signin').classList.toggle('active', !isSignup);
+      document.getElementById('tab-signup').classList.toggle('active',  isSignup);
+      document.getElementById('tab-signin').setAttribute('aria-selected', String(!isSignup));
+      document.getElementById('tab-signup').setAttribute('aria-selected', String( isSignup));
+
+      // Header copy
+      document.getElementById('form-eyebrow').textContent = isSignup ? 'Join Wander' : 'Welcome back';
+      document.getElementById('form-title').innerHTML     = isSignup ? 'Create an <em>account</em>' : 'Sign <em>in</em>';
+
+      // Display-name field
+      var dnGroup = document.getElementById('group-display-name');
+      var dnInput = document.getElementById('display-name');
+      if (isSignup) {
+        dnGroup.classList.add('visible');
+        dnInput.setAttribute('required', '');
+      } else {
+        dnGroup.classList.remove('visible');
+        dnInput.removeAttribute('required');
+      }
+
+      // Button label
+      document.getElementById('submit-btn').childNodes[0].nodeValue = isSignup ? 'Create account ' : 'Sign in ';
+
+      // Footer note
+      document.getElementById('footer-note').innerHTML = isSignup
+        ? 'Already have an account? <span class="auth-toggle-link" onclick="switchMode(\'signin\')">Sign in</span>'
+        : 'Don\'t have an account? <span class="auth-toggle-link" onclick="switchMode(\'signup\')">Create one</span>';
+
+      // Clear any previous error
+      showError('');
+    }
+
+    /**
+     * Display or hide the inline error message.
+     * @param {string} msg  Empty string hides the error.
+     */
+    function showError(msg) {
+      var el = document.getElementById('form-error');
+      el.textContent = msg;
+      el.classList.toggle('visible', msg.length > 0);
+    }
+
+    /**
+     * Handle form submission for both sign-in and sign-up modes.
+     * Calls WanderAuth.setSession() then redirects to index.html.
+     * @param {Event} e
+     */
+    function handleSubmit(e) {
+      e.preventDefault();
+
+      var email       = document.getElementById('email').value.trim();
+      var displayName = document.getElementById('display-name').value.trim();
+
+      // Basic validation
+      if (!email) {
+        showError('Please enter your email address.');
+        document.getElementById('email').focus();
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showError('Please enter a valid email address.');
+        document.getElementById('email').focus();
+        return;
+      }
+      if (currentMode === 'signup' && !displayName) {
+        showError('Please enter a display name.');
+        document.getElementById('display-name').focus();
+        return;
+      }
+
+      // For sign-in, derive a display name from the email if none is stored.
+      // (Real auth would validate credentials; here we just establish a session.)
+      var name = (currentMode === 'signup')
+        ? displayName
+        : (email.split('@')[0]);
+
+      // Persist session via auth.js helper
+      WanderAuth.setSession({
+        email:       email,
+        displayName: name,
+        signedInAt:  new Date().toISOString()
+      });
+
+      // Redirect to home
+      window.location.href = 'index.html';
+    }
+
+    // ── If already signed in, skip straight to home ──────────────
+    (function redirectIfSignedIn() {
+      if (WanderAuth.getSession()) {
+        window.location.replace('index.html');
+      }
+    }());
+  </script>
+
+</body>
+</html>
