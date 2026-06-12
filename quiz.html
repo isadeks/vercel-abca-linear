@@ -697,6 +697,7 @@
 
   </div><!-- /.quiz-wrap -->
 
+  <script src="analytics.js"></script>
   <script>
   /* ================================================================
      QUIZ DATA
@@ -1200,6 +1201,7 @@
   });
 
   document.getElementById('start-btn').addEventListener('click', () => {
+    Analytics.track('quiz_start', { page: location.pathname });
     showScreen('screen-quiz');
     buildSidebar();
     renderQuestion(0);
@@ -1222,6 +1224,8 @@
     const ranked = scoreDestinations(answers);
     const winner = ranked[0].dest;
     const runnerUps = ranked.slice(1, 4).map(r => r.dest);
+
+    Analytics.track('quiz_complete', { result: winner.id, page: location.pathname });
 
     // Hero
     document.getElementById('result-bg').style.cssText =
