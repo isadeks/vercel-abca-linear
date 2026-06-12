@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Inicio",
+    "destinations": "Destinos",
+    "guides": "Guías",
+    "regions": "Regiones",
+    "newsletter": "Boletín"
+  },
+  "hero": {
+    "title": "El mundo te espera",
+    "cta": "Explorar destinos"
+  }
+}
