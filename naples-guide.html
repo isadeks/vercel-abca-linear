@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Naples: Italy's Most Misunderstood City — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1534445967719-8ae7b972b1a5?w=1600&q=80" alt="Naples, Italy — the Bay of Naples with Vesuvius in the background" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">City &nbsp;·&nbsp; Southern Italy</p>
+      <h1 class="guide-hero__title">Naples:<br/>Italy's most misunderstood city</h1>
+      <p class="guide-hero__meta">10 min read &nbsp;·&nbsp; Long-weekend itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Loud, layered, and utterly alive, Naples is the city that divides opinion and then converts everyone who stays long enough to look past first impressions. Beneath the diesel fumes and the frantic traffic lies one of the oldest continuously inhabited cities in the world — a place of staggering art, subterranean archaeology, and the best pizza on earth.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Naples?</h2>
+        <p>Naples (Napoli) sits at the heart of one of the most historically rich regions in Europe. Founded by Greek colonists around 600 BC and later absorbed by Rome, it became the capital of the Kingdom of the Two Sicilies and one of the largest cities in Europe during the 18th century. That layered history is visible everywhere: Greek ruins beneath the streets, Roman marketplaces, Norman castles, Spanish baroque churches, and grand Bourbon palaces jostle for space in a city that never demolished what came before.</p>
+        <p>The city's UNESCO-listed historic centre is the densest concentration of historic monuments in the world. And then there is the food — Neapolitan cuisine is not a regional variation of Italian cooking; it is the source of several dishes the world now calls Italian. The pizza, the ragù, the sfogliatella pastry: all born here, and all still made better here than anywhere else.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Naples rewards slow, curious exploration on foot. The centro storico is compact and best navigated by walking the three main east–west decumani (ancient Greek streets) and their perpendicular cross-streets. Pick up a Campania Artecard for combined museum entry and public transport — it pays for itself quickly given the density of world-class sites.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Neighbourhoods to know</h2>
+        <p>Naples is a city of distinct quarters, each with its own character and pace. The centro storico is the obvious starting point — a labyrinth of narrow alleys, Renaissance churches, and street food vendors that has barely changed in centuries. Spaccanapoli, the ancient street that slices the old city in two, is the city's spine: follow it from east to west and you'll pass pizza shops, nativity crib workshops, and baroque churches without drawing breath.</p>
+        <p>The waterfront Lungomare offers a different Naples entirely — broad, airy promenades along the Bay of Naples with views of Vesuvius and Capri on clear days. The Chiaia district, west of the centre, is where the city puts on its best clothes: Liberty-era cafés, designer boutiques, and the magnificent Villa Comunale gardens stretching along the sea.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Centro Storico</h3>
+          <p class="city-card__desc">The ancient Greek and Roman grid at the heart of Naples — UNESCO-listed, chaotic, and completely absorbing. Home to the Duomo, the Cappella Sansevero, and more churches than any city has a right to.</p>
+          <span class="city-card__detail">Half day minimum</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Spaccanapoli</h3>
+          <p class="city-card__desc">The long straight street that bisects the old city, lined with pizza bakeries, artisan workshops, and baroque churches. The best street food in Italy is found along and around this corridor.</p>
+          <span class="city-card__detail">Morning walk</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Lungomare</h3>
+          <p class="city-card__desc">The seafront promenade from Castel dell'Ovo to Mergellina — best at sunset, when the sky turns gold behind Vesuvius and locals fill the waterfront bars. The Castel dell'Ovo itself is free to enter.</p>
+          <span class="city-card__detail">Evening stroll</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Museo Nazionale</h3>
+          <p class="city-card__desc">The National Archaeological Museum holds the finest collection of Greco-Roman antiquities in the world — including the Farnese Hercules, the Alexander Mosaic, and the entire contents of Pompeii's excavations.</p>
+          <span class="city-card__detail">Half day</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1555992336-03a23c7b20ee?w=1200&q=80" alt="A street in the historic centre of Naples with laundry strung between buildings" />
+        <figcaption>The centro storico at midday — laundry overhead, scooters below, and the smell of frying dough drifting from a side alley.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Naples is a year-round city, but the most comfortable time to visit is April to June and September to October. Spring brings mild temperatures and the city's characteristic light — sharp and golden, perfect for the street photography the old city invites. October is perhaps the ideal month: warm enough for the coast, quiet enough to get a table at the best pizzerias without a wait, and with a local energy that the summer crowds dilute.</p>
+        <p>July and August are hot and humid — temperatures regularly exceed 35°C — and the city empties slightly as Neapolitans head to the coast. Winter is underrated: Christmas in Naples is an event, with the presepe (nativity scene) workshops of Via San Gregorio Armeno producing some of the most elaborate nativity figures in the world. The city is at its most local and least touristed between November and February.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>The centro storico puts you at the centre of everything and is the obvious choice for first-time visitors. Accommodation here ranges from basic B&amp;Bs in apartment buildings to boutique hotels in converted palazzi. For more comfort, the Chiaia and Posillipo districts offer quieter, more residential settings within easy reach of the centre by metro or taxi. The Grand Hotel Vesuvio on the Lungomare is the city's grandest address — a seafront institution with views of the bay and Vesuvius from the upper floors.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Naples is significantly cheaper than Rome or Florence. Budget travellers can eat extraordinarily well — a pizza margherita at one of the historic pizzerias costs €4–6 — and find clean, central accommodation for €60–90 per night. Mid-range visitors should budget €120–200 per day including a good hotel and meals with wine. Even at the higher end, Naples offers remarkable value by Italian standards.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>The pizza question must be addressed first: Neapolitan pizza is a protected designation (STG) with strict rules governing its preparation. The dough must rest for at least eight hours, the tomatoes must be San Marzano DOP, the mozzarella must be fior di latte or buffalo mozzarella from Campania, and the pizza must be cooked for no more than 90 seconds in a wood-fired oven. The result is soft, slightly charred, and nothing like the pizza served elsewhere in the world. Sorbillo on Via dei Tribunali and Da Michele on Via Cesare Sersale are the most famous addresses, but the city has hundreds of pizzerias of equivalent quality.</p>
+        <p>Beyond pizza: ragù napoletano (a slow-cooked meat sauce that simmers for hours), spaghetti alle vongole with Pozzuoli clams, fried pizza (pizza fritta) from street vendors, and sfogliatella — a shell-shaped pastry filled with ricotta and semolina, best eaten hot from a pasticceria at breakfast. The coffee culture is serious and distinct: Neapolitan espresso is darker, more intense, and served at the bar standing up, usually accompanied by a glass of water. The tradition of caffè sospeso (a pre-paid coffee for a stranger in need) began here.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Day trips</h2>
+        <p>Naples sits at the centre of one of the richest archaeological regions in the world. Pompeii and Herculaneum — both preserved under volcanic ash from the 79 AD eruption of Vesuvius — are the obvious excursions, both reachable by the Circumvesuviana train in under an hour. The island of Capri, visible from the Lungomare, is a 45-minute hydrofoil ride and offers extraordinary coastal scenery, though it becomes very crowded in summer. Paestum, 90 kilometres south, preserves three of the best-preserved Greek temples in the world, in a setting of quiet, melancholy beauty.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From the Amalfi Coast's clifftop villages to Japan's ancient capital — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
