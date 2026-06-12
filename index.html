@@ -559,6 +559,7 @@
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="login.html" id="nav-auth-link">Sign in</a></li>
     </ul>
   </nav>
 
@@ -825,12 +826,19 @@
     </div>
   </footer>
 
+  <script src="auth.js"></script>
+  <script src="guard.js"></script>
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // Initialise nav auth link (Sign in / Sign out)
+    document.addEventListener('DOMContentLoaded', function () {
+      WanderGuard.initNav('#nav-auth-link');
+    });
 
   </script>
 
