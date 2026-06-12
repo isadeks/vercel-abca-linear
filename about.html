@@ -59,6 +59,15 @@
       transition: opacity 0.2s;
     }
     .nav__back:hover { opacity: 0.7; }
+    .nav__actions {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .nav__search-icon {
+      display: flex; align-items: center;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__search-icon:hover { opacity: 0.7; }
 
     .page-hero {
       padding: 96px 0 64px;
@@ -260,7 +269,15 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html" class="nav__back">← Home</a>
+    <div class="nav__actions">
+      <a href="index.html" class="nav__back">← Home</a>
+      <a href="search.html" class="nav__search-icon" aria-label="Search">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M11.5 11.5L16 16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </a>
+    </div>
   </nav>
 
   <div class="page-hero">
