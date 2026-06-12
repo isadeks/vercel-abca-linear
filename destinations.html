@@ -223,5 +223,18 @@
     </div>
   </footer>
 
+
+  <script src="analytics.js"></script>
+  <script>
+    Analytics.track('page_view', { page: 'destinations' });
+
+    document.querySelectorAll('.dest-card').forEach(function (card) {
+      card.addEventListener('click', function () {
+        var nameEl = card.querySelector('.dest-card__name');
+        var name = nameEl ? nameEl.textContent.trim() : '';
+        Analytics.track('destination_open', { name: name });
+      });
+    });
+  </script>
 </body>
 </html>
