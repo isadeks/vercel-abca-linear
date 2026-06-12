@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="components.css" />
   <style>
     /* ── Reset & base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -41,43 +42,6 @@
     /* ── Utility ──────────────────────────────────────────────── */
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
     .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
-
-    /* ── Nav ──────────────────────────────────────────────────── */
-    .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 40px;
-      background: transparent;
-      transition: background 0.3s, backdrop-filter 0.3s;
-    }
-    .nav.scrolled {
-      background: rgba(250,248,244,0.92);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--stone);
-    }
-    .nav__logo {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      color: white;
-      transition: color 0.3s;
-    }
-    .nav.scrolled .nav__logo { color: var(--ink); }
-    .nav__links {
-      display: flex; gap: 32px; list-style: none;
-    }
-    .nav__links a {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.85);
-      transition: color 0.2s;
-    }
-    .nav__links a:hover { color: white; }
-    .nav.scrolled .nav__links a { color: var(--ash); }
-    .nav.scrolled .nav__links a:hover { color: var(--ink); }
 
     /* ── Hero ─────────────────────────────────────────────────── */
     .hero {
@@ -521,8 +485,8 @@
 
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .nav { padding: 18px 24px; }
-      .nav__links { display: none; }
+      .w-nav { padding: 18px 24px; }
+      .w-nav__links { display: none; }
       .hero__content { padding: 0 24px 60px; }
 
       .featured__grid {
@@ -551,9 +515,9 @@
 <body>
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
-  <nav class="nav" id="nav">
-    <a href="index.html" class="nav__logo">Wander</a>
-    <ul class="nav__links">
+  <nav class="w-nav" id="nav">
+    <a href="index.html" class="w-nav__logo">Wander</a>
+    <ul class="w-nav__links">
       <li><a href="#destinations">Destinations</a></li>
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
@@ -829,7 +793,7 @@
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
+      nav.classList.toggle('w-nav--scrolled', window.scrollY > 60);
     }, { passive: true });
 
   </script>
