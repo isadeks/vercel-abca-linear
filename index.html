@@ -79,6 +79,41 @@
     .nav.scrolled .nav__links a { color: var(--ash); }
     .nav.scrolled .nav__links a:hover { color: var(--ink); }
 
+    /* ── Language switcher ────────────────────────────────────── */
+    .lang-switcher {
+      display: flex; gap: 4px; align-items: center;
+      margin-left: 24px;
+    }
+    .lang-switcher__btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.4);
+      color: rgba(255,255,255,0.75);
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 4px 8px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      line-height: 1;
+    }
+    .lang-switcher__btn:hover,
+    .lang-switcher__btn[aria-pressed="true"] {
+      background: rgba(255,255,255,0.2);
+      color: white;
+      border-color: white;
+    }
+    .nav.scrolled .lang-switcher__btn {
+      border-color: var(--stone);
+      color: var(--ash);
+    }
+    .nav.scrolled .lang-switcher__btn:hover,
+    .nav.scrolled .lang-switcher__btn[aria-pressed="true"] {
+      background: var(--sand);
+      color: var(--ink);
+      border-color: var(--ash);
+    }
+
     /* ── Hero ─────────────────────────────────────────────────── */
     .hero {
       position: relative; height: 100vh; min-height: 600px;
@@ -554,12 +589,17 @@
   <nav class="nav" id="nav">
     <a href="index.html" class="nav__logo">Wander</a>
     <ul class="nav__links">
-      <li><a href="#destinations">Destinations</a></li>
-      <li><a href="#guides">Guides</a></li>
-      <li><a href="#regions">Regions</a></li>
+      <li><a href="#destinations" data-i18n="nav.destinations">Destinations</a></li>
+      <li><a href="#guides" data-i18n="nav.guides">Guides</a></li>
+      <li><a href="#regions" data-i18n="nav.regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
-      <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="#newsletter" data-i18n="nav.newsletter">Newsletter</a></li>
     </ul>
+    <div class="lang-switcher" role="group" aria-label="Language">
+      <button class="lang-switcher__btn" data-lang="en" aria-pressed="true">EN</button>
+      <button class="lang-switcher__btn" data-lang="es" aria-pressed="false">ES</button>
+      <button class="lang-switcher__btn" data-lang="pt" aria-pressed="false">PT</button>
+    </div>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
@@ -567,9 +607,9 @@
     <div class="hero__bg"></div>
     <div class="hero__content">
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
-      <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
+      <h1 class="hero__title" data-i18n="hero.title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <a href="#destinations" class="btn" data-i18n="hero.cta">Explore destinations</a>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
@@ -825,6 +865,7 @@
     </div>
   </footer>
 
+  <script src="i18n.js"></script>
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
@@ -832,6 +873,41 @@
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
+    // ── i18n rendering ────────────────────────────────────────────
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach(function (el) {
+        var key = el.getAttribute('data-i18n');
+        var text = i18n.t(key);
+        // Only update textContent for elements that don't contain child elements
+        // (avoids destroying <br/> or <em> inside hero title)
+        if (el.children.length === 0) {
+          el.textContent = text;
+        } else {
+          // For elements with child markup, only update if text differs from key
+          // (graceful no-op when key is not found in catalog)
+          if (text !== key) {
+            el.textContent = text;
+          }
+        }
+      });
+    }
+
+    // ── Language switcher ─────────────────────────────────────────
+    document.querySelectorAll('.lang-switcher__btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var lang = btn.getAttribute('data-lang');
+        i18n.setLocale(lang);
+        applyTranslations();
+        // Update aria-pressed state
+        document.querySelectorAll('.lang-switcher__btn').forEach(function (b) {
+          b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+        });
+      });
+    });
+
+    // Apply default (English) translations on load
+    i18n.setLocale('en');
+    applyTranslations();
   </script>
 
 </body>
