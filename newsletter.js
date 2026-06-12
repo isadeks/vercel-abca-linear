@@ -62,6 +62,10 @@ function mountNewsletter(selector) {
   input.setAttribute('aria-label', 'Email address');
   input.required = true;
 
+  var privacy = document.createElement('small');
+  privacy.className = 'wander-newsletter-privacy';
+  privacy.textContent = 'We never share your email.';
+
   var button = document.createElement('button');
   button.type = 'submit';
   button.textContent = 'Subscribe';
@@ -72,6 +76,7 @@ function mountNewsletter(selector) {
   message.style.display = 'none';
 
   form.appendChild(input);
+  form.appendChild(privacy);
   form.appendChild(button);
   form.appendChild(message);
   container.appendChild(form);
@@ -112,6 +117,11 @@ function mountNewsletter(selector) {
     '}',
     '.wander-newsletter-form button[type="submit"]:hover {',
     '  background: #22665c;',
+    '}',
+    '.wander-newsletter-privacy {',
+    '  font-size: 0.78rem;',
+    '  color: #888;',
+    '  margin-top: -4px;',
     '}',
     '.wander-newsletter-message {',
     '  font-size: 0.85rem;',
