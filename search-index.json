@@ -1,0 +1,57 @@
+[
+  {
+    "title": "Wander — Travel Guide",
+    "url": "/index.html",
+    "keywords": ["travel", "guide", "destinations", "explore", "adventure", "curious", "home"]
+  },
+  {
+    "title": "All Destinations — Wander",
+    "url": "/destinations.html",
+    "keywords": ["destinations", "places", "regions", "travel", "explore", "world"]
+  },
+  {
+    "title": "About — Wander",
+    "url": "/about.html",
+    "keywords": ["about", "wander", "mission", "team", "story", "travel guides"]
+  },
+  {
+    "title": "Contact — Wander",
+    "url": "/contact.html",
+    "keywords": ["contact", "get in touch", "email", "support", "feedback"]
+  },
+  {
+    "title": "The Amalfi Coast: Italy's Most Dramatic Shoreline — Wander",
+    "url": "/amalfi-guide.html",
+    "keywords": ["amalfi", "italy", "coast", "europe", "mediterranean", "shoreline", "positano", "ravello"]
+  },
+  {
+    "title": "Kyoto: Japan's Ancient Capital — Wander",
+    "url": "/kyoto-guide.html",
+    "keywords": ["kyoto", "japan", "asia", "ancient", "temples", "culture", "geisha", "cherry blossom"]
+  },
+  {
+    "title": "Norway's Fjords in the Midnight Sun — Wander",
+    "url": "/norway-guide.html",
+    "keywords": ["norway", "fjords", "scandinavia", "europe", "midnight sun", "northern lights", "nature"]
+  },
+  {
+    "title": "A Week at the End of the World: Patagonia — Wander",
+    "url": "/patagonia-guide.html",
+    "keywords": ["patagonia", "argentina", "chile", "south america", "hiking", "wilderness", "nature", "torres del paine"]
+  },
+  {
+    "title": "Rajasthan by Rail: The Golden Cities — Wander",
+    "url": "/rajasthan-guide.html",
+    "keywords": ["rajasthan", "india", "asia", "rail", "golden cities", "jaipur", "jodhpur", "jaisalmer", "desert"]
+  },
+  {
+    "title": "Santorini: Greece's Volcanic Island — Wander",
+    "url": "/santorini-guide.html",
+    "keywords": ["santorini", "greece", "europe", "island", "volcanic", "mediterranean", "oia", "cyclades"]
+  },
+  {
+    "title": "Where Should I Go? — Wander",
+    "url": "/quiz.html",
+    "keywords": ["quiz", "travel personality", "where to go", "recommendations", "discover", "destination finder"]
+  }
+]
