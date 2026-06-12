@@ -2,12 +2,14 @@
  * i18n.js — Vanilla, dependency-free i18n framework.
  *
  * API:
- *   getLocale()         → current locale code (default: 'en')
+ *   getLocale()         → current locale code (reads from localStorage; default: 'en')
  *   setLocale(code)     → switch active locale (loads strings from locales/<code>.json)
+ *                         and persists the choice to localStorage so it survives navigation.
  *   t(key)              → look up a dot-separated key in the active locale's strings
  *                         (e.g. t('nav.home'), t('hero.title'))
  *
- * Locale persistence is intentionally left to a downstream step.
+ * Locale persistence: the chosen locale is stored under the key 'wander_locale'
+ * in localStorage and is automatically restored on the next page load.
  */
 
 (function (root, factory) {
@@ -22,8 +24,24 @@
 }(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  /** @type {string} */
-  var _locale = 'en';
+  /** localStorage key used to persist the locale preference across pages. */
+  var STORAGE_KEY = 'wander_locale';
+
+  /**
+   * Read the persisted locale from localStorage, if available.
+   * Falls back to 'en' in environments without localStorage (e.g. Node).
+   * @returns {string}
+   */
+  function _readPersistedLocale() {
+    try {
+      return (typeof localStorage !== 'undefined' && localStorage.getItem(STORAGE_KEY)) || 'en';
+    } catch (e) {
+      return 'en';
+    }
+  }
+
+  /** @type {string} — initialised from localStorage so the pref survives navigation */
+  var _locale = _readPersistedLocale();
 
   /** @type {Object.<string, object>} In-memory cache of loaded locale data */
   var _catalog = {};
@@ -100,13 +118,22 @@
   }
 
   /**
-   * Switch the active locale.
+   * Switch the active locale and persist the choice to localStorage so the
+   * preference survives page navigation.
    * Attempts to load strings for the new locale if they aren't already cached.
    *
    * @param {string} code  BCP-47 locale code, e.g. 'en', 'fr', 'de'
    */
   function setLocale(code) {
     _locale = code;
+    // Persist preference so getLocale() on the next page returns the same value.
+    try {
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, code);
+      }
+    } catch (e) {
+      // Storage may be unavailable (private browsing, quota exceeded, etc.)
+    }
     if (!_catalog[code]) {
       _load(code);
     }

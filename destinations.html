@@ -41,6 +41,31 @@
     .nav__back { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); transition: opacity 0.2s; }
     .nav__back:hover { opacity: 0.7; }
 
+    /* ── Language switcher ────────────────────────────────────── */
+    .lang-switcher {
+      display: flex; gap: 4px; align-items: center;
+      margin-left: 24px;
+    }
+    .lang-switcher__btn {
+      background: none;
+      border: 1px solid var(--stone);
+      color: var(--ash);
+      font-family: var(--font-sans);
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      padding: 4px 8px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      line-height: 1;
+    }
+    .lang-switcher__btn:hover,
+    .lang-switcher__btn[aria-pressed="true"] {
+      background: var(--sand);
+      color: var(--ink);
+      border-color: var(--ash);
+    }
+
     .page-hero {
       padding: 80px 0 56px;
       background: var(--sand);
@@ -111,6 +136,11 @@
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html" class="nav__back">← Home</a>
+    <div class="lang-switcher" role="group" aria-label="Language">
+      <button class="lang-switcher__btn" data-lang="en" aria-pressed="true">EN</button>
+      <button class="lang-switcher__btn" data-lang="es" aria-pressed="false">ES</button>
+      <button class="lang-switcher__btn" data-lang="pt" aria-pressed="false">PT</button>
+    </div>
   </nav>
 
   <div class="page-hero">
@@ -223,5 +253,32 @@
     </div>
   </footer>
 
+
+  <script src="i18n.js"></script>
+  <script>
+    // ── Restore persisted locale ──────────────────────────────────
+    // i18n.getLocale() already returns the localStorage value; we just
+    // need to ensure the catalog is loaded and the switcher UI reflects it.
+    (function () {
+      var lang = i18n.getLocale();
+      i18n.setLocale(lang);
+
+      // Sync aria-pressed state on the switcher buttons
+      document.querySelectorAll('.lang-switcher__btn').forEach(function (btn) {
+        btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === lang ? 'true' : 'false');
+      });
+
+      // Hook up the switcher so users can change language on this page too
+      document.querySelectorAll('.lang-switcher__btn').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var newLang = btn.getAttribute('data-lang');
+          i18n.setLocale(newLang);
+          document.querySelectorAll('.lang-switcher__btn').forEach(function (b) {
+            b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+          });
+        });
+      });
+    }());
+  </script>
 </body>
 </html>
