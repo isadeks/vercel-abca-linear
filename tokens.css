@@ -91,3 +91,6 @@
   --w-radius: 4px;
 
 }
+
+/* A6-cascade-test: predecessor edit — new accent token added after dependents stacked */
+:root { --w-color-accent: #ff6b35; }
