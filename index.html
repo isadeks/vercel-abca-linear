@@ -431,57 +431,7 @@
       line-height: 1.6;
     }
 
-    /* ── Footer ───────────────────────────────────────────────── */
-    footer {
-      background: var(--ink);
-      color: rgba(255,255,255,0.5);
-      padding: 60px 0 36px;
-    }
-    .footer__grid {
-      display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 48px;
-    }
-    .footer__brand {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      font-weight: 400;
-      color: white;
-      margin-bottom: 14px;
-      letter-spacing: 0.04em;
-    }
-    .footer__tagline {
-      font-size: 0.83rem;
-      line-height: 1.7;
-      max-width: 220px;
-    }
-    .footer__heading {
-      font-size: 0.7rem;
-      font-weight: 500;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.35);
-      margin-bottom: 18px;
-    }
-    .footer__links {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 10px;
-    }
-    .footer__links a {
-      font-size: 0.88rem;
-      color: rgba(255,255,255,0.5);
-      transition: color 0.2s;
-    }
-    .footer__links a:hover { color: white; }
-    .footer__bottom {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-top: 28px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      font-size: 0.75rem;
-    }
-    .footer__bottom a { color: rgba(255,255,255,0.45); }
-    .footer__bottom a:hover { color: white; }
+    /* ── Footer — handled by .w-footer in components.css ────── */
 
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
@@ -499,7 +449,6 @@
 
       .newsletter__inner { grid-template-columns: 1fr; gap: 36px; }
 
-      .footer__grid   { grid-template-columns: 1fr 1fr; }
     }
 
     @media (max-width: 560px) {
@@ -507,7 +456,6 @@
       .dest-card--hero { grid-column: 1; }
       .curated__list  { grid-template-columns: 1fr; }
       .regions__row   { grid-template-columns: repeat(2, 1fr); }
-      .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
   </style>
@@ -747,16 +695,16 @@
   </section>
 
   <!-- ── Footer ─────────────────────────────────────────────────── -->
-  <footer>
-    <div class="container">
-      <div class="footer__grid">
+  <footer class="w-footer">
+    <div class="w-container">
+      <div class="w-footer__grid">
         <div>
-          <p class="footer__brand">Wander</p>
-          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+          <p class="w-footer__brand">Wander</p>
+          <p class="w-footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
         </div>
         <div>
-          <p class="footer__heading">Explore</p>
-          <ul class="footer__links">
+          <p class="w-footer__heading">Explore</p>
+          <ul class="w-footer__links">
             <li><a href="destinations.html">Destinations</a></li>
             <li><a href="#guides">Guides</a></li>
             <li><a href="#regions">Regions</a></li>
@@ -764,8 +712,8 @@
           </ul>
         </div>
         <div>
-          <p class="footer__heading">Plan</p>
-          <ul class="footer__links">
+          <p class="w-footer__heading">Plan</p>
+          <ul class="w-footer__links">
             <li><a href="quiz.html">Where to go?</a></li>
             <li><a href="#guides">Itineraries</a></li>
             <li><a href="#guides">Packing lists</a></li>
@@ -773,8 +721,8 @@
           </ul>
         </div>
         <div>
-          <p class="footer__heading">Company</p>
-          <ul class="footer__links">
+          <p class="w-footer__heading">Company</p>
+          <ul class="w-footer__links">
             <li><a href="about.html">About</a></li>
             <li><a href="about.html#write">Write for us</a></li>
             <li><a href="#newsletter">Newsletter</a></li>
@@ -782,7 +730,7 @@
           </ul>
         </div>
       </div>
-      <div class="footer__bottom">
+      <div class="w-footer__bottom">
         <span>&copy; 2026 Wander. All rights reserved.</span>
         <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
       </div>
