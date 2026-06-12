@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="components.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -39,33 +40,19 @@
 
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
 
-    /* ── Nav ── */
-    .nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 40px;
-      background: rgba(250,248,244,0.95);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--stone);
-    }
-    .nav__logo {
-      font-family: var(--font-serif);
-      font-size: 1.6rem;
-      font-weight: 400;
-      letter-spacing: 0.06em;
-      color: var(--ink);
-    }
+    /* ── Nav back link (guide-specific) ── */
     .nav__back {
       font-size: 0.78rem;
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--teal);
+      color: rgba(255,255,255,0.85);
       display: flex;
       align-items: center;
       gap: 6px;
       transition: opacity 0.2s;
     }
+    .w-nav--scrolled .nav__back { color: var(--teal); }
     .nav__back:hover { opacity: 0.7; }
 
     /* ── Hero ── */
@@ -235,24 +222,12 @@
       color: var(--ash);
       margin-bottom: 28px;
     }
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 14px 28px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      border: 1px solid var(--teal);
-      color: var(--teal);
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn:hover { background: var(--teal); color: white; }
   </style>
 </head>
 <body>
 
-  <nav class="nav">
-    <a href="index.html" class="nav__logo">Wander</a>
+  <nav class="w-nav" id="nav">
+    <a href="index.html" class="w-nav__logo">Wander</a>
     <a href="index.html#destinations" class="nav__back">← All destinations</a>
   </nav>
 
@@ -346,9 +321,56 @@
     <div class="container">
       <h3>Discover more guides</h3>
       <p>From Kyoto's ancient temples to Norway's midnight sun — there's always another journey waiting.</p>
-      <a href="index.html#guides" class="btn">Browse all guides</a>
+      <a href="index.html#guides" class="w-btn w-btn--primary">Browse all guides</a>
     </div>
   </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer class="w-footer">
+    <div class="w-container">
+      <div class="w-footer__grid">
+        <div>
+          <p class="w-footer__brand">Wander</p>
+          <p class="w-footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="w-footer__heading">Explore</p>
+          <ul class="w-footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="w-footer__heading">Company</p>
+          <ul class="w-footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="w-footer__heading">Legal</p>
+          <ul class="w-footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="w-footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('w-nav--scrolled', window.scrollY > 60);
+    });
+  </script>
 
 </body>
 </html>
