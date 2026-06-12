@@ -905,9 +905,18 @@
       });
     });
 
-    // Apply default (English) translations on load
-    i18n.setLocale('en');
-    applyTranslations();
+    // ── Restore persisted locale on load ─────────────────────────
+    // i18n.getLocale() already reads from localStorage; calling setLocale()
+    // ensures the catalog is loaded and the switcher UI reflects the saved pref.
+    (function () {
+      var savedLang = i18n.getLocale(); // 'en' if nothing persisted yet
+      i18n.setLocale(savedLang);
+      applyTranslations();
+      // Sync the aria-pressed buttons to the restored locale
+      document.querySelectorAll('.lang-switcher__btn').forEach(function (btn) {
+        btn.setAttribute('aria-pressed', btn.getAttribute('data-lang') === savedLang ? 'true' : 'false');
+      });
+    }());
   </script>
 
 </body>
