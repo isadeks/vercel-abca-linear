@@ -18,7 +18,7 @@
  *   Behaviour:
  *     - Renders an email <input> and a "Subscribe" <button> inside the target.
  *     - On valid submission, the email is saved to localStorage under the key
- *       "wander_newsletter" (persisted as a JSON array of strings).
+ *       "wander_subscriber" (persisted as a JSON array of strings).
  *     - Duplicate addresses (case-insensitive) are detected and reported.
  *     - Success / error feedback is displayed inline; no page reload occurs.
  * -->
@@ -29,7 +29,7 @@
  *
  * Mounts a newsletter signup form widget into the DOM element matched by
  * `selector`. On submission the email address is persisted to localStorage
- * under the key "wander_newsletter" (stored as a JSON array of strings).
+ * under the key "wander_subscriber" (stored as a JSON array of strings).
  *
  * @param {string} selector - A CSS selector for the target container element.
  * @returns {void}
@@ -123,7 +123,7 @@ function mountNewsletter(selector) {
     }
 
     /* Read existing subscriptions from localStorage */
-    var storageKey = 'wander_newsletter';
+    var storageKey = 'wander_subscriber';
     var stored;
     try {
       stored = JSON.parse(localStorage.getItem(storageKey) || '[]');
