@@ -773,11 +773,7 @@
           <h2>Stories for the road ahead</h2>
           <p>Every two weeks we send a beautifully crafted letter with destination profiles, packing wisdom, and the occasional hidden gem. No noise — just things worth reading.</p>
         </div>
-        <form class="newsletter__form" onsubmit="return false;">
-          <input type="email" placeholder="your@email.com" aria-label="Email address" />
-          <button type="submit" class="btn btn--teal">Subscribe — it's free</button>
-          <p class="newsletter__note">No spam, ever. Unsubscribe in one click. We respect your inbox.</p>
-        </form>
+        <div id="newsletter-widget"></div>
       </div>
     </div>
   </section>
@@ -825,6 +821,7 @@
     </div>
   </footer>
 
+  <script src="newsletter.js"></script>
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
@@ -832,6 +829,8 @@
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
+    // Mount newsletter widget
+    mountNewsletter('#newsletter-widget');
   </script>
 
 </body>
