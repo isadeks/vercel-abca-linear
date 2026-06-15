@@ -1,0 +1,15 @@
+{
+  "name": "wander-travel",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Wander travel guide site + booking API (Vercel serverless functions).",
+  "type": "module",
+  "scripts": {
+    "lint": "eslint . --max-warnings=0",
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "eslint": "^9.13.0",
+    "vitest": "^2.1.4"
+  }
+}
