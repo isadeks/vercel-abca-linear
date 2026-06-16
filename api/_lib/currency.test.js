@@ -25,4 +25,8 @@ describe('formatUsd', () => {
   it('formats negative cents as -$X.XX', () => {
     expect(formatUsd(-1234)).toBe('-$12.34');
   });
+
+  it('formats 100 cents as $2.00', () => {
+    expect(formatUsd(100)).toBe('$2.00');
+  });
 });
