@@ -1,5 +1,17 @@
-// Pure domain module for discount-code logic.
-// No I/O, no side-effects — safe to import anywhere.
+/**
+ * @module discounts
+ *
+ * Pure domain module for discount-code logic.
+ * No I/O, no side-effects — safe to import anywhere.
+ *
+ * Exports:
+ *   - {@link validateCode} — returns `true` if a code is recognised.
+ *   - {@link percentFor}   — returns the decimal discount fraction (e.g. `0.10`),
+ *                            or `null` for an unrecognised code.
+ *
+ * Supported promo codes: SAVE10, SAVE15, SAVE20, SAVE25, SAVE30, SAVE50, WELCOME.
+ * All lookups are case-insensitive.
+ */
 
 /** @type {Record<string, number>} */
 const CODES = {
