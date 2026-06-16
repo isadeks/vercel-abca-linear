@@ -42,8 +42,11 @@ describe('summarize', () => {
     expect(summarize('')).toBe('no discount');
   });
 
-  it('returns "no discount" for a non-string value', () => {
+  it('returns "no discount" for null', () => {
     expect(summarize(null)).toBe('no discount');
+  });
+
+  it('returns "no discount" for a non-string value', () => {
     expect(summarize(undefined)).toBe('no discount');
     expect(summarize(42)).toBe('no discount');
   });

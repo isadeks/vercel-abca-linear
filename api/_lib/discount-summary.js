@@ -15,6 +15,7 @@ import { percentFor } from './discounts.js';
  * @returns {string}    - Human-readable discount string.
  */
 export function summarize(code) {
+  if (code === null) return 'no discount';
   const fraction = percentFor(code);
   if (fraction === null) return 'no discount';
   const pct = Math.round(fraction * 100);
