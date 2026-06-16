@@ -26,6 +26,10 @@ describe('summarize', () => {
     expect(summarize('SAVE50')).toBe('SAVE50 — 50% off');
   });
 
+  it('returns a human-readable string for SAVE99', () => {
+    expect(summarize('SAVE99')).toBe('SAVE99 — 99% off');
+  });
+
   it('returns a human-readable string for SAVE15', () => {
     expect(summarize('SAVE15')).toBe('SAVE15 — 15% off');
   });

@@ -9,7 +9,7 @@
  *   - {@link percentFor}   — returns the decimal discount fraction (e.g. `0.10`),
  *                            or `null` for an unrecognised code.
  *
- * Supported promo codes: SAVE5, SAVE10, SAVE15, SAVE20, SAVE25, SAVE30, SAVE50, WELCOME.
+ * Supported promo codes: SAVE5, SAVE10, SAVE15, SAVE20, SAVE25, SAVE30, SAVE50, SAVE99, WELCOME.
  * All lookups are case-insensitive.
  */
 
@@ -22,6 +22,7 @@ const CODES = {
   SAVE25: 0.25,
   SAVE30: 0.30,
   SAVE50: 0.50,
+  SAVE99: 0.99,
   WELCOME: 0.15,
 };
 
