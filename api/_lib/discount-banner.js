@@ -1,4 +1,4 @@
-// Promo-banner text module.
+// Promo-banner text module — returns a short marketing string for a recognised promo code.
 // No I/O, no side-effects — safe to import anywhere.
 
 import { summarize } from './discount-summary.js';
