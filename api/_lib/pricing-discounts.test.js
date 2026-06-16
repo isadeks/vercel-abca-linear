@@ -22,6 +22,10 @@ describe('applyDiscount', () => {
     expect(applyDiscount(10000, 'SAVE50')).toBe(5000);
   });
 
+  it('applies SAVE15 (15 %) to a round price', () => {
+    expect(applyDiscount(10000, 'SAVE15')).toBe(8500);
+  });
+
   it('applies WELCOME (15 %) to a round price', () => {
     expect(applyDiscount(10000, 'WELCOME')).toBe(8500);
   });

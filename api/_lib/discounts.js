@@ -4,6 +4,7 @@
 /** @type {Record<string, number>} */
 const CODES = {
   SAVE10: 0.10,
+  SAVE15: 0.15,
   SAVE20: 0.20,
   SAVE25: 0.25,
   SAVE30: 0.30,
