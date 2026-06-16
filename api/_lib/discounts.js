@@ -5,6 +5,7 @@
 const CODES = {
   SAVE10: 0.10,
   SAVE20: 0.20,
+  SAVE25: 0.25,
   SAVE30: 0.30,
   SAVE50: 0.50,
   WELCOME: 0.15,

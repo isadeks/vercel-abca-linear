@@ -6,6 +6,10 @@ describe('validateCode', () => {
     expect(validateCode('SAVE10')).toBe(true);
   });
 
+  it('returns true for SAVE25', () => {
+    expect(validateCode('SAVE25')).toBe(true);
+  });
+
   it('returns true for SAVE50', () => {
     expect(validateCode('SAVE50')).toBe(true);
   });
@@ -40,6 +44,10 @@ describe('percentFor', () => {
 
   it('returns the correct fraction for SAVE20', () => {
     expect(percentFor('SAVE20')).toBe(0.20);
+  });
+
+  it('returns the correct fraction for SAVE25', () => {
+    expect(percentFor('SAVE25')).toBe(0.25);
   });
 
   it('returns the correct fraction for SAVE30', () => {
