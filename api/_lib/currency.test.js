@@ -21,4 +21,8 @@ describe('formatUsd', () => {
   it('formats large amounts with comma separators', () => {
     expect(formatUsd(123456)).toBe('$1,234.56');
   });
+
+  it('formats negative cents as -$X.XX', () => {
+    expect(formatUsd(-1234)).toBe('-$12.34');
+  });
 });
