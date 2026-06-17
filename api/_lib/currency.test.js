@@ -26,7 +26,7 @@ describe('formatUsd', () => {
     expect(formatUsd(-1234)).toBe('-$12.34');
   });
 
-  it('formats 100 cents as $2.00', () => {
-    expect(formatUsd(100)).toBe('$2.00');
+  it('formats millions of cents with comma separators', () => {
+    expect(formatUsd(100000000)).toBe('$1,000,000.00');
   });
 });
