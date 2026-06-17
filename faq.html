@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ────────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ──────────────────────────────────────────────── */
+    .page-hero {
+      padding: 96px 0 64px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+
+    /* ── FAQ body ───────────────────────────────────────────────── */
+    .page-body {
+      padding: 72px 0 96px;
+    }
+
+    .faq-section {
+      margin-bottom: 56px;
+    }
+    .faq-section__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .faq-item {
+      padding: 28px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .faq-item:last-child {
+      border-bottom: none;
+    }
+
+    .faq-item__question {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 14px;
+      color: var(--ink);
+    }
+
+    .faq-item__answer {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: #3d3830;
+    }
+    .faq-item__answer p + p {
+      margin-top: 12px;
+    }
+    .faq-item__answer a {
+      color: var(--teal);
+      border-bottom: 1px solid currentColor;
+      transition: opacity 0.2s;
+    }
+    .faq-item__answer a:hover { opacity: 0.7; }
+
+    /* ── CTA strip ──────────────────────────────────────────────── */
+    .faq-cta {
+      background: var(--teal-lt);
+      padding: 48px;
+      margin-top: 64px;
+    }
+    .faq-cta__heading {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .faq-cta__text {
+      font-size: 0.92rem;
+      color: var(--ash);
+      line-height: 1.75;
+      margin-bottom: 24px;
+      max-width: 480px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+    .btn--teal {
+      background: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+      .faq-cta { padding: 36px 28px; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ──────────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <!-- ── Page hero ─────────────────────────────────────────────────── -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Frequently asked questions</p>
+      <h1 class="page-hero__title">Everything you<br/>need to know</h1>
+      <p class="page-hero__sub">Answers to the questions travellers ask us most often — from booking to borders.</p>
+    </div>
+  </div>
+
+  <!-- ── FAQ content ───────────────────────────────────────────────── -->
+  <div class="page-body">
+    <div class="container">
+
+      <!-- Booking & payments -->
+      <section class="faq-section">
+        <p class="faq-section__heading">Booking &amp; payments</p>
+
+        <div class="faq-item">
+          <h2 class="faq-item__question">How do I book a trip through Wander?</h2>
+          <div class="faq-item__answer">
+            <p>Wander is an independent editorial publication — we write guides, we don't sell trips. Our content is free to read, and we don't take commissions from hotels, airlines, or tour operators. When you're ready to book, we recommend going directly to the property or operator we've recommended in the guide. This usually gets you the best rate and keeps more money with the people on the ground.</p>
+            <p>If you'd like personalised help planning an itinerary, our <a href="contact.html">contact page</a> explains how to reach us.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h2 class="faq-item__question">What is your cancellation policy?</h2>
+          <div class="faq-item__answer">
+            <p>Because Wander doesn't process bookings, we don't have a cancellation policy of our own. Cancellation terms will always be set by your airline, hotel, or tour operator — check with them directly before you confirm anything.</p>
+            <p>As a general rule we advise travellers to purchase comprehensive travel insurance before every trip. It's the single most reliable safety net for last-minute changes, medical emergencies, or unexpected disruptions.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Visas & entry requirements -->
+      <section class="faq-section">
+        <p class="faq-section__heading">Visas &amp; entry requirements</p>
+
+        <div class="faq-item">
+          <h2 class="faq-item__question">Do I need a visa for the destinations you cover?</h2>
+          <div class="faq-item__answer">
+            <p>Visa requirements depend entirely on your nationality and the destination. Each of our destination guides includes a "Practical details" section with visa information current at the time of writing, but regulations change — sometimes at short notice.</p>
+            <p>Before you travel, always verify requirements with the official embassy or consulate of your destination country, or through your own government's travel advisory service. Processing times can be weeks, so start early.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Best time to visit -->
+      <section class="faq-section">
+        <p class="faq-section__heading">Planning your trip</p>
+
+        <div class="faq-item">
+          <h2 class="faq-item__question">When is the best time to visit a destination?</h2>
+          <div class="faq-item__answer">
+            <p>There is no single right answer — it depends on what you're after. Shoulder season (just before or after peak) often offers the best balance of decent weather, thinner crowds, and lower prices. High season guarantees the easiest logistics; low season can be genuinely magical but may mean some attractions are closed.</p>
+            <p>Every guide on Wander includes a dedicated "When to go" section that weighs climate, festivals, costs, and crowds for that specific place. Use those recommendations as your starting point, then tailor to your own priorities.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h2 class="faq-item__question">What should I pack for a long trip?</h2>
+          <div class="faq-item__answer">
+            <p>The short answer: less than you think. Most experienced travellers eventually converge on one principle — carry-on only if at all possible. A well-chosen capsule wardrobe in neutral tones, a lightweight merino layer, and one versatile pair of shoes will see you through most destinations and climates.</p>
+            <p>More specific packing advice appears in our destination guides where it's relevant — cold-weather layering for Norway, lightweight linens for Rajasthan, waterproofs for Patagonia. Look for the "What to pack" note in each guide's practical section.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <h2 class="faq-item__question">How do your destination guides stay up to date?</h2>
+          <div class="faq-item__answer">
+            <p>Each guide carries a publication or last-reviewed date. We revisit our most popular guides at least once a year and update prices, entry requirements, and recommendations when things change materially. That said, the travel world moves fast — always double-check opening times, prices, and visa rules independently before you go.</p>
+            <p>If you spot something that's out of date, please <a href="contact.html">let us know</a> — reader tip-offs are invaluable.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <div class="faq-cta">
+        <h2 class="faq-cta__heading">Still have questions?</h2>
+        <p class="faq-cta__text">Our team reads every message. Whether you have a planning question, a tip about one of our guides, or a destination you'd like us to cover, we'd love to hear from you.</p>
+        <a href="contact.html" class="btn btn--teal">Get in touch
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
