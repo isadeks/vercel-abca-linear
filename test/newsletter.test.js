@@ -34,6 +34,14 @@ describe('newsletter signup section', () => {
     expect(sectionMatch[1]).toMatch(/type="email"/);
   });
 
+  it('email input has a placeholder', () => {
+    const sectionMatch = html.match(/<section[^>]*id="newsletter"[^>]*>([\s\S]*?)<\/section>/);
+    expect(sectionMatch).not.toBeNull();
+    const inputMatch = sectionMatch[1].match(/<input[^>]*type="email"[^>]*>/);
+    expect(inputMatch).not.toBeNull();
+    expect(inputMatch[0]).toMatch(/placeholder="[^"]+"/);
+  });
+
   it('has a subscribe button', () => {
     const sectionMatch = html.match(/<section[^>]*id="newsletter"[^>]*>([\s\S]*?)<\/section>/);
     expect(sectionMatch).not.toBeNull();
