@@ -492,6 +492,9 @@
       line-height: 1.7;
       max-width: 220px;
     }
+    .footer__social { display: flex; gap: 16px; margin-top: 20px; }
+    .footer__social a { font-size: 0.78rem; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+    .footer__social a:hover { color: white; }
     .footer__heading {
       font-size: 0.7rem;
       font-weight: 500;
@@ -789,10 +792,16 @@
         <div>
           <p class="footer__brand">Wander</p>
           <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+          <div class="footer__social">
+            <a href="#" aria-label="Instagram">Instagram</a>
+            <a href="#" aria-label="Pinterest">Pinterest</a>
+            <a href="#" aria-label="X / Twitter">X</a>
+          </div>
         </div>
         <div>
           <p class="footer__heading">Explore</p>
           <ul class="footer__links">
+            <li><a href="index.html">Home</a></li>
             <li><a href="destinations.html">Destinations</a></li>
             <li><a href="#guides">Guides</a></li>
             <li><a href="#regions">Regions</a></li>
