@@ -196,6 +196,44 @@
       .quiz-cta__meta { flex-wrap: wrap; }
     }
 
+    /* ── Live status badge ───────────────────────────────────── */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 100px;
+      backdrop-filter: blur(4px);
+      margin-bottom: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.9);
+    }
+    .status-badge__dot {
+      width: 8px;
+      height: 8px;
+      background: #4ade80;
+      border-radius: 50%;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .status-badge__dot::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      background: #4ade80;
+      border-radius: 50%;
+      opacity: 0.4;
+      animation: pulse-dot 1.8s ease-in-out infinite;
+    }
+    @keyframes pulse-dot {
+      0%, 100% { transform: scale(1);   opacity: 0.4; }
+      50%       { transform: scale(1.6); opacity: 0;   }
+    }
+
     /* ── Scroll hint ──────────────────────────────────────────── */
     .hero__scroll {
       position: absolute; bottom: 32px; right: 40px; z-index: 2;
@@ -475,22 +513,9 @@
     }
     .footer__grid {
       display: grid;
-      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 40px;
       margin-bottom: 48px;
-    }
-    .footer__brand {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      font-weight: 400;
-      color: white;
-      margin-bottom: 14px;
-      letter-spacing: 0.04em;
-    }
-    .footer__tagline {
-      font-size: 0.83rem;
-      line-height: 1.7;
-      max-width: 220px;
     }
     .footer__heading {
       font-size: 0.7rem;
@@ -519,6 +544,54 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Announcement banner ──────────────────────────────────── */
+    .announcement-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: #6366f1;
+      color: white;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 0.01em;
+      padding: 0 48px;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+    .announcement-banner.dismissed {
+      transform: translateY(-100%);
+      opacity: 0;
+      pointer-events: none;
+    }
+    .announcement-banner__text {
+      text-align: center;
+    }
+    .announcement-banner__dismiss {
+      position: absolute;
+      right: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.8);
+      font-size: 1.2rem;
+      line-height: 1;
+      cursor: pointer;
+      padding: 4px 8px;
+      transition: color 0.15s;
+      font-family: var(--font-sans);
+    }
+    .announcement-banner__dismiss:hover {
+      color: white;
+    }
+
+    /* Offset nav when banner is visible */
+    .nav { top: 44px; }
+    body.banner-dismissed .nav { top: 0; }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -544,11 +617,18 @@
       .curated__list  { grid-template-columns: 1fr; }
       .regions__row   { grid-template-columns: repeat(2, 1fr); }
       .footer__grid   { grid-template-columns: 1fr; }
+
       .pullquote      { padding: 64px 24px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- ── Announcement Banner ─────────────────────────────────── -->
+  <div class="announcement-banner" id="announcement-banner" role="banner" aria-label="Announcement">
+    <p class="announcement-banner__text">✨ New: background coding agents now orchestrate Linear epics</p>
+    <button class="announcement-banner__dismiss" id="dismiss-banner" aria-label="Dismiss announcement">×</button>
+  </div>
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
@@ -568,6 +648,10 @@
     <div class="hero__content">
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
+      <div class="status-badge" role="status" aria-live="polite">
+        <span class="status-badge__dot" aria-hidden="true"></span>
+        All systems operational
+      </div>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
       <a href="#destinations" class="btn">Explore destinations</a>
     </div>
@@ -787,25 +871,21 @@
     <div class="container">
       <div class="footer__grid">
         <div>
-          <p class="footer__brand">Wander</p>
-          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
-        </div>
-        <div>
-          <p class="footer__heading">Explore</p>
+          <p class="footer__heading">Product</p>
           <ul class="footer__links">
             <li><a href="destinations.html">Destinations</a></li>
             <li><a href="#guides">Guides</a></li>
             <li><a href="#regions">Regions</a></li>
-            <li><a href="#guides">Stories</a></li>
+            <li><a href="quiz.html">Where to go?</a></li>
           </ul>
         </div>
         <div>
-          <p class="footer__heading">Plan</p>
+          <p class="footer__heading">Resources</p>
           <ul class="footer__links">
-            <li><a href="quiz.html">Where to go?</a></li>
             <li><a href="#guides">Itineraries</a></li>
             <li><a href="#guides">Packing lists</a></li>
             <li><a href="contact.html">Visa info</a></li>
+            <li><a href="#newsletter">Newsletter</a></li>
           </ul>
         </div>
         <div>
@@ -813,19 +893,27 @@
           <ul class="footer__links">
             <li><a href="about.html">About</a></li>
             <li><a href="about.html#write">Write for us</a></li>
-            <li><a href="#newsletter">Newsletter</a></li>
             <li><a href="contact.html">Contact</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
           </ul>
         </div>
       </div>
       <div class="footer__bottom">
-        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span>&copy; 2026 ABCA Demo</span>
         <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
       </div>
     </div>
   </footer>
 
   <script>
+    // Dismissible announcement banner
+    const banner = document.getElementById('announcement-banner');
+    const dismissBtn = document.getElementById('dismiss-banner');
+    dismissBtn.addEventListener('click', () => {
+      banner.classList.add('dismissed');
+      document.body.classList.add('banner-dismissed');
+    });
+
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
