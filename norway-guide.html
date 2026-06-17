@@ -408,11 +408,12 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span>&copy; <span id="copy-yr">2026</span> Wander. All rights reserved.</span>
         <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
       </div>
     </div>
   </footer>
 
+<script>document.getElementById('copy-yr').textContent=new Date().getFullYear();</script>
 </body>
 </html>
