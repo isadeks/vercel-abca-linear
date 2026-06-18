@@ -569,7 +569,7 @@
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <a href="#destinations" class="btn" id="hero-cta">Explore destinations</a>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
@@ -825,12 +825,21 @@
     </div>
   </footer>
 
+  <script src="analytics.js"></script>
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // Analytics: page view
+    Analytics.track('page_view', { page: 'home' });
+
+    // Analytics: primary CTA click
+    document.getElementById('hero-cta').addEventListener('click', function () {
+      Analytics.track('cta_click', { page: 'home', label: 'Explore destinations' });
+    });
 
   </script>
 
