@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Home",
+    "destinations": "Destinations",
+    "guides": "Guides",
+    "regions": "Regions",
+    "newsletter": "Newsletter"
+  },
+  "hero": {
+    "title": "The world is waiting",
+    "cta": "Explore destinations"
+  }
+}
