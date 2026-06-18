@@ -5,6 +5,11 @@
 // sub-issues add real module tests alongside this one.
 import { describe, it, expect } from 'vitest';
 
+// INTENTIONAL DEMO FAILURE (ABCA-371): unused variable introduced during
+// shared-helper refactor to demonstrate the build-break governance path.
+// Do NOT remove this line or add eslint-disable — the build must stay red.
+const _unusedHelperResult = 'refactor-in-progress';
+
 describe('toolchain baseline', () => {
   it('runs the test runner', () => {
     expect(1 + 1).toBe(2);
