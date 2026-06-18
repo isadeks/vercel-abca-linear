@@ -519,6 +519,58 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Trusted-by strip ────────────────────────────────────── */
+    .trusted {
+      padding: 40px 0;
+      background: var(--stone);
+      border-top: 1px solid rgba(0,0,0,0.06);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .trusted__inner {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+    .trusted__label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .trusted__divider {
+      width: 1px;
+      height: 28px;
+      background: rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+    .trusted__logos {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      list-style: none;
+    }
+    .trusted__logos li {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--ash);
+      opacity: 0.65;
+      transition: opacity 0.2s;
+      user-select: none;
+    }
+    .trusted__logos li:hover { opacity: 1; }
+    @media (max-width: 700px) {
+      .trusted__divider { display: none; }
+      .trusted__inner   { gap: 20px; }
+      .trusted__logos   { gap: 24px; }
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -596,6 +648,23 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trusted-by strip ─────────────────────────────────────── -->
+  <section class="trusted" aria-label="Trusted by">
+    <div class="container">
+      <div class="trusted__inner">
+        <p class="trusted__label">Trusted by teams at</p>
+        <div class="trusted__divider" aria-hidden="true"></div>
+        <ul class="trusted__logos">
+          <li>Northwind</li>
+          <li>Globex</li>
+          <li>Initech</li>
+          <li>Umbrella</li>
+          <li>Acme&nbsp;Co.</li>
+        </ul>
       </div>
     </div>
   </section>
