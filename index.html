@@ -48,12 +48,13 @@
       display: flex; align-items: center; justify-content: space-between;
       padding: 20px 40px;
       background: transparent;
-      transition: background 0.3s, backdrop-filter 0.3s;
+      transition: background 0.3s, backdrop-filter 0.3s, box-shadow 0.3s;
     }
     .nav.scrolled {
       background: rgba(250,248,244,0.92);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--stone);
+      box-shadow: 0 2px 16px rgba(26,23,20,0.07);
     }
     .nav__logo {
       font-family: var(--font-serif);
