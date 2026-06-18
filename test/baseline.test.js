@@ -5,9 +5,6 @@
 // sub-issues add real module tests alongside this one.
 import { describe, it, expect } from 'vitest';
 
-// INTENTIONAL STRESS-TEST FAILURE (ABCA-355): unused variable triggers no-unused-vars error.
-const stressTestUnusedVar = 'abca-355-deliberate-lint-error';
-
 describe('toolchain baseline', () => {
   it('runs the test runner', () => {
     expect(1 + 1).toBe(2);
