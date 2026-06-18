@@ -648,6 +648,23 @@
       border-color: #22665c;
       color: white;
     }
+    .btn--pricing-trial {
+      font-size: 0.85rem;
+      padding: 16px 28px;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+    .btn--pricing-secondary {
+      background: transparent;
+      border-color: rgba(255,255,255,0.5);
+      color: white;
+      font-size: 0.73rem;
+    }
+    .btn--pricing-secondary:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: white;
+      color: white;
+    }
     @media (max-width: 900px) {
       .pricing__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
       .pricing-card--featured { padding-top: 48px; }
@@ -1034,7 +1051,8 @@
               Early access to new guides &amp; features
             </li>
           </ul>
-          <a href="#newsletter" class="btn--pricing btn--pricing-featured">Start Pro — $29/mo</a>
+          <a href="#newsletter" class="btn--pricing btn--pricing-featured btn--pricing-trial">Start free trial</a>
+          <a href="#newsletter" class="btn--pricing btn--pricing-featured btn--pricing-secondary">Start Pro — $29/mo</a>
         </div>
 
         <!-- Enterprise -->
