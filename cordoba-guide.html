@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Córdoba: Spain's Moorish Masterpiece — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1559554498-d31ef37d0f7c?w=1600&q=80" alt="Córdoba, Spain — the Mezquita-Catedral and the Roman Bridge" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">Historic City &nbsp;·&nbsp; Andalucía, Spain</p>
+      <h1 class="guide-hero__title">Córdoba:<br/>Spain's Moorish masterpiece</h1>
+      <p class="guide-hero__meta">9 min read &nbsp;·&nbsp; Long-weekend itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Once the largest city in Western Europe and the beating heart of a civilisation that lit up the medieval world with philosophy, medicine, and art, Córdoba wears its extraordinary history with quiet confidence — layer upon layer of Roman, Moorish, Jewish, and Christian culture compressed into a compact old city that rewards slow, unhurried exploration.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Córdoba?</h2>
+        <p>At the centre of everything stands the Mezquita-Catedral — one of the most astonishing buildings on earth. It began as a Visigothic church, became the great mosque of the Umayyad caliphate, and was later transformed into a cathedral without losing the forest of candy-striped arches that make it unmistakable. To walk through its colonnades as morning light filters through the ancient stone is to feel the full weight of the three civilisations that shaped Andalucía.</p>
+        <p>Beyond the Mezquita, Córdoba delivers in almost every direction: the old Jewish quarter (Judería) is a maze of whitewashed lanes threaded with orange blossom and bougainvillea; the Alcázar de los Reyes Cristianos has gardens of formal pools and fountains; and the patios — the city's secret gardens, many of them open to the public in May — are one of the most enchanting traditions in European urban life. UNESCO recognised the old city as a World Heritage Site in 1984.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Book Mezquita-Catedral tickets online at least a few days in advance — entrance queues can be long in spring and autumn, and early morning slots (from 10 am) sell out fastest. The first hour after opening, when the light falls at a low angle through the arched windows, is the best time to visit. Evening visits are also available and have their own eerie, atmospheric quality.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The districts</h2>
+        <p>Córdoba's character changes dramatically from neighbourhood to neighbourhood. The medieval core is compact enough to explore on foot in two days, but each district rewards time spent sitting, wandering, and getting pleasantly lost in narrow streets that predate the automobile by a thousand years.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Judería</h3>
+          <p class="city-card__desc">The old Jewish quarter, a labyrinth of whitewashed alleys, hidden patios, and flower-draped facades clustered around the medieval synagogue. One of the best-preserved medieval Jewish neighbourhoods in Spain, and easily the most beautiful part of the city to wander without a map.</p>
+          <span class="city-card__detail">Historic heart</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Centro</h3>
+          <p class="city-card__desc">The commercial and civic hub, anchored by the Plaza de las Tendillas. Here you'll find the city's best tapas bars, the covered market in the Mercado Victoria, and the wide, sun-bleached streets that connect the old city to the modern one. Lively from late afternoon until well past midnight.</p>
+          <span class="city-card__detail">Food &amp; nightlife</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Ribera</h3>
+          <p class="city-card__desc">The riverside district between the Roman Bridge and the Torre de la Calahorra, where the Guadalquivir flows wide and slow. Stroll the Paseo de la Ribera at sunset, cross the ancient bridge on foot, and watch the Mezquita's tower turn gold as the light fades — one of the great evening views in Spain.</p>
+          <span class="city-card__detail">Riverside walks</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Cañero</h3>
+          <p class="city-card__desc">A quieter residential neighbourhood to the south-west, largely off the tourist trail, where local life carries on as it always has — neighbourhood bars, morning markets, and the unhurried pace that characterises Andalucía at its most authentic. Worth visiting for a meal at a genuinely local restaurant.</p>
+          <span class="city-card__detail">Local character</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1597976359144-5e0f71d64f5c?w=1200&q=80" alt="The forest of columns and arches inside the Mezquita-Catedral, Córdoba" />
+        <figcaption>The hypostyle hall of the Mezquita — over 850 columns of jasper, onyx, marble, and granite supporting double-tiered arches in alternating red and white. Nothing in Western architecture quite prepares you for it.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Spring — particularly late April through early June — is Córdoba's finest season, and May is exceptional. The Festival de los Patios Cordobeses, held in the first two weeks of May, opens private courtyards to the public in a city-wide celebration of floral gardening that has been on the UNESCO Intangible Cultural Heritage list since 2012. Competing households fill their patios with geraniums, jasmine, roses, and carnations; the air in the Judería is heady with fragrance and the lanes fill with visitors following hand-drawn maps from courtyard to courtyard.</p>
+        <p>September and October offer warm weather without the intensity of high summer, when temperatures regularly exceed 40°C and the city slows to a near standstill between noon and five. Winter is mild by northern European standards and the city empties of tourists almost entirely — an atmospheric time to visit, with lower prices and a relaxed pace, though a handful of smaller sights reduce their opening hours.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Weather note</p>
+        <p>Córdoba is one of the hottest cities in Europe in summer — July and August temperatures regularly top 42°C in the afternoon. If you visit in these months, plan to be indoors or in the shade between 1 pm and 6 pm, and save your walking for mornings and evenings. The city's patio culture evolved precisely around this rhythm: cool courtyards, thick stone walls, and the long, languid evening that begins well after dark.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Córdoba's cuisine is a direct expression of its Moorish heritage: almonds, honey, saffron, and cumin appear throughout a menu built on centuries of culinary exchange. Salmorejo — a thick, silky tomato and bread purée served cold with a garnish of hard-boiled egg and jamón — is the city's signature dish, richer and creamier than its Sevillian cousin gazpacho. Try it at one of the old taverns in the Judería, where it's served in earthenware bowls that keep it properly cold.</p>
+        <p>Flamenquín cordobés, a roll of jamón and pork loin coated in breadcrumbs and deep-fried, is another local staple — unpretentious, satisfying, and excellent with a cold glass of fino sherry. The Montilla-Moriles wine region lies just south of the city, producing dry, nutty fortified wines from Pedro Ximénez grapes that are the local alternative to Jerez sherry and considerably less well known outside Andalucía.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Getting there &amp; around</h2>
+        <p>Córdoba sits on the high-speed AVE rail line between Madrid and Seville, making it one of Spain's most accessible cities by train. From Madrid Puerta de Atocha the journey takes under two hours; from Seville Santa Justa, forty-five minutes. The old city is compact and best navigated on foot — the main monuments are all within comfortable walking distance of each other, and the maze of narrow lanes in the Judería rewards aimless exploration far more than following a prescribed route.</p>
+        <p>The city has no metro. Taxis are inexpensive by northern European standards, and the electric rental bicycles available across the city are a pleasant way to cover the riverside path and explore the quieter districts beyond the historic core.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to Patagonia's wild south — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
