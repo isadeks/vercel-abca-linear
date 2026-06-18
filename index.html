@@ -80,6 +80,17 @@
     .nav.scrolled .nav__links a:hover { color: var(--ink); }
 
     /* ── Hero ─────────────────────────────────────────────────── */
+
+    /* Page-load fade-in keyframes */
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes heroBgFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
     .hero {
       position: relative; height: 100vh; min-height: 600px;
       display: flex; align-items: flex-end;
@@ -90,11 +101,13 @@
       background:
         linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%),
         url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80') center/cover no-repeat;
+      animation: heroBgFadeIn 1s ease both;
     }
     .hero__content {
       position: relative; z-index: 2;
       padding: 0 40px 80px;
       max-width: 680px;
+      animation: heroFadeIn 0.9s ease 0.35s both;
     }
     .hero__eyebrow {
       font-size: 0.72rem;
@@ -205,6 +218,7 @@
       letter-spacing: 0.18em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.6);
+      animation: heroFadeIn 0.9s ease 0.75s both;
     }
     .hero__scroll::after {
       content: '';
