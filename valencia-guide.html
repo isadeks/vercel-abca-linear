@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valencia: Spain's City of Light and Paella — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80" alt="Valencia, Spain" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">City &nbsp;·&nbsp; Spain</p>
+      <h1 class="guide-hero__title">Valencia:<br/>Spain's city of light and paella</h1>
+      <p class="guide-hero__meta">7 min read &nbsp;·&nbsp; Four-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Valencia basks in more than 300 days of sunshine a year yet somehow remains one of Europe's most underestimated cities. The birthplace of paella, the home of a striking futurist arts complex, and a city that transformed a dry riverbed into a 9-kilometre park — Valencia rewards those who look beyond its more famous Iberian neighbours.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Valencia?</h2>
+        <p>Spain's third-largest city occupies an enviable position: close enough to Barcelona and Madrid to be easily reached, yet culturally distinct from both. Valencia is proudly Valencian — the region has its own language (Valencian, closely related to Catalan), its own rice-based cuisine, and its own fiestas that rank among the most spectacular in Europe. The city moves at a human pace, its old town is genuinely navigable on foot, and its beaches are easily reached by tram.</p>
+        <p>Then there is the architecture. The medieval Silk Exchange (La Llotja de la Seda) is a UNESCO World Heritage Site of breathtaking late-Gothic grandeur. The 1990s City of Arts and Sciences complex, designed by local son Santiago Calatrava, is one of the boldest architectural statements of its era — a sequence of white bone-like structures reflected in still water, as if a film set had been dropped into the former riverbed. Together, old and new give Valencia a visual range few European cities can match.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>The Turia Garden (Jardí del Túria) runs the length of the old river course from the Bioparc in the west to the City of Arts and Sciences in the east — nearly 9 kilometres of parks, cycling paths, sports pitches, and shaded walkways. Hiring a bike and riding the full length in the early morning is the best possible introduction to the city. Rental stations are plentiful near the historic centre.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The districts</h2>
+        <p>Valencia's neighbourhoods each have a distinct personality, from the medieval lanes of the old city to the bohemian energy of Ruzafa and the maritime character of Cabanyal. Understanding where to base yourself — and where to spend each evening — makes the difference between a good trip and a great one.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Ciutat Vella</h3>
+          <p class="city-card__desc">The historic heart: the Cathedral, the Central Market, the Silk Exchange, and a tangle of narrow medieval streets that open suddenly onto grand baroque plazas. Best explored on foot, starting from the Torres de Serranos gate.</p>
+          <span class="city-card__detail">Historic centre</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">El Carmen</h3>
+          <p class="city-card__desc">Valencia's oldest bohemian quarter, packed with independent bars, street art, vintage shops, and narrow lanes that buzz from late afternoon until well past midnight. The neighbourhood transitions from quiet medieval charm by day to genuine nightlife hub by evening.</p>
+          <span class="city-card__detail">Arts &amp; nightlife</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Ruzafa</h3>
+          <p class="city-card__desc">The city's most fashionable neighbourhood: a dense grid of early 20th-century apartment blocks housing an ever-growing collection of coffee shops, natural wine bars, concept stores, and restaurants that reflect Valencia's growing international appeal.</p>
+          <span class="city-card__detail">Food &amp; culture</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Cabanyal</h3>
+          <p class="city-card__desc">A former fishing village absorbed into the city, Cabanyal retains its colourful tiled façades and maritime soul. Now rapidly gentrifying, it offers excellent seafood restaurants within walking distance of the beach — the perfect combination for a long lunch.</p>
+          <span class="city-card__detail">Beach &amp; seafood</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1200&q=80" alt="City of Arts and Sciences, Valencia" />
+        <figcaption>The City of Arts and Sciences — Santiago Calatrava's futurist complex reflects in the water of the former Turia riverbed, one of the most dramatic architectural sequences in Europe.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Valencia's climate is arguably its greatest asset. The city averages 300 sunny days a year, and even January rarely dips below 10°C. The sea is swimmable from June through October, with August sea temperatures reaching 26°C. Spring and autumn are ideal for sightseeing — warm, clear, and far less crowded than peak summer.</p>
+        <p>March brings Las Fallas, one of the most extraordinary festivals in Europe. For five days and nights, the city erupts in fireworks, music, and enormous satirical sculptures (ninots) erected in every neighbourhood square — before being ceremonially burned on the final night in a city-wide conflagration called La Cremà. If your dates align, prioritising a Fallas visit is an easy decision; accommodation books up months in advance, so plan accordingly.</p>
+        <p>July and August are hot (regularly 32–36°C), beach-focused, and busy with Spanish domestic tourism. The city quietens slightly in August as some local businesses close, but the beach scene is at its most vibrant.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Food note</p>
+        <p>The authentic paella valenciana contains chicken, rabbit, flat green beans (ferradura), white beans (garrofó), and saffron — no seafood, no chorizo, no onion. It is cooked over an open wood fire in a wide flat pan and should be eaten at lunch, never dinner. The best versions are found in restaurants along the Albufera lake south of the city, where the rice is grown. In Valencia, ordering paella for dinner is considered a tourist misstep; locals eat it as a Sunday lunch tradition.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Valencia's food culture extends well beyond its famous rice dishes. The Mercat Central — one of the largest covered fresh food markets in Europe, housed in a magnificent 1928 art nouveau building — is reason alone to visit the city. Arrive before 10 am to see it at its best: stalls loaded with local citrus, fresh fish from the Mediterranean, and the thin tiger-nut drink horchata, made from Valencia's own chufa crop and best consumed cold at one of the traditional horchaterías in the old town.</p>
+        <p>The evening ritual of tapas and vermouth (vermut) is taken seriously here. Ruzafa and El Carmen both have excellent tapas bars; look for all-i-pebre (eel stew with paprika and garlic) and esgarraet (roasted red pepper with salt cod and olive oil) for distinctly Valencian flavours. The local wine region, Utiel-Requena, produces bold, underrated reds from the Bobal grape — affordable, widely available, and rarely seen outside the region.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Getting around</h2>
+        <p>Valencia is a remarkably easy city to navigate. The historic centre is compact and walkable, the Turia Garden provides a car-free corridor through the city, and an excellent tram line (line 5) connects the city centre to the beach at Malvarrosa in around 20 minutes. The metro reaches most major attractions. For day trips to the Albufera natural park and lake — home to the rice paddies that supply the city's paella tradition — buses depart regularly from the city centre.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to Patagonia's wild south — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
