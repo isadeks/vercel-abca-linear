@@ -624,6 +624,89 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Social icons row ─────────────────────────────────────── */
+    .footer__social {
+      display: flex; justify-content: center; align-items: center; gap: 24px;
+      padding-top: 28px;
+      margin-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .footer__social-link {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      border: 1px solid rgba(255,255,255,0.18);
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .footer__social-link:hover {
+      color: white;
+      border-color: rgba(255,255,255,0.55);
+    }
+    .footer__social-link svg { display: block; }
+
+    /* ── FAQ Accordion ────────────────────────────────────────── */
+    .faq {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+    .faq__list {
+      max-width: 760px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .faq__item {
+      border-bottom: 1px solid var(--stone);
+    }
+    .faq__item:first-child {
+      border-top: 1px solid var(--stone);
+    }
+    .faq__question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      width: 100%;
+      padding: 24px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .faq__question:hover { color: var(--teal); }
+    .faq__question[aria-expanded="true"] { color: var(--teal); }
+    .faq__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.3s ease;
+    }
+    .faq__question[aria-expanded="true"] .faq__icon {
+      transform: rotate(45deg);
+    }
+    .faq__answer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+    }
+    .faq__answer-inner {
+      padding-bottom: 24px;
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.75;
+      max-width: 640px;
+    }
+
     /* ── Back to top ─────────────────────────────────────────── */
     .back-to-top {
       position: fixed;
@@ -957,6 +1040,66 @@
     </div>
   </section>
 
+  <!-- ── FAQ ──────────────────────────────────────────────────────── -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq__list">
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-1">
+            When is the best time to travel to avoid crowds?
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-answer-1" role="region">
+            <div class="faq__answer-inner">
+              The shoulder seasons — spring (April–May) and autumn (September–October) — hit the sweet spot for most destinations. You'll find milder weather, lower prices, and far fewer visitors than in peak summer. Each guide we publish includes a dedicated "best time to visit" section with month-by-month breakdowns tailored to that specific place.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-2">
+            How do I choose between destinations when they all look amazing?
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-answer-2" role="region">
+            <div class="faq__answer-inner">
+              Try our destination finder quiz — it takes about 90 seconds and asks you eight questions about your preferred pace, climate, budget, and interests. Based on your answers it recommends a destination we've written about in depth, so you can go from inspiration to a fully researched itinerary in one place.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-3">
+            Are the guides free to read?
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2v12M2 8h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-answer-3" role="region">
+            <div class="faq__answer-inner">
+              Yes — every guide on Wander is completely free. We're supported by our newsletter sponsors, not by paywalls or affiliate pressure. Our editorial team writes honestly about places because we've actually been there, not because someone paid for a mention. Subscribe to the newsletter if you'd like new guides delivered to your inbox every two weeks.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── Footer ─────────────────────────────────────────────────── -->
   <footer>
     <div class="container">
@@ -997,6 +1140,31 @@
         <span>&copy; 2026 Wander. All rights reserved.</span>
         <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
       </div>
+
+      <!-- ── Social icons ─────────────────────────────────────── -->
+      <div class="footer__social">
+        <!-- Instagram placeholder -->
+        <a href="#" class="footer__social-link" aria-label="Instagram">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <!-- Twitter / X placeholder -->
+        <a href="#" class="footer__social-link" aria-label="Twitter">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+          </svg>
+        </a>
+        <!-- Facebook placeholder -->
+        <a href="#" class="footer__social-link" aria-label="Facebook">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M24 12.073C24 5.404 18.627 0 12 0S0 5.404 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.791-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.97h-1.513c-1.491 0-1.956.93-1.956 1.874v2.25h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+          </svg>
+        </a>
+      </div>
+
     </div>
   </footer>
 
@@ -1015,7 +1183,47 @@
     backToTop.addEventListener('click', () => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+
+    // FAQ accordion
+    document.querySelectorAll('.faq__question').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        const expanded = this.getAttribute('aria-expanded') === 'true';
+        const answerId = this.getAttribute('aria-controls');
+        const answer = document.getElementById(answerId);
+
+        // Close all items
+        document.querySelectorAll('.faq__question').forEach(function(other) {
+          other.setAttribute('aria-expanded', 'false');
+          const otherId = other.getAttribute('aria-controls');
+          const otherAnswer = document.getElementById(otherId);
+          otherAnswer.style.maxHeight = null;
+        });
+
+        // Open clicked item if it was closed
+        if (!expanded) {
+          this.setAttribute('aria-expanded', 'true');
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+        }
+      });
+    });
   </script>
 
+  <!-- Cookie-consent banner -->
+  <div id="cookie-banner" role="dialog" aria-label="Cookie consent" style="display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;background:#f5f0e8;border-top:1px solid #e8e0d0;padding:14px 24px;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:'Inter',system-ui,sans-serif;font-size:14px;color:#1a1714;box-shadow:0 -2px 12px rgba(26,23,20,.07);">
+    <p style="margin:0;flex:1;min-width:200px;">We use cookies to improve your experience. By continuing to browse this site you agree to our <a href="privacy.html" style="color:#2a7a6f;text-decoration:underline;">Privacy&nbsp;Policy</a>.</p>
+    <button id="cookie-accept" style="flex-shrink:0;background:#2a7a6f;color:#faf8f4;border:none;border-radius:4px;padding:8px 20px;font-size:14px;font-family:inherit;cursor:pointer;white-space:nowrap;" aria-label="Accept cookies">Accept</button>
+  </div>
+  <script>
+    (function () {
+      var banner = document.getElementById('cookie-banner');
+      if (!localStorage.getItem('cookieConsent')) {
+        banner.style.display = 'flex';
+      }
+      document.getElementById('cookie-accept').addEventListener('click', function () {
+        localStorage.setItem('cookieConsent', '1');
+        banner.style.display = 'none';
+      });
+    }());
+  </script>
 </body>
 </html>
