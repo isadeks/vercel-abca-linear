@@ -20,9 +20,11 @@
       --teal:    #2a7a6f;
       --teal-lt: #d5ecea;
       --coral:   #c9624a;
+      --blue:    #2563EB;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 1160px;
+      --site-header-h: 48px;
     }
 
     html { scroll-behavior: smooth; }
@@ -42,9 +44,25 @@
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
     .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
+    /* ── Site header bar ─────────────────────────────────────── */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--site-header-h);
+      background: var(--blue);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .site-header__title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: white;
+      text-transform: uppercase;
+    }
+
     /* ── Nav ──────────────────────────────────────────────────── */
     .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: var(--site-header-h); left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 20px 40px;
       background: transparent;
@@ -561,6 +579,11 @@
   </style>
 </head>
 <body>
+
+  <!-- ── Site header bar ────────────────────────────────────── -->
+  <header class="site-header" role="banner">
+    <span class="site-header__title">Wander</span>
+  </header>
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
