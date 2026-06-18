@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bilbao: The Basque City That Reinvented Itself — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600&q=80" alt="Bilbao, Basque Country, Spain" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">Urban &nbsp;·&nbsp; Basque Country, Spain</p>
+      <h1 class="guide-hero__title">Bilbao:<br/>The Basque city that reinvented itself</h1>
+      <p class="guide-hero__meta">9 min read &nbsp;·&nbsp; Long-weekend itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Once synonymous with heavy industry and grey skies, Bilbao staged one of the most remarkable urban transformations of the late twentieth century. Today the city gleams with world-class architecture, wears its Basque identity with fierce pride, and sets the standard for pintxos — the bite-sized bar snacks that have made Basque cuisine the envy of the culinary world.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Bilbao?</h2>
+        <p>The Guggenheim Museum Bilbao, which opened in 1997, is often credited with triggering the city's revival — a titanium-clad masterpiece by Frank Gehry that seemed to announce a new era overnight. But Bilbao's reinvention runs far deeper than a single building. The shipyards and steel mills that once defined the Nervión river have given way to promenades, footbridges, and gleaming cultural centres, while the city's old quarter retains an authenticity that younger, hipper cities can only envy.</p>
+        <p>What makes Bilbao truly compelling is the combination of the spectacular and the everyday. World-renowned museums sit alongside neighbourhood bars packed with locals arguing over football. Markets overflow with produce from the surrounding mountains and sea. The hills that ring the city offer hiking trails with views over terracotta rooftops — a reminder that the Basque countryside begins just where the last street ends.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Bilbao's metro, designed by Norman Foster, is one of Europe's most elegant underground systems — the glass entrance canopies are known locally as "fosteritos." A single T10 rechargeable card covers the metro, tram, and city buses, and the network is so efficient you rarely need a taxi. Pick one up from any metro station on arrival.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The neighbourhoods</h2>
+        <p>Bilbao rewards slow exploration on foot. Each neighbourhood has its own texture and rhythm, from the medieval lanes of the old city to the grand boulevards of the nineteenth-century ensanche. Getting lost between them — following the smell of coffee or the sound of txalaparta drums drifting from a festival — is often the best plan of all.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Casco Viejo</h3>
+          <p class="city-card__desc">The medieval heart of the city, built on seven streets (Las Siete Calles), is a labyrinth of narrow lanes, pintxos bars, and independent shops. The covered Mercado de la Ribera — the largest in Europe — anchors the riverfront edge, its art deco ironwork filled daily with the noise and colour of the city's finest produce.</p>
+          <span class="city-card__detail">Essential — half-day minimum</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Abando</h3>
+          <p class="city-card__desc">The elegant nineteenth-century centre of the city, where wide avenues lined with ornate buildings converge at the Plaza Circular. Home to the Museo de Bellas Artes — arguably underrated beside its titanium neighbour — and the bustling Mercado de la Ribera side streets, Abando is the city at its most cosmopolitan.</p>
+          <span class="city-card__detail">Great base for accommodation</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Indautxu</h3>
+          <p class="city-card__desc">A residential neighbourhood west of the centre, quieter and more local in feel than the tourist thoroughfares. Excellent neighbourhood restaurants, a lively morning market scene, and some of the city's best independent cafés. Staying here gives you Bilbao as the bilbaínos experience it, away from the museum crowds.</p>
+          <span class="city-card__detail">Best for local atmosphere</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Deusto</h3>
+          <p class="city-card__desc">Across the Nervión from the Guggenheim, Deusto is a university neighbourhood with a bohemian edge — cheap pintxos, late-night bars, and a youthful energy that contrasts with the polished riverfront promenade just a footbridge away. The views back across the river to the Guggenheim from here are among the best in the city.</p>
+          <span class="city-card__detail">Best for nightlife</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1539037116277-4db20889f2d4?w=1200&q=80" alt="Guggenheim Museum Bilbao reflected in the Nervión river" />
+        <figcaption>The Guggenheim's titanium curves reflect the light differently at every hour — at dusk the building seems to glow from within, a spectacle as dramatic as anything in its galleries.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Bilbao's Atlantic climate means rain is possible year-round, but the city handles it with grace — the covered arcades of the Casco Viejo and the warm interior life of its bars make wet weather perfectly manageable. Spring (April and May) brings mild temperatures, green hills, and the city in full bloom without summer crowds. September is arguably the finest month: the Aste Nagusia festival fills the streets with music, fireworks, and processions for nine days, the weather is warm but no longer harsh, and the locals are in celebratory mood.</p>
+        <p>Summer (July–August) is popular but rarely overcrowded by European standards — Bilbao is still largely off the mass-tourism radar that has overwhelmed San Sebastián to the east. Winter is grey and damp but surprisingly lively, with the cultural calendar running at full pace and restaurant reservations easier to secure.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Bilbao takes its food seriously — with an almost religious intensity. The pintxos bar crawl is a civic ritual: groups move from bar to bar in the Casco Viejo, each offering a counter laden with miniature creations on slices of bread, toothpick-skewered morsels of bacalao and anchovy, and more elaborate hot pintxos passed across the counter to order. A glass of cold txakoli (the local slightly sparkling white wine, poured from a height to aerate it) is the mandatory accompaniment.</p>
+        <p>Beyond pintxos, Bilbao is home to several Michelin-starred restaurants and a dining culture that prizes the finest local ingredients — salt cod from the bay, wild mushrooms from the Basque hills, and txuletón (bone-in ribeye) grilled over charcoal to a standard that makes the city a carnivore's destination in its own right. For a more democratic experience, the market restaurants in the Mercado de la Ribera serve excellent value lunches that draw office workers and food tourists in equal numbers.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Pintxos etiquette</p>
+        <p>In the best bars, the counter displays are restocked regularly and the best pieces disappear fast — arrive early in the evening (around 7–8pm) for the freshest selection. Most bars operate on an honour system: help yourself, keep your toothpicks or napkins to indicate what you've eaten, and settle up at the end. A small plate of pintxos and a glass of txakoli typically costs €4–6 per bar.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to the Amalfi Coast's dramatic shoreline — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
