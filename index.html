@@ -519,6 +519,39 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Trusted by ──────────────────────────────────────────────── */
+    .trusted-by {
+      padding: 44px 0;
+      background: var(--stone);
+    }
+    .trusted-by__heading {
+      text-align: center;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .trusted-by__logos {
+      display: flex;
+      list-style: none;
+      justify-content: center;
+      align-items: center;
+      gap: 56px;
+      flex-wrap: wrap;
+    }
+    .trusted-by__logo {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      letter-spacing: 0.07em;
+      color: var(--ash);
+      opacity: 0.65;
+      transition: opacity 0.2s;
+    }
+    .trusted-by__logo:hover { opacity: 1; }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -597,6 +630,20 @@
           </a>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ── Trusted by ───────────────────────────────────────────────── -->
+  <section class="trusted-by" aria-label="Trusted by">
+    <div class="container">
+      <p class="trusted-by__heading">Trusted by teams at</p>
+      <ul class="trusted-by__logos">
+        <li class="trusted-by__logo">Northwind</li>
+        <li class="trusted-by__logo">Globex</li>
+        <li class="trusted-by__logo">Initech</li>
+        <li class="trusted-by__logo">Umbrella</li>
+        <li class="trusted-by__logo">Vandelay</li>
+      </ul>
     </div>
   </section>
 
