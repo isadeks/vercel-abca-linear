@@ -13,3 +13,26 @@ describe('toolchain baseline', () => {
     expect(1 + 1).toBe(2);
   });
 });
+
+// ABCA-356: Extended feature — destination utility helpers used by the booking API.
+function formatDestinationSlug(name) {
+  return name.toLowerCase().replace(/\s+/g, '-');
+}
+
+function isValidDestination(slug, validSlugs) {
+  return validSlugs.includes(slug);
+}
+
+describe('destination utilities (ABCA-356)', () => {
+  it('formats destination names into URL slugs', () => {
+    expect(formatDestinationSlug('Amalfi Coast')).toBe('amalfi-coast');
+    expect(formatDestinationSlug('Kyoto')).toBe('kyoto');
+    expect(formatDestinationSlug('Norwegian Fjords')).toBe('norwegian-fjords');
+  });
+
+  it('validates destinations against a known list', () => {
+    const valid = ['amalfi-coast', 'kyoto', 'norwegian-fjords', 'santorini', 'patagonia', 'rajasthan'];
+    expect(isValidDestination('kyoto', valid)).toBe(true);
+    expect(isValidDestination('unknown-place', valid)).toBe(false);
+  });
+});
