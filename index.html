@@ -79,6 +79,35 @@
     .nav__links a:hover { color: white; }
     .nav.scrolled .nav__links a { color: var(--ash); }
     .nav.scrolled .nav__links a:hover { color: var(--ink); }
+    .nav__signin {
+      display: inline-flex; align-items: center;
+      padding: 8px 22px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1.5px solid rgba(255,255,255,0.75);
+      border-radius: 999px;
+      color: rgba(255,255,255,0.9);
+      background: transparent;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .nav__signin:hover {
+      background: rgba(255,255,255,0.15);
+      border-color: white;
+      color: white;
+    }
+    .nav.scrolled .nav__signin {
+      border-color: var(--teal);
+      color: var(--teal);
+      background: transparent;
+    }
+    .nav.scrolled .nav__signin:hover {
+      background: var(--teal);
+      color: white;
+    }
 
     /* ── Hero ─────────────────────────────────────────────────── */
     .hero {
@@ -524,6 +553,7 @@
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
       .nav__links { display: none; }
+      .nav__signin { display: none; }
       .hero__content { padding: 0 24px 60px; }
 
       .featured__grid {
@@ -559,6 +589,7 @@
       <li><a href="#">Features</a></li>
       <li><a href="#">Pricing</a></li>
     </ul>
+    <a href="#" class="nav__signin">Sign in</a>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
