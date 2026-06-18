@@ -5,6 +5,10 @@
 // sub-issues add real module tests alongside this one.
 import { describe, it, expect } from 'vitest';
 
+// INTENTIONAL DEMO FAILURE (ABCA-391): deliberate no-unused-vars violation to
+// demonstrate the governance build-break mechanism.  Do NOT remove or disable.
+const _unusedRefactoredHelper = 'demo-build-break';
+
 describe('toolchain baseline', () => {
   it('runs the test runner', () => {
     expect(1 + 1).toBe(2);
