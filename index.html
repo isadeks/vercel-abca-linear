@@ -23,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 1160px;
+      --header-h: 52px;
     }
 
     html { scroll-behavior: smooth; }
@@ -42,9 +43,25 @@
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
     .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
+    /* ── Site header bar ─────────────────────────────────────── */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--header-h);
+      background: #2563EB;
+      display: flex; align-items: center;
+      padding: 0 40px;
+    }
+    .site-header__title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: white;
+    }
+
     /* ── Nav ──────────────────────────────────────────────────── */
     .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 20px 40px;
       background: transparent;
@@ -562,6 +579,11 @@
   </style>
 </head>
 <body>
+
+  <!-- ── Site header bar ──────────────────────────────────────── -->
+  <header class="site-header">
+    <span class="site-header__title">Wander — Travel Guide</span>
+  </header>
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
