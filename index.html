@@ -467,6 +467,212 @@
       line-height: 1.6;
     }
 
+    /* ── Pricing ─────────────────────────────────────────────── */
+    .pricing {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+    .pricing__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .pricing__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .pricing__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 14px;
+    }
+    .pricing__sub {
+      font-size: 0.95rem;
+      color: var(--ash);
+      max-width: 480px;
+      margin: 0 auto;
+      line-height: 1.75;
+    }
+    .pricing__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .pricing-card {
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      display: flex;
+      flex-direction: column;
+      padding: 36px 32px 32px;
+      position: relative;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .pricing-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(26,23,20,0.08);
+    }
+    .pricing-card--featured {
+      background: var(--ink);
+      border-color: var(--ink);
+      padding-top: 48px;
+    }
+    .pricing-card--featured:hover {
+      box-shadow: 0 12px 32px rgba(26,23,20,0.22);
+    }
+    .pricing-card__badge {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--teal);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      white-space: nowrap;
+    }
+    .pricing-card__plan {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .pricing-card--featured .pricing-card__plan {
+      color: var(--teal-lt);
+    }
+    .pricing-card__price {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 4px;
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+    }
+    .pricing-card--featured .pricing-card__price {
+      color: white;
+    }
+    .pricing-card__price sup {
+      font-size: 1.3rem;
+      font-family: var(--font-sans);
+      font-weight: 300;
+      margin-top: 8px;
+    }
+    .pricing-card__price-note {
+      font-size: 0.8rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .pricing-card--featured .pricing-card__price-note {
+      color: rgba(255,255,255,0.45);
+    }
+    .pricing-card__divider {
+      width: 32px;
+      height: 1px;
+      background: var(--stone);
+      margin-bottom: 28px;
+    }
+    .pricing-card--featured .pricing-card__divider {
+      background: rgba(255,255,255,0.15);
+    }
+    .pricing-card__features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      flex: 1;
+      margin-bottom: 32px;
+    }
+    .pricing-card__feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.88rem;
+      color: var(--ash);
+      line-height: 1.5;
+    }
+    .pricing-card--featured .pricing-card__feature {
+      color: rgba(255,255,255,0.7);
+    }
+    .pricing-card__check {
+      flex-shrink: 0;
+      width: 16px;
+      height: 16px;
+      margin-top: 1px;
+      color: var(--teal);
+    }
+    .pricing-card--featured .pricing-card__check {
+      color: var(--teal-lt);
+    }
+    .btn--pricing {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      border: 1px solid var(--stone);
+      color: var(--ink);
+      background: var(--cream);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn--pricing:hover {
+      background: var(--ink);
+      border-color: var(--ink);
+      color: white;
+    }
+    .btn--pricing-featured {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--pricing-featured:hover {
+      background: #22665c;
+      border-color: #22665c;
+      color: white;
+    }
+    .btn--pricing-trial {
+      font-size: 0.85rem;
+      padding: 16px 28px;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+    .btn--pricing-secondary {
+      background: transparent;
+      border-color: rgba(255,255,255,0.5);
+      color: white;
+      font-size: 0.73rem;
+    }
+    .btn--pricing-secondary:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: white;
+      color: white;
+    }
+    @media (max-width: 900px) {
+      .pricing__grid { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
+      .pricing-card--featured { padding-top: 48px; }
+    }
+    @media (max-width: 560px) {
+      .pricing-card { padding: 28px 24px 24px; }
+    }
+
     /* ── Footer ───────────────────────────────────────────────── */
     footer {
       background: var(--ink);
@@ -591,6 +797,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="#pricing">Pricing</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -825,6 +1032,105 @@
           <button type="submit" class="btn btn--teal">Subscribe — it's free</button>
           <p class="newsletter__note">No spam, ever. Unsubscribe in one click. We respect your inbox.</p>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pricing ──────────────────────────────────────────────────── -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="pricing__header">
+        <p class="pricing__eyebrow">Plans &amp; pricing</p>
+        <h2 class="pricing__title">Simple, transparent pricing</h2>
+        <p class="pricing__sub">Choose the plan that fits how you explore. No hidden fees, no surprises — cancel any time.</p>
+      </div>
+      <div class="pricing__grid">
+
+        <!-- Starter -->
+        <div class="pricing-card">
+          <p class="pricing-card__plan">Starter</p>
+          <div class="pricing-card__price">
+            <sup>$</sup>0
+          </div>
+          <p class="pricing-card__price-note">Free forever</p>
+          <div class="pricing-card__divider"></div>
+          <ul class="pricing-card__features">
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Access to all free destination guides
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Destination quiz — up to 3 results/month
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Fortnightly editorial newsletter
+            </li>
+          </ul>
+          <a href="#newsletter" class="btn--pricing">Get started free</a>
+        </div>
+
+        <!-- Pro (featured) -->
+        <div class="pricing-card pricing-card--featured">
+          <span class="pricing-card__badge">Most popular</span>
+          <p class="pricing-card__plan">Pro</p>
+          <div class="pricing-card__price">
+            <sup>$</sup>29
+          </div>
+          <p class="pricing-card__price-note">per month, billed monthly</p>
+          <div class="pricing-card__divider"></div>
+          <ul class="pricing-card__features">
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Everything in Starter
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Unlimited destination quiz results
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Offline-ready PDF packing lists &amp; itineraries
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Early access to new guides &amp; features
+            </li>
+          </ul>
+          <a href="#newsletter" class="btn--pricing btn--pricing-featured btn--pricing-trial">Start free trial</a>
+          <a href="#newsletter" class="btn--pricing btn--pricing-featured btn--pricing-secondary">Start Pro — $29/mo</a>
+        </div>
+
+        <!-- Enterprise -->
+        <div class="pricing-card">
+          <p class="pricing-card__plan">Enterprise</p>
+          <div class="pricing-card__price" style="font-size:2rem;align-items:center;">
+            Contact us
+          </div>
+          <p class="pricing-card__price-note">Custom pricing for teams</p>
+          <div class="pricing-card__divider"></div>
+          <ul class="pricing-card__features">
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Everything in Pro
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              White-label guides for travel brands
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              API access &amp; custom integrations
+            </li>
+            <li class="pricing-card__feature">
+              <svg class="pricing-card__check" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Dedicated account manager
+            </li>
+          </ul>
+          <a href="contact.html" class="btn--pricing">Talk to us</a>
+        </div>
+
       </div>
     </div>
   </section>
