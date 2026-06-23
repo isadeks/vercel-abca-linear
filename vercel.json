@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/changelog.xml", "destination": "/api/changelog-feed" }
+  ]
+}
