@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Analytics Dashboard — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <!-- Chart.js from CDN — no build step required -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: var(--cream);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__brand {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      color: var(--teal);
+    }
+    .nav__links { display: flex; gap: 32px; font-size: 0.875rem; font-weight: 500; }
+    .nav__links a { color: var(--ash); transition: color 0.2s; }
+    .nav__links a:hover, .nav__links a.active { color: var(--teal); }
+
+    /* ── Layout ── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .page-header {
+      padding: 48px 0 32px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: 2.25rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .page-header p {
+      margin-top: 8px;
+      color: var(--ash);
+      font-size: 0.9rem;
+    }
+
+    /* ── Controls ── */
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 24px 0;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 8px 20px;
+      border-radius: 4px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      border: none;
+    }
+    .btn--primary {
+      background: var(--teal);
+      color: #fff;
+    }
+    .btn--primary:hover { background: #235f56; }
+    .btn--secondary {
+      background: var(--stone);
+      color: var(--ink);
+    }
+    .btn--secondary:hover { background: #d8cfc0; }
+
+    .status-text {
+      font-size: 0.8rem;
+      color: var(--ash);
+      margin-left: auto;
+    }
+
+    /* ── KPI cards ── */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      padding: 8px 0 32px;
+    }
+    .kpi-card {
+      background: #fff;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 20px 24px;
+    }
+    .kpi-card__label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    .kpi-card__value {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--teal);
+      line-height: 1;
+    }
+
+    /* ── Charts grid ── */
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      padding-bottom: 48px;
+    }
+    @media (max-width: 720px) {
+      .charts-grid { grid-template-columns: 1fr; }
+      .chart-card--wide { grid-column: span 1; }
+    }
+    .chart-card {
+      background: #fff;
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 24px;
+    }
+    .chart-card--wide { grid-column: span 2; }
+    .chart-card h2 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      color: var(--ink);
+    }
+    .chart-wrapper { position: relative; }
+
+    /* ── Error / loading states ── */
+    .state-banner {
+      padding: 16px 20px;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      margin-bottom: 24px;
+    }
+    .state-banner--error {
+      background: #fdf0ed;
+      color: var(--coral);
+      border: 1px solid #f5c2b6;
+    }
+    .state-banner--info {
+      background: var(--teal-lt);
+      color: var(--teal);
+      border: 1px solid #b0d9d4;
+    }
+    .state-banner--hidden { display: none; }
+
+    /* ── Nav actions (user pill + sign-out) ── */
+    .nav__actions {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav__user {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav__signout {
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      background: white;
+      color: var(--ash);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: var(--font-sans);
+      border-radius: 4px;
+    }
+    .nav__signout:hover { background: var(--ink); border-color: var(--ink); color: white; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--stone);
+      padding: 24px 0;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+
+    /* ── Demo seed form ── */
+    .seed-form {
+      display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+      padding: 12px 16px;
+      background: var(--sand);
+      border-radius: 6px;
+      font-size: 0.8rem;
+    }
+    .seed-form label { font-weight: 500; color: var(--ash); }
+    .seed-form select {
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid var(--stone);
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="nav">
+    <a href="index.html" class="nav__brand">Wander</a>
+    <ul class="nav__links" role="list">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="billing.html">Billing</a></li>
+      <li><a href="invoices.html">Invoices</a></li>
+      <li><a href="analytics.html">Analytics</a></li>
+    </ul>
+    <div class="nav__actions">
+      <span class="nav__user" hidden aria-live="polite"></span>
+      <button class="nav__signout btn btn--secondary" type="button" hidden>Sign out</button>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+
+      <header class="page-header">
+        <h1>Analytics Dashboard</h1>
+        <p>Event metrics aggregated from <code>POST /api/events</code></p>
+      </header>
+
+      <!-- Controls -->
+      <div class="controls">
+        <button class="btn btn--primary" id="btn-refresh" onclick="loadMetrics(true)">
+          ↻ Refresh
+        </button>
+
+        <!-- Demo seed helper -->
+        <div class="seed-form">
+          <label for="seed-type">Send test event:</label>
+          <select id="seed-type">
+            <option value="page_view">page_view</option>
+            <option value="click">click</option>
+            <option value="search">search</option>
+            <option value="booking">booking</option>
+            <option value="error">error</option>
+          </select>
+          <button class="btn btn--secondary" onclick="seedEvent()">Send</button>
+        </div>
+
+        <span class="status-text" id="status-text">Loading…</span>
+      </div>
+
+      <!-- Banners -->
+      <div class="state-banner state-banner--error state-banner--hidden" id="error-banner"></div>
+      <div class="state-banner state-banner--info state-banner--hidden" id="info-banner"></div>
+
+      <!-- KPI cards -->
+      <section class="kpi-grid" id="kpi-grid" aria-label="Key performance indicators">
+        <!-- Populated by JS -->
+      </section>
+
+      <!-- Charts -->
+      <section class="charts-grid" aria-label="Analytics charts">
+
+        <div class="chart-card chart-card--wide">
+          <h2>Daily Events Timeline</h2>
+          <div class="chart-wrapper">
+            <canvas id="chart-timeline" height="90" aria-label="Daily events timeline bar chart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Events by Type</h2>
+          <div class="chart-wrapper">
+            <canvas id="chart-donut" height="180" aria-label="Events by type donut chart"></canvas>
+          </div>
+        </div>
+
+        <div class="chart-card">
+          <h2>Event Type Totals</h2>
+          <div class="chart-wrapper">
+            <canvas id="chart-bar" height="180" aria-label="Event type totals horizontal bar chart"></canvas>
+          </div>
+        </div>
+
+      </section>
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      &copy; 2026 Wander. <a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a>
+    </div>
+  </footer>
+
+  <!-- Auth guard + nav hydration -->
+  <script type="module">
+    import { initDashboard, onAuthReady } from '/js/dashboard-shell.js';
+    // Kick off auth check immediately; page content hidden until resolved.
+    initDashboard({ requireAuth: true });
+    // Expose onAuthReady so the main analytics script can enrich events with userId.
+    window.__onAuthReady = onAuthReady;
+  </script>
+
+  <script type="module">
+    // ── Colour palette shared across charts ──────────────────────────────────
+    const PALETTE = {
+      page_view: '#2a7a6f',
+      click:     '#c9624a',
+      search:    '#8b7355',
+      booking:   '#4a90a4',
+      error:     '#d4545c',
+    };
+
+    const CHART_DEFAULTS = {
+      font: { family: "'Inter', system-ui, sans-serif", size: 12 },
+      color: '#6b6560',
+    };
+    Chart.defaults.font = CHART_DEFAULTS.font;
+    Chart.defaults.color = CHART_DEFAULTS.color;
+
+    // ── Chart instances ──────────────────────────────────────────────────────
+    let timelineChart = null;
+    let donutChart    = null;
+    let barChart      = null;
+
+    // ── DOM helpers ──────────────────────────────────────────────────────────
+    function $(id) { return document.getElementById(id); }
+
+    function setStatus(msg) {
+      $('status-text').textContent = msg;
+    }
+
+    function showError(msg) {
+      const el = $('error-banner');
+      el.textContent = msg;
+      el.classList.remove('state-banner--hidden');
+      $('info-banner').classList.add('state-banner--hidden');
+    }
+
+    function showInfo(msg) {
+      const el = $('info-banner');
+      el.textContent = msg;
+      el.classList.remove('state-banner--hidden');
+      $('error-banner').classList.add('state-banner--hidden');
+    }
+
+    function clearBanners() {
+      $('error-banner').classList.add('state-banner--hidden');
+      $('info-banner').classList.add('state-banner--hidden');
+    }
+
+    // ── KPI rendering ────────────────────────────────────────────────────────
+    function renderKpis(data) {
+      const grid = $('kpi-grid');
+      const types = Object.entries(data.totals);
+
+      const cards = [
+        { label: 'Total Events',    value: data.totalEvents.toLocaleString() },
+        ...types.map(([t, c]) => ({ label: t.replace('_', ' '), value: c.toLocaleString() })),
+      ];
+
+      grid.innerHTML = cards.map(({ label, value }) => `
+        <div class="kpi-card">
+          <div class="kpi-card__label">${label}</div>
+          <div class="kpi-card__value">${value}</div>
+        </div>
+      `).join('');
+    }
+
+    // ── Chart rendering ──────────────────────────────────────────────────────
+    function renderTimeline(daily) {
+      // Group by date, sum all types per date
+      const byDate = {};
+      const typeSet = new Set();
+
+      for (const { date, type, count } of daily) {
+        if (!byDate[date]) byDate[date] = {};
+        byDate[date][type] = (byDate[date][type] ?? 0) + count;
+        typeSet.add(type);
+      }
+
+      const dates = Object.keys(byDate).sort();
+      const types = [...typeSet].sort();
+
+      const datasets = types.map(type => ({
+        label: type,
+        data: dates.map(d => byDate[d]?.[type] ?? 0),
+        backgroundColor: PALETTE[type] ?? '#aaa',
+        borderRadius: 3,
+        stack: 'events',
+      }));
+
+      const ctx = $('chart-timeline').getContext('2d');
+      if (timelineChart) timelineChart.destroy();
+      timelineChart = new Chart(ctx, {
+        type: 'bar',
+        data: { labels: dates, datasets },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } },
+          scales: {
+            x: { stacked: true, grid: { display: false } },
+            y: { stacked: true, beginAtZero: true, ticks: { precision: 0 } },
+          },
+        },
+      });
+    }
+
+    function renderDonut(totals) {
+      const labels = Object.keys(totals);
+      const values = labels.map(l => totals[l]);
+      const colors = labels.map(l => PALETTE[l] ?? '#aaa');
+
+      const ctx = $('chart-donut').getContext('2d');
+      if (donutChart) donutChart.destroy();
+      donutChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{ data: values, backgroundColor: colors, borderWidth: 1 }],
+        },
+        options: {
+          responsive: true,
+          plugins: { legend: { position: 'bottom' } },
+        },
+      });
+    }
+
+    function renderBar(totals) {
+      const labels = Object.keys(totals);
+      const values = labels.map(l => totals[l]);
+      const colors = labels.map(l => PALETTE[l] ?? '#aaa');
+
+      const ctx = $('chart-bar').getContext('2d');
+      if (barChart) barChart.destroy();
+      barChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{ label: 'Total', data: values, backgroundColor: colors, borderRadius: 4 }],
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          plugins: { legend: { display: false } },
+          scales: {
+            x: { beginAtZero: true, ticks: { precision: 0 }, grid: { color: '#ede8df' } },
+            y: { grid: { display: false } },
+          },
+        },
+      });
+    }
+
+    // ── Data fetching ────────────────────────────────────────────────────────
+    async function loadMetrics(forceRefresh = false) {
+      clearBanners();
+      setStatus('Loading…');
+      $('btn-refresh').disabled = true;
+
+      try {
+        const url = forceRefresh ? '/api/aggregate?refresh=1' : '/api/aggregate';
+        const res  = await fetch(url);
+
+        if (!res.ok) {
+          const body = await res.text();
+          throw new Error(`HTTP ${res.status}: ${body}`);
+        }
+
+        const data = await res.json();
+
+        if (data.totalEvents === 0) {
+          showInfo('No events recorded yet. Use the "Send test event" control to seed some data.');
+          $('kpi-grid').innerHTML = '';
+          if (timelineChart) { timelineChart.destroy(); timelineChart = null; }
+          if (donutChart)    { donutChart.destroy();    donutChart    = null; }
+          if (barChart)      { barChart.destroy();      barChart      = null; }
+          setStatus('No events');
+          return;
+        }
+
+        renderKpis(data);
+        renderTimeline(data.daily);
+        renderDonut(data.totals);
+        renderBar(data.totals);
+
+        const ts = new Date(data.lastAggregatedAt).toLocaleTimeString();
+        setStatus(`Last updated: ${ts}`);
+      } catch (err) {
+        showError(`Failed to load metrics — ${err.message}`);
+        setStatus('Error');
+        console.error(err);
+      } finally {
+        $('btn-refresh').disabled = false;
+      }
+    }
+
+    // ── Demo: seed a test event ──────────────────────────────────────────────
+    // currentUser is populated by onAuthReady (via dashboard-shell.js).
+    let currentUser = null;
+    if (typeof window.__onAuthReady === 'function') {
+      window.__onAuthReady((u) => { currentUser = u; });
+    }
+
+    async function seedEvent() {
+      const type = $('seed-type').value;
+      try {
+        /** @type {object} */
+        const payload = {
+          type,
+          page: window.location.pathname,
+        };
+        // Prefer userId when available; fall back to an anonymous session id.
+        if (currentUser && currentUser.email) {
+          payload.userId = currentUser.email;
+        } else {
+          payload.sessionId = `demo-${Math.random().toString(36).slice(2, 10)}`;
+        }
+        const res = await fetch('/api/events', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          showError(`Failed to send event: ${body.error ?? res.status}`);
+          return;
+        }
+        // Reload metrics after seeding
+        await loadMetrics(false);
+      } catch (err) {
+        showError(`Event send failed — ${err.message}`);
+      }
+    }
+
+    // Expose to onclick handlers
+    window.loadMetrics = loadMetrics;
+    window.seedEvent   = seedEvent;
+
+    // Initial load
+    loadMetrics();
+  </script>
+
+</body>
+</html>
