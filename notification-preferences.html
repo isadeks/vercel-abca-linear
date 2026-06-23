@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notification Preferences — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ────────────────────────────────────────────── */
+    .page-hero {
+      padding: 72px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ── Settings body ────────────────────────────────────────── */
+    .settings-body {
+      padding: 56px 0 96px;
+    }
+
+    /* User ID bar */
+    .user-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 40px;
+      padding: 16px 20px;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+    }
+    .user-bar label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      white-space: nowrap;
+    }
+    .user-bar input {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .user-bar input:focus { border-color: var(--teal); }
+    .user-bar .btn-sm {
+      padding: 9px 18px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--teal);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .user-bar .btn-sm:hover { background: #22665c; }
+
+    /* Preference sections */
+    .prefs-section {
+      margin-bottom: 48px;
+    }
+    .prefs-section__heading {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .prefs-section__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      margin-bottom: 24px;
+    }
+
+    .pref-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .pref-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px 20px;
+      background: white;
+      border: 1px solid var(--stone);
+    }
+    .pref-item + .pref-item { border-top: none; }
+    .pref-item__text { flex: 1; }
+    .pref-item__label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 3px;
+    }
+    .pref-item__hint {
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+
+    /* Toggle switch */
+    .toggle {
+      position: relative;
+      width: 44px;
+      height: 24px;
+      flex-shrink: 0;
+    }
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle__track {
+      position: absolute;
+      inset: 0;
+      background: var(--stone);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle__track::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle input:checked + .toggle__track { background: var(--teal); }
+    .toggle input:checked + .toggle__track::after { transform: translateX(20px); }
+    .toggle input:focus-visible + .toggle__track { outline: 2px solid var(--teal); outline-offset: 2px; }
+
+    /* Action row */
+    .actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-top: 40px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 26px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      font-family: var(--font-sans);
+    }
+    .btn--primary { background: var(--teal); color: white; border-color: var(--teal); }
+    .btn--primary:hover { background: #22665c; border-color: #22665c; }
+    .btn--ghost { background: transparent; color: var(--ink); border-color: var(--stone); }
+    .btn--ghost:hover { border-color: var(--ash); }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+    /* Status banner */
+    .status-banner {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      margin-bottom: 32px;
+      font-size: 0.85rem;
+      border-radius: 2px;
+    }
+    .status-banner--success {
+      background: var(--teal-lt);
+      color: var(--teal);
+      border: 1px solid #b3d9d5;
+    }
+    .status-banner--error {
+      background: #fcecea;
+      color: var(--coral);
+      border: 1px solid #f0c4be;
+    }
+    .status-banner.is-visible { display: flex; }
+
+    /* Loading skeleton */
+    .skeleton {
+      animation: pulse 1.4s ease-in-out infinite;
+      background: var(--stone);
+      border-radius: 2px;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.4; }
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+      .user-bar { flex-wrap: wrap; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Account settings</p>
+      <h1 class="page-hero__title">Notification preferences</h1>
+      <p class="page-hero__sub">Choose exactly what Wander sends you — and how.</p>
+    </div>
+  </div>
+
+  <div class="settings-body">
+    <div class="container">
+
+      <!-- User ID field (demo stand-in for session auth) -->
+      <div class="user-bar">
+        <label for="userId">User ID</label>
+        <input type="text" id="userId" placeholder="Enter your user ID to load saved preferences" />
+        <button class="btn-sm" id="loadBtn" type="button">Load</button>
+      </div>
+
+      <!-- Status banner -->
+      <div class="status-banner" id="statusBanner" role="status" aria-live="polite"></div>
+
+      <form id="prefsForm" novalidate>
+
+        <!-- Email notifications -->
+        <section class="prefs-section">
+          <h2 class="prefs-section__heading">Email notifications</h2>
+          <p class="prefs-section__desc">Messages sent to your registered email address.</p>
+          <ul class="pref-list">
+
+            <li class="pref-item">
+              <div class="pref-item__text">
+                <span class="pref-item__label">Booking confirmations</span>
+                <span class="pref-item__hint">Receive a confirmation email whenever a booking is created or updated.</span>
+              </div>
+              <label class="toggle" aria-label="Email booking confirmations">
+                <input type="checkbox" name="emailBookingConfirmations" />
+                <span class="toggle__track"></span>
+              </label>
+            </li>
+
+            <li class="pref-item">
+              <div class="pref-item__text">
+                <span class="pref-item__label">Newsletter</span>
+                <span class="pref-item__hint">Our weekly roundup of guides, travel tips, and destination spotlights.</span>
+              </div>
+              <label class="toggle" aria-label="Email newsletters">
+                <input type="checkbox" name="emailNewsletters" />
+                <span class="toggle__track"></span>
+              </label>
+            </li>
+
+            <li class="pref-item">
+              <div class="pref-item__text">
+                <span class="pref-item__label">Special offers &amp; promotions</span>
+                <span class="pref-item__hint">Occasional deals, early-access offers, and partner promotions.</span>
+              </div>
+              <label class="toggle" aria-label="Email marketing">
+                <input type="checkbox" name="emailMarketing" />
+                <span class="toggle__track"></span>
+              </label>
+            </li>
+
+          </ul>
+        </section>
+
+        <!-- In-app notifications -->
+        <section class="prefs-section">
+          <h2 class="prefs-section__heading">In-app notifications</h2>
+          <p class="prefs-section__desc">Alerts shown while you're using the Wander platform.</p>
+          <ul class="pref-list">
+
+            <li class="pref-item">
+              <div class="pref-item__text">
+                <span class="pref-item__label">Booking updates</span>
+                <span class="pref-item__hint">Status changes, itinerary updates, and check-in reminders.</span>
+              </div>
+              <label class="toggle" aria-label="In-app booking updates">
+                <input type="checkbox" name="inAppBookingUpdates" />
+                <span class="toggle__track"></span>
+              </label>
+            </li>
+
+            <li class="pref-item">
+              <div class="pref-item__text">
+                <span class="pref-item__label">System alerts</span>
+                <span class="pref-item__hint">Important notices about your account or service availability.</span>
+              </div>
+              <label class="toggle" aria-label="In-app system alerts">
+                <input type="checkbox" name="inAppSystemAlerts" />
+                <span class="toggle__track"></span>
+              </label>
+            </li>
+
+            <li class="pref-item">
+              <div class="pref-item__text">
+                <span class="pref-item__label">Promotions</span>
+                <span class="pref-item__hint">In-platform highlights for exclusive deals and curated offers.</span>
+              </div>
+              <label class="toggle" aria-label="In-app promotions">
+                <input type="checkbox" name="inAppPromotions" />
+                <span class="toggle__track"></span>
+              </label>
+            </li>
+
+          </ul>
+        </section>
+
+        <div class="actions">
+          <button type="submit" class="btn btn--primary" id="saveBtn">Save preferences</button>
+          <button type="button" class="btn btn--ghost" id="resetBtn">Reset to defaults</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    /* ── Notification Preferences UI (shared context edition) ──── */
+
+    // Import the shared notifications client context so this page and the bell
+    // component always reflect the same user identity and preference values.
+    import { notificationsClientContext as ctx }
+      from '/api/_lib/notificationsClientContext.js';
+
+    const userIdInput = document.getElementById('userId');
+    const loadBtn     = document.getElementById('loadBtn');
+    const saveBtn     = document.getElementById('saveBtn');
+    const resetBtn    = document.getElementById('resetBtn');
+    const form        = document.getElementById('prefsForm');
+    const banner      = document.getElementById('statusBanner');
+
+    /* helpers */
+    function showBanner(msg, type) {
+      banner.textContent = msg;
+      banner.className   = 'status-banner is-visible status-banner--' + type;
+      clearTimeout(banner._timer);
+      if (type === 'success') {
+        banner._timer = setTimeout(() => banner.classList.remove('is-visible'), 4000);
+      }
+    }
+
+    function applyPrefs(prefs) {
+      for (const [key, val] of Object.entries(prefs)) {
+        const el = form.querySelector('[name="' + key + '"]');
+        if (el) el.checked = val;
+      }
+    }
+
+    function collectPrefs() {
+      const out = {};
+      form.querySelectorAll('input[type="checkbox"]').forEach(el => {
+        out[el.name] = el.checked;
+      });
+      return out;
+    }
+
+    function setLoading(on) {
+      saveBtn.disabled  = on;
+      resetBtn.disabled = on;
+      loadBtn.disabled  = on;
+    }
+
+    /* Keep form in sync whenever the shared context changes (e.g. the bell
+       component or another module calls ctx.savePrefs / ctx.applyPrefs). */
+    ctx.subscribe(() => {
+      applyPrefs(ctx.prefs);
+    });
+
+    /* Load prefs — delegates to shared context */
+    async function loadPrefs() {
+      const userId = userIdInput.value.trim();
+      if (!userId) { showBanner('Please enter a user ID first.', 'error'); return; }
+
+      ctx.setUserId(userId);
+      setLoading(true);
+      try {
+        await ctx.loadPrefs();
+        applyPrefs(ctx.prefs);
+        showBanner('Preferences loaded.', 'success');
+      } catch (err) {
+        showBanner(err.message, 'error');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    /* Save prefs — delegates to shared context */
+    async function savePrefs(e) {
+      e.preventDefault();
+      const userId = userIdInput.value.trim();
+      if (!userId) { showBanner('Please enter a user ID first.', 'error'); return; }
+
+      ctx.setUserId(userId);
+      setLoading(true);
+      try {
+        await ctx.savePrefs(collectPrefs());
+        applyPrefs(ctx.prefs);
+        showBanner('Preferences saved.', 'success');
+      } catch (err) {
+        showBanner(err.message, 'error');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    /* Reset to defaults — delegates to shared context */
+    async function resetPrefs() {
+      const userId = userIdInput.value.trim();
+      if (!userId) { showBanner('Please enter a user ID first.', 'error'); return; }
+
+      ctx.setUserId(userId);
+      setLoading(true);
+      try {
+        await ctx.resetPrefs();
+        applyPrefs(ctx.prefs);
+        showBanner('Preferences reset to defaults.', 'success');
+      } catch (err) {
+        showBanner(err.message, 'error');
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadBtn.addEventListener('click', loadPrefs);
+    form.addEventListener('submit', savePrefs);
+    resetBtn.addEventListener('click', resetPrefs);
+
+    /* Apply default prefs on page init via the shared context */
+    applyPrefs(ctx.prefs);
+  </script>
+
+</body>
+</html>
