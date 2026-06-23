@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog — Wander</title>
+  <link rel="alternate" type="application/rss+xml" title="Wander Changelog RSS" href="/changelog.xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+      transition: background 0.3s, backdrop-filter 0.3s;
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover,
+    .nav__links a[aria-current="page"] { color: var(--ink); }
+
+    /* ── Page header ─────────────────────────────────────────── */
+    .page-header {
+      padding: 140px 0 72px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 5vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.08;
+      margin-bottom: 18px;
+    }
+    .page-header__title em { font-style: italic; }
+    .page-header__sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ash);
+      max-width: 520px;
+      line-height: 1.75;
+    }
+    .page-header__rss {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .page-header__rss:hover { opacity: 0.7; }
+    .page-header__rss svg { flex-shrink: 0; }
+
+    /* ── Timeline ────────────────────────────────────────────── */
+    .timeline {
+      padding: 80px 0 100px;
+    }
+    .timeline__inner {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 0 60px;
+    }
+
+    /* ── Entry ───────────────────────────────────────────────── */
+    .cl-entry {
+      display: contents;
+    }
+    .cl-entry__aside {
+      padding-top: 4px;
+      text-align: right;
+    }
+    .cl-entry__version {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .cl-entry__date {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--ash);
+      letter-spacing: 0.04em;
+      margin-top: 4px;
+    }
+    .cl-entry__body {
+      padding-bottom: 56px;
+      border-bottom: 1px solid var(--stone);
+      margin-bottom: 56px;
+      /* Used as the last child bottom separator remover via JS */
+    }
+    .cl-entry__body:last-child {
+      border-bottom: none;
+    }
+    .cl-entry__category {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      border: 1px solid currentColor;
+      margin-bottom: 12px;
+    }
+    .cl-entry__category--feature     { color: var(--teal); }
+    .cl-entry__category--improvement { color: var(--teal); }
+    .cl-entry__category--fix         { color: var(--coral); }
+    .cl-entry__category--content     { color: var(--ash); }
+    .cl-entry__category--release     { color: var(--ink); }
+
+    .cl-entry__title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .cl-entry__text {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.8;
+      max-width: 600px;
+    }
+
+    /* Anchor target offset for fixed nav */
+    .cl-entry__anchor {
+      display: block;
+      height: 0;
+      overflow: hidden;
+    }
+
+    /* ── Aside spacer rows ─────────────────────────────────────*/
+    /* The timeline grid has aside + body as a row; for entries we need
+       both cells to scroll nicely. We use a pseudo-aside that anchors
+       the version/date alongside the first line of copy. */
+    .timeline__aside-gap {
+      /* bridges the bottom border gap of cl-entry__body for the aside column */
+      margin-bottom: 56px;
+    }
+
+    /* ── Empty state ─────────────────────────────────────────── */
+    .timeline__empty {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 80px 0;
+      color: var(--ash);
+      font-size: 0.95rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+
+      .timeline__inner {
+        grid-template-columns: 1fr;
+        gap: 0;
+      }
+      .cl-entry__aside {
+        text-align: left;
+        padding-top: 0;
+        margin-bottom: 10px;
+      }
+      .timeline__aside-gap { display: none; }
+
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="changelog.html" aria-current="page">Changelog</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ───────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Product updates</p>
+      <h1 class="page-header__title">What's <em>new</em></h1>
+      <p class="page-header__sub">A running record of new features, content additions, and improvements to Wander — newest first.</p>
+      <a href="/changelog.xml" class="page-header__rss" aria-label="Subscribe to changelog RSS feed">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+          <circle cx="3" cy="11" r="1.5" fill="currentColor"/>
+          <path d="M2 7.5A4.5 4.5 0 0 1 6.5 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+          <path d="M2 3.5A8.5 8.5 0 0 1 10.5 12" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+        </svg>
+        RSS feed
+      </a>
+    </div>
+  </header>
+
+  <!-- ── Changelog timeline ────────────────────────────────────── -->
+  <main class="timeline">
+    <div class="container">
+      <div class="timeline__inner" id="changelog-list">
+        <!-- Entries are rendered by the script below -->
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+            <li><a href="index.html#guides">Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="index.html#guides">Packing lists</a></li>
+            <li><a href="contact.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="changelog.html">Changelog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { changelog } from './data/changelog.js';
+
+    const CATEGORY_CLASS = {
+      Feature:     'feature',
+      Improvement: 'improvement',
+      Fix:         'fix',
+      Content:     'content',
+      Release:     'release',
+    };
+
+    function formatDate(iso) {
+      return new Date(iso).toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric',
+      });
+    }
+
+    const list = document.getElementById('changelog-list');
+
+    if (!changelog || changelog.length === 0) {
+      list.innerHTML = '<p class="timeline__empty">No entries yet — check back soon.</p>';
+    } else {
+      // Entries already newest-first in the data file; render in order.
+      changelog.forEach((entry, idx) => {
+        const catKey = CATEGORY_CLASS[entry.category] || 'content';
+        const anchorId = `v${entry.version.replace(/\./g, '-')}`;
+
+        // Aside column
+        const aside = document.createElement('div');
+        aside.className = 'cl-entry__aside timeline__aside-gap';
+        aside.innerHTML = `
+          <span class="cl-entry__version">${entry.version}</span>
+          <span class="cl-entry__date">${formatDate(entry.date)}</span>
+        `;
+
+        // Body column
+        const body = document.createElement('div');
+        body.className = 'cl-entry__body';
+        if (idx === changelog.length - 1) {
+          body.style.borderBottom = 'none';
+        }
+        body.innerHTML = `
+          <span id="${anchorId}" class="cl-entry__anchor" aria-hidden="true"></span>
+          <span class="cl-entry__category cl-entry__category--${catKey}">${entry.category}</span>
+          <h2 class="cl-entry__title">${entry.title}</h2>
+          <p class="cl-entry__text">${entry.body}</p>
+        `;
+
+        list.appendChild(aside);
+        list.appendChild(body);
+      });
+    }
+  </script>
+
+</body>
+</html>
