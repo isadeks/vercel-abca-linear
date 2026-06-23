@@ -187,6 +187,35 @@
     }
     .state-banner--hidden { display: none; }
 
+    /* ── Nav actions (user pill + sign-out) ── */
+    .nav__actions {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav__user {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav__signout {
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      background: white;
+      color: var(--ash);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: var(--font-sans);
+      border-radius: 4px;
+    }
+    .nav__signout:hover { background: var(--ink); border-color: var(--ink); color: white; }
+
     /* ── Footer ── */
     footer {
       border-top: 1px solid var(--stone);
@@ -218,12 +247,18 @@
 
   <!-- Navigation -->
   <nav class="nav">
-    <a href="/" class="nav__brand">Wander</a>
+    <a href="index.html" class="nav__brand">Wander</a>
     <ul class="nav__links" role="list">
-      <li><a href="/">Home</a></li>
-      <li><a href="/destinations.html">Destinations</a></li>
-      <li><a href="/analytics.html" class="active">Analytics</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="billing.html">Billing</a></li>
+      <li><a href="invoices.html">Invoices</a></li>
+      <li><a href="analytics.html">Analytics</a></li>
     </ul>
+    <div class="nav__actions">
+      <span class="nav__user" hidden aria-live="polite"></span>
+      <button class="nav__signout btn btn--secondary" type="button" hidden>Sign out</button>
+    </div>
   </nav>
 
   <main>
@@ -295,9 +330,18 @@
 
   <footer>
     <div class="container">
-      © 2024 Wander Travel Guide · <a href="/privacy.html">Privacy</a>
+      &copy; 2026 Wander. <a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a>
     </div>
   </footer>
+
+  <!-- Auth guard + nav hydration -->
+  <script type="module">
+    import { initDashboard, onAuthReady } from '/js/dashboard-shell.js';
+    // Kick off auth check immediately; page content hidden until resolved.
+    initDashboard({ requireAuth: true });
+    // Expose onAuthReady so the main analytics script can enrich events with userId.
+    window.__onAuthReady = onAuthReady;
+  </script>
 
   <script type="module">
     // ── Colour palette shared across charts ──────────────────────────────────
@@ -493,17 +537,30 @@
     }
 
     // ── Demo: seed a test event ──────────────────────────────────────────────
+    // currentUser is populated by onAuthReady (via dashboard-shell.js).
+    let currentUser = null;
+    if (typeof window.__onAuthReady === 'function') {
+      window.__onAuthReady((u) => { currentUser = u; });
+    }
+
     async function seedEvent() {
       const type = $('seed-type').value;
       try {
+        /** @type {object} */
+        const payload = {
+          type,
+          page: window.location.pathname,
+        };
+        // Prefer userId when available; fall back to an anonymous session id.
+        if (currentUser && currentUser.email) {
+          payload.userId = currentUser.email;
+        } else {
+          payload.sessionId = `demo-${Math.random().toString(36).slice(2, 10)}`;
+        }
         const res = await fetch('/api/events', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            type,
-            sessionId: `demo-${Math.random().toString(36).slice(2, 10)}`,
-            page: window.location.pathname,
-          }),
+          body: JSON.stringify(payload),
         });
         if (!res.ok) {
           const body = await res.json().catch(() => ({}));

@@ -185,6 +185,34 @@
     }
     .link-sm:hover { color: var(--ink); }
 
+    /* ── Nav actions (user pill + sign-out) ── */
+    .nav__actions {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav__user {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nav__signout {
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      background: white;
+      color: var(--ash);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-family: var(--font-sans);
+    }
+    .nav__signout:hover { background: var(--ink); border-color: var(--ink); color: white; }
+
     /* ── Empty / loading states ── */
     .state-row {
       padding: 48px 20px;
@@ -285,11 +313,16 @@
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
     <ul class="nav__links">
-      <li><a href="index.html#destinations">Destinations</a></li>
-      <li><a href="index.html#guides">Guides</a></li>
-      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="destinations.html">Destinations</a></li>
       <li><a href="billing.html">Billing</a></li>
+      <li><a href="invoices.html">Invoices</a></li>
+      <li><a href="analytics.html">Analytics</a></li>
     </ul>
+    <div class="nav__actions">
+      <span class="nav__user" hidden aria-live="polite"></span>
+      <button class="nav__signout" type="button" hidden>Sign out</button>
+    </div>
   </nav>
 
   <!-- ── Page header ── -->
@@ -380,6 +413,12 @@
       </div>
     </div>
   </footer>
+
+  <!-- Auth guard + nav hydration -->
+  <script type="module">
+    import { initDashboard } from '/js/dashboard-shell.js';
+    initDashboard({ requireAuth: true });
+  </script>
 
   <script>
     'use strict';

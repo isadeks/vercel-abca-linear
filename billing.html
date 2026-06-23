@@ -414,6 +414,20 @@
       .footer__bottom { flex-direction: column; gap: 8px; text-align: center; }
     }
 
+    /* ── Nav actions (user pill + sign-out) ── */
+    .nav__actions {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .nav__user {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--ink);
+      max-width: 160px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
     /* ── Loading skeleton ── */
     .skeleton {
       background: linear-gradient(90deg, var(--stone) 25%, var(--sand) 50%, var(--stone) 75%);
@@ -429,11 +443,16 @@
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
     <ul class="nav__links">
-      <li><a href="index.html#destinations">Destinations</a></li>
-      <li><a href="index.html#guides">Guides</a></li>
-      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="index.html">Home</a></li>
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="billing.html">Billing</a></li>
       <li><a href="invoices.html">Invoices</a></li>
+      <li><a href="analytics.html">Analytics</a></li>
     </ul>
+    <div class="nav__actions">
+      <span class="nav__user" hidden aria-live="polite"></span>
+      <button class="nav__signout btn btn--outline-teal" type="button" hidden style="width:auto;">Sign out</button>
+    </div>
   </nav>
 
   <!-- ── Page header ── -->
@@ -615,6 +634,12 @@
       </div>
     </div>
   </footer>
+
+  <!-- Auth guard + nav hydration -->
+  <script type="module">
+    import { initDashboard } from '/js/dashboard-shell.js';
+    initDashboard({ requireAuth: true });
+  </script>
 
   <script>
     'use strict';

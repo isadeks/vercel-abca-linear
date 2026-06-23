@@ -486,7 +486,10 @@
         if (res.ok && data.ok) {
           successBanner.textContent = 'Account created! Redirecting…';
           successBanner.classList.add('visible');
-          setTimeout(() => { window.location.href = 'index.html'; }, 1400);
+          const params = new URLSearchParams(window.location.search);
+          const next = params.get('next');
+          const redirect = next && next.startsWith('/') ? next : 'index.html';
+          setTimeout(() => { window.location.href = redirect; }, 1400);
           return;
         }
 
