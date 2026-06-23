@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign in — Wander</title>
+  <meta name="description" content="Sign in to your Wander account or create one to save your favourite destinations and itineraries." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page layout ──────────────────────────────────────────── */
+    .page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: calc(100vh - 65px);
+    }
+
+    /* ── Left panel — illustration ────────────────────────────── */
+    .auth-panel {
+      position: relative;
+      overflow: hidden;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.25) 0%, rgba(0,0,0,0.5) 100%),
+        url('https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=1200&q=80') center/cover no-repeat;
+    }
+    .auth-panel__inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 56px 52px;
+    }
+    .auth-panel__eyebrow {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 14px;
+    }
+    .auth-panel__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 300;
+      line-height: 1.15;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .auth-panel__title em { font-style: italic; }
+    .auth-panel__sub {
+      font-size: 0.9rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.75;
+      max-width: 340px;
+    }
+
+    /* ── Right panel — form ───────────────────────────────────── */
+    .auth-form-side {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 48px;
+      background: var(--cream);
+    }
+    .auth-form-box {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    /* ── Tabs ─────────────────────────────────────────────────── */
+    .auth-tabs {
+      display: flex;
+      gap: 0;
+      border-bottom: 2px solid var(--stone);
+      margin-bottom: 36px;
+    }
+    .auth-tab {
+      flex: 1;
+      padding: 12px 0;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-align: center;
+      color: var(--ash);
+      cursor: pointer;
+      border: none;
+      background: none;
+      font-family: var(--font-sans);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .auth-tab.active {
+      color: var(--ink);
+      border-bottom-color: var(--teal);
+    }
+    .auth-tab:hover:not(.active) { color: var(--ink); }
+
+    /* ── Form panels ──────────────────────────────────────────── */
+    .auth-pane { display: none; }
+    .auth-pane.active { display: block; }
+
+    .auth-heading {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .auth-subheading {
+      font-size: 0.88rem;
+      color: var(--ash);
+      margin-bottom: 32px;
+      line-height: 1.65;
+    }
+
+    /* ── Form fields ──────────────────────────────────────────── */
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .form-field label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-field input {
+      padding: 13px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-field input::placeholder { color: #b0a898; }
+    .form-field input:focus {
+      border-color: var(--teal);
+      box-shadow: 0 0 0 3px rgba(42,122,111,0.1);
+    }
+    .form-field input.error { border-color: var(--coral); }
+
+    /* ── Password visibility toggle ──────────────────────────── */
+    .input-wrap {
+      position: relative;
+    }
+    .input-wrap input { width: 100%; padding-right: 44px; }
+    .toggle-pw {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      color: var(--ash);
+      display: flex;
+      align-items: center;
+    }
+    .toggle-pw:hover { color: var(--ink); }
+
+    /* ── Submit button ────────────────────────────────────────── */
+    .btn-submit {
+      width: 100%;
+      padding: 14px;
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: var(--teal);
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.2s, opacity 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-submit:hover { background: #22665c; }
+    .btn-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    /* ── Spinner ──────────────────────────────────────────────── */
+    .spinner {
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.4);
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-submit.loading .spinner { display: block; }
+    .btn-submit.loading .btn-label { display: none; }
+
+    /* ── Alert box ────────────────────────────────────────────── */
+    .alert {
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      line-height: 1.55;
+      border-left: 3px solid;
+      margin-bottom: 24px;
+      display: none;
+    }
+    .alert.visible { display: block; }
+    .alert.alert--error { background: #fdf1ee; border-color: var(--coral); color: #8b3a28; }
+    .alert.alert--success { background: #edf6f5; border-color: var(--teal); color: #1d5a53; }
+
+    /* ── Divider ──────────────────────────────────────────────── */
+    .form-divider {
+      margin: 28px 0;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 0.75rem;
+      color: var(--ash);
+    }
+    .form-divider::before,
+    .form-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--stone);
+    }
+
+    /* ── Switch prompt ────────────────────────────────────────── */
+    .auth-switch {
+      font-size: 0.85rem;
+      color: var(--ash);
+      text-align: center;
+      margin-top: 28px;
+    }
+    .auth-switch button {
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: inherit;
+      color: var(--teal);
+      cursor: pointer;
+      font-weight: 500;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      padding: 0;
+    }
+    .auth-switch button:hover { opacity: 0.7; }
+
+    /* ── Success state ────────────────────────────────────────── */
+    .auth-success {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 24px 0;
+    }
+    .auth-success.visible { display: flex; }
+    .success-icon {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--teal-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    .auth-success h2 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .auth-success p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 28px;
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      background: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-outline:hover { background: var(--teal); color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 860px) {
+      .page { grid-template-columns: 1fr; }
+      .auth-panel { display: none; }
+      .auth-form-side { padding: 48px 24px; align-items: flex-start; padding-top: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">
+      ← Back to home
+    </a>
+  </nav>
+
+  <!-- ── Page ─────────────────────────────────────────────────── -->
+  <main class="page">
+
+    <!-- Left panel -->
+    <div class="auth-panel" aria-hidden="true">
+      <div class="auth-panel__inner">
+        <p class="auth-panel__eyebrow">Your journey starts here</p>
+        <h2 class="auth-panel__title">Discover places<br/>worth <em>remembering</em></h2>
+        <p class="auth-panel__sub">Save favourite destinations, build custom itineraries, and get personalised travel picks — all in one place.</p>
+      </div>
+    </div>
+
+    <!-- Right panel — form -->
+    <div class="auth-form-side">
+      <div class="auth-form-box">
+
+        <!-- Tabs -->
+        <div class="auth-tabs" role="tablist">
+          <button class="auth-tab active" role="tab" aria-selected="true"  aria-controls="pane-login"    id="tab-login"    onclick="switchTab('login')">Sign in</button>
+          <button class="auth-tab"        role="tab" aria-selected="false" aria-controls="pane-register" id="tab-register" onclick="switchTab('register')">Create account</button>
+        </div>
+
+        <!-- ── Sign-in pane ─────────────────────────────────── -->
+        <div class="auth-pane active" id="pane-login" role="tabpanel" aria-labelledby="tab-login">
+
+          <div class="auth-success" id="login-success">
+            <div class="success-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#2a7a6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2>Welcome back</h2>
+            <p id="login-success-msg">You're signed in. Redirecting you now…</p>
+            <a href="index.html" class="btn-outline">
+              Go to home
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+
+          <div id="login-form-wrap">
+            <h1 class="auth-heading">Sign in</h1>
+            <p class="auth-subheading">Good to have you back. Enter your details below.</p>
+
+            <div class="alert alert--error" id="login-error" role="alert"></div>
+
+            <form id="login-form" onsubmit="handleLogin(event)" novalidate>
+              <div class="form-field">
+                <label for="login-email">Email</label>
+                <input type="email" id="login-email" name="email" placeholder="your@email.com" autocomplete="email" required />
+              </div>
+              <div class="form-field">
+                <label for="login-password">Password</label>
+                <div class="input-wrap">
+                  <input type="password" id="login-password" name="password" placeholder="••••••••" autocomplete="current-password" required />
+                  <button type="button" class="toggle-pw" onclick="togglePw('login-password', this)" aria-label="Show password">
+                    <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn-submit" id="login-btn">
+                <span class="btn-label">Sign in</span>
+                <span class="spinner" aria-hidden="true"></span>
+              </button>
+            </form>
+
+            <p class="auth-switch">Don't have an account? <button onclick="switchTab('register')">Create one</button></p>
+          </div>
+        </div>
+
+        <!-- ── Register pane ────────────────────────────────── -->
+        <div class="auth-pane" id="pane-register" role="tabpanel" aria-labelledby="tab-register">
+
+          <div class="auth-success" id="register-success">
+            <div class="success-icon">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M5 13l4 4L19 7" stroke="#2a7a6f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+            <h2>Account created</h2>
+            <p id="register-success-msg">Welcome to Wander. Your account is ready.</p>
+            <button class="btn-outline" onclick="switchTab('login')">
+              Sign in now
+              <svg width="12" height="12" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </div>
+
+          <div id="register-form-wrap">
+            <h1 class="auth-heading">Create account</h1>
+            <p class="auth-subheading">Join Wander and start building your travel list.</p>
+
+            <div class="alert alert--error" id="register-error" role="alert"></div>
+
+            <form id="register-form" onsubmit="handleRegister(event)" novalidate>
+              <div class="form-field">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" name="email" placeholder="your@email.com" autocomplete="email" required />
+              </div>
+              <div class="form-field">
+                <label for="register-password">Password <span style="font-weight:300;text-transform:none;letter-spacing:0">(8 characters min.)</span></label>
+                <div class="input-wrap">
+                  <input type="password" id="register-password" name="password" placeholder="Choose a password" autocomplete="new-password" minlength="8" required />
+                  <button type="button" class="toggle-pw" onclick="togglePw('register-password', this)" aria-label="Show password">
+                    <svg class="icon-eye" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.5"/></svg>
+                  </button>
+                </div>
+              </div>
+              <button type="submit" class="btn-submit" id="register-btn">
+                <span class="btn-label">Create account</span>
+                <span class="spinner" aria-hidden="true"></span>
+              </button>
+            </form>
+
+            <p class="auth-switch">Already have an account? <button onclick="switchTab('login')">Sign in</button></p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    /* ── Tab switching ────────────────────────────────────────── */
+    function switchTab(name) {
+      document.querySelectorAll('.auth-tab').forEach(t => {
+        const active = t.id === `tab-${name}`;
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-selected', active);
+      });
+      document.querySelectorAll('.auth-pane').forEach(p => {
+        p.classList.toggle('active', p.id === `pane-${name}`);
+      });
+    }
+
+    /* ── Password visibility ──────────────────────────────────── */
+    function togglePw(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const show = input.type === 'password';
+      input.type = show ? 'text' : 'password';
+      btn.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+      // swap icon
+      btn.querySelector('svg').style.opacity = show ? '0.45' : '1';
+    }
+
+    /* ── Shared helpers ───────────────────────────────────────── */
+    function setLoading(btnId, loading) {
+      const btn = document.getElementById(btnId);
+      btn.disabled = loading;
+      btn.classList.toggle('loading', loading);
+    }
+
+    function showError(elId, message) {
+      const el = document.getElementById(elId);
+      el.textContent = message;
+      el.classList.add('visible');
+    }
+
+    function hideError(elId) {
+      const el = document.getElementById(elId);
+      el.textContent = '';
+      el.classList.remove('visible');
+    }
+
+    /* ── Login handler ────────────────────────────────────────── */
+    async function handleLogin(e) {
+      e.preventDefault();
+      hideError('login-error');
+
+      const email    = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+
+      if (!email || !password) {
+        showError('login-error', 'Please enter your email and password.');
+        return;
+      }
+
+      setLoading('login-btn', true);
+
+      try {
+        const res = await fetch('/api/auth?action=login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          showError('login-error', data.error || 'Sign-in failed. Please try again.');
+          return;
+        }
+
+        // Store token (session-only for now)
+        sessionStorage.setItem('wander_token', data.token);
+        sessionStorage.setItem('wander_user', JSON.stringify(data.user));
+
+        // Show success state
+        document.getElementById('login-form-wrap').style.display = 'none';
+        const success = document.getElementById('login-success');
+        document.getElementById('login-success-msg').textContent =
+          `Welcome back, ${data.user.email}. Redirecting you now…`;
+        success.classList.add('visible');
+
+        // Redirect to home after a short pause
+        setTimeout(() => { window.location.href = 'index.html'; }, 1800);
+      } catch {
+        showError('login-error', 'Network error — please check your connection and try again.');
+      } finally {
+        setLoading('login-btn', false);
+      }
+    }
+
+    /* ── Register handler ─────────────────────────────────────── */
+    async function handleRegister(e) {
+      e.preventDefault();
+      hideError('register-error');
+
+      const email    = document.getElementById('register-email').value.trim();
+      const password = document.getElementById('register-password').value;
+
+      if (!email) {
+        showError('register-error', 'Please enter a valid email address.');
+        return;
+      }
+      if (password.length < 8) {
+        showError('register-error', 'Your password must be at least 8 characters.');
+        return;
+      }
+
+      setLoading('register-btn', true);
+
+      try {
+        const res = await fetch('/api/auth?action=register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        const data = await res.json();
+
+        if (!res.ok || !data.ok) {
+          showError('register-error', data.error || 'Registration failed. Please try again.');
+          return;
+        }
+
+        // Show success state
+        document.getElementById('register-form-wrap').style.display = 'none';
+        const success = document.getElementById('register-success');
+        document.getElementById('register-success-msg').textContent =
+          `Welcome to Wander, ${data.user.email}. Your account is ready.`;
+        success.classList.add('visible');
+      } catch {
+        showError('register-error', 'Network error — please check your connection and try again.');
+      } finally {
+        setLoading('register-btn', false);
+      }
+    }
+  </script>
+
+</body>
+</html>
