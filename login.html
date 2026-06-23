@@ -555,7 +555,7 @@
       setLoading('login-btn', true);
 
       try {
-        const res = await fetch('/api/auth/login', {
+        const res = await fetch('/api/auth?action=login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
@@ -607,7 +607,7 @@
       setLoading('register-btn', true);
 
       try {
-        const res = await fetch('/api/auth/register', {
+        const res = await fetch('/api/auth?action=register', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
