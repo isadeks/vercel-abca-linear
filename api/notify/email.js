@@ -27,6 +27,7 @@
 
 import { renderTemplate } from '../_lib/email-templates.js';
 import { emailQueue } from '../_lib/email-queue.js';
+import { emailAllowed } from '../_lib/notificationsContext.js';
 
 /**
  * Vercel serverless handler.
@@ -55,7 +56,7 @@ export default async function handler(req, res) {
   }
 
   // Validate required fields
-  const { to, template, data } = body ?? {};
+  const { to, template, data, userId } = body ?? {};
 
   if (!to || typeof to !== 'string' || !to.includes('@')) {
     res.statusCode = 400;
@@ -72,6 +73,14 @@ export default async function handler(req, res) {
   if (!data || typeof data !== 'object' || Array.isArray(data)) {
     res.statusCode = 400;
     res.end(JSON.stringify({ ok: false, error: '"data" must be a non-null object.' }));
+    return;
+  }
+
+  // Check notification preference gate when userId is provided.
+  const uid = typeof userId === 'string' && userId.trim() ? userId.trim() : null;
+  if (uid && !emailAllowed(uid, template)) {
+    res.statusCode = 200;
+    res.end(JSON.stringify({ ok: true, skipped: true, reason: 'User preference disables this email type.' }));
     return;
   }
 

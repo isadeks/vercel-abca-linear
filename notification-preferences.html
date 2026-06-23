@@ -490,9 +490,13 @@
     </div>
   </footer>
 
-  <script>
-    /* ── Notification Preferences UI ──────────────────────────── */
-    const API_BASE = '/api/notify/prefs';
+  <script type="module">
+    /* ── Notification Preferences UI (shared context edition) ──── */
+
+    // Import the shared notifications client context so this page and the bell
+    // component always reflect the same user identity and preference values.
+    import { notificationsClientContext as ctx }
+      from '/api/_lib/notificationsClientContext.js';
 
     const userIdInput = document.getElementById('userId');
     const loadBtn     = document.getElementById('loadBtn');
@@ -527,22 +531,27 @@
     }
 
     function setLoading(on) {
-      saveBtn.disabled = on;
+      saveBtn.disabled  = on;
       resetBtn.disabled = on;
       loadBtn.disabled  = on;
     }
 
-    /* Load prefs */
+    /* Keep form in sync whenever the shared context changes (e.g. the bell
+       component or another module calls ctx.savePrefs / ctx.applyPrefs). */
+    ctx.subscribe(() => {
+      applyPrefs(ctx.prefs);
+    });
+
+    /* Load prefs — delegates to shared context */
     async function loadPrefs() {
       const userId = userIdInput.value.trim();
       if (!userId) { showBanner('Please enter a user ID first.', 'error'); return; }
 
+      ctx.setUserId(userId);
       setLoading(true);
       try {
-        const res  = await fetch(API_BASE + '?userId=' + encodeURIComponent(userId));
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to load preferences');
-        applyPrefs(data.prefs);
+        await ctx.loadPrefs();
+        applyPrefs(ctx.prefs);
         showBanner('Preferences loaded.', 'success');
       } catch (err) {
         showBanner(err.message, 'error');
@@ -551,23 +560,17 @@
       }
     }
 
-    /* Save prefs */
+    /* Save prefs — delegates to shared context */
     async function savePrefs(e) {
       e.preventDefault();
       const userId = userIdInput.value.trim();
       if (!userId) { showBanner('Please enter a user ID first.', 'error'); return; }
 
+      ctx.setUserId(userId);
       setLoading(true);
       try {
-        const body = { userId, ...collectPrefs() };
-        const res  = await fetch(API_BASE, {
-          method:  'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body:    JSON.stringify(body),
-        });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to save preferences');
-        applyPrefs(data.prefs);
+        await ctx.savePrefs(collectPrefs());
+        applyPrefs(ctx.prefs);
         showBanner('Preferences saved.', 'success');
       } catch (err) {
         showBanner(err.message, 'error');
@@ -576,17 +579,16 @@
       }
     }
 
-    /* Reset to defaults */
+    /* Reset to defaults — delegates to shared context */
     async function resetPrefs() {
       const userId = userIdInput.value.trim();
       if (!userId) { showBanner('Please enter a user ID first.', 'error'); return; }
 
+      ctx.setUserId(userId);
       setLoading(true);
       try {
-        const res  = await fetch(API_BASE + '?userId=' + encodeURIComponent(userId), { method: 'DELETE' });
-        const data = await res.json();
-        if (!res.ok) throw new Error(data.error || 'Failed to reset preferences');
-        applyPrefs(data.prefs);
+        await ctx.resetPrefs();
+        applyPrefs(ctx.prefs);
         showBanner('Preferences reset to defaults.', 'success');
       } catch (err) {
         showBanner(err.message, 'error');
@@ -599,18 +601,8 @@
     form.addEventListener('submit', savePrefs);
     resetBtn.addEventListener('click', resetPrefs);
 
-    /* Load defaults on page init */
-    (function initDefaults() {
-      const defaults = {
-        emailBookingConfirmations: true,
-        emailNewsletters:          false,
-        emailMarketing:            false,
-        inAppBookingUpdates:       true,
-        inAppSystemAlerts:         true,
-        inAppPromotions:           false,
-      };
-      applyPrefs(defaults);
-    })();
+    /* Apply default prefs on page init via the shared context */
+    applyPrefs(ctx.prefs);
   </script>
 
 </body>

@@ -15,8 +15,15 @@
  *   invocations within the same serverless instance.  The seed data below
  *   means the endpoint is immediately useful for UI development.
  *
+ * Context integration:
+ *   Registers the live feed array with notificationsContext so that
+ *   deliver() can push notifications directly into this feed without
+ *   an extra HTTP round-trip.
+ *
  * CORS: same-origin only (no Access-Control-Allow-Origin header).
  */
+
+import { bindInAppFeed, inAppAllowed } from '../_lib/notificationsContext.js';
 
 /** @typedef {{ id: string, title: string, body: string, href?: string, ts: string }} Notification */
 
@@ -55,6 +62,10 @@ function generateId() {
   return `n-${String(nextSeq++).padStart(3, '0')}`;
 }
 
+// Register the live feed with the shared notifications context so that
+// notificationsContext.deliver() can write directly into this array.
+bindInAppFeed({ feed, generateId });
+
 /**
  * Vercel serverless handler.
  * @param {import('@vercel/node').VercelRequest} req
@@ -84,7 +95,7 @@ function handleGet(_req, res) {
 function handlePost(req, res) {
   const body = req.body ?? {};
 
-  const { title, body: msgBody, href } = body;
+  const { title, body: msgBody, href, userId, type } = body;
 
   if (typeof title !== 'string' || title.trim() === '') {
     return res.status(400).json({ error: '`title` is required and must be a non-empty string.' });
@@ -92,6 +103,13 @@ function handlePost(req, res) {
 
   if (typeof msgBody !== 'string' || msgBody.trim() === '') {
     return res.status(400).json({ error: '`body` is required and must be a non-empty string.' });
+  }
+
+  // Check in-app preference gate when userId and type are provided.
+  const event = typeof type === 'string' ? type : null;
+  const uid   = typeof userId === 'string' && userId.trim() ? userId.trim() : null;
+  if (uid && event && !inAppAllowed(uid, event)) {
+    return res.status(200).json({ skipped: true, reason: 'User preference disables this notification type.' });
   }
 
   /** @type {Notification} */
@@ -104,6 +122,10 @@ function handlePost(req, res) {
 
   if (typeof href === 'string' && href.trim() !== '') {
     notification.href = href.trim();
+  }
+
+  if (event) {
+    notification.type = event;
   }
 
   feed.unshift(notification);

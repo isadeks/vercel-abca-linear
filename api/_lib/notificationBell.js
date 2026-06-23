@@ -22,6 +22,7 @@
  */
 
 import { createNotificationStore } from './notificationStore.js';
+import { notificationsClientContext as _defaultClientContext } from './notificationsClientContext.js';
 
 const POLL_INTERVAL_MS = 30_000; // 30 s
 const FEED_URL = '/api/notify/inapp';
@@ -208,12 +209,23 @@ function relativeTime(ts) {
  * Mount a notifications bell into the given container element.
  *
  * @param {HTMLElement} container - Where to render the bell.
- * @param {{ pollInterval?: number, feedUrl?: string }} [opts]
+ * @param {{
+ *   pollInterval?: number,
+ *   feedUrl?: string,
+ *   clientContext?: import('./notificationsClientContext.js').ReturnType<typeof import('./notificationsClientContext.js').createNotificationsClientContext>
+ * }} [opts]
+ *   Pass `clientContext` to share user identity and preference state with the
+ *   preferences settings page.  When provided the bell will:
+ *     - Skip polling when `inAppBookingUpdates`, `inAppSystemAlerts`, and
+ *       `inAppPromotions` are all disabled (all in-app surfaces off).
+ *     - Re-subscribe whenever preferences change so the badge reflects the
+ *       updated preference state without a page reload.
  * @returns {{ destroy: () => void }} - Call destroy() to clean up.
  */
 export function mountNotificationBell(container, opts = {}) {
   const pollInterval = opts.pollInterval ?? POLL_INTERVAL_MS;
   const feedUrl = opts.feedUrl ?? FEED_URL;
+  const clientContext = opts.clientContext ?? _defaultClientContext;
 
   injectStyles();
 
@@ -361,8 +373,22 @@ export function mountNotificationBell(container, opts = {}) {
   }
   document.addEventListener('keydown', onKeydown);
 
-  // ── Polling ────────────────────────────────────────────────────────────────
+  // ── Preference-aware polling ───────────────────────────────────────────────
+
+  /**
+   * Returns true when ALL in-app preference toggles are disabled.
+   * In that case we suppress polling to avoid unnecessary network traffic.
+   * @returns {boolean}
+   */
+  function inAppFullyDisabled() {
+    const p = clientContext.prefs;
+    return p.inAppBookingUpdates === false &&
+           p.inAppSystemAlerts   === false &&
+           p.inAppPromotions     === false;
+  }
+
   async function fetchFeed() {
+    if (inAppFullyDisabled()) return; // user has disabled all in-app surfaces
     try {
       const res = await fetch(feedUrl);
       if (!res.ok) return;
@@ -375,6 +401,12 @@ export function mountNotificationBell(container, opts = {}) {
     }
   }
 
+  // Re-render badge when preferences change (e.g. user just toggled a pref on
+  // the settings page while the bell is mounted on the same page).
+  const unsubContext = clientContext.subscribe(() => {
+    render();
+  });
+
   // Initial fetch
   fetchFeed();
   const timerId = setInterval(fetchFeed, pollInterval);
@@ -382,6 +414,7 @@ export function mountNotificationBell(container, opts = {}) {
   // ── Cleanup ────────────────────────────────────────────────────────────────
   return {
     destroy() {
+      unsubContext();
       clearInterval(timerId);
       document.removeEventListener('click', onDocClick);
       document.removeEventListener('keydown', onKeydown);
