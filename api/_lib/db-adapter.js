@@ -11,6 +11,7 @@
 //     id         : string  (primary key, e.g. UUID)
 //     email      : string  (unique, nullable for OAuth-only accounts)
 //     name       : string
+//     role       : string  ("viewer" | "editor" | "admin"; default "viewer")
 //     createdAt  : number  (epoch-seconds)
 //
 //   sessions
@@ -36,6 +37,7 @@
 //   createUser(userData: { id, email, name, createdAt }): Promise<UserRecord>
 //   findUserById(id: string):                              Promise<UserRecord | null>
 //   findUserByEmail(email: string):                        Promise<UserRecord | null>
+//   updateUserRole(id: string, role: string):              Promise<UserRecord>
 //
 // Account adapter interface:
 //   createAccount(accountData: { id, userId, provider, providerAccountId }): Promise<AccountRecord>
@@ -101,10 +103,10 @@ export function buildInMemoryUserAdapter() {
   const accounts = new Map();
 
   return {
-    async createUser({ email, name }) {
+    async createUser({ email, name, role = 'viewer' }) {
       const id = generateId();
       const now = Math.floor(Date.now() / 1000);
-      const user = { id, email: email ?? null, name, createdAt: now };
+      const user = { id, email: email ?? null, name, role, createdAt: now };
       users.set(id, { ...user });
       if (email) usersByEmail.set(email, { ...user });
       return { ...user };
@@ -130,6 +132,15 @@ export function buildInMemoryUserAdapter() {
     async findAccountByProvider(provider, providerAccountId) {
       const record = accounts.get(`${provider}:${providerAccountId}`);
       return record ? { ...record } : null;
+    },
+
+    async updateUserRole(id, role) {
+      const existing = users.get(id);
+      if (!existing) throw new Error('User not found: ' + id);
+      const updated = { ...existing, role };
+      users.set(id, updated);
+      if (updated.email) usersByEmail.set(updated.email, { ...updated });
+      return { ...updated };
     },
   };
 }
