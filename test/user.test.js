@@ -4,6 +4,7 @@ import {
   verifyPassword,
   createUser,
   findUserByEmail,
+  upsertOAuthUser,
   _resetStore,
 } from '../api/_lib/user.js';
 
@@ -77,5 +78,42 @@ describe('findUserByEmail', () => {
   it('returns null when email is falsy', () => {
     expect(findUserByEmail('')).toBeNull();
     expect(findUserByEmail(null)).toBeNull();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// upsertOAuthUser
+// ---------------------------------------------------------------------------
+
+describe('upsertOAuthUser', () => {
+  it('creates a new OAuth user on first call', () => {
+    const user = upsertOAuthUser({ email: 'oauth@example.com', provider: 'google', providerUserId: 'g-1' });
+    expect(user.id).toBeTruthy();
+    expect(user.email).toBe('oauth@example.com');
+    expect(user.provider).toBe('google');
+    expect(user.passwordHash).toBeUndefined();
+  });
+
+  it('returns the existing user on subsequent calls (upsert behaviour)', () => {
+    const first  = upsertOAuthUser({ email: 'repeat@example.com', provider: 'github', providerUserId: 'gh-2' });
+    const second = upsertOAuthUser({ email: 'repeat@example.com', provider: 'github', providerUserId: 'gh-2' });
+    expect(first.id).toBe(second.id);
+  });
+
+  it('normalises email to lowercase', () => {
+    const user = upsertOAuthUser({ email: 'Upper@EXAMPLE.COM', provider: 'google', providerUserId: 'g-3' });
+    expect(user.email).toBe('upper@example.com');
+  });
+
+  it('throws when email is missing', () => {
+    expect(() => upsertOAuthUser({ email: '', provider: 'google', providerUserId: 'g-4' })).toThrow();
+  });
+
+  it('throws when provider is missing', () => {
+    expect(() => upsertOAuthUser({ email: 'ok@example.com', provider: '', providerUserId: 'g-5' })).toThrow();
+  });
+
+  it('throws when providerUserId is missing', () => {
+    expect(() => upsertOAuthUser({ email: 'ok2@example.com', provider: 'google', providerUserId: '' })).toThrow();
   });
 });
