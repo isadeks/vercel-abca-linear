@@ -1,0 +1,115 @@
+/* ── Dark mode overrides ──────────────────────────────────────── */
+/* Applied when <html> has class="dark". All tokens remap so     */
+/* every page inherits the theme without per-file edits.          */
+
+html.dark {
+  --sand:    #1e1b18;
+  --cream:   #16140f;
+  --stone:   #2e2a24;
+  --ink:     #f0ece4;
+  --ash:     #a09890;
+  --teal:    #3db8a8;
+  --teal-lt: #1a3530;
+}
+
+/* Body background + text */
+html.dark body {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* ── Nav scrolled state ───────────────────────────────────────── */
+html.dark .nav.scrolled {
+  background: rgba(22, 20, 15, 0.92);
+  border-bottom-color: var(--stone);
+}
+
+/* ── Sections that use hard-coded white/ink backgrounds ───────── */
+html.dark .quiz-cta      { background: #0e0c09; }
+html.dark .featured      { background: var(--cream); }
+html.dark .curated       { background: var(--sand); }
+html.dark .regions       { background: var(--cream); }
+html.dark .newsletter    { background: var(--sand); }
+
+/* ── Guide / dest cards ───────────────────────────────────────── */
+html.dark .guide-card    { background: var(--cream); }
+
+/* ── Newsletter form ──────────────────────────────────────────── */
+html.dark .newsletter__form input[type="email"] {
+  background: var(--cream);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+html.dark .newsletter__form input[type="email"]::placeholder { color: #5a5450; }
+
+/* ── Footer (already dark; keep but desaturate slightly) ─────── */
+html.dark footer { background: #0e0c09; }
+
+/* ── Sticky / scrolled nav on inner pages ─────────────────────── */
+html.dark .nav {
+  background: rgba(22, 20, 15, 0.95);
+  border-bottom-color: var(--stone);
+}
+
+/* Inner page navs that use hard-coded light background */
+html.dark .nav[style] { background: rgba(22, 20, 15, 0.95); }
+
+/* ── Dark mode toggle button ──────────────────────────────────── */
+.dark-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: background 0.2s, border-color 0.2s;
+  color: rgba(255, 255, 255, 0.85);
+  flex-shrink: 0;
+}
+.dark-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+/* When nav is scrolled (light bg), adapt button colours */
+.nav.scrolled .dark-toggle {
+  border-color: rgba(26, 23, 20, 0.3);
+  color: var(--ash);
+}
+.nav.scrolled .dark-toggle:hover {
+  background: rgba(26, 23, 20, 0.06);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Inner pages (always-light nav) */
+.nav--inner .dark-toggle {
+  border-color: rgba(26, 23, 20, 0.3);
+  color: var(--ash);
+}
+.nav--inner .dark-toggle:hover {
+  background: rgba(26, 23, 20, 0.06);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* In dark mode the button should always be visible */
+html.dark .dark-toggle {
+  border-color: rgba(240, 236, 228, 0.3);
+  color: var(--ash);
+}
+html.dark .dark-toggle:hover {
+  background: rgba(240, 236, 228, 0.08);
+  border-color: var(--ink);
+  color: var(--ink);
+}
+
+/* Icon sizing */
+.dark-toggle svg {
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
