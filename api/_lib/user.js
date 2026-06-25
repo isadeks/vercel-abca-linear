@@ -82,6 +82,39 @@ export function findUserByEmail(email) {
 }
 
 /**
+ * Find or create an OAuth user (upsert).
+ *
+ * On first login the user is created with passwordHash = null.
+ * On subsequent logins the existing record is returned unchanged.
+ *
+ * @param {{ email: string, provider: 'google' | 'github', providerUserId: string }} opts
+ * @returns {{ id: string, email: string, provider: string, createdAt: string }}
+ */
+export function upsertOAuthUser({ email, provider, providerUserId }) {
+  if (!email || typeof email !== 'string') {
+    throw new Error('email is required for OAuth user upsert');
+  }
+  if (!provider) throw new Error('provider is required');
+  if (!providerUserId) throw new Error('providerUserId is required');
+
+  const normalizedEmail = email.toLowerCase().trim();
+  const existing = _users.get(normalizedEmail);
+  if (existing) {
+    return _publicUser(existing);
+  }
+  const user = {
+    id:           crypto.randomUUID(),
+    email:        normalizedEmail,
+    passwordHash: null,
+    provider,
+    providerUserId,
+    createdAt:    new Date().toISOString(),
+  };
+  _users.set(normalizedEmail, user);
+  return _publicUser(user);
+}
+
+/**
  * Clear all users — for test isolation only.
  */
 export function _resetStore() {
