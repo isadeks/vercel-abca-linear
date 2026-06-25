@@ -9,8 +9,8 @@
 // ──────────────────────────────
 //   users
 //     id         : string  (primary key, e.g. UUID)
-//     email      : string  (unique)
-//     passwordHash: string
+//     email      : string  (unique, nullable for OAuth-only accounts)
+//     name       : string
 //     createdAt  : number  (epoch-seconds)
 //
 //   sessions
@@ -20,17 +20,36 @@
 //     createdAt   : number  (epoch-seconds)
 //     expiresAt   : number  (epoch-seconds)
 //
-//   accounts  (reserved for OAuth / social login, not wired up yet)
-//     id         : string
-//     userId     : string  (FK → users.id)
-//     provider   : string  ("google" | "github" | …)
-//     providerAccountId: string
+//   accounts  (OAuth / social login)
+//     id               : string
+//     userId           : string  (FK → users.id)
+//     provider         : string  ("google" | "github")
+//     providerAccountId: string  (unique per provider)
 //
-// Adapter interface (TypeScript-style signatures for documentation):
+// Session adapter interface (TypeScript-style signatures for documentation):
 //   create(sessionData: SessionRecord): Promise<SessionRecord>
 //   findByUserId(userId: string):       Promise<SessionRecord | null>
 //   update(userId: string, data: Partial<SessionRecord>): Promise<SessionRecord>
 //   delete(userId: string):             Promise<void>
+//
+// User adapter interface:
+//   createUser(userData: { id, email, name, createdAt }): Promise<UserRecord>
+//   findUserById(id: string):                              Promise<UserRecord | null>
+//   findUserByEmail(email: string):                        Promise<UserRecord | null>
+//
+// Account adapter interface:
+//   createAccount(accountData: { id, userId, provider, providerAccountId }): Promise<AccountRecord>
+//   findAccountByProvider(provider: string, providerAccountId: string):       Promise<AccountRecord | null>
+
+import { randomBytes } from 'node:crypto';
+
+/**
+ * Generate a UUID-shaped random ID.
+ * @returns {string}
+ */
+function generateId() {
+  return randomBytes(16).toString('hex');
+}
 
 /**
  * Build a lightweight in-memory session store.
@@ -63,6 +82,54 @@ export function buildInMemoryAdapter() {
 
     async delete(userId) {
       store.delete(userId);
+    },
+  };
+}
+
+/**
+ * Build a lightweight in-memory user + account store.
+ * Suitable for unit tests and local development; NOT persistent across restarts.
+ *
+ * @returns {{ createUser, findUserById, findUserByEmail, createAccount, findAccountByProvider }}
+ */
+export function buildInMemoryUserAdapter() {
+  /** @type {Map<string, object>} userId → user */
+  const users = new Map();
+  /** @type {Map<string, object>} email → user */
+  const usersByEmail = new Map();
+  /** @type {Map<string, object>} "provider:providerAccountId" → account */
+  const accounts = new Map();
+
+  return {
+    async createUser({ email, name }) {
+      const id = generateId();
+      const now = Math.floor(Date.now() / 1000);
+      const user = { id, email: email ?? null, name, createdAt: now };
+      users.set(id, { ...user });
+      if (email) usersByEmail.set(email, { ...user });
+      return { ...user };
+    },
+
+    async findUserById(id) {
+      const record = users.get(id);
+      return record ? { ...record } : null;
+    },
+
+    async findUserByEmail(email) {
+      const record = usersByEmail.get(email);
+      return record ? { ...record } : null;
+    },
+
+    async createAccount({ userId, provider, providerAccountId }) {
+      const id = generateId();
+      const account = { id, userId, provider, providerAccountId };
+      accounts.set(`${provider}:${providerAccountId}`, { ...account });
+      return { ...account };
+    },
+
+    async findAccountByProvider(provider, providerAccountId) {
+      const record = accounts.get(`${provider}:${providerAccountId}`);
+      return record ? { ...record } : null;
     },
   };
 }
