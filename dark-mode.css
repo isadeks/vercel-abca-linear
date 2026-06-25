@@ -1,0 +1,97 @@
+/* ── Dark-mode CSS ────────────────────────────────────────────── */
+
+/* 1. Variable overrides — everything that references these vars
+      picks up dark values automatically.                           */
+html.dark {
+  --sand:    #252118;
+  --cream:   #1d1b17;
+  --stone:   #3d372e;
+  --ink:     #f0ebe3;
+  --ash:     #b0a898;
+  --teal-lt: #193a36;
+}
+
+/* 2. Surfaces whose background is hardcoded (not a CSS var) ──── */
+
+/* Scrolled nav on the home page */
+html.dark .nav.scrolled {
+  background: rgba(29, 27, 23, 0.92);
+  border-bottom-color: var(--stone);
+}
+
+/* Always-sticky navs on inner pages */
+html.dark .nav--static {
+  background: rgba(29, 27, 23, 0.95);
+  border-bottom-color: var(--stone);
+}
+
+/* Sections that use var(--ink) as background become too light
+   because --ink is now #f0ebe3 in dark mode; pin them dark.    */
+html.dark footer,
+html.dark .quiz-cta {
+  background: #0e0d0b;
+}
+
+/* Footer text colours still reference --ink (now light) so logo
+   and link colours flip automatically — only the bg needs a fix. */
+
+/* 3. Newsletter input */
+html.dark .newsletter__form input[type="email"] {
+  background: var(--stone);
+  border-color: #4d4640;
+  color: var(--ink);
+}
+html.dark .newsletter__form input[type="email"]::placeholder {
+  color: var(--ash);
+}
+
+/* 4. Dark-mode toggle button ──────────────────────────────────── */
+.dark-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  cursor: pointer;
+  color: rgba(255, 255, 255, 0.9);
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  line-height: 0;
+}
+.dark-toggle:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* On a light-background nav (scrolled home or always-sticky inner pages) */
+.nav.scrolled .dark-toggle,
+.nav--static .dark-toggle {
+  border-color: var(--stone);
+  color: var(--ash);
+}
+.nav.scrolled .dark-toggle:hover,
+.nav--static .dark-toggle:hover {
+  background: var(--stone);
+  color: var(--ink);
+}
+
+/* Dark-mode overrides: all navs have a dark bg, so use light colours */
+html.dark .nav.scrolled .dark-toggle,
+html.dark .nav--static .dark-toggle {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+}
+html.dark .nav.scrolled .dark-toggle:hover,
+html.dark .nav--static .dark-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.95);
+}
+
+/* Icon switching: moon shown in light mode, sun shown in dark mode */
+.dark-toggle .icon-sun  { display: none; }
+.dark-toggle .icon-moon { display: block; }
+html.dark .dark-toggle .icon-sun  { display: block; }
+html.dark .dark-toggle .icon-moon { display: none; }
