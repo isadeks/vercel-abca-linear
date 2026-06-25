@@ -1,0 +1,106 @@
+/* ── Dark mode theme ────────────────────────────────────────────
+   Applied when <html data-theme="dark"> is set.
+   Overrides the :root custom properties defined per-page.
+   ─────────────────────────────────────────────────────────────── */
+[data-theme="dark"] {
+  --sand:    #1e1c1a;
+  --cream:   #141210;
+  --stone:   #2c2824;
+  --ink:     #f0ede8;
+  --ash:     #9e9690;
+  --teal:    #3a9a8e;
+  --teal-lt: #1b3533;
+  --coral:   #d4735b;
+}
+
+[data-theme="dark"] body {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* ── Nav adjustments ─────────────────────────────────────────── */
+
+/* Index page: scrolled state uses a dark translucent background */
+[data-theme="dark"] .nav.scrolled {
+  background: rgba(20, 18, 16, 0.92);
+  border-bottom-color: var(--stone);
+}
+
+/* Inner-page sticky nav (solid light background → dark) */
+[data-theme="dark"] .nav {
+  background: rgba(20, 18, 16, 0.95);
+  border-bottom-color: var(--stone);
+}
+
+/* Inner-page nav logo and back link inherit ink colour */
+[data-theme="dark"] .nav__logo { color: var(--ink); }
+[data-theme="dark"] .nav__back { color: var(--teal); }
+
+/* Index page scrolled overrides */
+[data-theme="dark"] .nav.scrolled .nav__logo { color: var(--ink); }
+[data-theme="dark"] .nav.scrolled .nav__links a { color: var(--ash); }
+[data-theme="dark"] .nav.scrolled .nav__links a:hover { color: var(--ink); }
+
+/* ── Page-level backgrounds ──────────────────────────────────── */
+[data-theme="dark"] .featured   { background: var(--cream); }
+[data-theme="dark"] .curated    { background: var(--sand); }
+[data-theme="dark"] .regions    { background: var(--cream); }
+[data-theme="dark"] .newsletter { background: var(--sand); }
+
+/* ── Guide-card, section headers, dividers ───────────────────── */
+[data-theme="dark"] .guide-card       { background: var(--cream); }
+[data-theme="dark"] .guide-card__footer { border-top-color: var(--stone); }
+[data-theme="dark"] .section-header   { border-bottom-color: var(--stone); }
+
+/* ── Newsletter form ─────────────────────────────────────────── */
+[data-theme="dark"] .newsletter__form input[type="email"] {
+  background: var(--cream);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+[data-theme="dark"] .newsletter__form input[type="email"]::placeholder {
+  color: var(--ash);
+}
+[data-theme="dark"] .newsletter__form input[type="email"]:focus {
+  border-color: var(--teal);
+}
+
+/* ── Page hero / body sections (inner pages) ─────────────────── */
+[data-theme="dark"] .page-hero { background: var(--sand); border-bottom-color: var(--stone); }
+[data-theme="dark"] .page-body { color: var(--ink); }
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+[data-theme="dark"] .btn--white {
+  background: var(--stone);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+[data-theme="dark"] .btn--white:hover {
+  background: var(--ash);
+  border-color: var(--ash);
+  color: var(--cream);
+}
+
+/* ── Dark-mode toggle button ─────────────────────────────────── */
+.dark-mode-toggle {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.75;
+  transition: opacity 0.2s, color 0.3s;
+  flex-shrink: 0;
+}
+.dark-mode-toggle:hover { opacity: 1; }
+
+/* On the index hero (transparent nav), make button white */
+.nav:not(.scrolled) .dark-mode-toggle { color: white; }
+
+/* Icon visibility: show moon in light mode, sun in dark mode */
+.dark-mode-toggle .icon-sun  { display: none; }
+[data-theme="dark"] .dark-mode-toggle .icon-moon { display: none; }
+[data-theme="dark"] .dark-mode-toggle .icon-sun  { display: block; }
