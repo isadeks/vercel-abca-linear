@@ -19,6 +19,7 @@ import { _resetForTests as resetUsers } from '../api/_lib/users.js';
 import { _resetForTests as resetCountries } from '../api/_lib/countries.js';
 import collectionHandler from '../api/admin/countries/index.js';
 import resourceHandler   from '../api/admin/countries/[id].js';
+import countriesHandler  from '../api/countries/index.js';
 
 // ─── Mock helpers ─────────────────────────────────────────────────────────────
 
@@ -328,6 +329,49 @@ describe('DELETE /api/admin/countries/[id] (delete)', () => {
     const req = makeReq({ method: 'POST', token: adminToken, query: { id: '1' } });
     const res = makeRes();
     await resourceHandler(req, res);
+    expect(res._status).toBe(405);
+  });
+});
+
+// ─── User-facing countries endpoint ──────────────────────────────────────────
+
+describe('GET /api/countries (user-accessible)', () => {
+  beforeEach(() => {
+    resetUsers();
+    resetCountries();
+  });
+
+  it('returns countries for authenticated user', async () => {
+    const token = await signToken({ id: '2', email: 'user@wander.test', role: 'user' });
+    const req = makeReq({ method: 'GET', token });
+    const res = makeRes();
+    await countriesHandler(req, res);
+    expect(res._status).toBe(200);
+    expect(Array.isArray(res._body.countries)).toBe(true);
+    expect(res._body.countries.length).toBeGreaterThan(0);
+  });
+
+  it('returns countries for authenticated admin', async () => {
+    const req = makeReq({ method: 'GET', token: adminToken });
+    const res = makeRes();
+    await countriesHandler(req, res);
+    expect(res._status).toBe(200);
+    expect(Array.isArray(res._body.countries)).toBe(true);
+  });
+
+  it('rejects unauthenticated requests with 401', async () => {
+    const req = makeReq({ method: 'GET' }); // no token
+    const res = makeRes();
+    await countriesHandler(req, res);
+    expect(res._status).toBe(401);
+    expect(res._body.error).toMatch(/Unauthorized/i);
+  });
+
+  it('rejects non-GET methods with 405', async () => {
+    const token = await signToken({ id: '2', email: 'user@wander.test', role: 'user' });
+    const req = makeReq({ method: 'POST', token });
+    const res = makeRes();
+    await countriesHandler(req, res);
     expect(res._status).toBe(405);
   });
 });
