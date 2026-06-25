@@ -9,6 +9,22 @@ import bcrypt from 'bcryptjs';
 
 const SALT_ROUNDS = 12;
 
+// ---------------------------------------------------------------------------
+// Roles
+// ---------------------------------------------------------------------------
+
+/**
+ * Allowed role values (ordered by privilege level, lowest first).
+ * @type {readonly ['viewer', 'editor', 'admin']}
+ */
+export const ROLES = /** @type {const} */ (['viewer', 'editor', 'admin']);
+
+/**
+ * Default role assigned to new users.
+ * @type {'viewer'}
+ */
+export const DEFAULT_ROLE = 'viewer';
+
 /**
  * User schema shape:
  * {
@@ -16,6 +32,7 @@ const SALT_ROUNDS = 12;
  *   email:        string   — unique, lower-cased
  *   passwordHash: string   — bcrypt hash (null when provider != 'local')
  *   provider:     'local' | 'google' | 'github'
+ *   role:         'viewer' | 'editor' | 'admin'
  *   createdAt:    string   — ISO-8601
  * }
  */
@@ -48,12 +65,15 @@ export async function verifyPassword(password, hash) {
 
 /**
  * Create and persist a new local user.
- * @param {{ email: string, password: string }} opts
- * @returns {Promise<{ id: string, email: string, provider: string, createdAt: string }>}
+ * @param {{ email: string, password: string, role?: 'viewer'|'editor'|'admin' }} opts
+ * @returns {Promise<{ id: string, email: string, provider: string, role: string, createdAt: string }>}
  */
-export async function createUser({ email, password }) {
+export async function createUser({ email, password, role = DEFAULT_ROLE }) {
   if (!email || typeof email !== 'string') {
     throw new Error('email is required');
+  }
+  if (!ROLES.includes(role)) {
+    throw new Error(`role must be one of: ${ROLES.join(', ')}`);
   }
   const normalizedEmail = email.toLowerCase().trim();
   if (_users.has(normalizedEmail)) {
@@ -65,6 +85,7 @@ export async function createUser({ email, password }) {
     email: normalizedEmail,
     passwordHash,
     provider: 'local',
+    role,
     createdAt: new Date().toISOString(),
   };
   _users.set(normalizedEmail, user);
@@ -87,15 +108,18 @@ export function findUserByEmail(email) {
  * On first login the user is created with passwordHash = null.
  * On subsequent logins the existing record is returned unchanged.
  *
- * @param {{ email: string, provider: 'google' | 'github', providerUserId: string }} opts
- * @returns {{ id: string, email: string, provider: string, createdAt: string }}
+ * @param {{ email: string, provider: 'google' | 'github', providerUserId: string, role?: 'viewer'|'editor'|'admin' }} opts
+ * @returns {{ id: string, email: string, provider: string, role: string, createdAt: string }}
  */
-export function upsertOAuthUser({ email, provider, providerUserId }) {
+export function upsertOAuthUser({ email, provider, providerUserId, role = DEFAULT_ROLE }) {
   if (!email || typeof email !== 'string') {
     throw new Error('email is required for OAuth user upsert');
   }
   if (!provider) throw new Error('provider is required');
   if (!providerUserId) throw new Error('providerUserId is required');
+  if (!ROLES.includes(role)) {
+    throw new Error(`role must be one of: ${ROLES.join(', ')}`);
+  }
 
   const normalizedEmail = email.toLowerCase().trim();
   const existing = _users.get(normalizedEmail);
@@ -108,10 +132,32 @@ export function upsertOAuthUser({ email, provider, providerUserId }) {
     passwordHash: null,
     provider,
     providerUserId,
+    role,
     createdAt:    new Date().toISOString(),
   };
   _users.set(normalizedEmail, user);
   return _publicUser(user);
+}
+
+/**
+ * Promote or demote a user's role.
+ * @param {string} userId
+ * @param {'viewer'|'editor'|'admin'} newRole
+ * @returns {{ id: string, email: string, provider: string, role: string, createdAt: string }}
+ * @throws when userId is not found or role is invalid
+ */
+export function setUserRole(userId, newRole) {
+  if (!ROLES.includes(newRole)) {
+    throw new Error(`role must be one of: ${ROLES.join(', ')}`);
+  }
+  for (const [key, user] of _users) {
+    if (user.id === userId) {
+      const updated = { ...user, role: newRole };
+      _users.set(key, updated);
+      return _publicUser(updated);
+    }
+  }
+  throw new Error(`User not found: ${userId}`);
 }
 
 /**
