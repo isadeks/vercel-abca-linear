@@ -82,6 +82,22 @@ export function findUserByEmail(email) {
 }
 
 /**
+ * Update the password hash for an existing user.
+ * @param {string} email
+ * @param {string} newPassword  Plain-text password; will be hashed internally.
+ * @returns {Promise<void>}
+ * @throws when the user is not found or the password is invalid.
+ */
+export async function updateUserPassword(email, newPassword) {
+  if (!email) throw new Error('email is required');
+  const normalizedEmail = email.toLowerCase().trim();
+  const user = _users.get(normalizedEmail);
+  if (!user) throw new Error('User not found');
+  user.passwordHash = await hashPassword(newPassword);
+  _users.set(normalizedEmail, user);
+}
+
+/**
  * Clear all users — for test isolation only.
  */
 export function _resetStore() {
