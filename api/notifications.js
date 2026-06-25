@@ -36,11 +36,11 @@ import {
   clearAll,
 } from './_lib/notification-store.js';
 
-import { NOTIFICATION_TYPES } from './_lib/notifications.js';
+import { NOTIFICATION_TYPES, createPreferences } from './_lib/notifications.js';
+import { notificationStore, preferenceStore }    from './_lib/stores.js';
 
 // ── In-process store ──────────────────────────────────────────────────────────
-/** @type {Map<string, object[]>} */
-const store = new Map();
+const store = notificationStore;
 
 // ── Handler ───────────────────────────────────────────────────────────────────
 
@@ -99,10 +99,16 @@ export default function handler(req, res) {
       return res.status(400).json({ error: 'title is required' });
     }
 
+    // Fetch (or create) user preferences so the type-enabled check is respected
+    if (!preferenceStore.has(userId)) {
+      preferenceStore.set(userId, createPreferences(userId));
+    }
+    const userPrefs = preferenceStore.get(userId);
+
     const notification = createNotification(
       store,
       { userId, type, title: title.trim(), body: msgBody },
-      null, // preferences checked server-side only when preferences store is wired up
+      userPrefs,
     );
 
     if (!notification) {

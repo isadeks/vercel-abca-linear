@@ -8,14 +8,15 @@
  * A Notification record has the shape:
  *
  *   {
- *     id:        string,       // unique opaque id
- *     userId:    string,
- *     type:      string,       // one of NOTIFICATION_TYPES values
- *     title:     string,       // short summary line
- *     body:      string,       // longer detail (may be empty)
- *     read:      boolean,
- *     createdAt: string,       // ISO-8601
- *     readAt:    string|null   // ISO-8601 or null
+ *     id:          string,       // unique opaque id
+ *     userId:      string,
+ *     type:        string,       // one of NOTIFICATION_TYPES values
+ *     title:       string,       // short summary line
+ *     body:        string,       // longer detail (may be empty)
+ *     read:        boolean,
+ *     createdAt:   string,       // ISO-8601
+ *     readAt:      string|null,  // ISO-8601 or null
+ *     digestedAt:  string|null   // ISO-8601 or null; set when included in an email digest
  *   }
  *
  * The store parameter accepted by all functions is a plain `Map<string,
@@ -62,14 +63,15 @@ export function createNotification(store, { userId, type, title, body = '' }, us
   }
 
   const notification = {
-    id:        generateId(),
+    id:         generateId(),
     userId,
     type,
-    title:     String(title ?? ''),
-    body:      String(body ?? ''),
-    read:      false,
-    createdAt: new Date().toISOString(),
-    readAt:    null,
+    title:      String(title ?? ''),
+    body:       String(body ?? ''),
+    read:       false,
+    createdAt:  new Date().toISOString(),
+    readAt:     null,
+    digestedAt: null,
   };
 
   const list = store.get(userId) ?? [];
@@ -90,6 +92,47 @@ export function getNotifications(store, userId) {
   const notifications = store.get(userId) ?? [];
   const unreadCount   = notifications.filter(n => !n.read).length;
   return { notifications, unreadCount };
+}
+
+/**
+ * Return all notifications for a user that have not yet been included in a
+ * digest (digestedAt === null), newest first.
+ *
+ * @param {Map<string, object[]>} store
+ * @param {string}                userId
+ * @returns {object[]}
+ */
+export function getUndigested(store, userId) {
+  const notifications = store.get(userId) ?? [];
+  return notifications.filter(n => n.digestedAt === null);
+}
+
+/**
+ * Stamp `digestedAt` with the current ISO timestamp on each notification whose
+ * id appears in `ids`.  Only notifications belonging to `userId` are affected.
+ * Returns the number of records updated.
+ *
+ * @param {Map<string, object[]>} store
+ * @param {string}                userId
+ * @param {string[]}              ids
+ * @returns {number}
+ */
+export function markDigested(store, userId, ids) {
+  const list = store.get(userId);
+  if (!list || ids.length === 0) return 0;
+
+  const idSet = new Set(ids);
+  const now   = new Date().toISOString();
+  let count   = 0;
+
+  const updated = list.map(n => {
+    if (!idSet.has(n.id)) return n;
+    count++;
+    return { ...n, digestedAt: now };
+  });
+
+  store.set(userId, updated);
+  return count;
 }
 
 // ── Mutations ─────────────────────────────────────────────────────────────────

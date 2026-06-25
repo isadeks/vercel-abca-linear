@@ -29,10 +29,10 @@ import {
   updatePreferences,
   validatePreferences,
 } from './_lib/notifications.js';
+import { preferenceStore } from './_lib/stores.js';
 
 // ── In-process store (swap for a DB adapter) ──────────────────────────────────
-/** @type {Map<string, UserPreferences>} */
-const store = new Map();
+const store = preferenceStore;
 
 /**
  * @param {string} userId
