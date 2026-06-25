@@ -573,12 +573,110 @@
       .result-hero__content { padding: 0 24px 32px; }
       .trait-list { grid-template-columns: 1fr; }
     }
+
+    /* ── Search widget ──────────────────────────────────────────── */
+    .nav__search {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+    .nav__search-input {
+      width: 220px;
+      padding: 8px 36px 8px 14px;
+      border: 1px solid var(--stone);
+      border-radius: 2px;
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s, width 0.2s;
+    }
+    .nav__search-input::placeholder { color: #b0a898; }
+    .nav__search-input:focus { border-color: var(--teal); }
+    @media (max-width: 560px) {
+      .nav__search-input { width: 140px; }
+    }
+    .nav__search-icon {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: var(--ash);
+    }
+    .nav__search-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      right: 0;
+      min-width: 280px;
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      border-radius: 2px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      z-index: 200;
+      overflow: hidden;
+    }
+    .nav__search-dropdown.is-open { display: block; }
+    .nav__search-result {
+      display: flex;
+      flex-direction: column;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--stone);
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .nav__search-result:last-child { border-bottom: none; }
+    .nav__search-result:hover,
+    .nav__search-result:focus { background: var(--sand); outline: none; }
+    .nav__search-result:focus-visible { outline: 2px solid var(--teal); outline-offset: -2px; }
+    .nav__search-result__title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 2px;
+    }
+    .nav__search-result__meta {
+      font-size: 0.75rem;
+      color: var(--ash);
+    }
+    .nav__search-empty {
+      padding: 14px 16px;
+      font-size: 0.85rem;
+      color: var(--ash);
+    }
   </style>
 </head>
 <body>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
+    <div class="nav__search" role="search" aria-label="Search pages">
+      <input
+        id="nav-search"
+        class="nav__search-input"
+        type="search"
+        placeholder="Search destinations&#x2026;"
+        autocomplete="off"
+        aria-label="Search destinations and guides"
+        aria-haspopup="listbox"
+        aria-expanded="false"
+        aria-controls="nav-search-dropdown"
+      />
+      <svg class="nav__search-icon" width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="5" stroke="currentColor" stroke-width="1.5"/>
+        <line x1="10.5" y1="10.5" x2="15" y2="15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div
+        id="nav-search-dropdown"
+        class="nav__search-dropdown"
+        role="listbox"
+        aria-label="Search results"
+      ></div>
+    </div>
     <a href="index.html" class="nav__back">← Back to home</a>
   </nav>
 
@@ -1301,6 +1399,73 @@
     showResult();
   })();
 
+  </script>
+  <script type="module">
+    import { filterPages } from './search.js';
+
+    const input = document.getElementById('nav-search');
+    const dropdown = document.getElementById('nav-search-dropdown');
+
+    function render(results) {
+      if (results.length === 0) {
+        dropdown.innerHTML = '<p class="nav__search-empty">No results found.</p>';
+      } else {
+        dropdown.innerHTML = results.map(p => `
+          <a class="nav__search-result" href="${p.url}" role="option">
+            <span class="nav__search-result__title">${p.title}</span>
+            <span class="nav__search-result__meta">${p.region || p.description}</span>
+          </a>`).join('');
+      }
+    }
+
+    function open() {
+      dropdown.classList.add('is-open');
+      input.setAttribute('aria-expanded', 'true');
+    }
+
+    function close() {
+      dropdown.classList.remove('is-open');
+      input.setAttribute('aria-expanded', 'false');
+    }
+
+    input.addEventListener('input', () => {
+      const results = filterPages(input.value);
+      if (results.length > 0 || input.value.trim()) {
+        render(results);
+        open();
+      } else {
+        close();
+      }
+    });
+
+    // Close when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!input.closest('.nav__search').contains(e.target)) close();
+    });
+
+    // Keyboard: Escape closes; arrow keys navigate results
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') { close(); input.blur(); return; }
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        const first = dropdown.querySelector('.nav__search-result');
+        if (first) first.focus();
+      }
+    });
+
+    dropdown.addEventListener('keydown', (e) => {
+      const items = [...dropdown.querySelectorAll('.nav__search-result')];
+      const idx = items.indexOf(document.activeElement);
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        items[(idx + 1) % items.length]?.focus();
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (idx === 0) { input.focus(); } else { items[idx - 1]?.focus(); }
+      } else if (e.key === 'Escape') {
+        close(); input.focus();
+      }
+    });
   </script>
 </body>
 </html>
