@@ -55,6 +55,12 @@
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--stone);
     }
+    .nav__actions {
+      display: flex; align-items: center; gap: 8px;
+    }
+    /* Bell colour adapts to nav transparency state */
+    .nav__bell .nb-bell-btn { color: rgba(255,255,255,0.85); }
+    .nav.scrolled .nav__bell .nb-bell-btn { color: var(--ash); }
     .nav__logo {
       font-family: var(--font-serif);
       font-size: 1.6rem;
@@ -553,13 +559,18 @@
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <ul class="nav__links">
-      <li><a href="#destinations">Destinations</a></li>
-      <li><a href="#guides">Guides</a></li>
-      <li><a href="#regions">Regions</a></li>
-      <li><a href="quiz.html">Where to go?</a></li>
-      <li><a href="#newsletter">Newsletter</a></li>
-    </ul>
+    <div class="nav__actions">
+      <ul class="nav__links">
+        <li><a href="#destinations">Destinations</a></li>
+        <li><a href="#guides">Guides</a></li>
+        <li><a href="#regions">Regions</a></li>
+        <li><a href="quiz.html">Where to go?</a></li>
+        <li><a href="#newsletter">Newsletter</a></li>
+      </ul>
+      <div class="nav__bell">
+        <div data-notification-bell data-user-id="demo-user"></div>
+      </div>
+    </div>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
@@ -825,6 +836,7 @@
     </div>
   </footer>
 
+  <script type="module" src="notification-bell.js"></script>
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');

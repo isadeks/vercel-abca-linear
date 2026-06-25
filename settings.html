@@ -285,11 +285,14 @@
   <!-- ── Navigation ────────────────────────────────────────────────────── -->
   <nav class="nav" role="navigation" aria-label="Site navigation">
     <a href="index.html" class="nav__logo">Wander</a>
-    <ul class="nav__links">
-      <li><a href="destinations.html">Destinations</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="settings.html" aria-current="page">Settings</a></li>
-    </ul>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <ul class="nav__links">
+        <li><a href="destinations.html">Destinations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="settings.html" aria-current="page">Settings</a></li>
+      </ul>
+      <div data-notification-bell data-user-id="demo-user"></div>
+    </div>
   </nav>
 
   <!-- ── Main content ──────────────────────────────────────────────────── -->
@@ -616,6 +619,7 @@
     // Load on boot
     loadPreferences();
   </script>
+  <script type="module" src="notification-bell.js"></script>
 
 </body>
 </html>
