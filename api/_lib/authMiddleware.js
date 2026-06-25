@@ -79,3 +79,16 @@ export async function requireAuth(req, res, options = {}) {
 export async function requireAdmin(req, res) {
   return requireAuth(req, res, { roles: ['admin'] });
 }
+
+/**
+ * Convenience wrapper that requires the caller to be authenticated as any
+ * valid user (role 'user' OR 'admin'). Unauthenticated requests get 401;
+ * authenticated requests with an unrecognised role get 403.
+ *
+ * @param {object} req
+ * @param {object} res
+ * @returns {Promise<{ user: object } | null>}
+ */
+export async function requireUser(req, res) {
+  return requireAuth(req, res, { roles: ['user', 'admin'] });
+}
