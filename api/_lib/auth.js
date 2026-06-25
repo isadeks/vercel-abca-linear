@@ -116,3 +116,40 @@ export function createRefreshToken(userId, secret, expiresInSeconds = 604800) {
     secret,
   );
 }
+
+/**
+ * Create a short-lived password-reset token for the given user.
+ * A random `jti` ensures single-use semantics can be enforced server-side.
+ * @param {string} userId
+ * @param {string} secret
+ * @param {number} [expiresInSeconds=3600]  default: 1 hour
+ * @returns {string}
+ */
+export function createPasswordResetToken(userId, secret, expiresInSeconds = 3600) {
+  const now = Math.floor(Date.now() / 1000);
+  return signToken(
+    {
+      sub: userId,
+      iat: now,
+      exp: now + expiresInSeconds,
+      type: 'password-reset',
+      jti: randomBytes(16).toString('hex'),
+    },
+    secret,
+  );
+}
+
+/**
+ * Verify a password-reset token.
+ * Throws if the token is invalid, expired, or not of type 'password-reset'.
+ * @param {string} token
+ * @param {string} secret
+ * @returns {object} decoded payload (includes sub = userId)
+ */
+export function verifyPasswordResetToken(token, secret) {
+  const payload = verifyToken(token, secret);
+  if (payload.type !== 'password-reset') {
+    throw new Error('Expected password-reset token, got: ' + payload.type);
+  }
+  return payload;
+}

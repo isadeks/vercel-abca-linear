@@ -4,6 +4,8 @@ import {
   verifyToken,
   createAccessToken,
   createRefreshToken,
+  createPasswordResetToken,
+  verifyPasswordResetToken,
 } from '../api/_lib/auth.js';
 
 const SECRET = 'test-secret-key-for-auth-tests';
@@ -87,5 +89,67 @@ describe('createRefreshToken', () => {
     const token = createRefreshToken('user-7', SECRET);
     const payload = verifyToken(token, SECRET);
     expect(payload.exp - payload.iat).toBe(604800);
+  });
+});
+
+describe('createPasswordResetToken', () => {
+  it('creates a token with type=password-reset', () => {
+    const token = createPasswordResetToken('user-reset-1', SECRET);
+    const payload = verifyToken(token, SECRET);
+    expect(payload.type).toBe('password-reset');
+    expect(payload.sub).toBe('user-reset-1');
+  });
+
+  it('defaults to 1-hour TTL', () => {
+    const token = createPasswordResetToken('user-reset-1', SECRET);
+    const payload = verifyToken(token, SECRET);
+    expect(payload.exp - payload.iat).toBe(3600);
+  });
+
+  it('respects custom TTL', () => {
+    const token = createPasswordResetToken('user-reset-1', SECRET, 600);
+    const payload = verifyToken(token, SECRET);
+    expect(payload.exp - payload.iat).toBe(600);
+  });
+
+  it('embeds a unique jti per token', () => {
+    const t1 = createPasswordResetToken('user-reset-1', SECRET);
+    const t2 = createPasswordResetToken('user-reset-1', SECRET);
+    const p1 = verifyToken(t1, SECRET);
+    const p2 = verifyToken(t2, SECRET);
+    expect(p1.jti).toBeTruthy();
+    expect(p1.jti).not.toBe(p2.jti);
+  });
+});
+
+describe('verifyPasswordResetToken', () => {
+  it('returns payload for a valid password-reset token', () => {
+    const token = createPasswordResetToken('user-reset-2', SECRET);
+    const payload = verifyPasswordResetToken(token, SECRET);
+    expect(payload.sub).toBe('user-reset-2');
+    expect(payload.type).toBe('password-reset');
+  });
+
+  it('throws when passed an access token', () => {
+    const token = createAccessToken('user-reset-2', SECRET);
+    expect(() => verifyPasswordResetToken(token, SECRET)).toThrow(
+      'Expected password-reset token',
+    );
+  });
+
+  it('throws when passed a refresh token', () => {
+    const token = createRefreshToken('user-reset-2', SECRET);
+    expect(() => verifyPasswordResetToken(token, SECRET)).toThrow(
+      'Expected password-reset token',
+    );
+  });
+
+  it('throws for an invalid signature', () => {
+    const token = createPasswordResetToken('user-reset-2', SECRET);
+    const parts = token.split('.');
+    parts[2] = parts[2].split('').reverse().join('');
+    expect(() => verifyPasswordResetToken(parts.join('.'), SECRET)).toThrow(
+      'Invalid token signature',
+    );
   });
 });
