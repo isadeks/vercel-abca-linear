@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Article Editor — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 900px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ───────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: 0.06em; color: var(--ink); }
+    .nav__back { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); transition: opacity 0.2s; }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Editor layout ─────────────────────────────────────────── */
+    .editor-page { padding: 56px 0 96px; }
+
+    .editor-header { margin-bottom: 36px; }
+    .editor-header__eyebrow {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 10px;
+    }
+    .editor-header__title {
+      font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300; line-height: 1.15;
+    }
+    .editor-header__sub {
+      margin-top: 10px; font-size: 0.9rem; color: var(--ash); line-height: 1.7;
+    }
+
+    /* ── Toolbar ───────────────────────────────────────────────── */
+    .editor-toolbar {
+      display: flex; gap: 6px; flex-wrap: wrap;
+      padding: 10px 14px;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      border-bottom: none;
+      border-radius: 2px 2px 0 0;
+    }
+    .editor-toolbar button {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 32px; height: 32px;
+      font-family: var(--font-sans);
+      font-size: 0.85rem; font-weight: 500;
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+    .editor-toolbar button:hover { background: var(--stone); border-color: var(--stone); }
+    .editor-toolbar button.active { background: var(--teal-lt); border-color: var(--teal); color: var(--teal); }
+    .editor-toolbar__sep { width: 1px; background: var(--stone); margin: 4px 6px; align-self: stretch; }
+
+    /* Upload button in toolbar */
+    .toolbar-upload-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 0 12px !important; width: auto !important;
+      font-size: 0.72rem !important; letter-spacing: 0.08em; text-transform: uppercase;
+    }
+
+    /* ── Editor wrapper (position: relative for overlay) ───────── */
+    .editor-wrap {
+      position: relative;
+    }
+
+    /* ── Textarea ─────────────────────────────────────────────── */
+    .editor-area {
+      display: block; width: 100%;
+      min-height: 480px;
+      padding: 24px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      line-height: 1.8;
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 0 0 2px 2px;
+      resize: vertical;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .editor-area:focus { border-color: var(--teal); }
+    .editor-area::placeholder { color: #c0b8ad; }
+
+    /* ── Drop overlay ─────────────────────────────────────────── */
+    .drop-overlay {
+      position: absolute;
+      inset: 0;
+      display: none;           /* hidden by default */
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: rgba(42, 122, 111, 0.08);
+      border: 2px dashed var(--teal);
+      border-radius: 0 0 2px 2px;
+      pointer-events: none;    /* let drag events fall through to wrapper */
+      z-index: 10;
+      transition: opacity 0.15s;
+    }
+    .drop-overlay.visible {
+      display: flex;
+    }
+    .drop-overlay__icon {
+      font-size: 3rem;
+      line-height: 1;
+      opacity: 0.7;
+    }
+    .drop-overlay__label {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--teal);
+      letter-spacing: 0.04em;
+    }
+    .drop-overlay__sub {
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+
+    /* ── Upload progress ──────────────────────────────────────── */
+    .upload-progress {
+      display: none;
+      margin-top: 16px;
+      padding: 16px 20px;
+      background: var(--teal-lt);
+      border: 1px solid #a8d5cf;
+      border-radius: 2px;
+    }
+    .upload-progress.visible { display: block; }
+
+    .upload-progress__header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 10px;
+    }
+    .upload-progress__filename {
+      font-size: 0.85rem; font-weight: 500; color: var(--ink);
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      max-width: 70%;
+    }
+    .upload-progress__pct {
+      font-size: 0.8rem; font-weight: 500; color: var(--teal);
+      white-space: nowrap;
+    }
+
+    .progress-track {
+      width: 100%; height: 4px;
+      background: #c5e6e1;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: width 0.15s linear;
+    }
+
+    /* ── Status messages ──────────────────────────────────────── */
+    .upload-status {
+      margin-top: 12px;
+      min-height: 1.4em;
+      font-size: 0.82rem;
+    }
+    .upload-status.success { color: var(--teal); }
+    .upload-status.error   { color: var(--coral); }
+
+    /* ── Hint bar ─────────────────────────────────────────────── */
+    .editor-hint {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+    .editor-hint kbd {
+      display: inline-block;
+      padding: 1px 6px;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      border-radius: 2px;
+      font-family: monospace;
+      font-size: 0.75rem;
+    }
+
+    /* ── Saved indicator ──────────────────────────────────────── */
+    .saved-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--teal-lt);
+      color: var(--teal);
+      border-radius: 2px;
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+    .saved-badge.visible { opacity: 1; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: white; margin-bottom: 14px; letter-spacing: 0.04em; }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    @media (max-width: 900px) { .nav { padding: 18px 24px; } .footer__grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="editor-page">
+    <div class="container">
+
+      <div class="editor-header">
+        <p class="editor-header__eyebrow">Create</p>
+        <h1 class="editor-header__title">Article Editor</h1>
+        <p class="editor-header__sub">Drag a file onto the writing area to upload it to S3 and insert a link at the cursor.</p>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="editor-toolbar" role="toolbar" aria-label="Formatting options">
+        <button type="button" title="Bold" onclick="wrapSelection('**', '**')"><strong>B</strong></button>
+        <button type="button" title="Italic" onclick="wrapSelection('*', '*')"><em>I</em></button>
+        <button type="button" title="Strikethrough" onclick="wrapSelection('~~', '~~')"><s>S</s></button>
+        <div class="editor-toolbar__sep" aria-hidden="true"></div>
+        <button type="button" title="Heading 2" onclick="prefixLine('## ')">H2</button>
+        <button type="button" title="Heading 3" onclick="prefixLine('### ')">H3</button>
+        <div class="editor-toolbar__sep" aria-hidden="true"></div>
+        <button type="button" title="Unordered list" onclick="prefixLine('- ')">UL</button>
+        <button type="button" title="Ordered list" onclick="prefixLine('1. ')">OL</button>
+        <button type="button" title="Blockquote" onclick="prefixLine('> ')">❝</button>
+        <div class="editor-toolbar__sep" aria-hidden="true"></div>
+        <button type="button" title="Inline code" onclick="wrapSelection('`', '`')"><code style="font-size:0.8em">&lt;/&gt;</code></button>
+        <button type="button" title="Code block" onclick="wrapSelection('\n```\n', '\n```\n')">⌥</button>
+        <div class="editor-toolbar__sep" aria-hidden="true"></div>
+        <button type="button" class="toolbar-upload-btn" title="Upload file" onclick="triggerFileInput()">
+          ↑ Upload file
+        </button>
+        <!-- Hidden file input for click-to-upload -->
+        <input type="file" id="file-input" style="display:none" aria-label="Upload file" />
+      </div>
+
+      <!-- Editor area with drop overlay -->
+      <div class="editor-wrap"
+           id="editor-wrap"
+           aria-label="Editor drop zone"
+           ondragenter="handleDragEnter(event)"
+           ondragover="handleDragOver(event)"
+           ondragleave="handleDragLeave(event)"
+           ondrop="handleDrop(event)">
+
+        <textarea
+          id="editor"
+          class="editor-area"
+          placeholder="Begin writing your article…"
+          aria-label="Article editor"
+          spellcheck="true"
+        ></textarea>
+
+        <!-- Drop overlay (shown while dragging) -->
+        <div class="drop-overlay" id="drop-overlay" aria-hidden="true">
+          <div class="drop-overlay__icon">⬆</div>
+          <p class="drop-overlay__label">Drop to upload</p>
+          <p class="drop-overlay__sub">File will be uploaded to S3 and a link inserted at your cursor</p>
+        </div>
+      </div>
+
+      <!-- Progress bar (shown during upload) -->
+      <div class="upload-progress" id="upload-progress" role="status" aria-live="polite">
+        <div class="upload-progress__header">
+          <span class="upload-progress__filename" id="upload-filename">—</span>
+          <span class="upload-progress__pct" id="upload-pct">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <!-- Status message -->
+      <p class="upload-status" id="upload-status" aria-live="polite"></p>
+
+      <!-- Hint bar -->
+      <p class="editor-hint">
+        Drag a file onto the editor, or click <kbd>↑ Upload file</kbd> in the toolbar.
+        Supports any file type. &nbsp;·&nbsp; <span class="saved-badge" id="saved-badge">Saved</span>
+      </p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── Editor helpers ────────────────────────────────────────── */
+
+    const editor = document.getElementById('editor');
+
+    /**
+     * Wrap the current selection with prefix/suffix markers.
+     * If nothing is selected, place the cursor between the markers.
+     */
+    function wrapSelection(prefix, suffix) {
+      const start = editor.selectionStart;
+      const end   = editor.selectionEnd;
+      const sel   = editor.value.slice(start, end);
+      const replacement = prefix + sel + suffix;
+      editor.setRangeText(replacement, start, end, 'select');
+      if (sel.length === 0) {
+        // Place cursor inside the markers
+        const pos = start + prefix.length;
+        editor.setSelectionRange(pos, pos);
+      }
+      editor.focus();
+    }
+
+    /**
+     * Prefix the current line with a marker.
+     */
+    function prefixLine(marker) {
+      const start = editor.selectionStart;
+      // Find line start
+      const lineStart = editor.value.lastIndexOf('\n', start - 1) + 1;
+      editor.setRangeText(marker, lineStart, lineStart, 'end');
+      editor.focus();
+    }
+
+    /**
+     * Insert text at the cursor position (or replace selection).
+     *
+     * @param {string} text - Text to insert
+     */
+    function insertAtCursor(text) {
+      const start = editor.selectionStart;
+      const end   = editor.selectionEnd;
+      editor.setRangeText(text, start, end, 'end');
+      editor.focus();
+    }
+
+    /* ── Auto-save (localStorage) ─────────────────────────────── */
+
+    const STORAGE_KEY = 'wander-editor-draft';
+    const savedBadge  = document.getElementById('saved-badge');
+    let saveTimer;
+
+    // Restore draft on load
+    const draft = localStorage.getItem(STORAGE_KEY);
+    if (draft) editor.value = draft;
+
+    editor.addEventListener('input', () => {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => {
+        localStorage.setItem(STORAGE_KEY, editor.value);
+        savedBadge.classList.add('visible');
+        setTimeout(() => savedBadge.classList.remove('visible'), 1800);
+      }, 600);
+    });
+
+    /* ── Drag-and-drop state ───────────────────────────────────── */
+
+    const editorWrap  = document.getElementById('editor-wrap');
+    const dropOverlay = document.getElementById('drop-overlay');
+
+    // Track enter/leave depth so nested elements don't flicker the overlay.
+    let dragDepth = 0;
+
+    function handleDragEnter(event) {
+      event.preventDefault();
+      dragDepth++;
+      if (dragDepth === 1) showOverlay();
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy';
+    }
+
+    function handleDragLeave(event) {
+      event.preventDefault();
+      dragDepth--;
+      if (dragDepth === 0) hideOverlay();
+    }
+
+    function handleDrop(event) {
+      event.preventDefault();
+      dragDepth = 0;
+      hideOverlay();
+
+      const files = event.dataTransfer.files;
+      if (files && files.length > 0) {
+        uploadFile(files[0]);
+      }
+    }
+
+    function showOverlay() {
+      dropOverlay.classList.add('visible');
+      dropOverlay.setAttribute('aria-hidden', 'false');
+    }
+
+    function hideOverlay() {
+      dropOverlay.classList.remove('visible');
+      dropOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    /* ── Toolbar upload button ─────────────────────────────────── */
+
+    const fileInput = document.getElementById('file-input');
+
+    function triggerFileInput() {
+      fileInput.click();
+    }
+
+    fileInput.addEventListener('change', () => {
+      if (fileInput.files && fileInput.files.length > 0) {
+        uploadFile(fileInput.files[0]);
+        // Reset input so same file can be re-selected
+        fileInput.value = '';
+      }
+    });
+
+    /* ── Upload logic ─────────────────────────────────────────── */
+
+    const uploadProgress = document.getElementById('upload-progress');
+    const uploadFilename = document.getElementById('upload-filename');
+    const uploadPct      = document.getElementById('upload-pct');
+    const progressFill   = document.getElementById('progress-fill');
+    const uploadStatus   = document.getElementById('upload-status');
+
+    function setProgress(pct) {
+      const p = Math.max(0, Math.min(100, pct));
+      progressFill.style.width = p + '%';
+      uploadPct.textContent    = p + '%';
+    }
+
+    function setStatus(msg, type) {
+      uploadStatus.textContent  = msg;
+      uploadStatus.className    = 'upload-status' + (type ? ' ' + type : '');
+    }
+
+    /**
+     * Upload a File object to S3 via the Vercel presigned-URL endpoint,
+     * showing a progress bar, then insert a Markdown link at the cursor.
+     *
+     * @param {File} file
+     */
+    async function uploadFile(file) {
+      // Show progress UI
+      uploadFilename.textContent = file.name;
+      setProgress(0);
+      uploadProgress.classList.add('visible');
+      setStatus('Requesting upload URL…');
+
+      let presignResult;
+      try {
+        // Step 1: get presigned PUT URL from our serverless function
+        const resp = await fetch('/api/upload', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ filename: file.name, mimeType: file.type || 'application/octet-stream' }),
+        });
+
+        if (!resp.ok) {
+          const err = await resp.json().catch(() => ({ error: resp.statusText }));
+          throw new Error(err.error || 'Failed to get upload URL');
+        }
+
+        presignResult = await resp.json();
+        setProgress(10);
+        setStatus('Uploading…');
+      } catch (err) {
+        uploadProgress.classList.remove('visible');
+        setStatus('⚠ ' + err.message, 'error');
+        return;
+      }
+
+      // Step 2: PUT the file directly to S3 with XHR so we can track progress
+      await new Promise((resolve, reject) => {
+        const xhr = new XMLHttpRequest();
+
+        xhr.upload.addEventListener('progress', (e) => {
+          if (e.lengthComputable) {
+            // Scale upload progress from 10% to 95%
+            const uploadPct = 10 + Math.round((e.loaded / e.total) * 85);
+            setProgress(uploadPct);
+          }
+        });
+
+        xhr.addEventListener('load', () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            resolve();
+          } else {
+            reject(new Error(`S3 upload failed (HTTP ${xhr.status})`));
+          }
+        });
+
+        xhr.addEventListener('error', () => reject(new Error('Network error during upload')));
+        xhr.addEventListener('abort', () => reject(new Error('Upload aborted')));
+
+        xhr.open('PUT', presignResult.url);
+        xhr.setRequestHeader('Content-Type', file.type || 'application/octet-stream');
+        xhr.send(file);
+      }).then(() => {
+        // Step 3: success — insert link at cursor and finish
+        setProgress(100);
+        setStatus('✓ Uploaded successfully', 'success');
+
+        const mdLink = `[${file.name}](${presignResult.publicUrl})`;
+        insertAtCursor(mdLink);
+
+        setTimeout(() => {
+          uploadProgress.classList.remove('visible');
+          setStatus('');
+        }, 3000);
+      }).catch((err) => {
+        uploadProgress.classList.remove('visible');
+        setStatus('⚠ ' + err.message, 'error');
+      });
+    }
+  </script>
+
+</body>
+</html>
