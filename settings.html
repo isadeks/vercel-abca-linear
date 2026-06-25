@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notification Preferences — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 860px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      padding-top: 80px;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 28px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover, .nav__links a[aria-current] { color: var(--ink); }
+
+    /* ── Page layout ──────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 48px 24px 96px; }
+
+    .page-title {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+    }
+    .page-subtitle {
+      color: var(--ash);
+      font-size: 0.92rem;
+      margin-bottom: 48px;
+    }
+
+    /* ── Section headings ─────────────────────────────────────── */
+    .section-heading {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .section-desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      margin-bottom: 20px;
+    }
+
+    /* ── Card ─────────────────────────────────────────────────── */
+    .card {
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 36px;
+    }
+
+    /* ── Channels grid ────────────────────────────────────────── */
+    .channels-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 16px;
+    }
+
+    .channel-card {
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .channel-card:has(input:checked) {
+      border-color: var(--teal);
+      background: var(--teal-lt);
+    }
+    .channel-card input[type="checkbox"] {
+      accent-color: var(--teal);
+      width: 17px; height: 17px;
+      cursor: pointer;
+    }
+    .channel-card label {
+      font-size: 0.9rem;
+      font-weight: 500;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    /* ── Notification type rows ───────────────────────────────── */
+    .pref-row {
+      display: grid;
+      grid-template-columns: 1fr auto auto;
+      align-items: center;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .pref-row:last-child { border-bottom: none; }
+
+    .pref-row__info { }
+    .pref-row__name {
+      font-weight: 500;
+      font-size: 0.92rem;
+    }
+    .pref-row__desc {
+      font-size: 0.8rem;
+      color: var(--ash);
+      margin-top: 2px;
+    }
+
+    .pref-row__frequency select {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 6px 28px 6px 10px;
+      background: var(--cream);
+      color: var(--ink);
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .pref-row__frequency select:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    /* ── Toggle switch ────────────────────────────────────────── */
+    .toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .toggle input[type="checkbox"] {
+      position: absolute;
+      opacity: 0;
+      width: 0; height: 0;
+    }
+    .toggle__track {
+      width: 40px; height: 22px;
+      border-radius: 11px;
+      background: var(--stone);
+      transition: background 0.2s;
+      position: relative;
+    }
+    .toggle input:checked + .toggle__track { background: var(--teal); }
+    .toggle__track::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.2s;
+    }
+    .toggle input:checked + .toggle__track::after { transform: translateX(18px); }
+
+    /* ── Actions ──────────────────────────────────────────────── */
+    .actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 12px 28px;
+      border-radius: 6px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, opacity 0.2s;
+    }
+    .btn-primary {
+      background: var(--teal);
+      color: white;
+    }
+    .btn-primary:hover { background: #236459; }
+    .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; }
+    .btn-ghost {
+      background: transparent;
+      color: var(--ash);
+      border: 1px solid var(--stone);
+    }
+    .btn-ghost:hover { border-color: var(--ash); color: var(--ink); }
+
+    /* ── Status banner ────────────────────────────────────────── */
+    .status-banner {
+      display: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+    .status-banner.success {
+      display: block;
+      background: var(--teal-lt);
+      border: 1px solid var(--teal);
+      color: #1d5c54;
+    }
+    .status-banner.error {
+      display: block;
+      background: #fce8e4;
+      border: 1px solid var(--coral);
+      color: #a84732;
+    }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .nav { padding: 14px 20px; }
+      .card { padding: 20px; }
+      .pref-row {
+        grid-template-columns: 1fr auto;
+        grid-template-rows: auto auto;
+      }
+      .pref-row__frequency {
+        grid-column: 1;
+        grid-row: 2;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ────────────────────────────────────────────────────── -->
+  <nav class="nav" role="navigation" aria-label="Site navigation">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <ul class="nav__links">
+        <li><a href="destinations.html">Destinations</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="settings.html" aria-current="page">Settings</a></li>
+      </ul>
+      <div data-notification-bell data-user-id="demo-user"></div>
+    </div>
+  </nav>
+
+  <!-- ── Main content ──────────────────────────────────────────────────── -->
+  <main class="container" id="main-content">
+    <h1 class="page-title">Notification Preferences</h1>
+    <p class="page-subtitle">Choose how and when Wander reaches you.</p>
+
+    <!-- Status banner (shown after save/error) -->
+    <div id="statusBanner" class="status-banner" role="status" aria-live="polite"></div>
+
+    <form id="prefsForm" novalidate>
+
+      <!-- ── Delivery channels ────────────────────────────────────────── -->
+      <section aria-labelledby="channels-heading">
+        <h2 class="section-heading" id="channels-heading">Delivery Channels</h2>
+        <p class="section-desc">Enable the channels you'd like notifications sent to.</p>
+        <div class="card">
+          <div class="channels-grid">
+
+            <label class="channel-card">
+              <input type="checkbox" name="ch-email" id="ch-email" checked />
+              <span class="channel-card__icon" aria-hidden="true">✉️</span>
+              <label for="ch-email">Email</label>
+            </label>
+
+            <label class="channel-card">
+              <input type="checkbox" name="ch-sms" id="ch-sms" />
+              <span class="channel-card__icon" aria-hidden="true">💬</span>
+              <label for="ch-sms">SMS</label>
+            </label>
+
+            <label class="channel-card">
+              <input type="checkbox" name="ch-push" id="ch-push" />
+              <span class="channel-card__icon" aria-hidden="true">🔔</span>
+              <label for="ch-push">Push</label>
+            </label>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Notification types ───────────────────────────────────────── -->
+      <section aria-labelledby="types-heading">
+        <h2 class="section-heading" id="types-heading">Notification Types</h2>
+        <p class="section-desc">Turn individual notifications on or off and set their delivery frequency.</p>
+        <div class="card">
+
+          <!-- booking_confirmation -->
+          <div class="pref-row">
+            <div class="pref-row__info">
+              <div class="pref-row__name">Booking Confirmation</div>
+              <div class="pref-row__desc">Sent immediately when a booking is placed.</div>
+            </div>
+            <div class="pref-row__frequency">
+              <select name="freq-booking_confirmation" aria-label="Booking Confirmation frequency">
+                <option value="immediate" selected>Immediate</option>
+                <option value="daily_digest">Daily digest</option>
+                <option value="weekly_digest">Weekly digest</option>
+              </select>
+            </div>
+            <label class="toggle" aria-label="Enable Booking Confirmation">
+              <input type="checkbox" name="enabled-booking_confirmation" checked />
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- booking_reminder -->
+          <div class="pref-row">
+            <div class="pref-row__info">
+              <div class="pref-row__name">Booking Reminder</div>
+              <div class="pref-row__desc">Reminders before your upcoming trip.</div>
+            </div>
+            <div class="pref-row__frequency">
+              <select name="freq-booking_reminder" aria-label="Booking Reminder frequency">
+                <option value="immediate" selected>Immediate</option>
+                <option value="daily_digest">Daily digest</option>
+                <option value="weekly_digest">Weekly digest</option>
+              </select>
+            </div>
+            <label class="toggle" aria-label="Enable Booking Reminder">
+              <input type="checkbox" name="enabled-booking_reminder" checked />
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- price_drop -->
+          <div class="pref-row">
+            <div class="pref-row__info">
+              <div class="pref-row__name">Price Drop Alerts</div>
+              <div class="pref-row__desc">Notify me when a saved destination drops in price.</div>
+            </div>
+            <div class="pref-row__frequency">
+              <select name="freq-price_drop" aria-label="Price Drop frequency">
+                <option value="immediate">Immediate</option>
+                <option value="daily_digest" selected>Daily digest</option>
+                <option value="weekly_digest">Weekly digest</option>
+              </select>
+            </div>
+            <label class="toggle" aria-label="Enable Price Drop Alerts">
+              <input type="checkbox" name="enabled-price_drop" checked />
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- newsletter -->
+          <div class="pref-row">
+            <div class="pref-row__info">
+              <div class="pref-row__name">Newsletter</div>
+              <div class="pref-row__desc">Travel inspiration and editorial picks.</div>
+            </div>
+            <div class="pref-row__frequency">
+              <select name="freq-newsletter" aria-label="Newsletter frequency">
+                <option value="immediate">Immediate</option>
+                <option value="daily_digest">Daily digest</option>
+                <option value="weekly_digest" selected>Weekly digest</option>
+              </select>
+            </div>
+            <label class="toggle" aria-label="Enable Newsletter">
+              <input type="checkbox" name="enabled-newsletter" />
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- travel_tips -->
+          <div class="pref-row">
+            <div class="pref-row__info">
+              <div class="pref-row__name">Travel Tips</div>
+              <div class="pref-row__desc">Destination guides and packing advice.</div>
+            </div>
+            <div class="pref-row__frequency">
+              <select name="freq-travel_tips" aria-label="Travel Tips frequency">
+                <option value="immediate">Immediate</option>
+                <option value="daily_digest">Daily digest</option>
+                <option value="weekly_digest" selected>Weekly digest</option>
+              </select>
+            </div>
+            <label class="toggle" aria-label="Enable Travel Tips">
+              <input type="checkbox" name="enabled-travel_tips" />
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+
+          <!-- account_security -->
+          <div class="pref-row">
+            <div class="pref-row__info">
+              <div class="pref-row__name">Account &amp; Security</div>
+              <div class="pref-row__desc">Sign-in alerts and password change notices. Recommended.</div>
+            </div>
+            <div class="pref-row__frequency">
+              <select name="freq-account_security" aria-label="Account &amp; Security frequency">
+                <option value="immediate" selected>Immediate</option>
+                <option value="daily_digest">Daily digest</option>
+                <option value="weekly_digest">Weekly digest</option>
+              </select>
+            </div>
+            <label class="toggle" aria-label="Enable Account &amp; Security">
+              <input type="checkbox" name="enabled-account_security" checked />
+              <span class="toggle__track"></span>
+            </label>
+          </div>
+
+        </div><!-- /.card -->
+      </section>
+
+      <!-- ── Form actions ──────────────────────────────────────────────── -->
+      <div class="actions">
+        <button type="submit" class="btn btn-primary" id="saveBtn">Save preferences</button>
+        <button type="button" class="btn btn-ghost" id="resetBtn">Reset to defaults</button>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- ── Client-side logic ─────────────────────────────────────────────── -->
+  <script>
+    // ---------------------------------------------------------------------------
+    // Config — mirrors the constants in api/_lib/notifications.js
+    // ---------------------------------------------------------------------------
+    const NOTIFICATION_TYPES = {
+      BOOKING_CONFIRMATION: 'booking_confirmation',
+      BOOKING_REMINDER:     'booking_reminder',
+      PRICE_DROP:           'price_drop',
+      NEWSLETTER:           'newsletter',
+      TRAVEL_TIPS:          'travel_tips',
+      ACCOUNT_SECURITY:     'account_security',
+    };
+
+    // Demo userId — in production, read from session/cookie.
+    const USER_ID = 'demo-user';
+    const API_BASE = '/api/notification-preferences';
+
+    // ---------------------------------------------------------------------------
+    // DOM helpers
+    // ---------------------------------------------------------------------------
+    const form        = document.getElementById('prefsForm');
+    const saveBtn     = document.getElementById('saveBtn');
+    const resetBtn    = document.getElementById('resetBtn');
+    const statusBanner= document.getElementById('statusBanner');
+
+    function showStatus(msg, type /* 'success' | 'error' */) {
+      statusBanner.textContent = msg;
+      statusBanner.className = `status-banner ${type}`;
+      statusBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      setTimeout(() => { statusBanner.className = 'status-banner'; }, 5000);
+    }
+
+    // ---------------------------------------------------------------------------
+    // Read the current form state → API payload
+    // ---------------------------------------------------------------------------
+    function readForm() {
+      const channels = {
+        email: document.getElementById('ch-email').checked,
+        sms:   document.getElementById('ch-sms').checked,
+        push:  document.getElementById('ch-push').checked,
+      };
+
+      const types = {};
+      for (const type of Object.values(NOTIFICATION_TYPES)) {
+        const enabledEl   = form.querySelector(`[name="enabled-${type}"]`);
+        const frequencyEl = form.querySelector(`[name="freq-${type}"]`);
+        if (!enabledEl || !frequencyEl) continue;
+        types[type] = {
+          enabled:   enabledEl.checked,
+          frequency: frequencyEl.value,
+        };
+      }
+
+      return { channels, types };
+    }
+
+    // ---------------------------------------------------------------------------
+    // Apply an API response body → populate the form
+    // ---------------------------------------------------------------------------
+    function applyPreferences(prefs) {
+      if (!prefs) return;
+
+      if (prefs.channels) {
+        document.getElementById('ch-email').checked = !!prefs.channels.email;
+        document.getElementById('ch-sms').checked   = !!prefs.channels.sms;
+        document.getElementById('ch-push').checked  = !!prefs.channels.push;
+      }
+
+      if (prefs.types) {
+        for (const [type, entry] of Object.entries(prefs.types)) {
+          const enabledEl   = form.querySelector(`[name="enabled-${type}"]`);
+          const frequencyEl = form.querySelector(`[name="freq-${type}"]`);
+          if (enabledEl)   enabledEl.checked = !!entry.enabled;
+          if (frequencyEl) frequencyEl.value  = entry.frequency || 'immediate';
+        }
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Load preferences on page open
+    // ---------------------------------------------------------------------------
+    async function loadPreferences() {
+      try {
+        const res = await fetch(`${API_BASE}?userId=${encodeURIComponent(USER_ID)}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        applyPreferences(data.preferences);
+      } catch (err) {
+        // In dev without the API (static file serving), silently skip.
+        console.warn('Could not load preferences:', err.message);
+      }
+    }
+
+    // ---------------------------------------------------------------------------
+    // Save preferences
+    // ---------------------------------------------------------------------------
+    async function savePreferences(payload) {
+      const res = await fetch(`${API_BASE}?userId=${encodeURIComponent(USER_ID)}`, {
+        method:  'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({ error: 'Unknown error' }));
+        throw new Error(err.error || `HTTP ${res.status}`);
+      }
+      return res.json();
+    }
+
+    // ---------------------------------------------------------------------------
+    // Reset to defaults
+    // ---------------------------------------------------------------------------
+    async function resetPreferences() {
+      const res = await fetch(`${API_BASE}?userId=${encodeURIComponent(USER_ID)}`, {
+        method: 'DELETE',
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    }
+
+    // ---------------------------------------------------------------------------
+    // Event listeners
+    // ---------------------------------------------------------------------------
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      saveBtn.disabled = true;
+      try {
+        const payload = readForm();
+        const data = await savePreferences(payload);
+        applyPreferences(data.preferences);
+        showStatus('✓ Preferences saved.', 'success');
+      } catch (err) {
+        showStatus(`Could not save preferences: ${err.message}`, 'error');
+      } finally {
+        saveBtn.disabled = false;
+      }
+    });
+
+    resetBtn.addEventListener('click', async () => {
+      if (!confirm('Reset all notification preferences to defaults?')) return;
+      try {
+        const data = await resetPreferences();
+        applyPreferences(data.preferences);
+        showStatus('✓ Preferences reset to defaults.', 'success');
+      } catch (err) {
+        showStatus(`Could not reset preferences: ${err.message}`, 'error');
+      }
+    });
+
+    // Load on boot
+    loadPreferences();
+  </script>
+  <script type="module" src="notification-bell.js"></script>
+
+</body>
+</html>
