@@ -33,7 +33,7 @@ export default async function handler(req, res) {
     if (!valid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
-    const publicUser = { id: user.id, email: user.email, provider: user.provider, createdAt: user.createdAt };
+    const publicUser = { id: user.id, email: user.email, provider: user.provider, role: user.role ?? 'viewer', createdAt: user.createdAt };
     const [accessToken, { token: refreshToken, expiresAt }] = await Promise.all([
       createAccessToken(publicUser),
       Promise.resolve(createRefreshToken(publicUser)),

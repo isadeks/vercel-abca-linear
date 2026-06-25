@@ -4,7 +4,7 @@
  * Returns the currently authenticated user's public profile.
  * Requires a valid Bearer access token in the Authorization header.
  *
- * Response: { id: string, email: string }
+ * Response: { id: string, email: string, role: string }
  */
 import { requireAuth, handleCors } from '../_lib/middleware.js';
 
@@ -15,5 +15,5 @@ export default async function handler(req, res) {
   }
   const payload = await requireAuth(req, res);
   if (!payload) return; // 401 already sent
-  return res.status(200).json({ id: payload.sub, email: payload.email });
+  return res.status(200).json({ id: payload.sub, email: payload.email, role: payload.role ?? 'viewer' });
 }

@@ -35,7 +35,7 @@ function secretKey() {
 
 /**
  * Issue a signed JWT access token for the given user.
- * @param {{ id: string, email: string }} user
+ * @param {{ id: string, email: string, role?: string }} user
  * @returns {Promise<string>} compact JWT string
  */
 export async function createAccessToken(user) {
@@ -43,7 +43,9 @@ export async function createAccessToken(user) {
     throw new Error('user.id and user.email are required');
   }
   const iat = Math.floor(Date.now() / 1000);
-  return new SignJWT({ sub: user.id, email: user.email })
+  const claims = { sub: user.id, email: user.email };
+  if (user.role) claims.role = user.role;
+  return new SignJWT(claims)
     .setProtectedHeader({ alg: 'HS256' })
     .setIssuedAt(iat)
     .setExpirationTime(iat + ACCESS_TOKEN_TTL_SECONDS)
@@ -53,7 +55,7 @@ export async function createAccessToken(user) {
 /**
  * Verify and decode a JWT access token.
  * @param {string} token
- * @returns {Promise<{ sub: string, email: string, iat: number, exp: number }>}
+ * @returns {Promise<{ sub: string, email: string, role?: string, iat: number, exp: number }>}
  * @throws on invalid / expired tokens
  */
 export async function verifyAccessToken(token) {
