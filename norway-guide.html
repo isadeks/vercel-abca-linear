@@ -7,6 +7,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dark-mode.css" />
+  <script>
+    /* Apply theme before first paint to avoid flash */
+    (function(){const s=localStorage.getItem('wander-theme');const d=s?s==='dark':window.matchMedia('(prefers-color-scheme: dark)').matches;if(d)document.documentElement.setAttribute('data-theme','dark');})();
+  </script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -254,6 +259,7 @@
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html#guides" class="nav__back">← All guides</a>
+    <button class="dark-toggle" aria-label="Switch to dark mode" title="Switch to dark mode"></button>
   </nav>
 
   <div class="guide-hero">
@@ -350,5 +356,6 @@
     </div>
   </div>
 
+  <script src="dark-mode.js"></script>
 </body>
 </html>

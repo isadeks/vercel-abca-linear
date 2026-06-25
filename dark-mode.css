@@ -1,0 +1,177 @@
+/* ── Dark mode ────────────────────────────────────────────────
+   Applied via [data-theme="dark"] on <html>.
+   Overrides the CSS custom properties defined in each page's
+   :root block so all colour usage (via var(--...)) adapts
+   automatically.  Hard-coded hex/rgba values that appear in
+   specific pages are also patched here.
+   ─────────────────────────────────────────────────────────── */
+
+[data-theme="dark"] {
+  /* Palette swap */
+  --sand:    #1e1b17;
+  --cream:   #141210;
+  --stone:   #2e2a25;
+  --ink:     #e8e3da;
+  --ash:     #a09890;
+  --teal:    #4db8aa;
+  --teal-lt: #1a3b38;
+  --coral:   #d97a63;
+}
+
+/* Body background/text (in case any page sets them directly) */
+[data-theme="dark"] body {
+  background: var(--cream);
+  color: var(--ink);
+}
+
+/* ── Nav ─────────────────────────────────────────────────────── */
+
+/* Sticky / solid navs (sub-pages, quiz, guide pages, about, etc.) —
+   any .nav element that already has a visible background-color. */
+[data-theme="dark"] .nav {
+  border-bottom-color: var(--stone);
+  background: rgba(20,18,16,0.95);
+}
+
+/* Transparent nav on index hero — override back to transparent */
+[data-theme="dark"] #nav:not(.scrolled) {
+  background: transparent;
+}
+
+/* Scrolled index nav */
+[data-theme="dark"] .nav.scrolled {
+  background: rgba(20,18,16,0.94);
+}
+
+[data-theme="dark"] .nav__logo,
+[data-theme="dark"] .nav__back { color: var(--ink); }
+
+/* ── Scrolled-state nav on index ────────────────────────────── */
+[data-theme="dark"] .nav.scrolled .nav__logo  { color: var(--ink); }
+[data-theme="dark"] .nav.scrolled .nav__links a { color: var(--ash); }
+[data-theme="dark"] .nav.scrolled .nav__links a:hover { color: var(--ink); }
+
+/* ── Buttons ─────────────────────────────────────────────────── */
+[data-theme="dark"] .btn:hover { background: var(--ink); color: var(--cream); }
+[data-theme="dark"] .btn--white {
+  background: var(--ink);
+  border-color: var(--ink);
+  color: var(--cream);
+}
+[data-theme="dark"] .btn--white:hover {
+  background: var(--stone);
+  border-color: var(--stone);
+}
+[data-theme="dark"] .btn--teal:hover { background: #3da090; border-color: #3da090; }
+
+/* ── Cards ────────────────────────────────────────────────────── */
+[data-theme="dark"] .guide-card { background: var(--sand); }
+[data-theme="dark"] .guide-card__footer { border-top-color: var(--stone); }
+[data-theme="dark"] .guide-card__excerpt { color: var(--ash); }
+
+/* ── Value cards (about page) ────────────────────────────────── */
+[data-theme="dark"] .value-card { background: var(--stone); }
+
+/* ── Guide body text that uses hardcoded hex ─────────────────── */
+[data-theme="dark"] .guide-body p,
+[data-theme="dark"] .page-body p { color: var(--ash); }
+
+[data-theme="dark"] .guide-section-title,
+[data-theme="dark"] .guide-body h2,
+[data-theme="dark"] .page-body h2 { color: var(--ink); }
+
+[data-theme="dark"] .guide-tip {
+  background: var(--sand);
+  border-left-color: var(--teal);
+  color: var(--ash);
+}
+[data-theme="dark"] .guide-tip strong { color: var(--ink); }
+
+/* ── Newsletter input ────────────────────────────────────────── */
+[data-theme="dark"] .newsletter__form input[type="email"] {
+  background: var(--stone);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+[data-theme="dark"] .newsletter__form input[type="email"]::placeholder {
+  color: var(--ash);
+}
+[data-theme="dark"] .newsletter__form input[type="email"]:focus {
+  border-color: var(--teal);
+}
+
+/* ── Contact form ─────────────────────────────────────────────── */
+[data-theme="dark"] .contact-form input,
+[data-theme="dark"] .contact-form textarea,
+[data-theme="dark"] .contact-form select {
+  background: var(--stone);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+[data-theme="dark"] .contact-form input::placeholder,
+[data-theme="dark"] .contact-form textarea::placeholder {
+  color: var(--ash);
+}
+[data-theme="dark"] .contact-form input:focus,
+[data-theme="dark"] .contact-form textarea:focus,
+[data-theme="dark"] .contact-form select:focus {
+  border-color: var(--teal);
+}
+
+/* ── Quiz ─────────────────────────────────────────────────────── */
+[data-theme="dark"] .quiz-wrap { background: var(--cream); }
+[data-theme="dark"] .screen { background: var(--cream); }
+[data-theme="dark"] .answer-btn {
+  background: var(--sand);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+[data-theme="dark"] .answer-btn:hover,
+[data-theme="dark"] .answer-btn.selected {
+  background: var(--teal);
+  border-color: var(--teal);
+  color: white;
+}
+[data-theme="dark"] .progress-bar__track { background: var(--stone); }
+[data-theme="dark"] .result-card { background: var(--sand); }
+[data-theme="dark"] .result-card__body { background: var(--sand); }
+[data-theme="dark"] .share-url-input {
+  background: var(--stone);
+  border-color: var(--stone);
+  color: var(--ink);
+}
+
+/* ── Destinations grid ──────────────────────────────────────── */
+[data-theme="dark"] .all-dest__grid .dest-row { border-bottom-color: var(--stone); }
+
+/* ── Footer (already dark, stays mostly the same but slight tweak) */
+[data-theme="dark"] footer { background: #0a0908; }
+
+/* ── Dark mode toggle button ─────────────────────────────────── */
+.dark-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  margin-left: 16px;
+  background: transparent;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  cursor: pointer;
+  color: inherit;
+  transition: background 0.2s, color 0.2s, opacity 0.2s;
+  flex-shrink: 0;
+  vertical-align: middle;
+  line-height: 1;
+}
+.dark-toggle:hover { opacity: 0.7; }
+.dark-toggle svg { display: block; }
+
+/* On hero nav (white text before scroll) keep border subtle */
+.nav:not(.scrolled) .dark-toggle {
+  border-color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.85);
+}
+.nav:not(.scrolled) .dark-toggle:hover { color: white; border-color: white; opacity: 1; }
