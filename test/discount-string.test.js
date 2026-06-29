@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
-import { applyDiscount } from '../lib/discount.js';
+import { applyDiscountString } from '../lib/discount.js';
 
-describe('applyDiscount', () => {
+describe('applyDiscountString', () => {
   it('returns a dollar string for a 10% discount on $100', () => {
-    expect(applyDiscount(100, 10)).toBe('$90.00');
+    expect(applyDiscountString(100, 10)).toBe('$90.00');
   });
 });
