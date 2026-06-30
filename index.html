@@ -546,6 +546,106 @@
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
+
+    /* ── Random Country ───────────────────────────────────────── */
+    .random-country {
+      padding: 80px 0;
+      background: var(--sand);
+    }
+    .random-country__inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .random-country__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .random-country__heading {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .random-country__heading em { font-style: italic; }
+    .random-country__sub {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.75;
+      max-width: 480px;
+      margin-bottom: 32px;
+    }
+    .btn--coral {
+      background: var(--coral);
+      border-color: var(--coral);
+      color: white;
+    }
+    .btn--coral:hover { background: #b3503a; border-color: #b3503a; color: white; }
+    .random-country__result {
+      display: none;
+      margin-top: 48px;
+      width: 100%;
+      max-width: 640px;
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      padding: 40px;
+      text-align: left;
+      animation: fadeUp 0.35s ease both;
+    }
+    .random-country__result.is-visible { display: block; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .random-country__flag {
+      font-size: 2.8rem;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .random-country__name {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .random-country__region {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 20px;
+    }
+    .random-country__desc {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    .random-country__highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .random-country__highlight {
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      color: var(--ash);
+      background: var(--sand);
+    }
+    @media (max-width: 700px) {
+      .random-country__result { padding: 28px 24px; }
+    }
   </style>
 </head>
 <body>
@@ -595,6 +695,28 @@
             Where should I go?
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Random Country ───────────────────────────────────────────── -->
+  <section class="random-country" id="random-country">
+    <div class="container">
+      <div class="random-country__inner">
+        <p class="random-country__eyebrow">Feeling adventurous?</p>
+        <h2 class="random-country__heading">Discover your next<br/><em>destination at random</em></h2>
+        <p class="random-country__sub">Let fate decide. Hit the button and we'll pick a country for you from our curated list of ten unmissable destinations around the world.</p>
+        <button class="btn btn--coral" id="randomCountryBtn" type="button">
+          Pick a random country
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M1 7c0 0 1.5-4 6-4s6 4 6 4-1.5 4-6 4-6-4-6-4z" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/></svg>
+        </button>
+        <div class="random-country__result" id="randomCountryResult" aria-live="polite">
+          <div class="random-country__flag" id="rcFlag"></div>
+          <h3 class="random-country__name" id="rcName"></h3>
+          <p class="random-country__region" id="rcRegion"></p>
+          <p class="random-country__desc" id="rcDesc"></p>
+          <div class="random-country__highlights" id="rcHighlights"></div>
         </div>
       </div>
     </div>
@@ -831,6 +953,118 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Random Country ─────────────────────────────────────────────
+    const COUNTRIES = [
+      {
+        flag: '🇯🇵',
+        name: 'Japan',
+        region: 'East Asia',
+        description: 'Japan dazzles with a seamless blend of ancient temples and hyper-modern cities. Wander through the bamboo groves of Arashiyama, soak in a traditional onsen in Hakone, and marvel at Mount Fuji at dawn. Tokyo's bustling neighbourhoods offer world-class sushi, while Kyoto's golden pavilions and geisha districts feel like a living scroll painting.',
+        highlights: ['Mount Fuji', 'Kyoto temples', 'Tokyo street food', 'Hiroshima Peace Park', 'Onsen resorts'],
+      },
+      {
+        flag: '🇮🇹',
+        name: 'Italy',
+        region: 'Southern Europe',
+        description: 'Italy's tourist riches are inexhaustible — Colosseum gladiator history in Rome, gondola rides through Venice's labyrinthine canals, and the Renaissance masterpieces lining Florence's Uffizi Gallery. The dramatic Amalfi Coast offers clifftop villages above a cerulean sea, while Tuscany beckons with rolling vineyards and medieval hill towns.',
+        highlights: ['Colosseum, Rome', 'Venice canals', 'Amalfi Coast', 'Florence & the Uffizi', 'Tuscany vineyards'],
+      },
+      {
+        flag: '🇵🇪',
+        name: 'Peru',
+        region: 'South America',
+        description: 'Peru sits at the heart of South America's most awe-inspiring landscapes. The Inca citadel of Machu Picchu perches impossibly above the cloud forest, while the Sacred Valley below is dotted with ancient terraces. Lima's vibrant food scene has made it a culinary capital, and Lake Titicaca — the world's highest navigable lake — offers boat trips to reed-island communities.',
+        highlights: ['Machu Picchu', 'Sacred Valley', 'Lake Titicaca', 'Lima gastronomy', 'Rainbow Mountain'],
+      },
+      {
+        flag: '🇹🇿',
+        name: 'Tanzania',
+        region: 'East Africa',
+        description: 'Tanzania is home to some of Africa's most spectacular wildlife experiences. The Serengeti's Great Migration sees over a million wildebeest thundering across open plains, while Ngorongoro Crater shelters an extraordinary concentration of animals year-round. Zanzibar's spice-scented Stone Town and white coral beaches offer the perfect coastal contrast after a safari.',
+        highlights: ['Serengeti safari', 'Ngorongoro Crater', 'Zanzibar beaches', 'Mount Kilimanjaro', 'Selous Reserve'],
+      },
+      {
+        flag: '🇳🇴',
+        name: 'Norway',
+        region: 'Northern Europe',
+        description: 'Norway's fjords rank among the most dramatic landscapes on Earth — sheer granite walls plunge into mirror-still waters, best explored by boat from Bergen or Flåm. Above the Arctic Circle, the Northern Lights dance across winter skies, while the midnight sun transforms summer nights into golden-hour reveries. The Lofoten Islands offer postcard-perfect fishing villages framed by jagged peaks.',
+        highlights: ['Geirangerfjord', 'Northern Lights', 'Lofoten Islands', 'Flåm Railway', 'Bergen Wharf'],
+      },
+      {
+        flag: '🇲🇦',
+        name: 'Morocco',
+        region: 'North Africa',
+        description: 'Morocco is a sensory feast where ancient medinas bustle with craftspeople, spice markets perfume the air, and desert dunes stretch to the horizon. Fez's medieval old city is a UNESCO-listed maze of tanneries and mosques, Marrakech's Djemaa el-Fna square comes alive at dusk with storytellers and musicians, and the Sahara at Merzouga offers unforgettable camel treks and stargazing.',
+        highlights: ['Fez medina', 'Marrakech souks', 'Sahara dunes', 'Chefchaouen blue city', 'Atlas Mountains'],
+      },
+      {
+        flag: '🇳🇿',
+        name: 'New Zealand',
+        region: 'Oceania',
+        description: 'New Zealand packs an astonishing variety of landscapes into two islands. The South Island's Fiordland delivers Milford Sound's towering waterfalls and mirror fjords, while Queenstown is the adventure sports capital of the world. On the North Island, Rotorua's geothermal geysers and Māori culture provide a unique contrast, and the glowworm caves of Waitomo glow like a subterranean galaxy.',
+        highlights: ['Milford Sound', 'Queenstown adventures', 'Rotorua geothermals', 'Waitomo glowworms', 'Tongariro Alpine Crossing'],
+      },
+      {
+        flag: '🇮🇳',
+        name: 'India',
+        region: 'South Asia',
+        description: 'India is a civilisation as much as a country. The Taj Mahal at sunrise remains one of the world's most transcendent sights, while Rajasthan's amber forts and blue city of Jodhpur feel straight from a fairy tale. Kerala's backwaters offer serene houseboat journeys through coconut-fringed canals, and Varanasi's ghats along the sacred Ganges present an ancient ritual of life and devotion.',
+        highlights: ['Taj Mahal, Agra', 'Rajasthan forts', 'Kerala backwaters', 'Varanasi ghats', 'Hampi ruins'],
+      },
+      {
+        flag: '🇧🇷',
+        name: 'Brazil',
+        region: 'South America',
+        description: 'Brazil's sheer scale rewards the curious traveller. Rio de Janeiro's Christ the Redeemer gazes over a city of samba, caipirinha, and carnival colour, while Iguaçu Falls — wider than Niagara — thunders on the Argentine border. The Amazon Basin harbours the world's richest biodiversity, and the golden beaches of Fernando de Noronha remain some of the planet's most pristine.',
+        highlights: ['Rio de Janeiro', 'Iguaçu Falls', 'Amazon rainforest', 'Iguaçu National Park', 'Fernando de Noronha'],
+      },
+      {
+        flag: '🇬🇷',
+        name: 'Greece',
+        region: 'Southern Europe',
+        description: 'Greece is where Western civilisation was born, and the evidence is everywhere — from the Parthenon crowning Athens' Acropolis to the Oracle's sanctuary at Delphi. Santorini's caldera villages glow white and blue against the Aegean sunset, Crete offers Minoan palaces and mountain gorges, and the monasteries of Meteora cling impossibly to soaring rock pinnacles.',
+        highlights: ['Acropolis, Athens', 'Santorini caldera', 'Delphi sanctuary', 'Meteora monasteries', 'Crete beaches'],
+      },
+    ];
+
+    const btn     = document.getElementById('randomCountryBtn');
+    const result  = document.getElementById('randomCountryResult');
+    const flagEl  = document.getElementById('rcFlag');
+    const nameEl  = document.getElementById('rcName');
+    const regionEl= document.getElementById('rcRegion');
+    const descEl  = document.getElementById('rcDesc');
+    const hlsEl   = document.getElementById('rcHighlights');
+
+    let lastIndex = -1;
+
+    btn.addEventListener('click', () => {
+      // Pick a random country, avoiding repeating the same one consecutively
+      let idx;
+      do { idx = Math.floor(Math.random() * COUNTRIES.length); } while (idx === lastIndex && COUNTRIES.length > 1);
+      lastIndex = idx;
+
+      const country = COUNTRIES[idx];
+
+      // Populate the result card
+      flagEl.textContent   = country.flag;
+      nameEl.textContent   = country.name;
+      regionEl.textContent = country.region;
+      descEl.textContent   = country.description;
+
+      hlsEl.innerHTML = country.highlights
+        .map(h => `<span class="random-country__highlight">${h}</span>`)
+        .join('');
+
+      // Reset animation by toggling visibility
+      result.classList.remove('is-visible');
+      // Force reflow so the animation replays
+      void result.offsetWidth;
+      result.classList.add('is-visible');
+
+      // Smooth-scroll so the result is visible on mobile
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
 
   </script>
 
