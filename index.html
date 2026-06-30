@@ -519,6 +519,184 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Random Destination Modal ────────────────────────────── */
+    .rdest-overlay {
+      display: none;
+      position: fixed; inset: 0; z-index: 500;
+      background: rgba(26,23,20,0.75);
+      backdrop-filter: blur(6px);
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .rdest-overlay.open { display: flex; }
+
+    .rdest-modal {
+      background: var(--cream);
+      max-width: 740px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+      animation: modalIn 0.3s ease;
+    }
+    @keyframes modalIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .rdest-modal__img-wrap {
+      position: relative;
+      height: 280px;
+      overflow: hidden;
+    }
+    .rdest-modal__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+    .rdest-modal__img-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, transparent 55%);
+    }
+    .rdest-modal__img-label {
+      position: absolute; bottom: 20px; left: 28px;
+    }
+    .rdest-modal__region {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 6px;
+    }
+    .rdest-modal__country {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      font-weight: 300;
+      color: white;
+      line-height: 1.1;
+    }
+
+    .rdest-modal__body {
+      padding: 32px 28px 28px;
+    }
+    .rdest-modal__tagline {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      font-style: italic;
+      color: var(--ash);
+      margin-bottom: 20px;
+      line-height: 1.55;
+    }
+    .rdest-modal__desc {
+      font-size: 0.92rem;
+      color: var(--ink);
+      line-height: 1.8;
+      margin-bottom: 28px;
+    }
+
+    .rdest-modal__attractions-heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .rdest-modal__attractions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .rdest-attraction {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 14px;
+      background: var(--sand);
+      border-left: 2px solid var(--teal);
+    }
+    .rdest-attraction__icon {
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .rdest-attraction__name {
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 3px;
+    }
+    .rdest-attraction__note {
+      font-size: 0.75rem;
+      color: var(--ash);
+      line-height: 1.5;
+    }
+
+    .rdest-modal__facts {
+      display: flex;
+      gap: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--stone);
+      margin-bottom: 24px;
+    }
+    .rdest-fact {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .rdest-fact__label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .rdest-fact__value {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+
+    .rdest-modal__actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .rdest-modal__close {
+      position: absolute;
+      top: 14px; right: 14px;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.85);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .rdest-modal__close:hover { background: white; }
+    .rdest-modal__close svg { display: block; }
+
+    .btn--random {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.7);
+      color: white;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .btn--random:hover { background: rgba(255,255,255,0.15); border-color: white; color: white; }
+
+    @media (max-width: 560px) {
+      .rdest-modal__attractions { grid-template-columns: 1fr; }
+      .rdest-modal__facts       { flex-wrap: wrap; }
+      .rdest-modal__actions     { flex-direction: column; align-items: stretch; }
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -569,10 +747,48 @@
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <a href="#destinations" class="btn">Explore destinations</a>
+        <button id="randomDestBtn" class="btn btn--random" type="button" aria-haspopup="dialog">
+          <svg width="15" height="15" viewBox="0 0 15 15" fill="none" aria-hidden="true">
+            <path d="M2 4h1.5l1.5 3.5L6.5 4H8L5.5 9.5 4 9l-.5-1H2V4zM9.5 4h3a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H11l1.5 2.5h-1.6L9.5 6H9V4h.5zM9 7h.5l1 2H9V7z" fill="currentColor"/>
+          </svg>
+          Surprise me
+        </button>
+      </div>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
+
+  <!-- ── Random Destination Modal ──────────────────────────────── -->
+  <div class="rdest-overlay" id="rdestOverlay" role="dialog" aria-modal="true" aria-labelledby="rdestTitle">
+    <div class="rdest-modal" id="rdestModal">
+      <button class="rdest-modal__close" id="rdestClose" aria-label="Close">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+          <path d="M1 1l12 12M13 1L1 13" stroke="var(--ink)" stroke-width="1.6" stroke-linecap="round"/>
+        </svg>
+      </button>
+      <div class="rdest-modal__img-wrap">
+        <img class="rdest-modal__img" id="rdestImg" src="" alt="" />
+        <div class="rdest-modal__img-overlay"></div>
+        <div class="rdest-modal__img-label">
+          <p class="rdest-modal__region" id="rdestRegion"></p>
+          <h2 class="rdest-modal__country" id="rdestTitle"></h2>
+        </div>
+      </div>
+      <div class="rdest-modal__body">
+        <p class="rdest-modal__tagline" id="rdestTagline"></p>
+        <p class="rdest-modal__desc" id="rdestDesc"></p>
+        <p class="rdest-modal__attractions-heading">Top Attractions</p>
+        <div class="rdest-modal__attractions" id="rdestAttractions"></div>
+        <div class="rdest-modal__facts" id="rdestFacts"></div>
+        <div class="rdest-modal__actions">
+          <button id="rdestAgain" class="btn btn--teal" type="button">Another destination</button>
+          <a href="destinations.html" class="btn" style="border-color:var(--ink);color:var(--ink);">Browse all destinations</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- ── Quiz CTA ─────────────────────────────────────────────── -->
   <section class="quiz-cta">
@@ -831,6 +1047,283 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Random Destination Feature ────────────────────────────────
+
+    const DESTINATIONS = [
+      {
+        country: 'Japan',
+        region: 'East Asia',
+        tagline: 'Where ancient temples meet electric cities and cherry blossoms colour the spring.',
+        description: 'Japan is a land of breathtaking contrasts — serene Zen gardens and neon-lit arcades, quiet mountain shrines and bullet-train corridors. Every season reveals a different face: pink sakura in spring, fireworks over summer rivers, blazing maples in autumn, and snow-dusted shrines in winter.',
+        image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1200&q=80',
+        imageAlt: 'Fushimi Inari shrine gates, Kyoto, Japan',
+        attractions: [
+          { icon: '⛩️', name: 'Fushimi Inari Taisha', note: 'Thousands of vermilion torii gates climbing a forested hillside in Kyoto.' },
+          { icon: '🗻', name: 'Mount Fuji', note: 'Japan\'s iconic volcano and a UNESCO World Heritage site perfect for hiking.' },
+          { icon: '🦌', name: 'Nara Park', note: 'Wander freely among hundreds of sacred sika deer in an ancient capital.' },
+          { icon: '🏯', name: 'Himeji Castle', note: 'The finest surviving example of feudal-era Japanese castle architecture.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Tokyo' },
+          { label: 'Best time', value: 'Mar–May, Oct–Nov' },
+          { label: 'Currency', value: 'Japanese Yen (¥)' },
+          { label: 'Language', value: 'Japanese' },
+        ],
+      },
+      {
+        country: 'Italy',
+        region: 'Southern Europe',
+        tagline: 'A country where every piazza tells a story and every plate is a masterpiece.',
+        description: 'Italy distils thousands of years of art, architecture, and cuisine into a single country. From the ancient Forum in Rome to the Renaissance galleries of Florence, from volcanic Etna to the turquoise coves of Sardinia, every corner rewards the curious traveller with beauty both grand and intimate.',
+        image: 'https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1200&q=80',
+        imageAlt: 'Amalfi Coast cliffside villages, Italy',
+        attractions: [
+          { icon: '🏛️', name: 'Colosseum', note: 'Rome\'s 2,000-year-old amphitheatre — the world\'s largest ancient arena.' },
+          { icon: '🎨', name: 'Uffizi Gallery', note: 'Florence\'s treasure chest of Botticelli, Leonardo and Michelangelo.' },
+          { icon: '🛶', name: 'Venice Canals', note: 'Glide past Gothic palaces on a gondola through the lagoon city.' },
+          { icon: '🌊', name: 'Amalfi Coast', note: 'Dramatic cliffs tumbling into emerald water, lined with lemon groves.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Rome' },
+          { label: 'Best time', value: 'Apr–Jun, Sep–Oct' },
+          { label: 'Currency', value: 'Euro (€)' },
+          { label: 'Language', value: 'Italian' },
+        ],
+      },
+      {
+        country: 'Morocco',
+        region: 'North Africa',
+        tagline: 'A sensory labyrinth of spice markets, rose valleys and starlit desert dunes.',
+        description: 'Morocco sits at the crossroads of Africa, Europe and the Arab world, weaving their influences into an intoxicating whole. Wander the medieval medinas of Fès and Marrakech, trek through the rose-strewn Dadès Valley, and end each evening watching the Sahara dunes glow amber at sunset.',
+        image: 'https://images.unsplash.com/photo-1539020140153-e479b8a22e9e?w=1200&q=80',
+        imageAlt: 'Blue streets of Chefchaouen, Morocco',
+        attractions: [
+          { icon: '🕌', name: 'Fès el-Bali Medina', note: 'One of the world\'s largest car-free urban areas — a living medieval city.' },
+          { icon: '🐪', name: 'Sahara Desert, Erg Chebbi', note: 'Camp among towering dunes and wake to a golden sunrise.' },
+          { icon: '💙', name: 'Chefchaouen', note: 'The "Blue City" — whitewashed buildings washed in every shade of indigo.' },
+          { icon: '🏔️', name: 'Atlas Mountains', note: 'Trek to Berber villages and snow-capped peaks above the clouds.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Rabat' },
+          { label: 'Best time', value: 'Mar–May, Sep–Nov' },
+          { label: 'Currency', value: 'Moroccan Dirham (MAD)' },
+          { label: 'Language', value: 'Arabic, Amazigh' },
+        ],
+      },
+      {
+        country: 'Peru',
+        region: 'South America',
+        tagline: 'Birthplace of the Inca Empire — lost cities, Amazon depths and Andean highlands.',
+        description: 'Peru spans three worlds: the arid Pacific coast, the soaring Andes, and the vast Amazon basin. It was the heart of the Inca civilisation and remains a land of dramatic ruins, vivid textiles and some of the most bio-diverse ecosystems on Earth. Machu Picchu is only the beginning.',
+        image: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1200&q=80',
+        imageAlt: 'Machu Picchu citadel above the clouds, Peru',
+        attractions: [
+          { icon: '🏰', name: 'Machu Picchu', note: 'The cloud-wreathed Inca citadel — a UNESCO site of unmatched drama.' },
+          { icon: '🌊', name: 'Lake Titicaca', note: 'The world\'s highest navigable lake, home to floating reed islands.' },
+          { icon: '🌿', name: 'Amazon Rainforest', note: 'Manu National Park harbours jaguars, giant otters and over 1,000 bird species.' },
+          { icon: '🦙', name: 'Sacred Valley', note: 'Inca terraces, traditional markets and high-altitude hiking between Cusco and Ollantaytambo.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Lima' },
+          { label: 'Best time', value: 'May–Sep (dry season)' },
+          { label: 'Currency', value: 'Peruvian Sol (PEN)' },
+          { label: 'Language', value: 'Spanish, Quechua' },
+        ],
+      },
+      {
+        country: 'Iceland',
+        region: 'Northern Europe',
+        tagline: 'Fire and ice collide — volcanoes, geysers, glaciers and the Northern Lights.',
+        description: 'Iceland is nature in its most theatrical form. A young island still being shaped by volcanic forces, it offers geothermal hot springs alongside grinding glaciers, lava fields beside thundering waterfalls, and in winter the aurora borealis dancing overhead. Drive the Ring Road for the full spectacle.',
+        image: 'https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=1200&q=80',
+        imageAlt: 'Northern lights over Icelandic fjord',
+        attractions: [
+          { icon: '💫', name: 'Aurora Borealis', note: 'Hunt the Northern Lights from September to March on the dark rural roads.' },
+          { icon: '♨️', name: 'Blue Lagoon', note: 'Bathe in milky-blue geothermal waters surrounded by lava fields.' },
+          { icon: '💦', name: 'Gullfoss & Geysir', note: 'A golden waterfall and a geyser that erupts every few minutes on the Golden Circle.' },
+          { icon: '🧊', name: 'Vatnajökull Glacier', note: 'Europe\'s largest glacier — explore ice caves of vivid blue and turquoise.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Reykjavík' },
+          { label: 'Best time', value: 'Jun–Aug (midnight sun); Dec–Feb (aurora)' },
+          { label: 'Currency', value: 'Icelandic Króna (ISK)' },
+          { label: 'Language', value: 'Icelandic' },
+        ],
+      },
+      {
+        country: 'India',
+        region: 'South Asia',
+        tagline: 'A subcontinent of contrasts — sacred rivers, spice routes and marble mausoleums.',
+        description: 'India defies single description. Its sheer scale means you can wander through desert fortresses in the morning, reach tropical backwaters by afternoon and stand beneath the Taj Mahal at dawn. Add the layered culinary traditions, the riot of festivals and the warmth of its people, and no single trip ever feels complete.',
+        image: 'https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=80',
+        imageAlt: 'Hawa Mahal palace, Jaipur, Rajasthan, India',
+        attractions: [
+          { icon: '🕌', name: 'Taj Mahal', note: 'The world\'s most famous monument to love, best seen at sunrise from the gardens.' },
+          { icon: '🚤', name: 'Kerala Backwaters', note: 'Glide through palm-fringed canals on a traditional rice-boat houseboat.' },
+          { icon: '🏯', name: 'Rajasthan Fort Circuit', note: 'Amber, Mehrangarh and Jaisalmer — three of India\'s most spectacular fortresses.' },
+          { icon: '🙏', name: 'Varanasi Ghats', note: 'At dawn, witness ancient rituals on the sacred banks of the Ganges.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'New Delhi' },
+          { label: 'Best time', value: 'Oct–Mar' },
+          { label: 'Currency', value: 'Indian Rupee (₹)' },
+          { label: 'Language', value: 'Hindi, English + 21 others' },
+        ],
+      },
+      {
+        country: 'Greece',
+        region: 'Mediterranean Europe',
+        tagline: 'Whitewashed villages, wine-dark seas and the cradle of Western civilisation.',
+        description: 'Greece rewards the traveller at every turn: Minoan palaces on Crete, Venetian harbours on Corfu, Byzantine monasteries perched atop the pillars of Meteora, and on Santorini the most photographed sunsets on the planet. Beneath it all, some of the best food and wine in Europe.',
+        image: 'https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=1200&q=80',
+        imageAlt: 'Blue-domed churches of Oia, Santorini, Greece',
+        attractions: [
+          { icon: '🏛️', name: 'Acropolis of Athens', note: 'The Parthenon crowns a rocky hill above Athens, visible from across the city.' },
+          { icon: '🌅', name: 'Santorini Caldera', note: 'Watch the sun melt into the caldera from Oia\'s clifftop terraces.' },
+          { icon: '⛵', name: 'Cyclades Island-hop', note: 'Ferry between Mykonos, Paros and Naxos for beaches, villages and nightlife.' },
+          { icon: '🏺', name: 'Delphi', note: 'The ancient Oracle\'s sanctuary, perched on the slopes of Mount Parnassus.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Athens' },
+          { label: 'Best time', value: 'May–Jun, Sep–Oct' },
+          { label: 'Currency', value: 'Euro (€)' },
+          { label: 'Language', value: 'Greek' },
+        ],
+      },
+      {
+        country: 'New Zealand',
+        region: 'Pacific / Oceania',
+        tagline: 'Two islands of staggering diversity — fjords, volcanoes, beaches and Māori culture.',
+        description: 'New Zealand packs the natural wonders of an entire continent into a country the size of Italy. The North Island smoulders with geothermal energy: geysers, mud pools and the volcanic plateau. The South Island delivers the jaw-dropping drama of Fiordland, the Southern Alps and endless open road.',
+        image: 'https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=1200&q=80',
+        imageAlt: 'Milford Sound fiord, South Island, New Zealand',
+        attractions: [
+          { icon: '🌊', name: 'Milford Sound', note: 'Dramatic fiord carved by glaciers — kayak beneath 1,000 m waterfalls.' },
+          { icon: '🌋', name: 'Tongariro Alpine Crossing', note: 'New Zealand\'s best one-day hike crosses an active volcanic landscape.' },
+          { icon: '🐧', name: 'Otago Peninsula', note: 'Yellow-eyed penguins, albatross colonies and fur seals near Dunedin.' },
+          { icon: '🧶', name: 'Rotorua', note: 'Geothermal geysers meet living Māori culture in this North Island hub.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Wellington' },
+          { label: 'Best time', value: 'Dec–Feb (summer)' },
+          { label: 'Currency', value: 'NZ Dollar (NZD)' },
+          { label: 'Language', value: 'English, Māori' },
+        ],
+      },
+      {
+        country: 'Egypt',
+        region: 'North Africa / Middle East',
+        tagline: 'Five thousand years of history — pharaohs, temples and the eternal Nile.',
+        description: 'Egypt is one of humanity\'s oldest civilisations, and its monuments still inspire awe. The Great Pyramids of Giza have stood for 4,500 years; the temples of Luxor glow gold at dusk; the Valley of the Kings hides the tombs of pharaohs. Beneath the Red Sea, coral reefs teem with dazzling marine life.',
+        image: 'https://images.unsplash.com/photo-1539768942893-daf53e448371?w=1200&q=80',
+        imageAlt: 'Great Pyramid of Giza at dusk, Egypt',
+        attractions: [
+          { icon: '🔺', name: 'Pyramids of Giza', note: 'The last surviving wonder of the ancient world, guarded by the Sphinx.' },
+          { icon: '⚱️', name: 'Valley of the Kings', note: 'Over 60 royal tombs carved into limestone hills near Luxor.' },
+          { icon: '🐠', name: 'Red Sea Reefs', note: 'World-class snorkelling and diving in Sharm el-Sheikh and Dahab.' },
+          { icon: '🚢', name: 'Nile Cruise', note: 'Float between Luxor and Aswan past temples, villages and golden desert.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Cairo' },
+          { label: 'Best time', value: 'Oct–Apr' },
+          { label: 'Currency', value: 'Egyptian Pound (EGP)' },
+          { label: 'Language', value: 'Arabic' },
+        ],
+      },
+      {
+        country: 'Norway',
+        region: 'Northern Europe',
+        tagline: 'Fjords cut deep into mountain walls, and the sky burns green on winter nights.',
+        description: 'Norway is the land of superlatives: Europe\'s deepest fjord (Sognefjord), its most dramatic road (Trollstigen), its largest glacier (Jostedalsbreen). In summer the midnight sun never sets; in winter the darkness is broken by the electric shimmer of the Northern Lights above frozen landscapes.',
+        image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200&q=80',
+        imageAlt: 'Geiranger fjord, Norway',
+        attractions: [
+          { icon: '🏔️', name: 'Geirangerfjord', note: 'A UNESCO World Heritage fjord — among the most dramatic waterways on Earth.' },
+          { icon: '🌌', name: 'Tromsø Aurora Hunting', note: 'One of the world\'s best spots to see the Northern Lights, September–March.' },
+          { icon: '🚞', name: 'Flåm Railway', note: 'One of the world\'s most scenic train journeys, descending 863 m in 20 km.' },
+          { icon: '🦅', name: 'Lofoten Islands', note: 'Jagged peaks rising from the Arctic sea, dotted with red fishing villages.' },
+        ],
+        facts: [
+          { label: 'Capital', value: 'Oslo' },
+          { label: 'Best time', value: 'Jun–Aug (fjords); Dec–Mar (aurora)' },
+          { label: 'Currency', value: 'Norwegian Krone (NOK)' },
+          { label: 'Language', value: 'Norwegian' },
+        ],
+      },
+    ];
+
+    let lastIndex = -1;
+
+    function getRandomDestination() {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * DESTINATIONS.length);
+      } while (idx === lastIndex && DESTINATIONS.length > 1);
+      lastIndex = idx;
+      return DESTINATIONS[idx];
+    }
+
+    function renderDestination(dest) {
+      document.getElementById('rdestImg').src       = dest.image;
+      document.getElementById('rdestImg').alt       = dest.imageAlt;
+      document.getElementById('rdestRegion').textContent  = dest.region;
+      document.getElementById('rdestTitle').textContent   = dest.country;
+      document.getElementById('rdestTagline').textContent = dest.tagline;
+      document.getElementById('rdestDesc').textContent    = dest.description;
+
+      const attractionsEl = document.getElementById('rdestAttractions');
+      attractionsEl.innerHTML = dest.attractions.map(a => `
+        <div class="rdest-attraction">
+          <span class="rdest-attraction__icon" aria-hidden="true">${a.icon}</span>
+          <div>
+            <p class="rdest-attraction__name">${a.name}</p>
+            <p class="rdest-attraction__note">${a.note}</p>
+          </div>
+        </div>
+      `).join('');
+
+      const factsEl = document.getElementById('rdestFacts');
+      factsEl.innerHTML = dest.facts.map(f => `
+        <div class="rdest-fact">
+          <span class="rdest-fact__label">${f.label}</span>
+          <span class="rdest-fact__value">${f.value}</span>
+        </div>
+      `).join('');
+    }
+
+    function openModal() {
+      renderDestination(getRandomDestination());
+      const overlay = document.getElementById('rdestOverlay');
+      overlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      document.getElementById('rdestClose').focus();
+    }
+
+    function closeModal() {
+      document.getElementById('rdestOverlay').classList.remove('open');
+      document.body.style.overflow = '';
+      document.getElementById('randomDestBtn').focus();
+    }
+
+    document.getElementById('randomDestBtn').addEventListener('click', openModal);
+    document.getElementById('rdestClose').addEventListener('click', closeModal);
+    document.getElementById('rdestAgain').addEventListener('click', () => {
+      renderDestination(getRandomDestination());
+      document.getElementById('rdestModal').scrollTop = 0;
+    });
+
+    // Close on overlay click (outside modal)
+    document.getElementById('rdestOverlay').addEventListener('click', (e) => {
+      if (e.target === e.currentTarget) closeModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.getElementById('rdestOverlay').classList.contains('open')) {
+        closeModal();
+      }
+    });
 
   </script>
 
