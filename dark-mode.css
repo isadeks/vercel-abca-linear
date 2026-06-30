@@ -1,0 +1,102 @@
+/* ── Dark mode token overrides ────────────────────────────────── */
+html.dark {
+  --sand:    #1e1c18;
+  --cream:   #141210;
+  --stone:   #2e2b25;
+  --ink:     #f0ece3;
+  --ash:     #a09890;
+  --teal:    #3db89f;
+  --teal-lt: #1a3530;
+}
+
+/* Nav backgrounds — applies to all nav states (transparent hero nav
+   doesn't need overriding since it overlays an image). */
+html.dark .nav.scrolled {
+  background: rgba(20,18,16,0.95);
+  border-bottom-color: var(--stone);
+}
+html.dark .nav.scrolled .nav__logo { color: var(--ink); }
+html.dark .nav.scrolled .nav__links a { color: var(--ash); }
+html.dark .nav.scrolled .nav__links a:hover { color: var(--ink); }
+
+/* Sticky (always-visible) nav used on inner pages */
+html.dark .nav--light {
+  background: rgba(20,18,16,0.95);
+  border-bottom-color: var(--stone);
+}
+html.dark .nav--light .nav__logo { color: var(--ink); }
+html.dark .nav--light .nav__back  { color: var(--teal); }
+
+/* Guide cards */
+html.dark .guide-card { background: var(--stone); }
+
+/* Newsletter input */
+html.dark .newsletter__form input[type="email"] {
+  background: var(--stone);
+  border-color: #3a362e;
+  color: var(--ink);
+}
+html.dark .newsletter__form input[type="email"]::placeholder { color: #5a5550; }
+
+/* Quiz option cards */
+html.dark .quiz-opt {
+  background: var(--stone);
+  border-color: #3a362e;
+  color: var(--ink);
+}
+html.dark .quiz-opt:hover { background: #2e2b25; border-color: var(--teal); }
+html.dark .quiz-opt.selected { background: var(--teal-lt); border-color: var(--teal); }
+
+/* Quiz progress bar track */
+html.dark .quiz-progress { background: var(--stone); }
+
+/* ── Dark mode toggle button ──────────────────────────────────── */
+.dark-toggle {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 20px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: rgba(255,255,255,0.75);
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+  white-space: nowrap;
+  line-height: 1;
+}
+.dark-toggle:hover {
+  background: rgba(255,255,255,0.12);
+  color: white;
+  border-color: rgba(255,255,255,0.6);
+}
+
+/* Scrolled / sticky nav variant */
+.nav.scrolled .dark-toggle,
+.nav--light .dark-toggle {
+  border-color: var(--stone);
+  color: var(--ash);
+}
+.nav.scrolled .dark-toggle:hover,
+.nav--light .dark-toggle:hover {
+  background: var(--sand);
+  color: var(--ink);
+  border-color: var(--ash);
+}
+
+/* Active (dark mode on) state */
+html.dark .dark-toggle {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: rgba(61,184,159,0.08);
+}
+html.dark .dark-toggle:hover {
+  background: rgba(61,184,159,0.18);
+}
+
+/* Sun/moon icons inside the button */
+.dark-toggle__icon { font-style: normal; font-size: 0.85rem; }

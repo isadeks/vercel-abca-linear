@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dark-mode.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -88,9 +89,13 @@
 </head>
 <body>
 
-  <nav class="nav">
+  <nav class="nav nav--light">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html" class="nav__back">← Home</a>
+    <button class="dark-toggle" aria-pressed="false" title="Switch to dark mode">
+      <span class="dark-toggle__icon" aria-hidden="true">☽</span>
+      <span class="dark-toggle__label">Dark</span>
+    </button>
   </nav>
 
   <div class="page-hero">
@@ -183,6 +188,8 @@
       </div>
     </div>
   </footer>
+
+  <script src="dark-mode.js"></script>
 
 </body>
 </html>
