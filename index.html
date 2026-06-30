@@ -399,6 +399,30 @@
       color: white;
     }
 
+    /* ── Quote / pull ─────────────────────────────────────────── */
+    .pullquote {
+      padding: 100px 40px;
+      background: var(--teal);
+      text-align: center;
+    }
+    .pullquote__text {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 3.5vw, 2.8rem);
+      font-weight: 300;
+      font-style: italic;
+      color: white;
+      max-width: 800px;
+      margin: 0 auto 24px;
+      line-height: 1.45;
+    }
+    .pullquote__attr {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+    }
+
     /* ── Newsletter ───────────────────────────────────────────── */
     .newsletter {
       padding: 96px 0;
@@ -520,7 +544,7 @@
       .curated__list  { grid-template-columns: 1fr; }
       .regions__row   { grid-template-columns: repeat(2, 1fr); }
       .footer__grid   { grid-template-columns: 1fr; }
-
+      .pullquote      { padding: 64px 24px; }
     }
   </style>
 </head>
@@ -691,6 +715,12 @@
       </div>
     </div>
   </section>
+
+  <!-- ── Pull quote ─────────────────────────────────────────────── -->
+  <blockquote class="pullquote">
+    <p class="pullquote__text">"Travel is the only thing you buy that makes you richer — not in possessions, but in perspectives."</p>
+    <cite class="pullquote__attr">Wander editorial</cite>
+  </blockquote>
 
   <!-- ── Regions ────────────────────────────────────────────────── -->
   <section class="regions" id="regions">
