@@ -52,6 +52,37 @@
 
     .destinations-body { padding: 72px 0 96px; }
 
+    /* ── Region filter tabs ───────────────────────────────────── */
+    .region-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 48px;
+    }
+    .region-filter__btn {
+      display: inline-block;
+      padding: 8px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      background: transparent;
+      border: 1px solid var(--stone);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .region-filter__btn:hover {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+    .region-filter__btn.is-active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+
     .dest-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -59,6 +90,25 @@
     }
     @media (max-width: 900px) { .dest-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .dest-grid { grid-template-columns: 1fr; } }
+
+    .dest-grid__empty {
+      grid-column: 1 / -1;
+      padding: 64px 0;
+      text-align: center;
+      color: var(--ash);
+      font-size: 0.95rem;
+      line-height: 1.7;
+      display: none;
+    }
+    .dest-grid__empty.is-visible { display: block; }
+    .dest-grid__empty strong {
+      display: block;
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
 
     .dest-card {
       position: relative; overflow: hidden; cursor: pointer;
@@ -123,62 +173,78 @@
 
   <div class="destinations-body">
     <div class="container">
-      <div class="dest-grid">
 
-        <a href="amalfi-guide.html" class="dest-card">
+      <!-- Region filter tabs -->
+      <nav class="region-filter" aria-label="Filter by region">
+        <button class="region-filter__btn is-active" data-region="all">All regions</button>
+        <button class="region-filter__btn" data-region="europe">Europe</button>
+        <button class="region-filter__btn" data-region="asia">Asia</button>
+        <button class="region-filter__btn" data-region="americas">Americas</button>
+        <button class="region-filter__btn" data-region="africa">Africa</button>
+        <button class="region-filter__btn" data-region="oceania">Oceania</button>
+      </nav>
+
+      <div class="dest-grid" id="dest-grid">
+
+        <a href="amalfi-guide.html" class="dest-card" data-region="europe">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Amalfi Coast, Italy" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
-            <p class="dest-card__region">Southern Italy</p>
+            <p class="dest-card__region">Southern Italy · Europe</p>
             <h3 class="dest-card__name">Amalfi Coast</h3>
             <span class="dest-card__tag">Editor's pick</span>
           </div>
         </a>
 
-        <a href="kyoto-guide.html" class="dest-card">
+        <a href="kyoto-guide.html" class="dest-card" data-region="asia">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
-            <p class="dest-card__region">Japan</p>
+            <p class="dest-card__region">Japan · Asia</p>
             <h3 class="dest-card__name">Kyoto</h3>
           </div>
         </a>
 
-        <a href="santorini-guide.html" class="dest-card">
+        <a href="santorini-guide.html" class="dest-card" data-region="europe">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Santorini, Greece" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
-            <p class="dest-card__region">Greece</p>
+            <p class="dest-card__region">Greece · Europe</p>
             <h3 class="dest-card__name">Santorini</h3>
           </div>
         </a>
 
-        <a href="patagonia-guide.html" class="dest-card">
+        <a href="patagonia-guide.html" class="dest-card" data-region="americas">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Patagonia, South America" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
-            <p class="dest-card__region">South America</p>
+            <p class="dest-card__region">South America · Americas</p>
             <h3 class="dest-card__name">Patagonia</h3>
           </div>
         </a>
 
-        <a href="rajasthan-guide.html" class="dest-card">
+        <a href="rajasthan-guide.html" class="dest-card" data-region="asia">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
-            <p class="dest-card__region">India</p>
+            <p class="dest-card__region">India · Asia</p>
             <h3 class="dest-card__name">Rajasthan</h3>
           </div>
         </a>
 
-        <a href="norway-guide.html" class="dest-card">
+        <a href="norway-guide.html" class="dest-card" data-region="europe">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Norwegian fjords" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
-            <p class="dest-card__region">Scandinavia</p>
+            <p class="dest-card__region">Scandinavia · Europe</p>
             <h3 class="dest-card__name">Norway's Fjords</h3>
           </div>
         </a>
+
+        <div class="dest-grid__empty" id="dest-empty">
+          <strong>Coming soon</strong>
+          More destinations in this region are on their way. Check back soon, or <a href="index.html#newsletter" style="color:var(--teal);border-bottom:1px solid var(--teal);">subscribe to our newsletter</a> for updates.
+        </div>
 
       </div>
     </div>
@@ -223,5 +289,44 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      const buttons = document.querySelectorAll('.region-filter__btn');
+      const cards   = document.querySelectorAll('#dest-grid .dest-card');
+      const empty   = document.getElementById('dest-empty');
+
+      function applyFilter(region) {
+        let visible = 0;
+        cards.forEach(function (card) {
+          const match = region === 'all' || card.dataset.region === region;
+          card.style.display = match ? '' : 'none';
+          if (match) visible++;
+        });
+        empty.classList.toggle('is-visible', visible === 0);
+
+        buttons.forEach(function (btn) {
+          btn.classList.toggle('is-active', btn.dataset.region === region);
+        });
+
+        // Keep hash in sync for bookmarking / deep-linking
+        if (history.replaceState) {
+          history.replaceState(null, '', region === 'all' ? '#' : '#' + region);
+        }
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          applyFilter(btn.dataset.region);
+        });
+      });
+
+      // Activate on load if a hash is present
+      const hash = window.location.hash.replace('#', '').toLowerCase();
+      const valid = ['all', 'europe', 'asia', 'americas', 'africa', 'oceania'];
+      if (hash && valid.includes(hash)) {
+        applyFilter(hash);
+      }
+    })();
+  </script>
 </body>
 </html>
