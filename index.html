@@ -467,6 +467,91 @@
       line-height: 1.6;
     }
 
+    /* ── Random Country ──────────────────────────────────────── */
+    .random-country {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+    .random-country__inner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    .random-country__copy h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .random-country__copy h2 em { font-style: italic; }
+    .random-country__copy p {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .btn--coral {
+      background: var(--coral);
+      border-color: var(--coral);
+      color: white;
+      cursor: pointer;
+      font-family: var(--font-sans);
+    }
+    .btn--coral:hover { background: #b5503a; border-color: #b5503a; color: white; }
+    .btn--coral:disabled { opacity: 0.65; cursor: default; }
+    .random-country__result {
+      display: none;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      padding: 36px;
+    }
+    .random-country__result.is-visible { display: block; animation: fadeUp 0.4s ease; }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .random-country__flag {
+      font-size: 2.8rem;
+      margin-bottom: 16px;
+      line-height: 1;
+    }
+    .random-country__name {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.4rem);
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 14px;
+      line-height: 1.1;
+    }
+    .random-country__desc {
+      font-size: 0.92rem;
+      color: var(--ash);
+      line-height: 1.8;
+      margin-bottom: 20px;
+    }
+    .random-country__highlights {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 0;
+    }
+    .random-country__highlight {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      background: var(--teal-lt);
+      color: var(--teal);
+      border: 1px solid rgba(42,122,111,0.2);
+    }
+    @media (max-width: 900px) {
+      .random-country__inner { grid-template-columns: 1fr; gap: 36px; }
+    }
+
     /* ── Footer ───────────────────────────────────────────────── */
     footer {
       background: var(--ink);
@@ -716,6 +801,31 @@
     </div>
   </section>
 
+  <!-- ── Random Country ───────────────────────────────────────────── -->
+  <section class="random-country" id="random-country">
+    <div class="container">
+      <div class="random-country__inner">
+        <div class="random-country__copy">
+          <p class="quiz-cta__eyebrow" style="margin-bottom:12px;">Feeling adventurous?</p>
+          <h2>Let the world <em>surprise</em> you</h2>
+          <p>Can't decide where to travel next? Let fate choose for you. Hit the button and discover a destination you might never have considered — with highlights to spark your imagination.</p>
+          <button class="btn btn--coral" id="randomCountryBtn" type="button">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M2 5h9M2 11h9M11 3l3 2-3 2M5 9l-3 2 3 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Pick a random country
+          </button>
+        </div>
+        <div class="random-country__result" id="randomCountryResult" aria-live="polite">
+          <p class="random-country__flag" id="rcFlag" aria-hidden="true"></p>
+          <h3 class="random-country__name" id="rcName"></h3>
+          <p class="random-country__desc" id="rcDesc"></p>
+          <ul class="random-country__highlights" id="rcHighlights" aria-label="Top attractions"></ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ── Pull quote ─────────────────────────────────────────────── -->
   <blockquote class="pullquote">
     <p class="pullquote__text">"Travel is the only thing you buy that makes you richer — not in possessions, but in perspectives."</p>
@@ -831,6 +941,101 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Random Country feature ─────────────────────────────────────
+    const COUNTRIES = [
+      {
+        name: 'Japan',
+        flag: '🇯🇵',
+        description: 'Japan blends ancient tradition with cutting-edge modernity in a way no other country does. From the serene bamboo groves of Arashiyama to the neon-lit streets of Shibuya, every region offers a distinct character. Shinto shrines and Buddhist temples dot the countryside, while world-class cuisine — from Michelin-starred kaiseki to humble ramen stalls — makes every meal memorable.',
+        highlights: ['Mount Fuji', 'Fushimi Inari Shrine', 'Hiroshima Peace Park', 'Nara Deer Park', 'Shibuya Crossing'],
+      },
+      {
+        name: 'Italy',
+        flag: '🇮🇹',
+        description: 'Few countries pack as much beauty, history, and flavour into one peninsula as Italy. The Colosseum and Vatican City anchor Rome\'s millennia of history; Florence\'s Uffizi gallery holds the greatest concentration of Renaissance art on Earth. Coastal gems like the Amalfi Coast and Cinque Terre offer breathtaking scenery, while the Italian table — pizza, pasta, gelato — is reason enough to visit.',
+        highlights: ['Colosseum, Rome', 'Uffizi Gallery, Florence', 'Amalfi Coast', 'Venice Canals', 'Pompeii'],
+      },
+      {
+        name: 'Peru',
+        flag: '🇵🇪',
+        description: 'Peru is home to one of humanity\'s greatest architectural achievements: Machu Picchu, the lost citadel of the Inca perched high in the Andes. Beyond its iconic ruins, Peru enchants with the floating reed islands of Lake Titicaca, the mysterious Nazca Lines, and Lima\'s world-renowned gastronomy scene. The Amazon basin covers nearly 60% of the country, offering unparalleled jungle wildlife experiences.',
+        highlights: ['Machu Picchu', 'Lake Titicaca', 'Nazca Lines', 'Colca Canyon', 'Lima Food Scene'],
+      },
+      {
+        name: 'Morocco',
+        flag: '🇲🇦',
+        description: 'Morocco is a feast for the senses — vibrant souks fragrant with spice, riads with ornate tilework, and Saharan dunes stretching to the horizon. Marrakech\'s Djemaa el-Fna square pulses with storytellers and musicians after dark, while Fes preserves the world\'s oldest living medieval city. The Atlas Mountains offer dramatic trekking, and the coastal town of Essaouira provides a breezy, artistic escape.',
+        highlights: ['Djemaa el-Fna, Marrakech', 'Sahara Desert Dunes', 'Fes Medina', 'Chefchaouen Blue City', 'Atlas Mountains'],
+      },
+      {
+        name: 'New Zealand',
+        flag: '🇳🇿',
+        description: 'New Zealand\'s landscapes are so extraordinary they served as Middle-earth for the Lord of the Rings trilogy. The North Island\'s Rotorua steams with geothermal energy and Maori culture, while the South Island\'s Fiordland National Park shelters Milford Sound — arguably the world\'s most dramatic fjord. Bungee jumping, skiing, and kayaking keep adventure seekers endlessly occupied.',
+        highlights: ['Milford Sound', 'Tongariro Alpine Crossing', 'Bay of Islands', 'Hobbiton', 'Franz Josef Glacier'],
+      },
+      {
+        name: 'India',
+        flag: '🇮🇳',
+        description: 'India is a civilisation, not just a country — its sheer scale and diversity defy simple description. The Taj Mahal at dawn is one of the most transcendent sights in human history. Rajasthan\'s painted havelis and tiger reserves lie within reach of Varanasi\'s ancient ghats on the Ganges. Kerala\'s backwaters drift peacefully past paddy fields, while the Himalayas beckon trekkers in the north.',
+        highlights: ['Taj Mahal, Agra', 'Varanasi Ghats', 'Rajasthan Forts', 'Kerala Backwaters', 'Ranthambore Tiger Reserve'],
+      },
+      {
+        name: 'Iceland',
+        flag: '🇮🇸',
+        description: 'Iceland is the land of fire and ice — active volcanoes, vast lava fields, erupting geysers, and glaciers that calve into luminous blue lagoons. The Northern Lights dance over Reykjavik in winter, while long summer days let you hike under the midnight sun. The Golden Circle route connects Þingvellir National Park, the Geysir hot-spring area, and the thundering Gullfoss waterfall in a single unforgettable loop.',
+        highlights: ['Northern Lights', 'Blue Lagoon', 'Jökulsárlón Glacier Lagoon', 'Golden Circle', 'Skógafoss Waterfall'],
+      },
+      {
+        name: 'Tanzania',
+        flag: '🇹🇿',
+        description: 'Tanzania is Africa\'s premier safari destination. The Serengeti hosts the greatest wildlife spectacle on Earth — the annual Great Migration of over a million wildebeest. Ngorongoro Crater forms a natural amphitheatre teeming with the Big Five. Beyond the savanna, Zanzibar\'s spice-scented Stone Town and powder-white beaches offer the perfect post-safari reward, while Kilimanjaro calls to those who want to stand on the roof of Africa.',
+        highlights: ['Serengeti Migration', 'Ngorongoro Crater', 'Mount Kilimanjaro', 'Zanzibar Beaches', 'Tarangire Elephant Herds'],
+      },
+      {
+        name: 'Portugal',
+        flag: '🇵🇹',
+        description: 'Portugal punches well above its size on the travel stage. Lisbon\'s tiled facades, tram-rattled hills, and mournful fado music create one of Europe\'s most atmospheric capitals. The Algarve\'s sea-carved limestone cliffs and golden beaches are among the continent\'s finest. The Douro Valley — terraced with ancient vineyards — produces port wine and jaw-dropping scenery in equal measure, best explored by riverboat.',
+        highlights: ['Sintra Palaces', 'Douro Valley Vineyards', 'Algarve Sea Caves', 'Belém Tower, Lisbon', 'Pena Palace'],
+      },
+      {
+        name: 'Vietnam',
+        flag: '🇻🇳',
+        description: 'Vietnam stretches over 1,600 km of coastline, ancient history, and kaleidoscopic cuisine. Ha Long Bay\'s emerald waters are scattered with thousands of limestone karsts and islets. Hoi An\'s lantern-lit Ancient Town glows golden at dusk, while Hanoi\'s Old Quarter teems with street-food vendors. The terraced rice fields of Sapa and the imperial grandeur of Hue complete a country that rewards those who travel slowly.',
+        highlights: ['Ha Long Bay', 'Hoi An Ancient Town', 'My Son Sanctuary', 'Phong Nha Caves', 'Sapa Rice Terraces'],
+      },
+    ];
+
+    let lastIndex = -1;
+
+    function pickRandomCountry() {
+      let idx;
+      do { idx = Math.floor(Math.random() * COUNTRIES.length); } while (idx === lastIndex && COUNTRIES.length > 1);
+      lastIndex = idx;
+      return COUNTRIES[idx];
+    }
+
+    const btn = document.getElementById('randomCountryBtn');
+    const result = document.getElementById('randomCountryResult');
+
+    btn.addEventListener('click', () => {
+      const country = pickRandomCountry();
+
+      document.getElementById('rcFlag').textContent = country.flag;
+      document.getElementById('rcName').textContent = country.name;
+      document.getElementById('rcDesc').textContent = country.description;
+
+      const ul = document.getElementById('rcHighlights');
+      ul.innerHTML = country.highlights
+        .map(h => `<li class="random-country__highlight">${h}</li>`)
+        .join('');
+
+      // Reset animation by removing and re-adding class
+      result.classList.remove('is-visible');
+      // Force reflow so the animation re-triggers
+      void result.offsetWidth;
+      result.classList.add('is-visible');
+    });
 
   </script>
 
