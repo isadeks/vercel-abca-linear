@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Settings — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ────────────────────────────────────────────── */
+    .page-hero {
+      padding: 96px 0 64px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    /* ── Settings body ────────────────────────────────────────── */
+    .settings-body {
+      padding: 72px 0 96px;
+    }
+
+    .settings-section {
+      margin-bottom: 56px;
+    }
+    .settings-section__heading {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .settings-section__desc {
+      font-size: 0.88rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-top: 14px;
+      margin-bottom: 28px;
+      max-width: 520px;
+    }
+
+    /* ── Form rows ────────────────────────────────────────────── */
+    .settings-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .settings-row:last-child { border-bottom: none; }
+    .settings-row__label {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .settings-row__hint {
+      font-size: 0.78rem;
+      color: var(--ash);
+      margin-top: 4px;
+    }
+
+    /* ── Toggle switch ────────────────────────────────────────── */
+    .toggle-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+    }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .toggle__track {
+      position: absolute;
+      inset: 0;
+      background: var(--stone);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .toggle input:checked + .toggle__track { background: var(--teal); }
+    .toggle__track::after {
+      content: '';
+      position: absolute;
+      top: 3px; left: 3px;
+      width: 18px; height: 18px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.25s;
+    }
+    .toggle input:checked + .toggle__track::after {
+      transform: translateX(20px);
+    }
+    .toggle__label {
+      font-size: 0.8rem;
+      color: var(--ash);
+      min-width: 36px;
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 24px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+    .btn--outline {
+      background: transparent;
+      border-color: var(--stone);
+      color: var(--ash);
+    }
+    .btn--outline:hover { border-color: var(--ash); color: var(--ink); }
+    .btn--danger {
+      background: transparent;
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+    .btn--danger:hover { background: var(--coral); color: white; }
+
+    /* ── Danger zone ──────────────────────────────────────────── */
+    .danger-zone {
+      margin-top: 64px;
+      border: 1px solid #e8b4aa;
+      padding: 32px;
+      background: #fdf5f3;
+    }
+    [data-theme="dark"] .danger-zone {
+      border-color: #6b3329;
+      background: #1e1310;
+    }
+    .danger-zone__title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      color: var(--coral);
+      margin-bottom: 10px;
+    }
+    .danger-zone__desc {
+      font-size: 0.88rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 24px;
+      max-width: 500px;
+    }
+
+    /* ── Delete confirmation dialog ───────────────────────────── */
+    dialog {
+      border: none;
+      padding: 0;
+      background: var(--cream);
+      max-width: 480px;
+      width: calc(100% - 48px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.18);
+    }
+    dialog::backdrop {
+      background: rgba(26, 23, 20, 0.55);
+      backdrop-filter: blur(3px);
+    }
+    .dialog__inner {
+      padding: 40px;
+    }
+    .dialog__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 52px;
+      height: 52px;
+      background: #fdf0ee;
+      border-radius: 50%;
+      margin-bottom: 20px;
+      color: var(--coral);
+    }
+    [data-theme="dark"] .dialog__icon { background: #3a1a14; }
+    .dialog__title {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    .dialog__body {
+      font-size: 0.9rem;
+      color: var(--ash);
+      line-height: 1.75;
+      margin-bottom: 28px;
+    }
+    .dialog__body strong { color: var(--ink); }
+    .dialog__actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .dialog__actions .btn { flex: 1; justify-content: center; }
+
+    /* Status message shown after API call */
+    .delete-status {
+      display: none;
+      margin-top: 16px;
+      padding: 14px 18px;
+      font-size: 0.85rem;
+      line-height: 1.6;
+      border-left: 3px solid;
+    }
+    .delete-status--success {
+      border-color: var(--teal);
+      background: var(--teal-lt);
+      color: var(--teal);
+    }
+    .delete-status--error {
+      border-color: var(--coral);
+      background: #fdf5f3;
+      color: var(--coral);
+    }
+    [data-theme="dark"] .delete-status--error { background: #2a1510; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+      .settings-row { flex-direction: column; align-items: flex-start; }
+      .danger-zone { padding: 24px; }
+      .dialog__inner { padding: 28px; }
+      .dialog__actions { flex-direction: column; }
+      .dialog__actions .btn { flex: unset; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme"></button>
+  </nav>
+
+  <!-- ── Page hero ─────────────────────────────────────────────── -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Account</p>
+      <h1 class="page-hero__title">Settings</h1>
+      <p class="page-hero__sub">Manage your preferences and account data.</p>
+    </div>
+  </div>
+
+  <!-- ── Settings body ─────────────────────────────────────────── -->
+  <div class="settings-body">
+    <div class="container">
+
+      <!-- ── Notifications section ─────────────────────────────── -->
+      <section class="settings-section" aria-labelledby="notif-heading">
+        <h2 class="settings-section__heading" id="notif-heading">Notifications</h2>
+        <p class="settings-section__desc">Choose which emails you'd like to receive from Wander.</p>
+
+        <div class="settings-row">
+          <div>
+            <p class="settings-row__label">Weekly newsletter</p>
+            <p class="settings-row__hint">Our fortnightly dispatch of destination stories.</p>
+          </div>
+          <label class="toggle" aria-label="Toggle weekly newsletter">
+            <input type="checkbox" checked />
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <p class="settings-row__label">New destination alerts</p>
+            <p class="settings-row__hint">Get notified when we publish a guide for a region you've saved.</p>
+          </div>
+          <label class="toggle" aria-label="Toggle new destination alerts">
+            <input type="checkbox" />
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <p class="settings-row__label">Seasonal travel picks</p>
+            <p class="settings-row__hint">Curated recommendations each season, four times a year.</p>
+          </div>
+          <label class="toggle" aria-label="Toggle seasonal travel picks">
+            <input type="checkbox" checked />
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- ── Privacy section ──────────────────────────────────── -->
+      <section class="settings-section" aria-labelledby="privacy-heading">
+        <h2 class="settings-section__heading" id="privacy-heading">Privacy</h2>
+        <p class="settings-section__desc">Control how your data is used on Wander.</p>
+
+        <div class="settings-row">
+          <div>
+            <p class="settings-row__label">Analytics</p>
+            <p class="settings-row__hint">Help us improve by sharing anonymous usage data.</p>
+          </div>
+          <label class="toggle" aria-label="Toggle analytics">
+            <input type="checkbox" checked />
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <div>
+            <p class="settings-row__label">Personalised recommendations</p>
+            <p class="settings-row__hint">Use your reading history to surface relevant guides.</p>
+          </div>
+          <label class="toggle" aria-label="Toggle personalised recommendations">
+            <input type="checkbox" checked />
+            <span class="toggle__track"></span>
+          </label>
+        </div>
+      </section>
+
+      <!-- ── Danger zone ───────────────────────────────────────── -->
+      <div class="danger-zone">
+        <h2 class="danger-zone__title">Danger zone</h2>
+        <p class="danger-zone__desc">
+          Permanently delete your Wander account and all associated data. This action cannot be undone.
+        </p>
+        <button class="btn btn--danger" id="open-delete-dialog">
+          Delete my account
+        </button>
+        <div class="delete-status" id="delete-status" role="status" aria-live="polite"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Delete-account confirmation dialog ────────────────────── -->
+  <dialog id="delete-dialog" aria-labelledby="dialog-title" aria-describedby="dialog-desc">
+    <div class="dialog__inner">
+      <div class="dialog__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+             stroke="currentColor" stroke-width="1.8"
+             stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="3 6 5 6 21 6"/>
+          <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          <path d="M10 11v6M14 11v6"/>
+          <path d="M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/>
+        </svg>
+      </div>
+      <h2 class="dialog__title" id="dialog-title">Delete your account?</h2>
+      <p class="dialog__body" id="dialog-desc">
+        This will <strong>permanently erase</strong> your account and all saved preferences.
+        You will lose access to any personalised guides, bookmarks, and newsletter subscriptions.
+        <br /><br />
+        There is <strong>no undo</strong>. Are you sure you want to proceed?
+      </p>
+      <div class="dialog__actions">
+        <button class="btn btn--outline" id="cancel-delete">Cancel</button>
+        <button class="btn btn--danger" id="confirm-delete">Yes, delete my account</button>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    const dialog      = document.getElementById('delete-dialog');
+    const openBtn     = document.getElementById('open-delete-dialog');
+    const cancelBtn   = document.getElementById('cancel-delete');
+    const confirmBtn  = document.getElementById('confirm-delete');
+    const statusEl    = document.getElementById('delete-status');
+
+    openBtn.addEventListener('click', () => {
+      statusEl.style.display = 'none';
+      statusEl.textContent = '';
+      dialog.showModal();
+    });
+
+    cancelBtn.addEventListener('click', () => dialog.close());
+
+    // Close on backdrop click
+    dialog.addEventListener('click', (e) => {
+      if (e.target === dialog) dialog.close();
+    });
+
+    confirmBtn.addEventListener('click', async () => {
+      confirmBtn.disabled = true;
+      confirmBtn.textContent = 'Deleting…';
+
+      try {
+        const res = await fetch('/api/account/delete', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ confirm: true }),
+        });
+
+        dialog.close();
+
+        if (res.ok) {
+          statusEl.className = 'delete-status delete-status--success';
+          statusEl.textContent = 'Your account has been deleted. Thank you for travelling with Wander.';
+        } else {
+          const data = await res.json().catch(() => ({}));
+          statusEl.className = 'delete-status delete-status--error';
+          statusEl.textContent = `Error: ${data.error ?? 'Something went wrong. Please try again.'}`;
+        }
+
+        statusEl.style.display = 'block';
+      } catch {
+        dialog.close();
+        statusEl.className = 'delete-status delete-status--error';
+        statusEl.textContent = 'Network error. Please check your connection and try again.';
+        statusEl.style.display = 'block';
+      } finally {
+        confirmBtn.disabled = false;
+        confirmBtn.textContent = 'Yes, delete my account';
+      }
+    });
+  </script>
+  <script type="module" src="theme.js"></script>
+
+</body>
+</html>
