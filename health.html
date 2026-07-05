@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Health — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    .page-hero {
+      padding: 96px 0 64px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 560px;
+      line-height: 1.6;
+    }
+
+    .page-body {
+      padding: 72px 0 96px;
+    }
+
+    .health-card {
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      padding: 40px;
+      margin-bottom: 32px;
+    }
+    .health-card__label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 12px;
+    }
+    .health-card__value {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: var(--ink);
+    }
+    .health-card__value--ok   { color: var(--teal); }
+    .health-card__value--err  { color: #b94040; }
+    .health-card__value--wait { color: var(--ash); font-style: italic; }
+
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">System</p>
+      <h1 class="page-hero__title">Health</h1>
+      <p class="page-hero__sub">Live status of the Wander API.</p>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="container">
+
+      <div class="health-card">
+        <p class="health-card__label">Status</p>
+        <p class="health-card__value health-card__value--wait" id="status">Checking…</p>
+      </div>
+
+      <div class="health-card">
+        <p class="health-card__label">Server time</p>
+        <p class="health-card__value" id="server-time">—</p>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (async () => {
+      const statusEl = document.getElementById('status');
+      const timeEl   = document.getElementById('server-time');
+      try {
+        const res  = await fetch('/api/health');
+        const data = await res.json();
+        statusEl.textContent = data.status;
+        statusEl.classList.remove('health-card__value--wait');
+        statusEl.classList.add(
+          data.status === 'OK' ? 'health-card__value--ok' : 'health-card__value--err'
+        );
+        timeEl.textContent = new Date(data.time).toLocaleString(undefined, {
+          dateStyle: 'long',
+          timeStyle: 'long',
+        });
+      } catch {
+        statusEl.textContent = 'Error';
+        statusEl.classList.remove('health-card__value--wait');
+        statusEl.classList.add('health-card__value--err');
+        timeEl.textContent = '—';
+      }
+    })();
+  </script>
+
+</body>
+</html>
