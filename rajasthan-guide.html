@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -254,6 +255,7 @@
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html#guides" class="nav__back">← All guides</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme"></button>
   </nav>
 
   <div class="guide-hero">
@@ -349,5 +351,6 @@
     </div>
   </div>
 
+  <script type="module" src="theme.js"></script>
 </body>
 </html>
