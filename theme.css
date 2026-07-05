@@ -1,0 +1,88 @@
+/* ── Theme toggle button ──────────────────────────────────────────────────── */
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: white;
+}
+
+/* When the nav has scrolled (light background) */
+.nav.scrolled .theme-toggle {
+  border-color: var(--stone);
+  color: var(--ash);
+}
+
+.nav.scrolled .theme-toggle:hover {
+  background: var(--stone);
+  color: var(--ink);
+}
+
+/* ── Dark-mode CSS custom-property overrides ─────────────────────────────── */
+/*
+ * Activated by <html data-theme="dark">.
+ * Overrides the :root palette defined inline in each page's <style> block.
+ * Named to mirror the light-mode roles so all existing rules pick them up
+ * automatically without change.
+ */
+
+[data-theme="dark"] {
+  --sand:    #1e1c1a;
+  --cream:   #141210;
+  --stone:   #2e2b27;
+  --ink:     #f0ece4;
+  --ash:     #9e9790;
+  --teal:    #3fa897;
+  --teal-lt: #1a3a37;
+  --coral:   #d97a60;
+}
+
+/* ── Dark-mode component adjustments ──────────────────────────────────────── */
+
+/* Nav: scrolled state uses the dark cream */
+[data-theme="dark"] .nav.scrolled {
+  background: rgba(20, 18, 16, 0.92);
+  border-bottom-color: var(--stone);
+}
+
+/* Guide cards use --cream for their background */
+[data-theme="dark"] .guide-card {
+  background: var(--stone);
+}
+
+/* Newsletter form input */
+[data-theme="dark"] .newsletter__form input[type="email"] {
+  background: var(--stone);
+  border-color: #3e3b37;
+  color: var(--ink);
+}
+
+[data-theme="dark"] .newsletter__form input[type="email"]::placeholder {
+  color: #6a6560;
+}
+
+/* Smooth theme transition across all colour properties */
+body,
+.nav,
+.guide-card,
+.newsletter__form input[type="email"],
+.curated,
+.featured,
+.regions,
+.newsletter {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
