@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img  { display: block; width: 100%; object-fit: cover; }
+    a    { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+    @media (max-width: 900px) { .nav { padding: 18px 24px; } }
+
+    /* ── Page hero ────────────────────────────────────────────── */
+    .page-hero {
+      padding: 72px 0 52px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 14px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 520px;
+      line-height: 1.6;
+    }
+
+    /* ── Profile layout ───────────────────────────────────────── */
+    .profile-body {
+      padding: 64px 0 96px;
+    }
+
+    /* Avatar + identity row */
+    .profile-identity {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 48px;
+    }
+    .profile-avatar {
+      flex-shrink: 0;
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      letter-spacing: 0.04em;
+      user-select: none;
+    }
+    .profile-identity__details h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 4px;
+    }
+    .profile-identity__email {
+      font-size: 0.9rem;
+      color: var(--ash);
+    }
+
+    /* Info card */
+    .profile-card {
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      padding: 32px;
+      margin-bottom: 32px;
+    }
+    .profile-card__heading {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .profile-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .profile-row:last-child { border-bottom: none; }
+    .profile-row__label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--ash);
+      text-transform: uppercase;
+      flex-shrink: 0;
+      min-width: 120px;
+    }
+    .profile-row__value {
+      font-size: 0.97rem;
+      color: var(--ink);
+    }
+
+    /* Edit form */
+    .profile-edit-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-group input[type="text"] {
+      padding: 12px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-group input[type="text"]:focus {
+      border-color: var(--teal);
+    }
+    .form-group input[type="text"]::placeholder {
+      color: #b0a898;
+    }
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-top: 4px;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 24px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      background: var(--teal);
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn:hover { background: #22665c; border-color: #22665c; }
+    .btn--outline {
+      background: transparent;
+      border-color: var(--stone);
+      color: var(--ash);
+    }
+    .btn--outline:hover { background: var(--stone); border-color: var(--stone); color: var(--ink); }
+
+    /* Status message */
+    .form-status {
+      font-size: 0.85rem;
+      min-height: 20px;
+    }
+    .form-status--success { color: var(--teal); }
+    .form-status--error   { color: var(--coral); }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .profile-identity { flex-direction: column; align-items: flex-start; gap: 20px; }
+      .profile-row { flex-direction: column; gap: 4px; }
+      .profile-row__label { min-width: unset; }
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme"></button>
+  </nav>
+
+  <!-- ── Page hero ─────────────────────────────────────────────── -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Account</p>
+      <h1 class="page-hero__title">Your profile</h1>
+      <p class="page-hero__sub">Manage your display name and view your account details.</p>
+    </div>
+  </div>
+
+  <!-- ── Profile body ──────────────────────────────────────────── -->
+  <div class="profile-body">
+    <div class="container">
+
+      <!-- Avatar + name identity row -->
+      <div class="profile-identity">
+        <div class="profile-avatar" id="profile-avatar" aria-hidden="true">AW</div>
+        <div class="profile-identity__details">
+          <h2 id="profile-display-name">Alex Wanderer</h2>
+          <p class="profile-identity__email" id="profile-email">alex@example.com</p>
+        </div>
+      </div>
+
+      <!-- Account info (read-only) -->
+      <div class="profile-card">
+        <p class="profile-card__heading">Account information</p>
+        <div class="profile-row">
+          <span class="profile-row__label">Display name</span>
+          <span class="profile-row__value" id="info-display-name">Alex Wanderer</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-row__label">Email</span>
+          <span class="profile-row__value" id="info-email">alex@example.com</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-row__label">Member since</span>
+          <span class="profile-row__value">January 2025</span>
+        </div>
+        <div class="profile-row">
+          <span class="profile-row__label">Guides saved</span>
+          <span class="profile-row__value">12</span>
+        </div>
+      </div>
+
+      <!-- Edit display name form -->
+      <div class="profile-card">
+        <p class="profile-card__heading">Edit display name</p>
+        <form class="profile-edit-form" id="edit-name-form" novalidate>
+          <div class="form-group">
+            <label for="new-display-name">New display name</label>
+            <input
+              type="text"
+              id="new-display-name"
+              name="displayName"
+              placeholder="Enter your display name"
+              autocomplete="nickname"
+              maxlength="60"
+              required
+            />
+          </div>
+          <div class="form-actions">
+            <button type="submit" class="btn">Save changes</button>
+            <button type="button" class="btn btn--outline" id="cancel-btn">Cancel</button>
+          </div>
+          <p class="form-status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="contact.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { loadProfile, updateDisplayName } from './src/profile-store.js';
+
+    // ── DOM refs ──────────────────────────────────────────────────
+    const avatarEl      = document.getElementById('profile-avatar');
+    const displayNameEl = document.getElementById('profile-display-name');
+    const emailEl       = document.getElementById('profile-email');
+    const infoNameEl    = document.getElementById('info-display-name');
+    const infoEmailEl   = document.getElementById('info-email');
+    const nameInput     = document.getElementById('new-display-name');
+    const form          = document.getElementById('edit-name-form');
+    const cancelBtn     = document.getElementById('cancel-btn');
+    const statusEl      = document.getElementById('form-status');
+
+    // ── Render helpers ────────────────────────────────────────────
+    function renderProfile(profile) {
+      displayNameEl.textContent = profile.displayName;
+      infoNameEl.textContent    = profile.displayName;
+      emailEl.textContent       = profile.email;
+      infoEmailEl.textContent   = profile.email;
+      avatarEl.textContent      = profile.avatarInitials;
+    }
+
+    function showStatus(message, type) {
+      statusEl.textContent  = message;
+      statusEl.className    = `form-status form-status--${type}`;
+    }
+
+    function clearStatus() {
+      statusEl.textContent = '';
+      statusEl.className   = 'form-status';
+    }
+
+    // ── Initialise from localStorage ─────────────────────────────
+    const profile = loadProfile(localStorage);
+    renderProfile(profile);
+    nameInput.value = profile.displayName;
+
+    // ── Form submit ───────────────────────────────────────────────
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      clearStatus();
+      try {
+        const updated = updateDisplayName(localStorage, nameInput.value);
+        renderProfile(updated);
+        showStatus('Display name updated successfully.', 'success');
+      } catch (err) {
+        showStatus(err.message || 'Could not save — please try again.', 'error');
+      }
+    });
+
+    // ── Cancel: restore field to current saved value ──────────────
+    cancelBtn.addEventListener('click', () => {
+      const current = loadProfile(localStorage);
+      nameInput.value = current.displayName;
+      clearStatus();
+    });
+  </script>
+  <script type="module" src="theme.js"></script>
+
+</body>
+</html>
