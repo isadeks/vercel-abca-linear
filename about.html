@@ -147,6 +147,33 @@
       line-height: 1.75;
     }
 
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin: 32px 0 48px;
+    }
+    @media (max-width: 600px) { .team-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 380px) { .team-grid { grid-template-columns: 1fr; } }
+
+    .team-card {
+      background: var(--sand);
+      padding: 24px 20px;
+    }
+    .team-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .team-card__role {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
     footer {
       background: var(--ink);
       color: rgba(255,255,255,0.5);
@@ -227,6 +254,35 @@
       <h2>Who we are</h2>
       <p>Wander is an independent travel publication founded on the belief that travel writing, done well, is a form of literature. Our editors and contributors are writers first — people who go to places not to check them off but to understand them, then come back and describe what they found with care and precision.</p>
       <p>We are not affiliated with any hotel group, airline, or booking platform. Every recommendation we make is based on first-hand experience and editorial judgement. Nobody pays to be included in our guides.</p>
+
+      <h2 id="team">The team</h2>
+      <p>We are a small editorial team, distributed across Europe and Asia. Every person listed here has a byline on at least one published Wander guide.</p>
+      <div class="team-grid">
+        <div class="team-card">
+          <p class="team-card__name">Elena Vasquez</p>
+          <p class="team-card__role">Editor-in-chief</p>
+        </div>
+        <div class="team-card">
+          <p class="team-card__name">Tobias Brandt</p>
+          <p class="team-card__role">Senior editor</p>
+        </div>
+        <div class="team-card">
+          <p class="team-card__name">Aiko Tanaka</p>
+          <p class="team-card__role">Asia correspondent</p>
+        </div>
+        <div class="team-card">
+          <p class="team-card__name">Marcelline Osei</p>
+          <p class="team-card__role">Africa &amp; Middle East</p>
+        </div>
+        <div class="team-card">
+          <p class="team-card__name">Finn O'Sullivan</p>
+          <p class="team-card__role">Europe correspondent</p>
+        </div>
+        <div class="team-card">
+          <p class="team-card__name">Camila Reyes</p>
+          <p class="team-card__role">Americas correspondent</p>
+        </div>
+      </div>
 
       <h2>Our values</h2>
       <div class="values-grid">
