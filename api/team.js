@@ -4,7 +4,7 @@
 // When from/to are supplied they are passed through in the response envelope
 // so callers can verify which window was used.
 
-import { getAllMembers, getMembersByWorkload, workloadScore } from './_lib/team.js';
+import { getAllMembers, getMembersByWorkload, workloadScore, workloadLabel } from './_lib/team.js';
 import { filterByDateRange } from './_lib/activity.js';
 
 export default function handler(req, res) {
@@ -14,10 +14,14 @@ export default function handler(req, res) {
 
   const { from, to } = req.query ?? {};
 
-  const members = getMembersByWorkload().map(m => ({
-    ...m,
-    workloadScore: workloadScore(m),
-  }));
+  const members = getMembersByWorkload().map(m => {
+    const score = workloadScore(m);
+    return {
+      ...m,
+      workloadScore: score,
+      workloadLabel: workloadLabel(score),
+    };
+  });
 
   // If a date range is provided, also surface how many activity events each
   // member has in that window (useful for the activity column in the dashboard).

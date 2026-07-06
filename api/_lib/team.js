@@ -1,5 +1,17 @@
 // api/_lib/team.js — in-memory team-member store and workload-calculation helpers
 
+/**
+ * Workload thresholds used to derive a human-readable label.
+ * Score = openItems + inProgressItems * 2
+ *   score < LOW_MAX  → 'low'
+ *   score < HIGH_MIN → 'medium'
+ *   score >= HIGH_MIN → 'high'
+ */
+export const WORKLOAD_THRESHOLDS = {
+  LOW_MAX:  5,  // score 0–4 inclusive → low
+  HIGH_MIN: 9,  // score 9+ → high; 5–8 → medium
+};
+
 /** @type {Array<{id:string, name:string, role:string, openItems:number, inProgressItems:number}>} */
 const TEAM_MEMBERS = [
   { id: 'u1', name: 'Alice Chambers', role: 'Editor',        openItems: 4, inProgressItems: 2 },
@@ -43,4 +55,17 @@ export function getMembersByWorkload() {
 export function getMemberById(id) {
   const member = TEAM_MEMBERS.find(m => m.id === id);
   return member ? { ...member } : null;
+}
+
+/**
+ * Derive a workload label ('low' | 'medium' | 'high') from a numeric score.
+ * Uses the thresholds defined in WORKLOAD_THRESHOLDS.
+ *
+ * @param {number} score - result of workloadScore()
+ * @returns {'low' | 'medium' | 'high'}
+ */
+export function workloadLabel(score) {
+  if (score < WORKLOAD_THRESHOLDS.LOW_MAX) return 'low';
+  if (score < WORKLOAD_THRESHOLDS.HIGH_MIN) return 'medium';
+  return 'high';
 }
