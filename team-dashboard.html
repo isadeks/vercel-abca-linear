@@ -352,6 +352,85 @@
       font-size: 0.88rem;
     }
 
+    /* ── Demo note ────────────────────────────────────────────── */
+    .demo-note {
+      background: var(--teal-lt);
+      border-top: 3px solid var(--teal);
+      border-bottom: 1px solid #b5d9d5;
+      padding: 28px 0;
+    }
+    .demo-note__inner {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+    .demo-note__icon {
+      flex-shrink: 0;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+    .demo-note__body { flex: 1; min-width: 0; }
+    .demo-note__heading {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .demo-note__text {
+      font-size: 0.88rem;
+      color: #2a4e4a;
+      line-height: 1.65;
+      margin-bottom: 14px;
+    }
+    .demo-note__text:last-child { margin-bottom: 0; }
+    .demo-note__sections {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .demo-note__section-pill {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      background: white;
+      border: 1px solid #b5d9d5;
+      font-size: 0.78rem;
+      color: var(--ink);
+      line-height: 1.4;
+    }
+    .demo-note__section-pill strong {
+      font-weight: 500;
+      color: var(--teal);
+      white-space: nowrap;
+    }
+    .demo-note__dismiss {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--teal);
+      font-size: 1.1rem;
+      line-height: 1;
+      padding: 4px 6px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+      align-self: flex-start;
+    }
+    .demo-note__dismiss:hover { opacity: 1; }
+    .demo-note[hidden] { display: none; }
+
     /* ── Footer ───────────────────────────────────────────────── */
     footer {
       background: var(--ink);
@@ -412,6 +491,49 @@
       </div>
     </div>
   </header>
+
+  <!-- ── Stakeholder demo note ────────────────────────────────── -->
+  <aside class="demo-note" id="demo-note" role="note" aria-label="Dashboard orientation">
+    <div class="container">
+      <div class="demo-note__inner">
+        <span class="demo-note__icon" aria-hidden="true">&#9432;</span>
+        <div class="demo-note__body">
+          <h2 class="demo-note__heading">Welcome to the Team Dashboard</h2>
+          <p class="demo-note__text">
+            This view gives managers and stakeholders a live snapshot of the editorial
+            team's workload and recent activity. All data is filtered by the date range
+            you select above — use the quick-select presets (<em>7 days</em>, <em>14 days</em>,
+            <em>30 days</em>, <em>90 days</em>) or enter a custom range with the date fields.
+            The dashboard updates instantly; no page reload is required.
+          </p>
+          <div class="demo-note__sections">
+            <div class="demo-note__section-pill">
+              <strong>Open items</strong>
+              Work items created within the selected range that are not yet complete.
+            </div>
+            <div class="demo-note__section-pill">
+              <strong>Completions</strong>
+              Items that were finished within the selected range.
+            </div>
+            <div class="demo-note__section-pill">
+              <strong>Avg cycle time</strong>
+              Mean time from creation to completion for items closed in the range.
+            </div>
+            <div class="demo-note__section-pill">
+              <strong>Recent activity</strong>
+              A chronological feed of team actions — creation, comments, reviews, and status changes.
+            </div>
+            <div class="demo-note__section-pill">
+              <strong>Team workload</strong>
+              Open items per team member, with a relative capacity bar. Red bars indicate a
+              high relative load.
+            </div>
+          </div>
+        </div>
+        <button class="demo-note__dismiss" id="demo-note-dismiss" aria-label="Dismiss orientation note" title="Dismiss">&#x2715;</button>
+      </div>
+    </div>
+  </aside>
 
   <!-- ── Dashboard body ───────────────────────────────────────── -->
   <main class="dashboard">
@@ -734,6 +856,20 @@
 
     /* ── Initial render (last 14 days) ──────────────────────── */
     applyPreset(14, document.querySelector('.preset-btn[data-days="14"]'));
+
+    /* ── Demo note dismiss ───────────────────────────────────── */
+    const demoNote    = document.getElementById('demo-note');
+    const demoBtn     = document.getElementById('demo-note-dismiss');
+    const DISMISS_KEY = 'wander_demo_note_dismissed';
+
+    if (sessionStorage.getItem(DISMISS_KEY)) {
+      demoNote.hidden = true;
+    }
+
+    demoBtn.addEventListener('click', () => {
+      demoNote.hidden = true;
+      sessionStorage.setItem(DISMISS_KEY, '1');
+    });
   </script>
 
 </body>
