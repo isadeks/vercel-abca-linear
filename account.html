@@ -23,6 +23,23 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 1160px;
+      /* nav + card surfaces — overridden in dark mode */
+      --nav-bg:   rgba(250,248,244,0.92);
+      --card-bg:  #ffffff;
+    }
+
+    /* ── Dark theme overrides ─────────────────────────────────── */
+    [data-theme="dark"] {
+      --sand:    #1e1c1a;
+      --cream:   #141210;
+      --stone:   #2d2a26;
+      --ink:     #f0ece4;
+      --ash:     #9a9490;
+      --teal:    #3aaa9e;
+      --teal-lt: #0f2826;
+      --coral:   #e07a64;
+      --nav-bg:  rgba(20,18,16,0.92);
+      --card-bg: #1e1c1a;
     }
 
     html { scroll-behavior: smooth; }
@@ -47,7 +64,7 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 20px 40px;
-      background: rgba(250,248,244,0.92);
+      background: var(--nav-bg);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--stone);
     }
@@ -168,7 +185,7 @@
       align-items: center;
       gap: 24px;
       padding: 28px;
-      background: white;
+      background: var(--card-bg);
       border: 1px solid var(--stone);
     }
     .profile-card__avatar-wrap {
@@ -288,6 +305,163 @@
       gap: 20px;
     }
 
+    /* ── Theme toggle ─────────────────────────────────────────── */
+    .theme-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      color: var(--ash);
+      background: transparent;
+      cursor: pointer;
+      border-radius: 3px;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      white-space: nowrap;
+    }
+    .theme-toggle:hover {
+      background: var(--stone);
+      color: var(--ink);
+    }
+    .theme-toggle__icon {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
+    /* ── Toggle row (for preferences section) ────────────────── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--stone);
+      margin-bottom: 12px;
+    }
+    .toggle-row:last-child { margin-bottom: 0; }
+    .toggle-row__label {
+      font-size: 0.9rem;
+      color: var(--ink);
+    }
+    .toggle-row__desc {
+      font-size: 0.8rem;
+      color: var(--ash);
+      margin-top: 2px;
+    }
+    /* pill switch */
+    .toggle-switch {
+      position: relative;
+      flex-shrink: 0;
+      width: 44px;
+      height: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle-switch__track {
+      position: absolute;
+      inset: 0;
+      border-radius: 24px;
+      background: var(--stone);
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .toggle-switch__track::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 3px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.25s;
+    }
+    .toggle-switch input:checked + .toggle-switch__track {
+      background: var(--teal);
+    }
+    .toggle-switch input:checked + .toggle-switch__track::after {
+      transform: translateX(20px);
+    }
+    .toggle-switch input:focus-visible + .toggle-switch__track {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+    }
+
+    /* ── Notifications list ───────────────────────────────────── */
+    .notif-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .notif-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--stone);
+      transition: background 0.15s;
+    }
+    .notif-item--unread {
+      border-left: 3px solid var(--teal);
+    }
+    .notif-item__dot {
+      flex-shrink: 0;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      margin-top: 6px;
+    }
+    .notif-item--read .notif-item__dot {
+      background: var(--stone);
+    }
+    .notif-item__body {
+      flex: 1;
+      min-width: 0;
+    }
+    .notif-item__message {
+      font-size: 0.88rem;
+      color: var(--ink);
+      line-height: 1.5;
+    }
+    .notif-item--read .notif-item__message {
+      color: var(--ash);
+    }
+    .notif-item__time {
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 4px;
+    }
+    .notif-empty {
+      padding: 32px 20px;
+      font-size: 0.88rem;
+      color: var(--ash);
+      text-align: center;
+      border: 1px solid var(--stone);
+      background: var(--card-bg);
+    }
+    .notif-loading {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+    .notif-loading__row {
+      height: 60px;
+      background: var(--stone);
+      border-radius: 2px;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+
     /* ── Buttons ──────────────────────────────────────────────── */
     .btn {
       display: inline-flex; align-items: center; gap: 10px;
@@ -404,6 +578,10 @@
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="account.html" class="active">Account</a></li>
     </ul>
+    <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+      <span class="theme-toggle__icon" aria-hidden="true">🌙</span>
+      <span class="theme-toggle__label">Dark</span>
+    </button>
   </nav>
 
   <!-- ── Page header ──────────────────────────────────────────── -->
@@ -472,16 +650,47 @@
             </form>
           </section>
 
-          <!-- Preferences placeholder (future task) -->
+          <!-- Preferences section -->
           <section class="settings-section" id="preferences">
             <h2 class="settings-section__heading">Preferences</h2>
-            <p class="settings-section__sub">Travel style, climate preferences, and newsletter cadence — coming in the next update.</p>
+            <p class="settings-section__sub">Appearance and display preferences for your Wander experience.</p>
+
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-row__label">Dark mode</div>
+                <div class="toggle-row__desc">Switch between the light and dark colour scheme.</div>
+              </div>
+              <label class="toggle-switch" aria-label="Enable dark mode">
+                <input type="checkbox" id="pref-dark-mode" />
+                <span class="toggle-switch__track"></span>
+              </label>
+            </div>
+
+            <div class="toggle-row">
+              <div>
+                <div class="toggle-row__label">Compact view</div>
+                <div class="toggle-row__desc">Reduce spacing in guide cards and destination lists.</div>
+              </div>
+              <label class="toggle-switch" aria-label="Enable compact view">
+                <input type="checkbox" id="pref-compact" />
+                <span class="toggle-switch__track"></span>
+              </label>
+            </div>
           </section>
 
-          <!-- Notifications placeholder (future task) -->
+          <!-- Notifications section -->
           <section class="settings-section" id="notifications">
             <h2 class="settings-section__heading">Notifications</h2>
-            <p class="settings-section__sub">Email and push notification settings — coming in the next update.</p>
+            <p class="settings-section__sub">Your recent activity and updates from Wander.</p>
+
+            <!-- Notifications list — populated by JS -->
+            <div id="notif-container">
+              <div class="notif-loading" aria-label="Loading notifications" aria-busy="true">
+                <div class="notif-loading__row"></div>
+                <div class="notif-loading__row"></div>
+                <div class="notif-loading__row"></div>
+              </div>
+            </div>
           </section>
 
         </div><!-- /.settings-panel -->
@@ -533,7 +742,41 @@
   </footer>
 
   <script>
-    // Fetch user profile from /api/user and populate the profile card
+    // ── Theme toggle ────────────────────────────────────────────
+    (function initTheme() {
+      const STORAGE_KEY = 'wander-theme';
+      const root        = document.documentElement;
+      const navBtn      = document.getElementById('theme-toggle');
+      const prefToggle  = document.getElementById('pref-dark-mode');
+
+      function applyTheme(dark) {
+        root.setAttribute('data-theme', dark ? 'dark' : 'light');
+        if (navBtn) {
+          navBtn.querySelector('.theme-toggle__icon').textContent = dark ? '☀️' : '🌙';
+          navBtn.querySelector('.theme-toggle__label').textContent = dark ? 'Light' : 'Dark';
+          navBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+        }
+        if (prefToggle) prefToggle.checked = dark;
+      }
+
+      function toggleTheme() {
+        const isDark = root.getAttribute('data-theme') === 'dark';
+        const next   = !isDark;
+        try { localStorage.setItem(STORAGE_KEY, next ? 'dark' : 'light'); } catch (e) { /* ignore */ }
+        applyTheme(next);
+      }
+
+      // Restore saved preference (or fall back to system preference)
+      let saved;
+      try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyTheme(saved ? saved === 'dark' : prefersDark);
+
+      if (navBtn) navBtn.addEventListener('click', toggleTheme);
+      if (prefToggle) prefToggle.addEventListener('change', toggleTheme);
+    })();
+
+    // ── Fetch user profile from /api/user ───────────────────────
     async function loadProfile() {
       const nameEl       = document.getElementById('profile-name');
       const emailEl      = document.getElementById('profile-email');
@@ -612,7 +855,75 @@
       sections.forEach(s => observer.observe(s));
     }
 
+    // ── Fetch notifications from /api/notifications ─────────────
+    async function loadNotifications() {
+      const container = document.getElementById('notif-container');
+      if (!container) return;
+
+      try {
+        const res   = await fetch('/api/notifications');
+        if (!res.ok) throw new Error('Non-OK response');
+        const items = await res.json();
+
+        if (!Array.isArray(items) || items.length === 0) {
+          container.innerHTML = '<p class="notif-empty">No notifications yet.</p>';
+          return;
+        }
+
+        const ul = document.createElement('ul');
+        ul.className = 'notif-list';
+        ul.setAttribute('aria-label', 'Notifications');
+
+        items.forEach(notif => {
+          const li = document.createElement('li');
+          li.className = 'notif-item' + (notif.read ? ' notif-item--read' : ' notif-item--unread');
+
+          const dot = document.createElement('span');
+          dot.className = 'notif-item__dot';
+          dot.setAttribute('aria-hidden', 'true');
+
+          const body = document.createElement('div');
+          body.className = 'notif-item__body';
+
+          const msg = document.createElement('p');
+          msg.className = 'notif-item__message';
+          msg.textContent = notif.message;
+
+          const time = document.createElement('time');
+          time.className = 'notif-item__time';
+          time.setAttribute('datetime', notif.timestamp);
+          time.textContent = formatRelativeTime(notif.timestamp);
+
+          body.appendChild(msg);
+          body.appendChild(time);
+          li.appendChild(dot);
+          li.appendChild(body);
+          ul.appendChild(li);
+        });
+
+        container.innerHTML = '';
+        container.appendChild(ul);
+      } catch (err) {
+        container.innerHTML = '<p class="notif-empty">Unable to load notifications.</p>';
+      }
+    }
+
+    // Simple relative-time formatter (e.g. "2 days ago")
+    function formatRelativeTime(isoString) {
+      const diffMs  = Date.now() - new Date(isoString).getTime();
+      const diffMin = Math.floor(diffMs / 60000);
+      if (diffMin < 1)   return 'Just now';
+      if (diffMin < 60)  return `${diffMin} minute${diffMin === 1 ? '' : 's'} ago`;
+      const diffHr = Math.floor(diffMin / 60);
+      if (diffHr < 24)   return `${diffHr} hour${diffHr === 1 ? '' : 's'} ago`;
+      const diffDay = Math.floor(diffHr / 24);
+      if (diffDay < 30)  return `${diffDay} day${diffDay === 1 ? '' : 's'} ago`;
+      const diffMo = Math.floor(diffDay / 30);
+      return `${diffMo} month${diffMo === 1 ? '' : 's'} ago`;
+    }
+
     loadProfile();
+    loadNotifications();
     initSidebarNav();
   </script>
 
