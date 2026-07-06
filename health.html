@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Project Health — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      /* Risk / status colours */
+      --risk-green:      #2a7a6f;
+      --risk-green-bg:   #d5ecea;
+      --risk-amber:      #b07a10;
+      --risk-amber-bg:   #fef3d0;
+      --risk-red:        #b03a2e;
+      --risk-red-bg:     #fde8e5;
+      --status-on-track-bg:  #d5ecea;
+      --status-on-track-fg:  #2a7a6f;
+      --status-at-risk-bg:   #fef3d0;
+      --status-at-risk-fg:   #b07a10;
+      --status-done-bg:      #e8e8e8;
+      --status-done-fg:      #4a4a4a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ────────────────────────────────────────────── */
+    .page-hero {
+      padding: 80px 0 60px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 4vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .page-hero__sub {
+      font-size: 0.95rem;
+      color: var(--ash);
+      max-width: 560px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+    }
+    .page-hero__meta {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+    .page-hero__meta-item {
+      font-size: 0.75rem;
+      color: var(--ash);
+      letter-spacing: 0.04em;
+    }
+    .page-hero__meta-item strong {
+      color: var(--ink);
+      font-weight: 500;
+    }
+
+    /* ── Overall risk badge ───────────────────────────────────── */
+    .risk-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px;
+      border-radius: 2px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+    .risk-badge--green { background: var(--risk-green-bg); color: var(--risk-green); }
+    .risk-badge--amber { background: var(--risk-amber-bg); color: var(--risk-amber); }
+    .risk-badge--red   { background: var(--risk-red-bg);   color: var(--risk-red);   }
+    .risk-badge__dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+    /* Pulse on amber/red overall badge */
+    .risk-badge--amber .risk-badge__dot,
+    .risk-badge--red   .risk-badge__dot {
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    /* ── Section header ───────────────────────────────────────── */
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 28px;
+      border-bottom: 1px solid var(--stone);
+      padding-bottom: 14px;
+    }
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 400;
+    }
+    .section-header__count {
+      font-size: 0.75rem;
+      color: var(--ash);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Panel layout ─────────────────────────────────────────── */
+    .health-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      padding: 64px 0;
+    }
+    .health-panel {
+      background: white;
+      border: 1px solid var(--stone);
+      padding: 32px;
+    }
+
+    /* Full-width panels */
+    .health-panel--full {
+      grid-column: 1 / -1;
+    }
+
+    /* ── Risk table ───────────────────────────────────────────── */
+    .risk-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .risk-table th {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ash);
+      text-align: left;
+      padding: 0 0 12px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .risk-table td {
+      padding: 14px 12px 14px 0;
+      vertical-align: top;
+      border-bottom: 1px solid var(--stone);
+      font-size: 0.88rem;
+    }
+    .risk-table tr:last-child td { border-bottom: none; }
+    .risk-table td:first-child { width: 80px; }
+
+    .risk-pill {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .risk-pill--green { background: var(--risk-green-bg); color: var(--risk-green); }
+    .risk-pill--amber { background: var(--risk-amber-bg); color: var(--risk-amber); }
+    .risk-pill--red   { background: var(--risk-red-bg);   color: var(--risk-red);   }
+    .risk-pill__dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .risk-cat {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 4px;
+    }
+    .risk-title {
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .risk-detail {
+      color: var(--ash);
+      font-size: 0.83rem;
+      line-height: 1.6;
+    }
+    .risk-id {
+      font-size: 0.68rem;
+      color: var(--stone);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Milestones ───────────────────────────────────────────── */
+    .milestone-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .milestone-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: start;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .milestone-item:last-child { border-bottom: none; }
+    .milestone-date {
+      min-width: 76px;
+      text-align: right;
+    }
+    .milestone-date__month {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .milestone-date__day {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .milestone-body { flex: 1; }
+    .milestone-title {
+      font-weight: 500;
+      font-size: 0.92rem;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .milestone-owner {
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+    .status-pill {
+      display: inline-flex; align-items: center;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .status-pill--on-track { background: var(--status-on-track-bg); color: var(--status-on-track-fg); }
+    .status-pill--at-risk  { background: var(--status-at-risk-bg);  color: var(--status-at-risk-fg);  }
+    .status-pill--done     { background: var(--status-done-bg);     color: var(--status-done-fg);     }
+
+    /* ── Blockers ─────────────────────────────────────────────── */
+    .blocker-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .blocker-item {
+      padding: 18px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .blocker-item:last-child { border-bottom: none; }
+    .blocker-header {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+    .blocker-title {
+      font-weight: 500;
+      font-size: 0.92rem;
+      line-height: 1.4;
+    }
+    .blocker-open {
+      display: inline-block;
+      padding: 2px 10px;
+      background: var(--risk-red-bg);
+      color: var(--risk-red);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .blocker-open--resolved {
+      background: var(--risk-green-bg);
+      color: var(--risk-green);
+    }
+    .blocker-meta {
+      display: flex; gap: 16px; flex-wrap: wrap;
+      font-size: 0.78rem;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    .blocker-meta span { display: flex; align-items: center; gap: 4px; }
+    .blocker-area {
+      font-size: 0.78rem;
+      color: var(--ash);
+      font-style: italic;
+    }
+    .blocker-resolution {
+      margin-top: 8px;
+      padding: 10px 14px;
+      background: var(--risk-green-bg);
+      border-left: 3px solid var(--risk-green);
+      font-size: 0.83rem;
+      color: var(--ash);
+      line-height: 1.6;
+    }
+    .blocker-id {
+      font-size: 0.68rem;
+      color: var(--stone);
+      letter-spacing: 0.08em;
+      flex-shrink: 0;
+    }
+
+    /* ── Owners ───────────────────────────────────────────────── */
+    .owners-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .owner-card {
+      border: 1px solid var(--stone);
+      padding: 20px;
+      background: var(--cream);
+    }
+    .owner-area {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .owner-name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 2px;
+    }
+    .owner-role {
+      font-size: 0.8rem;
+      color: var(--ash);
+      margin-bottom: 14px;
+    }
+    .owner-contacts {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .owner-contact-row {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem;
+      color: var(--ash);
+    }
+    .owner-contact-row svg {
+      flex-shrink: 0;
+      color: var(--teal);
+    }
+    .owner-contact-row a {
+      color: var(--teal);
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.15s;
+    }
+    .owner-contact-row a:hover { border-color: var(--teal); }
+
+    /* ── Last-updated bar ─────────────────────────────────────── */
+    .updated-bar {
+      padding: 16px 0;
+      border-top: 1px solid var(--stone);
+      font-size: 0.75rem;
+      color: var(--ash);
+      text-align: right;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 40px 0 28px;
+    }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .health-grid { grid-template-columns: 1fr; gap: 24px; padding: 40px 0; }
+      .health-panel--full { grid-column: 1; }
+      .owners-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .page-hero { padding: 60px 0 48px; }
+      .risk-table th:nth-child(4),
+      .risk-table td:nth-child(4) { display: none; }
+      .milestone-item { grid-template-columns: auto 1fr; }
+      .milestone-item .status-pill { grid-column: 2; justify-self: start; margin-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Back to home</a>
+  </nav>
+
+  <!-- ── Page hero ─────────────────────────────────────────────── -->
+  <section class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Internal dashboard</p>
+      <h1 class="page-hero__title">Project Health Panel</h1>
+      <p class="page-hero__sub">Live snapshot of risk status, upcoming milestones, active blockers, and team owner contacts for the Wander platform.</p>
+      <div class="page-hero__meta">
+        <span class="page-hero__meta-item">
+          <strong id="as-of-date">—</strong> &nbsp;as of
+        </span>
+        <span class="page-hero__meta-item">
+          Overall risk: &nbsp;<span id="overall-badge"></span>
+        </span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main health grid ─────────────────────────────────────── -->
+  <main>
+    <div class="container">
+      <div class="health-grid">
+
+        <!-- ── Risk status ────────────────────────────────────── -->
+        <div class="health-panel health-panel--full" id="panel-risks">
+          <div class="section-header">
+            <h2>Risk Status</h2>
+            <span class="section-header__count" id="risk-count"></span>
+          </div>
+          <table class="risk-table" aria-label="Risk items">
+            <thead>
+              <tr>
+                <th scope="col">Level</th>
+                <th scope="col">ID</th>
+                <th scope="col">Risk</th>
+              </tr>
+            </thead>
+            <tbody id="risk-tbody"></tbody>
+          </table>
+        </div>
+
+        <!-- ── Upcoming milestones ────────────────────────────── -->
+        <div class="health-panel" id="panel-milestones">
+          <div class="section-header">
+            <h2>Upcoming Milestones</h2>
+            <span class="section-header__count" id="milestone-count"></span>
+          </div>
+          <div class="milestone-list" id="milestone-list" role="list"></div>
+        </div>
+
+        <!-- ── Recent blockers ───────────────────────────────── -->
+        <div class="health-panel" id="panel-blockers">
+          <div class="section-header">
+            <h2>Recent Blockers</h2>
+            <span class="section-header__count" id="blocker-count"></span>
+          </div>
+          <div class="blocker-list" id="blocker-list" role="list"></div>
+        </div>
+
+        <!-- ── Owner contacts ────────────────────────────────── -->
+        <div class="health-panel health-panel--full" id="panel-owners">
+          <div class="section-header">
+            <h2>Owner Contacts</h2>
+          </div>
+          <div class="owners-grid" id="owners-grid"></div>
+        </div>
+
+      </div>
+
+      <p class="updated-bar">
+        Page rendered <span id="render-time"></span>. Data is static — update <code>api/_lib/health-data.js</code> to refresh.
+      </p>
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    /**
+     * Inline data (mirrors api/_lib/health-data.js) so the static HTML page
+     * works without a bundler.  Keep in sync with the module file.
+     */
+    const RISK_LEVELS = { GREEN: 'green', AMBER: 'amber', RED: 'red' };
+
+    const projectStatus = {
+      name:        'Wander Editorial Platform',
+      overallRisk: RISK_LEVELS.AMBER,
+      summary:     'Booking API integration on schedule; content pipeline delayed by two weeks due to photography backlog.',
+      asOf:        '2026-07-06',
+    };
+
+    const risks = [
+      {
+        id: 'RISK-01', category: 'Content', level: RISK_LEVELS.AMBER,
+        title: 'Photography backlog',
+        detail: 'Hero images for 3 destination guides are pending photographer delivery. Target: Jul 18.',
+      },
+      {
+        id: 'RISK-02', category: 'Engineering', level: RISK_LEVELS.GREEN,
+        title: 'Booking API stability',
+        detail: 'All API endpoints passing CI. Load-test results within SLA thresholds.',
+      },
+      {
+        id: 'RISK-03', category: 'Infrastructure', level: RISK_LEVELS.AMBER,
+        title: 'Vercel edge-config quota',
+        detail: 'Edge-config read quota at 72 % for July. Caching layer optimisation queued for sprint 14.',
+      },
+      {
+        id: 'RISK-04', category: 'Legal', level: RISK_LEVELS.GREEN,
+        title: 'GDPR cookie banner',
+        detail: 'Consent management implementation reviewed and approved by legal on Jul 2.',
+      },
+    ];
+
+    const milestones = [
+      { id: 'MS-01', title: 'Booking API v1 — public beta',       dueDate: '2026-07-14', owner: 'Marco Silva (Eng)',      status: 'on-track' },
+      { id: 'MS-02', title: 'Summer 2026 content drop (6 guides)',  dueDate: '2026-07-21', owner: 'Priya Nair (Editorial)',  status: 'at-risk'  },
+      { id: 'MS-03', title: 'Newsletter re-platform launch',        dueDate: '2026-08-04', owner: 'Sofia Johansson (Product)', status: 'on-track' },
+      { id: 'MS-04', title: 'Mobile-responsive redesign QA sign-off', dueDate: '2026-08-18', owner: 'Luca Ferretti (Design)',  status: 'on-track' },
+    ];
+
+    const blockers = [
+      {
+        id: 'BLK-01', title: 'Missing API keys for third-party weather widget',
+        raisedDate: '2026-07-01', raisedBy: 'Priya Nair',
+        blockedArea: 'Destination guides — weather section', resolution: null,
+      },
+      {
+        id: 'BLK-02', title: 'Font licence renewal overdue — Cormorant Garamond Pro variant',
+        raisedDate: '2026-07-03', raisedBy: 'Design team',
+        blockedArea: 'Brand / typography',
+        resolution: 'Renewal invoice sent; expected approval by Jul 9.',
+      },
+      {
+        id: 'BLK-03', title: 'Vitest upgrade breaks ESM interop in Node 20.18',
+        raisedDate: '2026-07-05', raisedBy: 'Marco Silva',
+        blockedArea: 'CI pipeline', resolution: null,
+      },
+    ];
+
+    const owners = [
+      { id: 'eng',       area: 'Engineering', name: 'Marco Silva',      role: 'Lead Engineer',   email: 'marco@wander.example',  slack: '@marco'  },
+      { id: 'editorial', area: 'Editorial',   name: 'Priya Nair',       role: 'Head of Content', email: 'priya@wander.example',   slack: '@priya'  },
+      { id: 'product',   area: 'Product',     name: 'Sofia Johansson',  role: 'Product Manager', email: 'sofia@wander.example',   slack: '@sofia'  },
+      { id: 'design',    area: 'Design',      name: 'Luca Ferretti',    role: 'Design Lead',     email: 'luca@wander.example',    slack: '@luca'   },
+    ];
+
+    /* ── Helpers ──────────────────────────────────────────────── */
+
+    const ESC = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+    function riskPill(level) {
+      const label = { green: 'Green', amber: 'Amber', red: 'Red' }[level] ?? level;
+      return `<span class="risk-pill risk-pill--${ESC(level)}" aria-label="Risk level: ${ESC(label)}">
+        <span class="risk-pill__dot" aria-hidden="true"></span>${ESC(label)}
+      </span>`;
+    }
+
+    function statusPill(status) {
+      const label = { 'on-track': 'On Track', 'at-risk': 'At Risk', 'done': 'Done' }[status] ?? status;
+      return `<span class="status-pill status-pill--${ESC(status)}">${ESC(label)}</span>`;
+    }
+
+    function formatDate(iso) {
+      const [, mm, dd] = iso.split('-');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return { month: months[parseInt(mm, 10) - 1], day: parseInt(dd, 10) };
+    }
+
+    /* ── Render overall status ────────────────────────────────── */
+    document.getElementById('as-of-date').textContent = projectStatus.asOf;
+    document.getElementById('overall-badge').innerHTML =
+      `<span class="risk-badge risk-badge--${ESC(projectStatus.overallRisk)}">
+        <span class="risk-badge__dot" aria-hidden="true"></span>
+        ${{ green: 'Healthy', amber: 'At Risk', red: 'Critical' }[projectStatus.overallRisk]}
+      </span>`;
+
+    /* ── Render risks ─────────────────────────────────────────── */
+    document.getElementById('risk-count').textContent = `${risks.length} items`;
+    document.getElementById('risk-tbody').innerHTML = risks.map(r => `
+      <tr>
+        <td>${riskPill(r.level)}</td>
+        <td><span class="risk-id">${ESC(r.id)}</span></td>
+        <td>
+          <p class="risk-cat">${ESC(r.category)}</p>
+          <p class="risk-title">${ESC(r.title)}</p>
+          <p class="risk-detail">${ESC(r.detail)}</p>
+        </td>
+      </tr>`).join('');
+
+    /* ── Render milestones ────────────────────────────────────── */
+    document.getElementById('milestone-count').textContent = `${milestones.length} upcoming`;
+    document.getElementById('milestone-list').innerHTML = milestones.map(m => {
+      const { month, day } = formatDate(m.dueDate);
+      return `
+      <div class="milestone-item" role="listitem">
+        <div class="milestone-date" aria-label="Due ${m.dueDate}">
+          <p class="milestone-date__month">${ESC(month)}</p>
+          <p class="milestone-date__day">${day}</p>
+        </div>
+        <div class="milestone-body">
+          <p class="milestone-title">${ESC(m.title)}</p>
+          <p class="milestone-owner">${ESC(m.owner)}</p>
+        </div>
+        ${statusPill(m.status)}
+      </div>`;
+    }).join('');
+
+    /* ── Render blockers ──────────────────────────────────────── */
+    const openCount = blockers.filter(b => b.resolution === null).length;
+    document.getElementById('blocker-count').textContent =
+      `${openCount} open · ${blockers.length - openCount} resolved`;
+    document.getElementById('blocker-list').innerHTML = blockers.map(b => {
+      const open = b.resolution === null;
+      const badge = open
+        ? `<span class="blocker-open">Open</span>`
+        : `<span class="blocker-open blocker-open--resolved">Resolved</span>`;
+      const resolution = b.resolution
+        ? `<div class="blocker-resolution"><strong>Resolution:</strong> ${ESC(b.resolution)}</div>`
+        : '';
+      return `
+      <div class="blocker-item" role="listitem">
+        <div class="blocker-header">
+          <div>
+            <span class="blocker-id">${ESC(b.id)}</span>
+            <p class="blocker-title">${ESC(b.title)}</p>
+          </div>
+          ${badge}
+        </div>
+        <div class="blocker-meta">
+          <span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <rect x="1" y="2" width="10" height="9" rx="1" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M4 1v2M8 1v2M1 5h10" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            ${ESC(b.raisedDate)}
+          </span>
+          <span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <circle cx="6" cy="4" r="2.5" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M1.5 11c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            ${ESC(b.raisedBy)}
+          </span>
+        </div>
+        <p class="blocker-area">Affects: ${ESC(b.blockedArea)}</p>
+        ${resolution}
+      </div>`;
+    }).join('');
+
+    /* ── Render owners ────────────────────────────────────────── */
+    document.getElementById('owners-grid').innerHTML = owners.map(o => `
+      <div class="owner-card">
+        <p class="owner-area">${ESC(o.area)}</p>
+        <p class="owner-name">${ESC(o.name)}</p>
+        <p class="owner-role">${ESC(o.role)}</p>
+        <div class="owner-contacts">
+          <div class="owner-contact-row">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+              <rect x="1" y="2.5" width="11" height="8" rx="1" stroke="currentColor" stroke-width="1.2"/>
+              <path d="M1 3.5l5.5 4 5.5-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <a href="mailto:${ESC(o.email)}">${ESC(o.email)}</a>
+          </div>
+          <div class="owner-contact-row">
+            <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true">
+              <path d="M2 2h9a1 1 0 011 1v5a1 1 0 01-1 1H7l-3 2v-2H2a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+            </svg>
+            <span>${ESC(o.slack)}</span>
+          </div>
+        </div>
+      </div>`).join('');
+
+    /* ── Render time ──────────────────────────────────────────── */
+    document.getElementById('render-time').textContent =
+      new Date().toLocaleString('en-GB', { dateStyle: 'medium', timeStyle: 'short' });
+  </script>
+
+</body>
+</html>
