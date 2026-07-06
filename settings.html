@@ -317,6 +317,11 @@
       font-weight: 500;
     }
     .toast--visible { display: inline-flex; }
+    .toast--error {
+      background: #fdf0ee;
+      border-color: var(--coral);
+      color: var(--coral);
+    }
     .toast__icon {
       width: 16px; height: 16px;
       flex-shrink: 0;
@@ -556,6 +561,13 @@
             </svg>
             Preferences saved
           </div>
+          <div class="toast toast--error" id="reset-toast" role="alert" aria-live="assertive">
+            <svg class="toast__icon" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M8 5v4M8 11v.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <span id="reset-toast-msg">Reset failed — please try again.</span>
+          </div>
         </div>
 
       </form>
@@ -690,6 +702,26 @@
       setTimeout(function() { toast.classList.remove('toast--visible'); }, 3000);
     }
 
+    // ── Show reset error toast ────────────────────────────────────
+    function showResetError(msg) {
+      const toast = document.getElementById('reset-toast');
+      const msgEl = document.getElementById('reset-toast-msg');
+      if (msg) { msgEl.textContent = msg; }
+      toast.classList.add('toast--visible');
+      setTimeout(function() { toast.classList.remove('toast--visible'); }, 4000);
+    }
+
+    // ── Apply API preferences to the form ────────────────────────
+    // Merges server keys into the DEFAULTS shape and calls applyToForm.
+    function applyApiPrefsToForm(serverPrefs) {
+      // Map server-side keys to the form's DEFAULTS schema.
+      // Unknown server keys are ignored; missing keys fall back to DEFAULTS.
+      const merged = Object.assign({}, DEFAULTS, serverPrefs);
+      applyToForm(merged);
+      // Keep localStorage in sync so a page reload shows the same values.
+      savePrefs(merged);
+    }
+
     // ── Wire up events ────────────────────────────────────────────
     document.getElementById('settings-form').addEventListener('submit', function() {
       const prefs = readFromForm();
@@ -698,9 +730,38 @@
     });
 
     document.getElementById('reset-btn').addEventListener('click', function() {
-      applyToForm(Object.assign({}, DEFAULTS));
-      savePrefs(Object.assign({}, DEFAULTS));
-      showToast();
+      const btn = document.getElementById('reset-btn');
+      btn.disabled = true;
+      btn.textContent = 'Resetting…';
+
+      // Step 1: tell the server to restore defaults.
+      fetch('/api/preferences', { method: 'DELETE' })
+        .then(function(res) {
+          if (!res.ok) {
+            throw new Error('Server returned ' + res.status);
+          }
+          return res.json();
+        })
+        .then(function(data) {
+          // Step 2: re-render the form from the server's response.
+          // If the server returned a preferences object use it;
+          // otherwise fall back to client-side DEFAULTS.
+          var serverPrefs = (data && data.preferences) ? data.preferences : {};
+          applyApiPrefsToForm(serverPrefs);
+          showToast();
+        })
+        .catch(function(err) {
+          // Network or server error — fall back to local reset so the user
+          // still gets a consistent state, then surface the error.
+          console.error('Reset to defaults failed:', err);
+          applyToForm(Object.assign({}, DEFAULTS));
+          savePrefs(Object.assign({}, DEFAULTS));
+          showResetError('Reset failed — preferences restored locally.');
+        })
+        .finally(function() {
+          btn.disabled = false;
+          btn.textContent = 'Reset to defaults';
+        });
     });
 
     // ── Initialise on page load ───────────────────────────────────

@@ -7,15 +7,23 @@
 // NOT shared across instances or deployments. A production implementation
 // would replace this Map with a durable store (e.g. a database or KV store).
 
+/**
+ * Default preference values.
+ * Exported so that other handlers (e.g. DELETE /api/preferences) can restore
+ * the Map to a known baseline without duplicating the list.
+ *
+ * @type {Record<string, unknown>}
+ */
+export const DEFAULTS = {
+  currency:      'USD',
+  language:      'en',
+  theme:         'light',
+  notifications: true,
+  pageSize:      20,
+};
+
 /** @type {Map<string, unknown>} */
-const preferences = new Map([
-  // Documented defaults — edit here to change out-of-the-box behaviour.
-  ['currency', 'USD'],
-  ['language', 'en'],
-  ['theme', 'light'],
-  ['notifications', true],
-  ['pageSize', 20],
-]);
+const preferences = new Map(Object.entries(DEFAULTS));
 
 /**
  * GET /api/preferences
