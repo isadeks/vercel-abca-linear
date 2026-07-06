@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Dashboard — Wander</title>
+  <meta name="description" content="Track team activity, metrics, and member workload across any date range." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    button { font-family: var(--font-sans); cursor: pointer; border: none; background: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+    .nav__links .active { color: var(--teal); }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      background: var(--sand);
+      padding: 56px 0 40px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+    .page-header__title em { font-style: italic; }
+    .page-header__sub {
+      font-size: 0.9rem;
+      color: var(--ash);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── Date range picker ────────────────────────────────────── */
+    .date-bar {
+      background: white;
+      border-bottom: 1px solid var(--stone);
+      padding: 20px 0;
+    }
+    .date-bar__inner {
+      display: flex;
+      align-items: flex-end;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .date-field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .date-field label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .date-field input[type="date"] {
+      padding: 10px 14px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      min-width: 170px;
+    }
+    .date-field input[type="date"]:focus { border-color: var(--teal); }
+
+    .btn-apply {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--teal);
+      color: white;
+      border: 1px solid var(--teal);
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-apply:hover { background: #22665c; border-color: #22665c; }
+    .btn-apply:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .date-bar__hint {
+      align-self: center;
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+
+    /* ── Dashboard grid ───────────────────────────────────────── */
+    .dashboard {
+      padding: 40px 0 80px;
+    }
+    .dashboard__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto;
+      gap: 24px;
+    }
+
+    /* ── Panel ────────────────────────────────────────────────── */
+    .panel {
+      background: white;
+      border: 1px solid var(--stone);
+      display: flex;
+      flex-direction: column;
+      min-height: 320px;
+    }
+    .panel--activity { grid-column: 1 / 2; grid-row: 1 / 3; }
+    .panel--metrics  { grid-column: 2 / 3; grid-row: 1 / 2; }
+    .panel--members  { grid-column: 2 / 3; grid-row: 2 / 3; }
+
+    .panel__head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .panel__title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+    }
+    .panel__count {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--ash);
+      background: var(--sand);
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+    .panel__body {
+      flex: 1;
+      position: relative;
+    }
+
+    /* ── Panel states ─────────────────────────────────────────── */
+
+    /* Loading */
+    .panel-loading {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      height: 100%;
+      min-height: 200px;
+      padding: 40px;
+    }
+    .panel-loading.visible { display: flex; }
+
+    .spinner {
+      width: 32px;
+      height: 32px;
+      border: 2px solid var(--stone);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .panel-loading__text {
+      font-size: 0.82rem;
+      color: var(--ash);
+      letter-spacing: 0.06em;
+    }
+
+    /* Empty */
+    .panel-empty {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 100%;
+      min-height: 200px;
+      padding: 40px;
+      text-align: center;
+    }
+    .panel-empty.visible { display: flex; }
+
+    .panel-empty__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ash);
+      margin-bottom: 4px;
+    }
+    .panel-empty__title {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .panel-empty__sub {
+      font-size: 0.82rem;
+      color: var(--ash);
+      max-width: 240px;
+      line-height: 1.6;
+    }
+
+    /* Error */
+    .panel-error {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 100%;
+      min-height: 200px;
+      padding: 40px;
+      text-align: center;
+    }
+    .panel-error.visible { display: flex; }
+
+    .panel-error__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #fdf0ee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--coral);
+      margin-bottom: 4px;
+    }
+    .panel-error__title {
+      font-size: 0.92rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .panel-error__msg {
+      font-size: 0.82rem;
+      color: var(--ash);
+      max-width: 260px;
+      line-height: 1.6;
+    }
+    .btn-retry {
+      margin-top: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 18px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border: 1px solid var(--teal);
+      background: none;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-retry:hover { background: var(--teal); color: white; }
+
+    /* Content */
+    .panel-content {
+      display: none;
+      height: 100%;
+    }
+    .panel-content.visible { display: block; }
+
+    /* ── Activity feed ────────────────────────────────────────── */
+    .activity-list {
+      list-style: none;
+      overflow-y: auto;
+      max-height: 540px;
+    }
+    .activity-item {
+      display: flex;
+      gap: 14px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--stone);
+      transition: background 0.15s;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item:hover { background: var(--cream); }
+
+    .activity-avatar {
+      flex-shrink: 0;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--teal-lt);
+      color: var(--teal);
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .activity-body { flex: 1; min-width: 0; }
+    .activity-line {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .activity-actor { font-weight: 500; }
+    .activity-action { color: var(--ash); }
+    .activity-subject {
+      color: var(--teal);
+      font-weight: 500;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .activity-time {
+      font-size: 0.72rem;
+      color: var(--ash);
+      margin-top: 2px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ── Metrics panel ────────────────────────────────────────── */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1px;
+      background: var(--stone);
+      border-bottom: 1px solid var(--stone);
+    }
+    .metric-card {
+      padding: 24px 20px;
+      background: white;
+    }
+    .metric-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    .metric-value {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--ink);
+    }
+    .metric-value--teal { color: var(--teal); }
+    .metric-sub {
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 6px;
+    }
+
+    /* ── Members table ────────────────────────────────────────── */
+    .members-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .members-table thead tr {
+      border-bottom: 1px solid var(--stone);
+    }
+    .members-table th {
+      padding: 10px 16px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ash);
+      text-align: left;
+    }
+    .members-table th:not(:first-child) { text-align: right; }
+    .members-table td {
+      padding: 12px 16px;
+      font-size: 0.88rem;
+      border-bottom: 1px solid var(--stone);
+    }
+    .members-table tr:last-child td { border-bottom: none; }
+    .members-table tr:hover td { background: var(--cream); }
+    .members-table td:not(:first-child) { text-align: right; }
+    .member-name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .member-avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--teal-lt);
+      color: var(--teal);
+      font-size: 0.66rem;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+    .member-name span { color: var(--ink); }
+    .badge-open {
+      display: inline-block;
+      padding: 2px 8px;
+      background: #fff7ed;
+      color: #c96a00;
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+    .badge-done {
+      display: inline-block;
+      padding: 2px 8px;
+      background: var(--teal-lt);
+      color: var(--teal);
+      border-radius: 10px;
+      font-size: 0.72rem;
+      font-weight: 500;
+    }
+
+    /* ── Initial prompt (before first Apply) ─────────────────── */
+    .panel-prompt {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      height: 100%;
+      min-height: 200px;
+      padding: 40px;
+      text-align: center;
+    }
+    .panel-prompt__icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ash);
+      margin-bottom: 4px;
+    }
+    .panel-prompt__text {
+      font-size: 0.82rem;
+      color: var(--ash);
+      max-width: 200px;
+      line-height: 1.6;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+
+      .dashboard__grid {
+        grid-template-columns: 1fr;
+      }
+      .panel--activity,
+      .panel--metrics,
+      .panel--members {
+        grid-column: 1;
+        grid-row: auto;
+      }
+
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .date-bar__inner { flex-direction: column; align-items: stretch; }
+      .btn-apply { width: 100%; justify-content: center; }
+      .metrics-grid { grid-template-columns: 1fr; }
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="dashboard.html" class="active">Dashboard</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Internal tools</p>
+      <h1 class="page-header__title">Team <em>dashboard</em></h1>
+      <p class="page-header__sub">Pick a date range and apply to see activity, metrics, and member workload across your team.</p>
+    </div>
+  </header>
+
+  <!-- ── Date range picker ────────────────────────────────────── -->
+  <div class="date-bar">
+    <div class="container">
+      <div class="date-bar__inner">
+        <div class="date-field">
+          <label for="date-from">From</label>
+          <input type="date" id="date-from" aria-label="Start date" />
+        </div>
+        <div class="date-field">
+          <label for="date-to">To</label>
+          <input type="date" id="date-to" aria-label="End date" />
+        </div>
+        <button class="btn-apply" id="btn-apply" type="button">
+          <svg width="13" height="13" viewBox="0 0 13 13" fill="none" aria-hidden="true"><path d="M6.5 1v11M1 6.5h11" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+          Apply
+        </button>
+        <p class="date-bar__hint" id="date-hint" aria-live="polite"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Dashboard ────────────────────────────────────────────── -->
+  <main class="dashboard">
+    <div class="container">
+      <div class="dashboard__grid">
+
+        <!-- Activity feed panel -->
+        <section class="panel panel--activity" aria-labelledby="activity-title">
+          <div class="panel__head">
+            <h2 class="panel__title" id="activity-title">Activity feed</h2>
+            <span class="panel__count" id="activity-count" aria-live="polite" hidden></span>
+          </div>
+          <div class="panel__body" id="panel-activity-body">
+
+            <!-- Initial prompt -->
+            <div class="panel-prompt" id="activity-prompt">
+              <div class="panel-prompt__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M10 6v4l2.5 2.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+              </div>
+              <p class="panel-prompt__text">Select a date range and click Apply to load activity.</p>
+            </div>
+
+            <!-- Loading -->
+            <div class="panel-loading" id="activity-loading" role="status" aria-label="Loading activity feed">
+              <div class="spinner"></div>
+              <p class="panel-loading__text">Loading activity…</p>
+            </div>
+
+            <!-- Empty -->
+            <div class="panel-empty" id="activity-empty" role="status">
+              <div class="panel-empty__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 10h12M10 4v12" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.4"/><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.3"/></svg>
+              </div>
+              <p class="panel-empty__title">No activity found</p>
+              <p class="panel-empty__sub">There were no events in this date range. Try widening your filter.</p>
+            </div>
+
+            <!-- Error -->
+            <div class="panel-error" id="activity-error" role="alert">
+              <div class="panel-error__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M10 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13.5" r="0.8" fill="currentColor"/></svg>
+              </div>
+              <p class="panel-error__title">Couldn't load activity</p>
+              <p class="panel-error__msg" id="activity-error-msg">Something went wrong fetching the activity feed.</p>
+              <button class="btn-retry" id="activity-retry" type="button">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1 6a5 5 0 1 0 1.5-3.5L1 1v3h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Retry
+              </button>
+            </div>
+
+            <!-- Content -->
+            <div class="panel-content" id="activity-content">
+              <ul class="activity-list" id="activity-list" aria-label="Activity events"></ul>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Metrics panel -->
+        <section class="panel panel--metrics" aria-labelledby="metrics-title">
+          <div class="panel__head">
+            <h2 class="panel__title" id="metrics-title">Metrics summary</h2>
+          </div>
+          <div class="panel__body" id="panel-metrics-body">
+
+            <!-- Initial prompt -->
+            <div class="panel-prompt" id="metrics-prompt">
+              <div class="panel-prompt__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="7" rx="0.5" stroke="currentColor" stroke-width="1.3"/><rect x="8.5" y="6" width="3" height="11" rx="0.5" stroke="currentColor" stroke-width="1.3"/><rect x="14" y="3" width="3" height="14" rx="0.5" stroke="currentColor" stroke-width="1.3"/></svg>
+              </div>
+              <p class="panel-prompt__text">Select a date range and click Apply to load metrics.</p>
+            </div>
+
+            <!-- Loading -->
+            <div class="panel-loading" id="metrics-loading" role="status" aria-label="Loading metrics">
+              <div class="spinner"></div>
+              <p class="panel-loading__text">Loading metrics…</p>
+            </div>
+
+            <!-- Empty -->
+            <div class="panel-empty" id="metrics-empty" role="status">
+              <div class="panel-empty__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="3" height="7" rx="0.5" stroke="currentColor" stroke-width="1.3" opacity="0.35"/><rect x="8.5" y="6" width="3" height="11" rx="0.5" stroke="currentColor" stroke-width="1.3" opacity="0.35"/><rect x="14" y="3" width="3" height="14" rx="0.5" stroke="currentColor" stroke-width="1.3" opacity="0.35"/></svg>
+              </div>
+              <p class="panel-empty__title">No items in range</p>
+              <p class="panel-empty__sub">There are no items to summarise for this period.</p>
+            </div>
+
+            <!-- Error -->
+            <div class="panel-error" id="metrics-error" role="alert">
+              <div class="panel-error__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M10 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13.5" r="0.8" fill="currentColor"/></svg>
+              </div>
+              <p class="panel-error__title">Couldn't load metrics</p>
+              <p class="panel-error__msg" id="metrics-error-msg">Something went wrong loading the metrics summary.</p>
+              <button class="btn-retry" id="metrics-retry" type="button">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1 6a5 5 0 1 0 1.5-3.5L1 1v3h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Retry
+              </button>
+            </div>
+
+            <!-- Content -->
+            <div class="panel-content" id="metrics-content">
+              <div class="metrics-grid" id="metrics-grid"></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- Members panel -->
+        <section class="panel panel--members" aria-labelledby="members-title">
+          <div class="panel__head">
+            <h2 class="panel__title" id="members-title">Member list</h2>
+            <span class="panel__count" id="members-count" aria-live="polite" hidden></span>
+          </div>
+          <div class="panel__body" id="panel-members-body">
+
+            <!-- Initial prompt -->
+            <div class="panel-prompt" id="members-prompt">
+              <div class="panel-prompt__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.3"/><path d="M1 17c0-3.314 2.91-6 6.5-6s6.5 2.686 6.5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="14.5" cy="5.5" r="2.2" stroke="currentColor" stroke-width="1.2"/><path d="M17 14c1.2.5 2 1.5 2 2.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+              </div>
+              <p class="panel-prompt__text">Select a date range and click Apply to load members.</p>
+            </div>
+
+            <!-- Loading -->
+            <div class="panel-loading" id="members-loading" role="status" aria-label="Loading member list">
+              <div class="spinner"></div>
+              <p class="panel-loading__text">Loading members…</p>
+            </div>
+
+            <!-- Empty -->
+            <div class="panel-empty" id="members-empty" role="status">
+              <div class="panel-empty__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="7.5" cy="6.5" r="3" stroke="currentColor" stroke-width="1.3" opacity="0.4"/><path d="M1 17c0-3.314 2.91-6 6.5-6s6.5 2.686 6.5 6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" opacity="0.4"/></svg>
+              </div>
+              <p class="panel-empty__title">No members found</p>
+              <p class="panel-empty__sub">No assignees have items in this date range.</p>
+            </div>
+
+            <!-- Error -->
+            <div class="panel-error" id="members-error" role="alert">
+              <div class="panel-error__icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.3"/><path d="M10 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="13.5" r="0.8" fill="currentColor"/></svg>
+              </div>
+              <p class="panel-error__title">Couldn't load members</p>
+              <p class="panel-error__msg" id="members-error-msg">Something went wrong loading the member list.</p>
+              <button class="btn-retry" id="members-retry" type="button">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M1 6a5 5 0 1 0 1.5-3.5L1 1v3h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Retry
+              </button>
+            </div>
+
+            <!-- Content -->
+            <div class="panel-content" id="members-content">
+              <div style="overflow-x: auto;">
+                <table class="members-table" id="members-table" aria-label="Member workload">
+                  <thead>
+                    <tr>
+                      <th scope="col">Member</th>
+                      <th scope="col">Open</th>
+                      <th scope="col">Completed</th>
+                    </tr>
+                  </thead>
+                  <tbody id="members-tbody"></tbody>
+                </table>
+              </div>
+            </div>
+
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+            <li><a href="index.html#guides">Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="index.html#guides">Packing lists</a></li>
+            <li><a href="contact.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { activity } from './api/_lib/activity.js';
+    import { metrics  } from './api/_lib/metrics.js';
+    import { members  } from './api/_lib/members.js';
+
+    /* ── Sample data ─────────────────────────────────────────── */
+    const SAMPLE_EVENTS = [
+      { id: 'e1',  actor: 'alice',   action: 'created',  subject: 'Amalfi Coast guide draft',   timestamp: '2026-01-05T09:15:00Z' },
+      { id: 'e2',  actor: 'bob',     action: 'updated',  subject: 'Kyoto guide images',          timestamp: '2026-01-07T11:30:00Z' },
+      { id: 'e3',  actor: 'carol',   action: 'published', subject: 'Norway fjords article',       timestamp: '2026-01-10T14:00:00Z' },
+      { id: 'e4',  actor: 'alice',   action: 'reviewed', subject: 'Patagonia guide draft',        timestamp: '2026-01-12T09:45:00Z' },
+      { id: 'e5',  actor: 'dan',     action: 'created',  subject: 'Rajasthan photo essay',        timestamp: '2026-01-14T16:20:00Z' },
+      { id: 'e6',  actor: 'bob',     action: 'closed',   subject: 'Santorini itinerary task',     timestamp: '2026-01-18T10:00:00Z' },
+      { id: 'e7',  actor: 'carol',   action: 'created',  subject: 'Newsletter — January issue',   timestamp: '2026-02-01T08:30:00Z' },
+      { id: 'e8',  actor: 'alice',   action: 'updated',  subject: 'Homepage hero image',          timestamp: '2026-02-03T13:15:00Z' },
+      { id: 'e9',  actor: 'dan',     action: 'published', subject: 'Destinations page refresh',   timestamp: '2026-02-08T11:00:00Z' },
+      { id: 'e10', actor: 'bob',     action: 'reviewed', subject: 'About page copy',              timestamp: '2026-02-10T15:45:00Z' },
+      { id: 'e11', actor: 'carol',   action: 'created',  subject: 'Quiz — new destinations',     timestamp: '2026-02-14T09:00:00Z' },
+      { id: 'e12', actor: 'alice',   action: 'closed',   subject: 'SEO audit tasks',              timestamp: '2026-02-20T14:30:00Z' },
+      { id: 'e13', actor: 'dan',     action: 'created',  subject: 'Morocco guide outline',        timestamp: '2026-03-02T10:10:00Z' },
+      { id: 'e14', actor: 'bob',     action: 'updated',  subject: 'Booking flow copy',            timestamp: '2026-03-05T12:30:00Z' },
+      { id: 'e15', actor: 'carol',   action: 'published', subject: 'Spring travel feature',       timestamp: '2026-03-10T16:00:00Z' },
+      { id: 'e16', actor: 'alice',   action: 'reviewed', subject: 'Privacy policy update',        timestamp: '2026-03-15T11:20:00Z' },
+      { id: 'e17', actor: 'dan',     action: 'created',  subject: 'Iceland guide draft',          timestamp: '2026-04-01T09:00:00Z' },
+      { id: 'e18', actor: 'bob',     action: 'closed',   subject: 'Analytics setup',              timestamp: '2026-04-07T14:00:00Z' },
+      { id: 'e19', actor: 'carol',   action: 'updated',  subject: 'Quiz scoring logic',           timestamp: '2026-04-12T10:45:00Z' },
+      { id: 'e20', actor: 'alice',   action: 'published', subject: 'Summer destination picks',    timestamp: '2026-04-20T15:00:00Z' },
+    ];
+
+    const SAMPLE_ITEMS = [
+      { id: 'i1',  status: 'completed', assignee: 'alice', createdAt: '2026-01-05T09:00:00Z', completedAt: '2026-01-12T09:00:00Z' },
+      { id: 'i2',  status: 'open',      assignee: 'bob',   createdAt: '2026-01-07T10:00:00Z' },
+      { id: 'i3',  status: 'completed', assignee: 'carol', createdAt: '2026-01-10T12:00:00Z', completedAt: '2026-01-18T12:00:00Z' },
+      { id: 'i4',  status: 'open',      assignee: 'alice', createdAt: '2026-01-14T09:00:00Z' },
+      { id: 'i5',  status: 'completed', assignee: 'dan',   createdAt: '2026-01-16T11:00:00Z', completedAt: '2026-01-28T11:00:00Z' },
+      { id: 'i6',  status: 'open',      assignee: 'bob',   createdAt: '2026-02-01T08:00:00Z' },
+      { id: 'i7',  status: 'completed', assignee: 'carol', createdAt: '2026-02-05T09:00:00Z', completedAt: '2026-02-12T09:00:00Z' },
+      { id: 'i8',  status: 'open',      assignee: 'alice', createdAt: '2026-02-10T10:00:00Z' },
+      { id: 'i9',  status: 'completed', assignee: 'dan',   createdAt: '2026-02-14T11:00:00Z', completedAt: '2026-02-22T11:00:00Z' },
+      { id: 'i10', status: 'open',      assignee: 'bob',   createdAt: '2026-02-20T14:00:00Z' },
+      { id: 'i11', status: 'completed', assignee: 'carol', createdAt: '2026-03-03T09:00:00Z', completedAt: '2026-03-11T09:00:00Z' },
+      { id: 'i12', status: 'open',      assignee: 'alice', createdAt: '2026-03-08T10:00:00Z' },
+      { id: 'i13', status: 'completed', assignee: 'dan',   createdAt: '2026-03-12T11:00:00Z', completedAt: '2026-03-20T11:00:00Z' },
+      { id: 'i14', status: 'open',      assignee: 'bob',   createdAt: '2026-03-15T14:00:00Z' },
+      { id: 'i15', status: 'completed', assignee: 'carol', createdAt: '2026-04-01T09:00:00Z', completedAt: '2026-04-08T09:00:00Z' },
+      { id: 'i16', status: 'open',      assignee: 'alice', createdAt: '2026-04-05T10:00:00Z' },
+      { id: 'i17', status: 'completed', assignee: 'dan',   createdAt: '2026-04-10T11:00:00Z', completedAt: '2026-04-17T11:00:00Z' },
+      { id: 'i18', status: 'open',                         createdAt: '2026-04-15T09:00:00Z' },
+      { id: 'i19', status: 'completed', assignee: 'bob',   createdAt: '2026-04-18T12:00:00Z', completedAt: '2026-04-24T12:00:00Z' },
+      { id: 'i20', status: 'open',      assignee: 'carol', createdAt: '2026-04-20T10:00:00Z' },
+    ];
+
+    /* ── DOM refs ────────────────────────────────────────────── */
+    const $from  = document.getElementById('date-from');
+    const $to    = document.getElementById('date-to');
+    const $apply = document.getElementById('btn-apply');
+    const $hint  = document.getElementById('date-hint');
+
+    /* ── Panel state helpers ─────────────────────────────────── */
+
+    /**
+     * Set a panel to one of: 'prompt' | 'loading' | 'empty' | 'error' | 'content'
+     * @param {'activity'|'metrics'|'members'} name
+     * @param {'prompt'|'loading'|'empty'|'error'|'content'} state
+     */
+    function setPanelState(name, state) {
+      const states = ['prompt', 'loading', 'empty', 'error', 'content'];
+      for (const s of states) {
+        const el = document.getElementById(`${name}-${s}`);
+        if (el) el.classList.toggle('visible', s === state);
+      }
+    }
+
+    /* ── Time formatter ──────────────────────────────────────── */
+    function formatTime(ts) {
+      const d = new Date(ts);
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    }
+
+    function msToHuman(ms) {
+      if (ms === null) return '—';
+      const days = Math.round(ms / 86400000);
+      if (days < 1) return '< 1 day';
+      return `${days} day${days === 1 ? '' : 's'}`;
+    }
+
+    /* ── Initials helper ─────────────────────────────────────── */
+    function initials(name) {
+      return name.split(/[\s_-]/).map((w) => w[0] ?? '').join('').toUpperCase().slice(0, 2);
+    }
+
+    /* ── Render activity ─────────────────────────────────────── */
+    function renderActivity(events) {
+      const list = document.getElementById('activity-list');
+      const countEl = document.getElementById('activity-count');
+
+      list.innerHTML = '';
+
+      events.forEach((ev) => {
+        const li = document.createElement('li');
+        li.className = 'activity-item';
+        li.innerHTML = `
+          <div class="activity-avatar" aria-hidden="true">${initials(ev.actor)}</div>
+          <div class="activity-body">
+            <p class="activity-line">
+              <span class="activity-actor">${ev.actor}</span>
+              <span class="activity-action"> ${ev.action}</span>
+              ${ev.subject ? `<span class="activity-action"> · </span><span class="activity-subject">${ev.subject}</span>` : ''}
+            </p>
+            <p class="activity-time">${formatTime(ev.timestamp)}</p>
+          </div>
+        `;
+        list.appendChild(li);
+      });
+
+      countEl.textContent = `${events.length} event${events.length === 1 ? '' : 's'}`;
+      countEl.hidden = false;
+    }
+
+    /* ── Render metrics ──────────────────────────────────────── */
+    function renderMetrics(data) {
+      const grid = document.getElementById('metrics-grid');
+      grid.innerHTML = `
+        <div class="metric-card">
+          <p class="metric-label">Total items</p>
+          <p class="metric-value">${data.total}</p>
+          <p class="metric-sub">in selected range</p>
+        </div>
+        <div class="metric-card">
+          <p class="metric-label">Open</p>
+          <p class="metric-value">${data.open}</p>
+          <p class="metric-sub">awaiting completion</p>
+        </div>
+        <div class="metric-card">
+          <p class="metric-label">Completed</p>
+          <p class="metric-value metric-value--teal">${data.completed}</p>
+          <p class="metric-sub">finished in range</p>
+        </div>
+        <div class="metric-card">
+          <p class="metric-label">Avg. completion</p>
+          <p class="metric-value" style="font-size:1.8rem;">${msToHuman(data.avgCompletionTime)}</p>
+          <p class="metric-sub">mean time to close</p>
+        </div>
+      `;
+    }
+
+    /* ── Render members ──────────────────────────────────────── */
+    function renderMembers(rows) {
+      const tbody = document.getElementById('members-tbody');
+      const countEl = document.getElementById('members-count');
+
+      tbody.innerHTML = '';
+
+      rows.forEach((row) => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>
+            <div class="member-name">
+              <div class="member-avatar" aria-hidden="true">${initials(row.member)}</div>
+              <span>${row.member}</span>
+            </div>
+          </td>
+          <td><span class="badge-open">${row.open}</span></td>
+          <td><span class="badge-done">${row.completed}</span></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      countEl.textContent = `${rows.length} member${rows.length === 1 ? '' : 's'}`;
+      countEl.hidden = false;
+    }
+
+    /* ── Load panel (async wrapper for loading/error states) ─── */
+    async function loadPanel(name, loadFn) {
+      setPanelState(name, 'loading');
+      // Brief artificial delay so the loading state is always visible
+      await new Promise((resolve) => setTimeout(resolve, 300));
+      try {
+        const result = await loadFn();
+        if (result === null || (Array.isArray(result) && result.length === 0) || (typeof result === 'object' && !Array.isArray(result) && result.total === 0)) {
+          setPanelState(name, 'empty');
+        } else {
+          setPanelState(name, 'content');
+          return result;
+        }
+      } catch (err) {
+        const msgEl = document.getElementById(`${name}-error-msg`);
+        if (msgEl) msgEl.textContent = err.message || 'An unexpected error occurred.';
+        setPanelState(name, 'error');
+      }
+      return null;
+    }
+
+    /* ── Main refresh ────────────────────────────────────────── */
+    let lastFrom = null;
+    let lastTo   = null;
+
+    async function refresh() {
+      const fromVal = $from.value;
+      const toVal   = $to.value;
+
+      // Validate date range
+      if (fromVal && toVal && new Date(fromVal) > new Date(toVal)) {
+        $hint.textContent = 'Start date must be on or before end date.';
+        return;
+      }
+      $hint.textContent = '';
+
+      lastFrom = fromVal || null;
+      lastTo   = toVal   || null;
+
+      $apply.disabled = true;
+
+      // Hide counts while loading
+      document.getElementById('activity-count').hidden = true;
+      document.getElementById('members-count').hidden = true;
+
+      // Run all three panels concurrently
+      const [actData, metData, memData] = await Promise.all([
+        loadPanel('activity', () => {
+          const result = activity(SAMPLE_EVENTS, lastFrom, lastTo);
+          if (result.length > 0) renderActivity(result);
+          return result;
+        }),
+        loadPanel('metrics', () => {
+          const result = metrics(SAMPLE_ITEMS, lastFrom, lastTo);
+          if (result.total > 0) renderMetrics(result);
+          return result;
+        }),
+        loadPanel('members', () => {
+          const result = members(SAMPLE_ITEMS, lastFrom, lastTo);
+          if (result.length > 0) renderMembers(result);
+          return result;
+        }),
+      ]);
+
+      // Suppress lint warning — we intentionally hold these for symmetry
+      void actData; void metData; void memData;
+
+      $apply.disabled = false;
+    }
+
+    /* ── Retry buttons ───────────────────────────────────────── */
+    function attachRetry(name, loadFn) {
+      document.getElementById(`${name}-retry`).addEventListener('click', async () => {
+        await loadPanel(name, loadFn);
+      });
+    }
+
+    attachRetry('activity', () => {
+      const result = activity(SAMPLE_EVENTS, lastFrom, lastTo);
+      if (result.length > 0) renderActivity(result);
+      return result;
+    });
+
+    attachRetry('metrics', () => {
+      const result = metrics(SAMPLE_ITEMS, lastFrom, lastTo);
+      if (result.total > 0) renderMetrics(result);
+      return result;
+    });
+
+    attachRetry('members', () => {
+      const result = members(SAMPLE_ITEMS, lastFrom, lastTo);
+      if (result.length > 0) renderMembers(result);
+      return result;
+    });
+
+    /* ── Wire up Apply button ────────────────────────────────── */
+    $apply.addEventListener('click', refresh);
+
+    // Also allow pressing Enter in date inputs
+    [$from, $to].forEach((input) => {
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') refresh();
+      });
+    });
+
+    /* ── Set sensible default dates (YTD) ───────────────────── */
+    const today = new Date();
+    const jan1  = new Date(today.getFullYear(), 0, 1);
+    $from.value = jan1.toISOString().slice(0, 10);
+    $to.value   = today.toISOString().slice(0, 10);
+  </script>
+
+</body>
+</html>
