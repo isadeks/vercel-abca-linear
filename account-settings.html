@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+
+      /* Themeable tokens */
+      --bg:        var(--cream);
+      --bg-card:   #ffffff;
+      --bg-input:  #ffffff;
+      --bg-sidebar: var(--sand);
+      --border:    var(--stone);
+      --text:      var(--ink);
+      --text-muted: var(--ash);
+      --nav-bg:    rgba(250,248,244,0.94);
+    }
+
+    /* ── Dark theme overrides ─────────────────────────────────── */
+    [data-theme="dark"] {
+      --bg:        #1a1714;
+      --bg-card:   #242019;
+      --bg-input:  #2e2a25;
+      --bg-sidebar: #201d18;
+      --border:    #3a3530;
+      --text:      #f0ece4;
+      --text-muted: #9e9590;
+      --nav-bg:    rgba(26,23,20,0.94);
+      --sand:      #201d18;
+      --cream:     #1a1714;
+      --stone:     #3a3530;
+      --ink:       #f0ece4;
+      --ash:       #9e9590;
+      --teal-lt:   #1b3e3a;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg);
+      color: var(--text);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 40px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--text);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none; align-items: center;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover,
+    .nav__links a[aria-current="page"] { color: var(--text); }
+
+    /* ── Page layout ──────────────────────────────────────────── */
+    .page-wrap {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      grid-column: 1 / -1;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 24px;
+      margin-bottom: 4px;
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+    }
+
+    /* ── Sidebar nav ──────────────────────────────────────────── */
+    .settings-nav {
+      position: sticky;
+      top: 82px;
+      background: var(--bg-sidebar);
+      border: 1px solid var(--border);
+      padding: 8px 0;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .settings-nav__item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 20px;
+      font-size: 0.88rem;
+      font-weight: 500;
+      cursor: pointer;
+      color: var(--text-muted);
+      transition: background 0.15s, color 0.15s;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      font-family: var(--font-sans);
+    }
+    .settings-nav__item:hover {
+      background: var(--border);
+      color: var(--text);
+    }
+    .settings-nav__item.active {
+      color: var(--teal);
+      background: var(--teal-lt);
+    }
+    .settings-nav__item svg {
+      flex-shrink: 0;
+      opacity: 0.7;
+    }
+    .settings-nav__item.active svg { opacity: 1; }
+
+    /* ── Content panels ───────────────────────────────────────── */
+    .settings-panel {
+      display: none;
+    }
+    .settings-panel.active {
+      display: block;
+    }
+
+    /* ── Card ─────────────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 32px;
+      margin-bottom: 24px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .card__title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .card__desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      line-height: 1.65;
+    }
+
+    /* ── Form elements ────────────────────────────────────────── */
+    .form-row {
+      margin-bottom: 18px;
+    }
+    .form-row label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 7px;
+    }
+    .form-row input[type="text"],
+    .form-row input[type="email"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      background: var(--bg-input);
+      color: var(--text);
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      outline: none;
+      transition: border-color 0.2s, background 0.25s;
+    }
+    .form-row input:focus { border-color: var(--teal); }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 12px 24px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid transparent;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+    .btn--outline {
+      background: transparent;
+      border-color: var(--border);
+      color: var(--text-muted);
+    }
+    .btn--outline:hover { border-color: var(--text-muted); color: var(--text); }
+
+    /* ── Save feedback ────────────────────────────────────────── */
+    .save-msg {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      color: var(--teal);
+      padding-left: 4px;
+    }
+    .save-msg.visible { display: flex; }
+
+    /* ── Avatar ───────────────────────────────────────────────── */
+    .avatar-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .avatar-preview {
+      width: 88px;
+      height: 88px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--teal-lt);
+      border: 2px solid var(--border);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: var(--teal);
+    }
+    .avatar-preview img {
+      width: 88px;
+      height: 88px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .avatar-actions { display: flex; flex-direction: column; gap: 8px; }
+    .avatar-actions p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .btn--sm {
+      padding: 8px 16px;
+      font-size: 0.72rem;
+    }
+
+    /* Hidden file input */
+    #avatar-upload { display: none; }
+
+    /* ── Toggle switch ────────────────────────────────────────── */
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .toggle-row:last-of-type { border-bottom: none; padding-bottom: 0; }
+    .toggle-row:first-of-type { padding-top: 0; }
+    .toggle-info { flex: 1; }
+    .toggle-info__label {
+      font-size: 0.92rem;
+      font-weight: 500;
+      margin-bottom: 3px;
+    }
+    .toggle-info__desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    .toggle-switch {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+      margin-left: 24px;
+    }
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+    }
+    .toggle-switch__track {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 13px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .toggle-switch input:checked + .toggle-switch__track { background: var(--teal); }
+    .toggle-switch__track::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      transition: transform 0.2s;
+    }
+    .toggle-switch input:checked + .toggle-switch__track::after {
+      transform: translateX(22px);
+    }
+
+    /* ── Theme preview chips ──────────────────────────────────── */
+    .theme-chips {
+      display: flex;
+      gap: 12px;
+      margin-top: 20px;
+    }
+    .theme-chip {
+      flex: 1;
+      border: 2px solid var(--border);
+      padding: 14px;
+      cursor: pointer;
+      transition: border-color 0.2s;
+      position: relative;
+    }
+    .theme-chip.selected { border-color: var(--teal); }
+    .theme-chip__swatch {
+      width: 100%;
+      height: 48px;
+      margin-bottom: 10px;
+      border-radius: 2px;
+    }
+    .theme-chip--light .theme-chip__swatch { background: linear-gradient(135deg, #faf8f4 50%, #f5f0e8 50%); }
+    .theme-chip--dark  .theme-chip__swatch { background: linear-gradient(135deg, #1a1714 50%, #242019 50%); }
+    .theme-chip__name {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .theme-chip.selected .theme-chip__name { color: var(--teal); }
+    .theme-chip__check {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 18px;
+      height: 18px;
+      background: var(--teal);
+      border-radius: 50%;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+    .theme-chip.selected .theme-chip__check { display: flex; }
+
+    /* ── Notifications ────────────────────────────────────────── */
+    .notif-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .notif-count {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .notif-count strong { color: var(--text); }
+
+    .notif-list {
+      list-style: none;
+    }
+    .notif-item {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      border-bottom: 1px solid var(--border);
+      transition: opacity 0.2s;
+    }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-item.read { opacity: 0.55; }
+
+    .notif-dot {
+      margin-top: 6px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+    .notif-item.read .notif-dot { background: var(--border); }
+
+    .notif-body { flex: 1; }
+    .notif-body__title {
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 4px;
+      line-height: 1.4;
+    }
+    .notif-item.read .notif-body__title { font-weight: 400; }
+    .notif-body__text {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+    .notif-body__time {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+      letter-spacing: 0.04em;
+    }
+
+    .notif-actions {
+      display: flex;
+      align-items: flex-start;
+      padding-top: 2px;
+    }
+    .btn-mark-read {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      font-family: var(--font-sans);
+      padding: 4px 0;
+      transition: opacity 0.2s;
+      white-space: nowrap;
+    }
+    .btn-mark-read:hover { opacity: 0.65; }
+    .notif-item.read .btn-mark-read {
+      color: var(--text-muted);
+    }
+
+    .notif-empty {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      display: none;
+    }
+    .notif-empty svg { margin: 0 auto 16px; opacity: 0.35; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 720px) {
+      .nav { padding: 16px 20px; }
+      .nav__links { display: none; }
+      .page-wrap {
+        grid-template-columns: 1fr;
+        padding: 32px 20px 60px;
+        gap: 28px;
+      }
+      .settings-nav {
+        position: static;
+        display: flex;
+        overflow-x: auto;
+        padding: 0;
+        gap: 0;
+      }
+      .settings-nav__item {
+        padding: 10px 16px;
+        white-space: nowrap;
+        border-bottom: 2px solid transparent;
+        justify-content: center;
+        flex: 1;
+      }
+      .settings-nav__item.active { border-bottom-color: var(--teal); background: transparent; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="account-settings.html" aria-current="page">Account</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Main ─────────────────────────────────────────────────── -->
+  <div class="page-wrap">
+
+    <!-- Page header -->
+    <header class="page-header">
+      <p class="page-header__eyebrow">Your account</p>
+      <h1>Settings</h1>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="settings-nav" aria-label="Settings sections">
+      <button class="settings-nav__item active" data-target="profile">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M2.5 13c0-2.76 2.46-5 5.5-5s5.5 2.24 5.5 5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        Profile
+      </button>
+      <button class="settings-nav__item" data-target="preferences">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="3" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.41 1.41M11.54 11.54l1.41 1.41M3.05 12.95l1.41-1.41M11.54 4.46l1.41-1.41" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        Preferences
+      </button>
+      <button class="settings-nav__item" data-target="notifications" id="nav-notif">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M8 1.5A4.5 4.5 0 003.5 6v3l-1 2h11l-1-2V6A4.5 4.5 0 008 1.5z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>
+          <path d="M6.5 11.5c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        Notifications
+        <span class="notif-badge" id="notif-badge" style="
+          display:none;
+          margin-left:auto;
+          background:var(--teal);
+          color:white;
+          font-size:0.65rem;
+          font-weight:600;
+          border-radius:99px;
+          padding:1px 7px;
+          line-height:1.5;
+        "></span>
+      </button>
+    </nav>
+
+    <!-- Content area -->
+    <div class="settings-content">
+
+      <!-- ── Profile panel ───────────────────────────────────── -->
+      <section class="settings-panel active" id="panel-profile" aria-label="Profile settings">
+
+        <div class="card">
+          <h2 class="card__title">Profile information</h2>
+          <p class="card__desc">Your name and email are shown on your account. Your avatar appears across the site.</p>
+
+          <!-- Avatar -->
+          <div class="avatar-row">
+            <div class="avatar-preview" id="avatar-preview">
+              <span id="avatar-initials">JD</span>
+            </div>
+            <div class="avatar-actions">
+              <button class="btn btn--outline btn--sm" id="btn-upload-avatar" type="button">Upload photo</button>
+              <button class="btn btn--outline btn--sm" id="btn-remove-avatar" type="button">Remove photo</button>
+              <p>JPG, PNG or GIF · max 2 MB</p>
+            </div>
+            <input type="file" id="avatar-upload" accept="image/*" aria-label="Upload avatar image" />
+          </div>
+
+          <!-- Fields -->
+          <div class="form-row">
+            <label for="field-name">Full name</label>
+            <input type="text" id="field-name" name="name" autocomplete="name" placeholder="Jane Doe" />
+          </div>
+          <div class="form-row">
+            <label for="field-email">Email address</label>
+            <input type="email" id="field-email" name="email" autocomplete="email" placeholder="jane@example.com" />
+          </div>
+
+          <div class="form-actions">
+            <button class="btn btn--teal" id="btn-save-profile" type="button">Save changes</button>
+            <button class="btn btn--outline" id="btn-cancel-profile" type="button">Cancel</button>
+            <span class="save-msg" id="profile-save-msg" role="status">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7l3.5 3.5L12 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Saved
+            </span>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ── Preferences panel ───────────────────────────────── -->
+      <section class="settings-panel" id="panel-preferences" aria-label="Preferences">
+
+        <div class="card">
+          <h2 class="card__title">Appearance</h2>
+          <p class="card__desc">Choose how Wander looks to you. Your preference is saved and applied on each visit.</p>
+
+          <!-- Theme chips -->
+          <div class="theme-chips" role="radiogroup" aria-label="Colour theme">
+            <div class="theme-chip theme-chip--light selected" id="chip-light" role="radio" aria-checked="true" tabindex="0" data-theme-value="light">
+              <div class="theme-chip__swatch"></div>
+              <p class="theme-chip__name">Light</p>
+              <div class="theme-chip__check" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+            <div class="theme-chip theme-chip--dark" id="chip-dark" role="radio" aria-checked="false" tabindex="0" data-theme-value="dark">
+              <div class="theme-chip__swatch"></div>
+              <p class="theme-chip__name">Dark</p>
+              <div class="theme-chip__check" aria-hidden="true">
+                <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2 2 4-4" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="card__title">Other preferences</h2>
+          <p class="card__desc">Fine-tune your experience. These settings are stored in your browser.</p>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <p class="toggle-info__label">Email digests</p>
+              <p class="toggle-info__desc">Receive a fortnightly roundup of new guides and destination picks.</p>
+            </div>
+            <label class="toggle-switch" aria-label="Email digests">
+              <input type="checkbox" id="pref-digest" />
+              <span class="toggle-switch__track"></span>
+            </label>
+          </div>
+
+          <div class="toggle-row">
+            <div class="toggle-info">
+              <p class="toggle-info__label">Reduce motion</p>
+              <p class="toggle-info__desc">Minimise animations across the site for a calmer experience.</p>
+            </div>
+            <label class="toggle-switch" aria-label="Reduce motion">
+              <input type="checkbox" id="pref-motion" />
+              <span class="toggle-switch__track"></span>
+            </label>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ── Notifications panel ─────────────────────────────── -->
+      <section class="settings-panel" id="panel-notifications" aria-label="Notifications">
+
+        <div class="card">
+          <div class="notif-toolbar">
+            <p class="notif-count" id="notif-count-text">
+              <strong id="notif-unread-num">0</strong> unread
+            </p>
+            <button class="btn btn--outline btn--sm" id="btn-mark-all-read" type="button">Mark all as read</button>
+          </div>
+
+          <ul class="notif-list" id="notif-list" aria-live="polite" aria-label="Notifications"></ul>
+
+          <div class="notif-empty" id="notif-empty">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+              <circle cx="20" cy="20" r="18" stroke="currentColor" stroke-width="1.5"/>
+              <path d="M20 12v2M20 22v2M14 20h2M24 20h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            </svg>
+            <p>You're all caught up — no notifications here.</p>
+          </div>
+        </div>
+
+      </section>
+
+    </div><!-- /.settings-content -->
+  </div><!-- /.page-wrap -->
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer style="background:var(--bg-sidebar);border-top:1px solid var(--border);padding:28px 40px;transition:background 0.25s,border-color 0.25s;">
+    <div style="max-width:var(--max-w);margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:var(--text-muted);">
+      <a href="index.html" style="font-family:var(--font-serif);font-size:1.25rem;font-weight:400;color:var(--text);">Wander</a>
+      <span>&copy; 2026 Wander. <a href="privacy.html" style="color:var(--text-muted);">Privacy</a> &nbsp;·&nbsp; <a href="terms.html" style="color:var(--text-muted);">Terms</a></span>
+    </div>
+  </footer>
+
+  <script>
+    /* ───────────────────────────────────────────────────────────
+       Utility helpers
+    ─────────────────────────────────────────────────────────── */
+    const get = (id) => document.getElementById(id);
+    const save = (key, val) => localStorage.setItem('wander_' + key, JSON.stringify(val));
+    const load = (key, fallback) => {
+      try {
+        const raw = localStorage.getItem('wander_' + key);
+        return raw !== null ? JSON.parse(raw) : fallback;
+      } catch (_) {
+        return fallback;
+      }
+    };
+
+    /* ───────────────────────────────────────────────────────────
+       Sidebar navigation
+    ─────────────────────────────────────────────────────────── */
+    const navItems = document.querySelectorAll('.settings-nav__item');
+    const panels   = document.querySelectorAll('.settings-panel');
+
+    function showPanel(target) {
+      navItems.forEach(btn => btn.classList.toggle('active', btn.dataset.target === target));
+      panels.forEach(panel => {
+        panel.classList.toggle('active', panel.id === 'panel-' + target);
+      });
+      save('settings_tab', target);
+    }
+
+    navItems.forEach(btn => {
+      btn.addEventListener('click', () => showPanel(btn.dataset.target));
+    });
+
+    // Restore last visited tab
+    const savedTab = load('settings_tab', 'profile');
+    showPanel(savedTab);
+
+    /* ───────────────────────────────────────────────────────────
+       Theme  (light / dark)
+    ─────────────────────────────────────────────────────────── */
+    function applyTheme(theme) {
+      document.documentElement.setAttribute('data-theme', theme);
+      save('theme', theme);
+
+      const lightChip = get('chip-light');
+      const darkChip  = get('chip-dark');
+      lightChip.classList.toggle('selected', theme === 'light');
+      darkChip.classList.toggle('selected',  theme === 'dark');
+      lightChip.setAttribute('aria-checked', String(theme === 'light'));
+      darkChip.setAttribute('aria-checked',  String(theme === 'dark'));
+    }
+
+    // Load saved theme on page load
+    applyTheme(load('theme', 'light'));
+
+    // Chip clicks
+    document.querySelectorAll('.theme-chip').forEach(chip => {
+      chip.addEventListener('click', () => applyTheme(chip.dataset.themeValue));
+      chip.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          applyTheme(chip.dataset.themeValue);
+        }
+      });
+    });
+
+    /* ───────────────────────────────────────────────────────────
+       Other preference toggles
+    ─────────────────────────────────────────────────────────── */
+    const prefToggles = [
+      { id: 'pref-digest', key: 'pref_digest' },
+      { id: 'pref-motion', key: 'pref_motion' },
+    ];
+
+    prefToggles.forEach(({ id, key }) => {
+      const el = get(id);
+      el.checked = load(key, false);
+      el.addEventListener('change', () => save(key, el.checked));
+    });
+
+    /* ───────────────────────────────────────────────────────────
+       Profile
+    ─────────────────────────────────────────────────────────── */
+    const nameEl   = get('field-name');
+    const emailEl  = get('field-email');
+    const saveMsg  = get('profile-save-msg');
+    let savedProfile = load('profile', { name: '', email: '', avatar: null });
+
+    function initials(name) {
+      if (!name) return '?';
+      const parts = name.trim().split(/\s+/);
+      if (parts.length === 1) return parts[0][0].toUpperCase();
+      return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+    }
+
+    function renderAvatar(profile) {
+      const preview = get('avatar-preview');
+      const span    = get('avatar-initials');
+      if (profile.avatar) {
+        preview.innerHTML = '<img src="' + profile.avatar + '" alt="Your avatar" />';
+      } else {
+        preview.innerHTML = '<span id="avatar-initials">' + initials(profile.name) + '</span>';
+      }
+    }
+
+    function loadProfile() {
+      nameEl.value  = savedProfile.name  || '';
+      emailEl.value = savedProfile.email || '';
+      renderAvatar(savedProfile);
+    }
+
+    loadProfile();
+
+    let saveTimer = null;
+    function flashSaved() {
+      saveMsg.classList.add('visible');
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(() => saveMsg.classList.remove('visible'), 2400);
+    }
+
+    get('btn-save-profile').addEventListener('click', () => {
+      savedProfile = {
+        name:   nameEl.value.trim(),
+        email:  emailEl.value.trim(),
+        avatar: savedProfile.avatar,
+      };
+      save('profile', savedProfile);
+      renderAvatar(savedProfile);
+      flashSaved();
+    });
+
+    get('btn-cancel-profile').addEventListener('click', () => {
+      loadProfile();
+    });
+
+    // Avatar upload
+    const uploadInput = get('avatar-upload');
+    get('btn-upload-avatar').addEventListener('click', () => uploadInput.click());
+    uploadInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      if (file.size > 2 * 1024 * 1024) {
+        alert('Image is too large — please choose a file under 2 MB.');
+        return;
+      }
+      const reader = new FileReader();
+      reader.onload = (evt) => {
+        savedProfile.avatar = evt.target.result;
+        save('profile', savedProfile);
+        renderAvatar(savedProfile);
+      };
+      reader.readAsDataURL(file);
+    });
+
+    get('btn-remove-avatar').addEventListener('click', () => {
+      savedProfile.avatar = null;
+      save('profile', savedProfile);
+      renderAvatar(savedProfile);
+    });
+
+    /* ───────────────────────────────────────────────────────────
+       Notifications
+    ─────────────────────────────────────────────────────────── */
+    const DEFAULT_NOTIFICATIONS = [
+      {
+        id: 'n1',
+        title: 'Your Amalfi Coast guide bookmark was updated',
+        text: 'We refreshed the accommodation section with new picks for summer 2026.',
+        time: '2 hours ago',
+        read: false,
+      },
+      {
+        id: 'n2',
+        title: 'New guide available: The Atlas Mountains',
+        text: 'Our latest long-form guide to Morocco\'s Atlas region is now live.',
+        time: 'Yesterday',
+        read: false,
+      },
+      {
+        id: 'n3',
+        title: 'Your destination quiz results are ready',
+        text: 'Based on your answers, we matched you with three new destinations worth exploring.',
+        time: '3 days ago',
+        read: false,
+      },
+      {
+        id: 'n4',
+        title: 'Kyoto cherry blossom season — plan ahead',
+        text: 'Peak season is April 1–15. Our updated guide has the best spots and a booking checklist.',
+        time: '1 week ago',
+        read: true,
+      },
+      {
+        id: 'n5',
+        title: 'Welcome to Wander!',
+        text: 'Explore our curated travel guides and save destinations to your reading list.',
+        time: '2 weeks ago',
+        read: true,
+      },
+    ];
+
+    let notifications = load('notifications', DEFAULT_NOTIFICATIONS);
+
+    function countUnread() {
+      return notifications.filter(n => !n.read).length;
+    }
+
+    function updateBadge() {
+      const n = countUnread();
+      const badge = get('notif-badge');
+      if (n > 0) {
+        badge.style.display = 'inline-block';
+        badge.textContent = n;
+      } else {
+        badge.style.display = 'none';
+      }
+      get('notif-unread-num').textContent = n;
+    }
+
+    function markRead(id) {
+      notifications = notifications.map(n => n.id === id ? { ...n, read: true } : n);
+      save('notifications', notifications);
+      renderNotifications();
+    }
+
+    function markAllRead() {
+      notifications = notifications.map(n => ({ ...n, read: true }));
+      save('notifications', notifications);
+      renderNotifications();
+    }
+
+    function renderNotifications() {
+      const list  = get('notif-list');
+      const empty = get('notif-empty');
+      list.innerHTML = '';
+
+      if (notifications.length === 0) {
+        list.style.display = 'none';
+        empty.style.display = 'block';
+        updateBadge();
+        return;
+      }
+
+      list.style.display = '';
+      empty.style.display = 'none';
+
+      notifications.forEach(n => {
+        const li = document.createElement('li');
+        li.className = 'notif-item' + (n.read ? ' read' : '');
+        li.dataset.id = n.id;
+        li.innerHTML =
+          '<div class="notif-dot" aria-hidden="true"></div>' +
+          '<div class="notif-body">' +
+            '<p class="notif-body__title">' + escHtml(n.title) + '</p>' +
+            '<p class="notif-body__text">'  + escHtml(n.text)  + '</p>' +
+            '<p class="notif-body__time">'  + escHtml(n.time)  + '</p>' +
+          '</div>' +
+          '<div class="notif-actions">' +
+            (!n.read
+              ? '<button class="btn-mark-read" type="button" data-id="' + n.id + '" aria-label="Mark as read">Mark read</button>'
+              : '<span style="font-size:0.75rem;color:var(--text-muted);">Read</span>'
+            ) +
+          '</div>';
+        list.appendChild(li);
+      });
+
+      // Delegate click on mark-read buttons
+      list.querySelectorAll('.btn-mark-read').forEach(btn => {
+        btn.addEventListener('click', () => markRead(btn.dataset.id));
+      });
+
+      updateBadge();
+    }
+
+    function escHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    get('btn-mark-all-read').addEventListener('click', markAllRead);
+
+    renderNotifications();
+  </script>
+
+</body>
+</html>
