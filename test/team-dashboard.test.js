@@ -12,6 +12,8 @@ import {
   getMemberById,
   getMembersByWorkload,
   workloadScore,
+  workloadLabel,
+  WORKLOAD_THRESHOLDS,
 } from '../api/_lib/team.js';
 
 import {
@@ -81,6 +83,40 @@ describe('team helpers', () => {
       const sorted = getMembersByWorkload();
       for (let i = 1; i < sorted.length; i++) {
         expect(workloadScore(sorted[i - 1])).toBeGreaterThanOrEqual(workloadScore(sorted[i]));
+      }
+    });
+  });
+
+  describe('WORKLOAD_THRESHOLDS', () => {
+    it('exports LOW_MAX and HIGH_MIN as positive integers', () => {
+      expect(typeof WORKLOAD_THRESHOLDS.LOW_MAX).toBe('number');
+      expect(typeof WORKLOAD_THRESHOLDS.HIGH_MIN).toBe('number');
+      expect(WORKLOAD_THRESHOLDS.LOW_MAX).toBeGreaterThan(0);
+      expect(WORKLOAD_THRESHOLDS.HIGH_MIN).toBeGreaterThan(WORKLOAD_THRESHOLDS.LOW_MAX);
+    });
+  });
+
+  describe('workloadLabel()', () => {
+    it('returns "low" for scores below LOW_MAX', () => {
+      expect(workloadLabel(0)).toBe('low');
+      expect(workloadLabel(WORKLOAD_THRESHOLDS.LOW_MAX - 1)).toBe('low');
+    });
+
+    it('returns "medium" for scores at LOW_MAX up to (but not including) HIGH_MIN', () => {
+      expect(workloadLabel(WORKLOAD_THRESHOLDS.LOW_MAX)).toBe('medium');
+      expect(workloadLabel(WORKLOAD_THRESHOLDS.HIGH_MIN - 1)).toBe('medium');
+    });
+
+    it('returns "high" for scores at or above HIGH_MIN', () => {
+      expect(workloadLabel(WORKLOAD_THRESHOLDS.HIGH_MIN)).toBe('high');
+      expect(workloadLabel(WORKLOAD_THRESHOLDS.HIGH_MIN + 10)).toBe('high');
+    });
+
+    it('each real team member gets a valid label', () => {
+      const valid = new Set(['low', 'medium', 'high']);
+      for (const m of getAllMembers()) {
+        const label = workloadLabel(workloadScore(m));
+        expect(valid.has(label)).toBe(true);
       }
     });
   });
