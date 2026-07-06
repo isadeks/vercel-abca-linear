@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Status — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --green:   #2e7d52;
+      --green-lt:#d4eddf;
+      --red:     #b94040;
+      --red-lt:  #f9dede;
+      --amber:   #946c20;
+      --amber-lt:#fef3d8;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 860px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; object-fit: cover; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      background: var(--ink);
+      padding: 20px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: white;
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: white; }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+      padding: 56px 0 40px;
+    }
+    .page-header h1 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .page-header p {
+      color: var(--ash);
+      font-size: 0.95rem;
+    }
+
+    /* ── Health badge ─────────────────────────────────────────── */
+    .health-section {
+      padding: 48px 0 32px;
+    }
+    .health-card {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      padding: 28px 32px;
+      border-radius: 2px;
+    }
+    .health-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.3s, color 0.3s;
+    }
+    .health-badge--loading {
+      background: var(--stone);
+      color: var(--ash);
+    }
+    .health-badge--ok {
+      background: var(--green-lt);
+      color: var(--green);
+    }
+    .health-badge--error {
+      background: var(--red-lt);
+      color: var(--red);
+    }
+    .health-badge__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+    .health-badge--ok    .health-badge__dot { animation: pulse-green 2s ease-in-out infinite; }
+    .health-badge--error .health-badge__dot { animation: pulse-red 1.2s ease-in-out infinite; }
+
+    @keyframes pulse-green {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50%       { opacity: 0.5; transform: scale(0.8); }
+    }
+    @keyframes pulse-red {
+      0%, 100% { opacity: 1; }
+      50%       { opacity: 0.35; }
+    }
+
+    .health-info {
+      flex: 1;
+    }
+    .health-info__title {
+      font-weight: 500;
+      font-size: 1rem;
+      margin-bottom: 4px;
+    }
+    .health-info__meta {
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+    #health-ts { font-variant-numeric: tabular-nums; }
+
+    /* ── Deploys table ────────────────────────────────────────── */
+    .deploys-section {
+      padding: 0 0 80px;
+    }
+    .deploys-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .deploys-section .section-sub {
+      color: var(--ash);
+      font-size: 0.85rem;
+      margin-bottom: 24px;
+    }
+
+    .deploys-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.875rem;
+    }
+    .deploys-table thead tr {
+      border-bottom: 2px solid var(--stone);
+    }
+    .deploys-table th {
+      text-align: left;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ash);
+      padding: 0 12px 12px 0;
+    }
+    .deploys-table td {
+      padding: 14px 12px 14px 0;
+      border-bottom: 1px solid var(--stone);
+      vertical-align: middle;
+    }
+    .deploys-table tbody tr:last-child td { border-bottom: none; }
+
+    .deploy-state {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 100px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    .deploy-state--success  { background: var(--green-lt);  color: var(--green); }
+    .deploy-state--failed   { background: var(--red-lt);    color: var(--red); }
+    .deploy-state--building { background: var(--amber-lt);  color: var(--amber); }
+    .deploy-state--unknown  { background: var(--stone);     color: var(--ash); }
+
+    .deploy-state::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      flex-shrink: 0;
+    }
+
+    .deploy-branch {
+      font-size: 0.78rem;
+      color: var(--ash);
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      background: var(--sand);
+      padding: 2px 6px;
+      border-radius: 3px;
+    }
+    .deploy-commit {
+      font-size: 0.78rem;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      color: var(--teal);
+    }
+    .deploy-message {
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: var(--ash);
+    }
+    .deploy-date {
+      font-size: 0.78rem;
+      color: var(--ash);
+      white-space: nowrap;
+      font-variant-numeric: tabular-nums;
+    }
+    .deploy-link {
+      font-size: 0.78rem;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      white-space: nowrap;
+    }
+    .deploy-link:hover { opacity: 0.65; }
+
+    .stub-notice {
+      display: none;
+      background: var(--amber-lt);
+      color: var(--amber);
+      border: 1px solid #e8c97a;
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      margin-bottom: 20px;
+      border-radius: 2px;
+    }
+    .stub-notice.visible { display: block; }
+
+    .deploys-error {
+      display: none;
+      color: var(--red);
+      background: var(--red-lt);
+      border: 1px solid #e8aaaa;
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      margin-bottom: 20px;
+      border-radius: 2px;
+    }
+    .deploys-error.visible { display: block; }
+
+    .deploys-loading {
+      color: var(--ash);
+      font-size: 0.88rem;
+      padding: 24px 0;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      margin-top: auto;
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 28px 0;
+    }
+    .footer__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.78rem;
+    }
+    .footer__inner a { color: rgba(255,255,255,0.45); transition: color 0.2s; }
+    .footer__inner a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 700px) {
+      .nav { padding: 18px 20px; }
+      .nav__links { display: none; }
+      .health-card { flex-direction: column; align-items: flex-start; gap: 14px; }
+      .deploy-message { display: none; }
+      .footer__inner { flex-direction: column; gap: 8px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="status.html" aria-current="page">Status</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <div class="page-header">
+    <div class="container">
+      <h1>Site status</h1>
+      <p>Health probe and recent deployment history for wander.travel</p>
+    </div>
+  </div>
+
+  <!-- ── Health badge ─────────────────────────────────────────── -->
+  <section class="health-section" aria-label="Health status">
+    <div class="container">
+      <div class="health-card">
+        <span class="health-badge health-badge--loading" id="health-badge" role="status" aria-live="polite">
+          <span class="health-badge__dot"></span>
+          <span id="health-badge-text">Checking…</span>
+        </span>
+        <div class="health-info">
+          <p class="health-info__title" id="health-title">API health probe</p>
+          <p class="health-info__meta">Last checked: <span id="health-ts">—</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Deploys ──────────────────────────────────────────────── -->
+  <section class="deploys-section" aria-label="Recent deployments">
+    <div class="container">
+      <h2>Recent deploys</h2>
+      <p class="section-sub">Latest deployments to production and preview environments.</p>
+
+      <div class="stub-notice" id="stub-notice">
+        ⚠ Showing stub data — <code>VERCEL_TOKEN</code> and <code>VERCEL_PROJECT_ID</code> are not configured on this deployment.
+      </div>
+      <div class="deploys-error" id="deploys-error"></div>
+
+      <div id="deploys-loading" class="deploys-loading">Loading deployments…</div>
+
+      <table class="deploys-table" id="deploys-table" hidden aria-label="Deployment history">
+        <thead>
+          <tr>
+            <th>Status</th>
+            <th>Branch</th>
+            <th>Commit</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody id="deploys-tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Footer ───────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__inner">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span>
+          <a href="index.html">Home</a> &nbsp;·&nbsp;
+          <a href="privacy.html">Privacy</a> &nbsp;·&nbsp;
+          <a href="terms.html">Terms</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    /* ── Health probe ───────────────────────────────────────── */
+    const badge     = document.getElementById('health-badge');
+    const badgeText = document.getElementById('health-badge-text');
+    const healthTs  = document.getElementById('health-ts');
+
+    async function checkHealth() {
+      badge.className = 'health-badge health-badge--loading';
+      badgeText.textContent = 'Checking…';
+      try {
+        const res = await fetch('/api/health');
+        const data = await res.json().catch(() => ({}));
+        const ok = res.ok && data.ok === true;
+        badge.className = `health-badge health-badge--${ok ? 'ok' : 'error'}`;
+        badgeText.textContent = ok ? 'Operational' : 'Degraded';
+        healthTs.textContent = new Date().toLocaleTimeString();
+      } catch {
+        badge.className = 'health-badge health-badge--error';
+        badgeText.textContent = 'Unreachable';
+        healthTs.textContent = new Date().toLocaleTimeString();
+      }
+    }
+
+    checkHealth();
+    // Re-probe every 60 seconds while the page is open.
+    setInterval(checkHealth, 60_000);
+
+    /* ── Deploys ────────────────────────────────────────────── */
+    const tbody        = document.getElementById('deploys-tbody');
+    const table        = document.getElementById('deploys-table');
+    const loading      = document.getElementById('deploys-loading');
+    const stubNotice   = document.getElementById('stub-notice');
+    const deploysError = document.getElementById('deploys-error');
+
+    function fmtDate(iso) {
+      const d = new Date(iso);
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+        + ' ' + d.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function stateLabel(state) {
+      const map = { success: 'Deployed', failed: 'Failed', building: 'Building', unknown: 'Unknown' };
+      return map[state] ?? state;
+    }
+
+    async function loadDeploys() {
+      try {
+        const res = await fetch('/api/deploys');
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(`HTTP ${res.status}: ${text}`);
+        }
+        const data = await res.json();
+
+        loading.hidden = true;
+
+        if (data.stub) {
+          stubNotice.classList.add('visible');
+        }
+
+        if (!data.deploys || data.deploys.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="color:var(--ash);padding:20px 0">No deployments found.</td></tr>';
+          table.hidden = false;
+          return;
+        }
+
+        tbody.innerHTML = data.deploys.map((d) => {
+          const stateClass = `deploy-state deploy-state--${d.state}`;
+          const link = d.url && d.url !== '#'
+            ? `<a class="deploy-link" href="${d.url}" target="_blank" rel="noopener">View ↗</a>`
+            : '<span style="color:var(--ash)">—</span>';
+          return `
+            <tr>
+              <td><span class="${stateClass}">${stateLabel(d.state)}</span></td>
+              <td>${d.branch ? `<span class="deploy-branch">${escHtml(d.branch)}</span>` : '—'}</td>
+              <td>${d.commit ? `<span class="deploy-commit">${escHtml(d.commit)}</span>` : '—'}</td>
+              <td class="deploy-message" title="${escAttr(d.commitMessage)}">${escHtml(d.commitMessage) || '—'}</td>
+              <td class="deploy-date">${fmtDate(d.createdAt)}</td>
+              <td>${link}</td>
+            </tr>`;
+        }).join('');
+
+        table.hidden = false;
+      } catch (err) {
+        loading.hidden = true;
+        deploysError.textContent = `Failed to load deployments: ${err.message}`;
+        deploysError.classList.add('visible');
+      }
+    }
+
+    function escHtml(str) {
+      return String(str ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+    function escAttr(str) { return escHtml(str); }
+
+    loadDeploys();
+  </script>
+
+</body>
+</html>
