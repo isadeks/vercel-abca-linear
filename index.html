@@ -546,6 +546,36 @@
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
+
+    /* ── Dark mode palette ─────────────────────────────────────── */
+    :root[data-theme="dark"] {
+      --cream:   #1a1a1f;
+      --sand:    #232329;
+      --stone:   #3a3a42;
+      --ink:     #f0ede8;
+      --ash:     #9a9490;
+    }
+    :root[data-theme="dark"] .nav.scrolled {
+      background: rgba(26,26,31,0.92);
+    }
+
+    /* ── Theme toggle button ────────────────────────────────────── */
+    .nav__toggle-theme {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.5);
+      color: rgba(255,255,255,0.85);
+      cursor: pointer;
+      padding: 5px 10px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      line-height: 1;
+      transition: color 0.3s, border-color 0.3s;
+    }
+    .nav__toggle-theme:hover { color: white; border-color: white; }
+    .nav.scrolled .nav__toggle-theme { color: var(--ash); border-color: var(--stone); }
+    .nav.scrolled .nav__toggle-theme:hover { color: var(--ink); border-color: var(--ink); }
   </style>
 </head>
 <body>
@@ -560,6 +590,7 @@
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
+    <button class="nav__toggle-theme" aria-label="Toggle dark mode">🌙</button>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
@@ -834,5 +865,15 @@
 
   </script>
 
+  <script type="module">
+    import { init, toggle, getTheme } from '/js/dark-mode.js';
+    init();
+    const btn = document.querySelector('.nav__toggle-theme');
+    btn.textContent = getTheme() === 'dark' ? '☀️' : '🌙';
+    btn.addEventListener('click', () => {
+      toggle();
+      btn.textContent = getTheme() === 'dark' ? '☀️' : '🌙';
+    });
+  </script>
 </body>
 </html>
