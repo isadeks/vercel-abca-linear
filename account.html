@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── Light theme (default) ────────────────────────────────── */
+    :root,
+    [data-theme="light"] {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+
+      /* Semantic tokens */
+      --bg-page:    var(--cream);
+      --bg-card:    #ffffff;
+      --bg-surface: var(--sand);
+      --border:     var(--stone);
+      --text-primary:   var(--ink);
+      --text-secondary: var(--ash);
+      --nav-bg:     rgba(250,248,244,0.95);
+
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 860px;
+    }
+
+    /* ── Dark theme ───────────────────────────────────────────── */
+    [data-theme="dark"] {
+      --sand:    #2a2520;
+      --cream:   #1e1b18;
+      --stone:   #3a3530;
+      --ink:     #f0ebe3;
+      --ash:     #a09890;
+
+      --bg-page:    #1e1b18;
+      --bg-card:    #28241f;
+      --bg-surface: #242019;
+      --border:     #3a3530;
+      --text-primary:   #f0ebe3;
+      --text-secondary: #a09890;
+      --nav-bg:     rgba(30,27,24,0.95);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--bg-page);
+      color: var(--text-primary);
+      font-size: 16px;
+      line-height: 1.6;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: var(--nav-bg);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--text-primary);
+      transition: color 0.25s ease;
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-hero {
+      padding: 80px 0 56px;
+      background: var(--bg-surface);
+      border-bottom: 1px solid var(--border);
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: var(--text-primary);
+    }
+
+    /* ── Main layout ──────────────────────────────────────────── */
+    .account-body {
+      padding: 64px 0 96px;
+    }
+    .account-grid {
+      display: grid;
+      grid-template-columns: 300px 1fr;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 720px) {
+      .account-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ── Profile card ─────────────────────────────────────────── */
+    .profile-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 36px 28px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+
+    .profile-card__avatar-wrap {
+      position: relative;
+      width: 96px;
+      height: 96px;
+      margin-bottom: 20px;
+    }
+    .profile-card__avatar {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid var(--teal-lt);
+      background: var(--bg-surface);
+    }
+    [data-theme="dark"] .profile-card__avatar {
+      border-color: var(--teal);
+    }
+    /* Fallback monogram shown when no avatar image loads */
+    .profile-card__avatar-fallback {
+      display: none;
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      font-family: var(--font-serif);
+      font-size: 2.2rem;
+      font-weight: 400;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.04em;
+      border: 3px solid var(--teal);
+    }
+    .profile-card__avatar.error ~ .profile-card__avatar-fallback,
+    .profile-card__avatar[data-error] ~ .profile-card__avatar-fallback {
+      display: flex;
+    }
+
+    .profile-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      line-height: 1.2;
+      transition: color 0.25s ease;
+    }
+    .profile-card__handle {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.04em;
+      margin-bottom: 20px;
+      transition: color 0.25s ease;
+    }
+    .profile-card__divider {
+      width: 100%;
+      height: 1px;
+      background: var(--border);
+      margin: 20px 0;
+      transition: background 0.25s ease;
+    }
+    .profile-card__stat-row {
+      display: flex;
+      gap: 24px;
+      width: 100%;
+      justify-content: center;
+    }
+    .profile-card__stat {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+    }
+    .profile-card__stat-value {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--teal);
+      line-height: 1;
+    }
+    .profile-card__stat-label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: color 0.25s ease;
+    }
+
+    .profile-card__edit-btn {
+      margin-top: 24px;
+      width: 100%;
+      padding: 11px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.76rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: transparent;
+      border: 1px solid var(--teal);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+    }
+    .profile-card__edit-btn:hover {
+      background: var(--teal);
+      color: white;
+    }
+
+    /* ── Settings panel ───────────────────────────────────────── */
+    .settings-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .settings-section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 28px 32px;
+      transition: background 0.25s ease, border-color 0.25s ease;
+    }
+    .settings-section__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.25s ease, border-color 0.25s ease;
+    }
+
+    /* ── Theme toggle row ─────────────────────────────────────── */
+    .theme-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .theme-row__label-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .theme-row__label {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      transition: color 0.25s ease;
+    }
+    .theme-row__desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      transition: color 0.25s ease;
+    }
+
+    /* Toggle switch */
+    .theme-toggle {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .theme-toggle__icon {
+      font-size: 1rem;
+      line-height: 1;
+      transition: opacity 0.2s;
+    }
+    .theme-toggle__icon--sun  { opacity: 1; }
+    .theme-toggle__icon--moon { opacity: 0.45; }
+    [data-theme="dark"] .theme-toggle__icon--sun  { opacity: 0.45; }
+    [data-theme="dark"] .theme-toggle__icon--moon { opacity: 1; }
+
+    .theme-toggle__track {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      background: var(--stone);
+      border-radius: 13px;
+      transition: background 0.25s ease;
+      flex-shrink: 0;
+    }
+    [data-theme="dark"] .theme-toggle__track {
+      background: var(--teal);
+    }
+    .theme-toggle__thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: white;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+      transition: transform 0.25s ease;
+    }
+    [data-theme="dark"] .theme-toggle__thumb {
+      transform: translateX(22px);
+    }
+
+    /* Hidden but accessible checkbox for a11y */
+    .theme-toggle__input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .theme-toggle__input:focus-visible ~ .theme-toggle__track {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+    }
+
+    /* ── Preference rows ──────────────────────────────────────── */
+    .pref-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.25s ease;
+    }
+    .pref-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .pref-row:first-child { padding-top: 0; }
+
+    .pref-row__label {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      transition: color 0.25s ease;
+    }
+    .pref-row__value {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      transition: color 0.25s ease;
+    }
+    .pref-row__link {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      transition: opacity 0.2s;
+    }
+    .pref-row__link:hover { opacity: 0.65; }
+
+    /* ── Saved destinations list ──────────────────────────────── */
+    .saved-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .saved-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      text-decoration: none;
+      padding: 12px;
+      margin: 0 -12px;
+      transition: background 0.15s;
+      border-radius: 2px;
+    }
+    .saved-item:hover { background: var(--bg-surface); }
+    .saved-item__thumb {
+      width: 52px;
+      height: 40px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+    .saved-item__info { flex: 1; min-width: 0; }
+    .saved-item__region {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 2px;
+    }
+    .saved-item__name {
+      font-family: var(--font-serif);
+      font-size: 1.05rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.25s ease;
+    }
+    .saved-item__arrow {
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      flex-shrink: 0;
+      transition: color 0.25s ease;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    [data-theme="dark"] footer {
+      background: #111009;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Your account</p>
+      <h1 class="page-hero__title">Profile &amp; preferences</h1>
+    </div>
+  </div>
+
+  <!-- ── Account body ─────────────────────────────────────────── -->
+  <main class="account-body">
+    <div class="container">
+      <div class="account-grid">
+
+        <!-- ── Profile card ──────────────────────────────────── -->
+        <aside>
+          <div class="profile-card">
+            <div class="profile-card__avatar-wrap">
+              <img
+                class="profile-card__avatar"
+                id="profile-avatar"
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80"
+                alt="Profile photo of Alexandra Mercer"
+              />
+              <!-- Fallback monogram rendered via JS if image fails -->
+              <div class="profile-card__avatar-fallback" id="profile-monogram" aria-hidden="true">AM</div>
+            </div>
+
+            <h2 class="profile-card__name">Alexandra Mercer</h2>
+            <p class="profile-card__handle">@amercer · Member since 2024</p>
+
+            <div class="profile-card__divider"></div>
+
+            <div class="profile-card__stat-row">
+              <div class="profile-card__stat">
+                <span class="profile-card__stat-value">14</span>
+                <span class="profile-card__stat-label">Saved</span>
+              </div>
+              <div class="profile-card__stat">
+                <span class="profile-card__stat-value">6</span>
+                <span class="profile-card__stat-label">Visited</span>
+              </div>
+              <div class="profile-card__stat">
+                <span class="profile-card__stat-value">3</span>
+                <span class="profile-card__stat-label">Reviews</span>
+              </div>
+            </div>
+
+            <button class="profile-card__edit-btn" type="button" onclick="alert('Edit profile coming soon.')">
+              Edit profile
+            </button>
+          </div>
+        </aside>
+
+        <!-- ── Settings panel ────────────────────────────────── -->
+        <div class="settings-panel">
+
+          <!-- Appearance -->
+          <section class="settings-section">
+            <h2 class="settings-section__heading">Appearance</h2>
+
+            <div class="theme-row">
+              <div class="theme-row__label-wrap">
+                <span class="theme-row__label">Colour theme</span>
+                <span class="theme-row__desc">Switch between light and dark mode. Your preference is saved automatically.</span>
+              </div>
+
+              <label class="theme-toggle" for="theme-checkbox" aria-label="Toggle dark mode">
+                <span class="theme-toggle__icon theme-toggle__icon--sun" aria-hidden="true">☀</span>
+                <input
+                  class="theme-toggle__input"
+                  type="checkbox"
+                  id="theme-checkbox"
+                  role="switch"
+                  aria-checked="false"
+                />
+                <span class="theme-toggle__track">
+                  <span class="theme-toggle__thumb"></span>
+                </span>
+                <span class="theme-toggle__icon theme-toggle__icon--moon" aria-hidden="true">☾</span>
+              </label>
+            </div>
+          </section>
+
+          <!-- Account details -->
+          <section class="settings-section">
+            <h2 class="settings-section__heading">Account details</h2>
+
+            <div class="pref-row">
+              <span class="pref-row__label">Email</span>
+              <span class="pref-row__value">alex.mercer@email.com</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-row__label">Password</span>
+              <a href="#" class="pref-row__link" onclick="return false;">Change</a>
+            </div>
+            <div class="pref-row">
+              <span class="pref-row__label">Newsletter</span>
+              <span class="pref-row__value">Subscribed</span>
+            </div>
+            <div class="pref-row">
+              <span class="pref-row__label">Currency</span>
+              <span class="pref-row__value">GBP (£)</span>
+            </div>
+          </section>
+
+          <!-- Saved destinations -->
+          <section class="settings-section">
+            <h2 class="settings-section__heading">Saved destinations</h2>
+
+            <div class="saved-list">
+              <a href="amalfi-guide.html" class="saved-item">
+                <img
+                  class="saved-item__thumb"
+                  src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=120&q=70"
+                  alt="Amalfi Coast"
+                />
+                <div class="saved-item__info">
+                  <p class="saved-item__region">Southern Italy</p>
+                  <p class="saved-item__name">Amalfi Coast</p>
+                </div>
+                <span class="saved-item__arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a href="kyoto-guide.html" class="saved-item">
+                <img
+                  class="saved-item__thumb"
+                  src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=120&q=70"
+                  alt="Kyoto"
+                />
+                <div class="saved-item__info">
+                  <p class="saved-item__region">Japan</p>
+                  <p class="saved-item__name">Kyoto</p>
+                </div>
+                <span class="saved-item__arrow" aria-hidden="true">→</span>
+              </a>
+
+              <a href="norway-guide.html" class="saved-item">
+                <img
+                  class="saved-item__thumb"
+                  src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=120&q=70"
+                  alt="Norwegian fjords"
+                />
+                <div class="saved-item__info">
+                  <p class="saved-item__region">Scandinavia</p>
+                  <p class="saved-item__name">Norway's fjords</p>
+                </div>
+                <span class="saved-item__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </section>
+
+        </div><!-- /settings-panel -->
+
+      </div><!-- /account-grid -->
+    </div><!-- /container -->
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Theme management ──────────────────────────────────────────
+    const STORAGE_KEY = 'wander-theme';
+    const htmlEl      = document.documentElement;
+    const checkbox    = document.getElementById('theme-checkbox');
+
+    function applyTheme(theme) {
+      htmlEl.setAttribute('data-theme', theme);
+      checkbox.checked      = theme === 'dark';
+      checkbox.setAttribute('aria-checked', String(theme === 'dark'));
+    }
+
+    // Restore saved preference, falling back to OS preference
+    function getPreferredTheme() {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved === 'light' || saved === 'dark') return saved;
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+
+    // Apply on load (before paint to avoid flash)
+    applyTheme(getPreferredTheme());
+
+    // Toggle handler
+    checkbox.addEventListener('change', () => {
+      const next = checkbox.checked ? 'dark' : 'light';
+      applyTheme(next);
+      localStorage.setItem(STORAGE_KEY, next);
+    });
+
+    // ── Avatar error fallback ─────────────────────────────────────
+    const avatarImg      = document.getElementById('profile-avatar');
+    const avatarMonogram = document.getElementById('profile-monogram');
+
+    avatarImg.addEventListener('error', () => {
+      avatarImg.style.display = 'none';
+      avatarMonogram.style.display = 'flex';
+    });
+  </script>
+
+</body>
+</html>
