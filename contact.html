@@ -195,6 +195,100 @@
       align-self: flex-start;
     }
     .btn:hover { background: #22665c; border-color: #22665c; }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Confirmation message */
+    .form-confirmation {
+      display: none;
+      padding: 32px;
+      background: var(--teal-lt);
+      border: 1px solid var(--teal);
+      text-align: center;
+    }
+    .form-confirmation.is-visible { display: block; }
+    .form-confirmation__icon {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 14px;
+    }
+    .form-confirmation__title {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .form-confirmation__msg {
+      font-size: 0.9rem;
+      color: var(--ash);
+      line-height: 1.7;
+    }
+
+    /* FAQ section */
+    .faq-section {
+      margin-top: 80px;
+      padding-top: 64px;
+      border-top: 1px solid var(--stone);
+    }
+    .faq-section__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .faq-section__title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 300;
+      margin-bottom: 48px;
+    }
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .faq-item {
+      border-top: 1px solid var(--stone);
+    }
+    .faq-item:last-child { border-bottom: 1px solid var(--stone); }
+    .faq-item__question {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 20px 0;
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--ink);
+      cursor: pointer;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+    }
+    .faq-item__question:hover { color: var(--teal); }
+    .faq-item__chevron {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--ash);
+      transition: transform 0.25s ease;
+    }
+    .faq-item.is-open .faq-item__chevron { transform: rotate(180deg); }
+    .faq-item__answer {
+      display: none;
+      padding-bottom: 24px;
+    }
+    .faq-item.is-open .faq-item__answer { display: block; }
+    .faq-item__answer p {
+      font-size: 0.92rem;
+      color: var(--ash);
+      line-height: 1.8;
+    }
+    .faq-item__answer p + p { margin-top: 10px; }
 
     footer {
       background: var(--ink);
@@ -273,38 +367,106 @@
           </div>
         </div>
 
-        <form class="contact-form" onsubmit="return false;">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" placeholder="Your name" />
+        <div>
+          <form class="contact-form" id="contact-form" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" placeholder="Your name" required />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="your@email.com" required />
+              </div>
             </div>
             <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" placeholder="your@email.com" />
+              <label for="subject">Subject</label>
+              <select id="subject" name="subject">
+                <option value="">Select a subject…</option>
+                <option>General enquiry</option>
+                <option>Writer pitch</option>
+                <option>Factual correction</option>
+                <option>Partnership enquiry</option>
+                <option>Other</option>
+              </select>
             </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" name="message" rows="6" placeholder="Tell us what's on your mind…" required></textarea>
+            </div>
+            <button type="submit" class="btn" id="submit-btn">Send message</button>
+          </form>
+
+          <div class="form-confirmation" id="form-confirmation" role="alert" aria-live="polite">
+            <div class="form-confirmation__icon">✓</div>
+            <p class="form-confirmation__title">Message sent — thank you!</p>
+            <p class="form-confirmation__msg">We've received your message and will get back to you within five working days. We read every enquiry and look forward to responding.</p>
           </div>
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <select id="subject">
-              <option value="">Select a subject…</option>
-              <option>General enquiry</option>
-              <option>Writer pitch</option>
-              <option>Factual correction</option>
-              <option>Partnership enquiry</option>
-              <option>Other</option>
-            </select>
+        </div>
+
+      </div>
+
+    <!-- FAQ section -->
+    <div class="faq-section">
+      <p class="faq-section__eyebrow">FAQ</p>
+      <h2 class="faq-section__title">Frequently asked questions</h2>
+
+      <div class="faq-list" id="faq-list">
+
+        <div class="faq-item">
+          <button class="faq-item__question" aria-expanded="false">
+            How long does it take to receive a reply?
+            <svg class="faq-item__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>We aim to respond to all genuine enquiries within five working days. During busy periods (around a new guide launch, for example) it may take a little longer. We read everything personally — no auto-responders.</p>
           </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" rows="6" placeholder="Tell us what's on your mind…"></textarea>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" aria-expanded="false">
+            How do I pitch a travel story?
+            <svg class="faq-item__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>Use the contact form above and select "Writer pitch" as the subject. Please include a short introduction, evidence of first-hand experience in the destination, and one or two specific story ideas. We strongly recommend reading our existing guides first so you can calibrate the angle and depth we are looking for.</p>
           </div>
-          <button type="submit" class="btn">Send message</button>
-        </form>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" aria-expanded="false">
+            Do you accept sponsored content or paid placements?
+            <svg class="faq-item__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>No. Our editorial independence is non-negotiable. We do not accept payment for coverage, placements, or mentions of any kind. Every recommendation in our guides is based on first-hand experience and honest editorial judgement.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" aria-expanded="false">
+            I found a factual error in one of your guides — what should I do?
+            <svg class="faq-item__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>Please use the contact form and select "Factual correction". Tell us the guide, the specific claim, and what the correct information is. We take accuracy seriously and will update the guide promptly if we can verify the correction.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-item__question" aria-expanded="false">
+            How do I subscribe to the Wander newsletter?
+            <svg class="faq-item__chevron" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 8l5 5 5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+          <div class="faq-item__answer">
+            <p>You can subscribe via the newsletter sign-up on our <a href="index.html#newsletter" style="color:var(--teal);border-bottom:1px solid currentColor;">home page</a>. We publish one newsletter per month — no more — with new guides, recommended reads, and occasional notes from the field.</p>
+          </div>
+        </div>
 
       </div>
     </div>
-  </div>
+  </div><!-- /.container -->
+  </div><!-- /.contact-body -->
 
   <footer>
     <div class="container">
@@ -344,6 +506,65 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    // Contact form — show confirmation on submit
+    (function () {
+      const form = document.getElementById('contact-form');
+      const confirmation = document.getElementById('form-confirmation');
+      const submitBtn = document.getElementById('submit-btn');
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const message = document.getElementById('message').value.trim();
+
+        if (!name || !email || !message) {
+          // Basic validation — highlight empties
+          [{ id: 'name', val: name }, { id: 'email', val: email }, { id: 'message', val: message }].forEach(function (f) {
+            const el = document.getElementById(f.id);
+            el.style.borderColor = f.val ? '' : '#c0392b';
+          });
+          return;
+        }
+
+        submitBtn.disabled = true;
+        form.style.display = 'none';
+        confirmation.classList.add('is-visible');
+        confirmation.focus();
+      });
+
+      // Clear error state on input
+      ['name', 'email', 'message'].forEach(function (id) {
+        document.getElementById(id).addEventListener('input', function () {
+          this.style.borderColor = '';
+        });
+      });
+    }());
+
+    // FAQ accordion
+    (function () {
+      const items = document.querySelectorAll('.faq-item');
+      items.forEach(function (item) {
+        const btn = item.querySelector('.faq-item__question');
+        btn.addEventListener('click', function () {
+          const isOpen = item.classList.contains('is-open');
+          // Close all
+          items.forEach(function (i) {
+            i.classList.remove('is-open');
+            i.querySelector('.faq-item__question').setAttribute('aria-expanded', 'false');
+          });
+          // Toggle clicked
+          if (!isOpen) {
+            item.classList.add('is-open');
+            btn.setAttribute('aria-expanded', 'true');
+          }
+        });
+      });
+    }());
+  </script>
 
 </body>
 </html>
