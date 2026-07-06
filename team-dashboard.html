@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Dashboard — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w:   1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      padding: 56px 0 40px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 32px;
+    }
+    .page-header__title em { font-style: italic; }
+
+    /* ── Date-range picker ────────────────────────────────────── */
+    .date-filter {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .date-filter__label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .date-filter__input {
+      padding: 9px 14px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--ink);
+      outline: none;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .date-filter__input:focus { border-color: var(--teal); }
+    .date-filter__sep {
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+    .date-filter__presets {
+      display: flex;
+      gap: 6px;
+      margin-left: 8px;
+    }
+    .preset-btn {
+      padding: 8px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      background: transparent;
+      color: var(--ash);
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s, border-color 0.15s;
+    }
+    .preset-btn:hover { background: var(--stone); color: var(--ink); }
+    .preset-btn.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+
+    /* ── Main content ─────────────────────────────────────────── */
+    .dashboard {
+      padding: 48px 0 80px;
+    }
+
+    /* ── Stats row ────────────────────────────────────────────── */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 48px;
+    }
+    .stat-card {
+      background: white;
+      border: 1px solid var(--stone);
+      padding: 28px 32px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--teal);
+    }
+    .stat-card--coral::before { background: var(--coral); }
+    .stat-card--sand::before  { background: var(--ash); }
+    .stat-card__label {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 12px;
+    }
+    .stat-card__value {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .stat-card__unit {
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+
+    /* ── Two-column layout ────────────────────────────────────── */
+    .dashboard__body {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ── Section header ───────────────────────────────────────── */
+    .section-heading {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    /* ── Activity feed ────────────────────────────────────────── */
+    .activity-panel {
+      background: white;
+      border: 1px solid var(--stone);
+    }
+    .activity-panel__header {
+      padding: 24px 28px 0;
+    }
+    .activity-feed {
+      max-height: 480px;
+      overflow-y: auto;
+      padding: 8px 0 16px;
+    }
+    .activity-feed::-webkit-scrollbar { width: 4px; }
+    .activity-feed::-webkit-scrollbar-track { background: transparent; }
+    .activity-feed::-webkit-scrollbar-thumb { background: var(--stone); }
+    .activity-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--sand);
+      transition: background 0.15s;
+    }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-item:hover { background: var(--cream); }
+    .activity-item__avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--teal-lt);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--teal);
+      flex-shrink: 0;
+    }
+    .activity-item__body { flex: 1; min-width: 0; }
+    .activity-item__line {
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .activity-item__actor { font-weight: 500; }
+    .activity-item__subject {
+      color: var(--teal);
+      font-style: italic;
+    }
+    .activity-item__time {
+      font-size: 0.72rem;
+      color: var(--ash);
+      margin-top: 3px;
+    }
+    .activity-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 2px;
+      vertical-align: middle;
+      margin-left: 6px;
+    }
+    .activity-badge--created    { background: var(--teal-lt); color: var(--teal); }
+    .activity-badge--completed  { background: #dff0e8; color: #2a6b4a; }
+    .activity-badge--commented  { background: #f0eadf; color: #7a5a2a; }
+    .activity-badge--in-progress { background: #e8e0f5; color: #5a3a8a; }
+    .activity-badge--reviewed   { background: #e8f0f5; color: #2a5a7a; }
+    .activity-badge--blocked    { background: #f5e0df; color: #7a2a2a; }
+
+    .activity-empty {
+      padding: 48px 28px;
+      text-align: center;
+      color: var(--ash);
+      font-size: 0.88rem;
+    }
+
+    /* ── Workload panel ───────────────────────────────────────── */
+    .workload-panel {
+      background: white;
+      border: 1px solid var(--stone);
+      padding: 24px 28px;
+    }
+    .workload-list { list-style: none; }
+    .workload-item {
+      padding: 12px 0;
+      border-bottom: 1px solid var(--sand);
+    }
+    .workload-item:last-child { border-bottom: none; }
+    .workload-item__top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+    .workload-item__name {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      font-weight: 500;
+    }
+    .workload-item__avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--sand);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-weight: 500;
+      color: var(--ash);
+      flex-shrink: 0;
+    }
+    .workload-item__count {
+      font-size: 0.78rem;
+      color: var(--ash);
+      font-variant-numeric: tabular-nums;
+    }
+    .workload-bar {
+      height: 4px;
+      background: var(--stone);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .workload-bar__fill {
+      height: 100%;
+      background: var(--teal);
+      border-radius: 2px;
+      transition: width 0.4s ease;
+    }
+    .workload-bar__fill--high { background: var(--coral); }
+    .workload-empty {
+      padding: 32px 0;
+      text-align: center;
+      color: var(--ash);
+      font-size: 0.88rem;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 40px 0 28px;
+    }
+    .footer__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+    }
+    .footer__bottom a {
+      color: rgba(255,255,255,0.45);
+      transition: color 0.2s;
+    }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .stats-row { grid-template-columns: 1fr 1fr; }
+      .dashboard__body { grid-template-columns: 1fr; }
+      .date-filter__presets { margin-left: 0; }
+    }
+
+    @media (max-width: 560px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .stat-card__value { font-size: 2.4rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Back to site</a>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Manager view</p>
+      <h1 class="page-header__title">Team <em>Dashboard</em></h1>
+      <div class="date-filter" role="search" aria-label="Date range filter">
+        <span class="date-filter__label">From</span>
+        <input class="date-filter__input" type="date" id="date-from" aria-label="Start date" />
+        <span class="date-filter__sep">—</span>
+        <span class="date-filter__label">To</span>
+        <input class="date-filter__input" type="date" id="date-to" aria-label="End date" />
+        <div class="date-filter__presets" role="group" aria-label="Quick date presets">
+          <button class="preset-btn" data-days="7">7 days</button>
+          <button class="preset-btn active" data-days="14">14 days</button>
+          <button class="preset-btn" data-days="30">30 days</button>
+          <button class="preset-btn" data-days="90">90 days</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Dashboard body ───────────────────────────────────────── -->
+  <main class="dashboard">
+    <div class="container">
+
+      <!-- Stats row -->
+      <div class="stats-row" role="region" aria-label="Key metrics">
+        <div class="stat-card">
+          <p class="stat-card__label">Open items</p>
+          <p class="stat-card__value" id="stat-open">—</p>
+          <p class="stat-card__unit">in selected range</p>
+        </div>
+        <div class="stat-card stat-card--coral">
+          <p class="stat-card__label">Completions</p>
+          <p class="stat-card__value" id="stat-completions">—</p>
+          <p class="stat-card__unit">in selected range</p>
+        </div>
+        <div class="stat-card stat-card--sand">
+          <p class="stat-card__label">Avg cycle time</p>
+          <p class="stat-card__value" id="stat-cycle">—</p>
+          <p class="stat-card__unit" id="stat-cycle-unit">days per item</p>
+        </div>
+      </div>
+
+      <!-- Two-column layout -->
+      <div class="dashboard__body">
+
+        <!-- Activity feed -->
+        <section aria-labelledby="activity-heading">
+          <div class="activity-panel">
+            <div class="activity-panel__header">
+              <h2 class="section-heading" id="activity-heading">Recent activity</h2>
+            </div>
+            <div class="activity-feed" id="activity-feed" role="list" aria-live="polite">
+              <!-- populated by JS -->
+            </div>
+          </div>
+        </section>
+
+        <!-- Workload list -->
+        <section aria-labelledby="workload-heading">
+          <div class="workload-panel">
+            <h2 class="section-heading" id="workload-heading">Team workload</h2>
+            <ul class="workload-list" id="workload-list" aria-live="polite">
+              <!-- populated by JS -->
+            </ul>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { openCount }          from './api/_lib/open-count.js';
+    import { completionCount }    from './api/_lib/completion-count.js';
+    import { avgCompletionTime }  from './api/_lib/avg-completion-time.js';
+    import { recentActivity }     from './api/_lib/recent-activity.js';
+    import { workload }           from './api/_lib/workload.js';
+
+    /* ── Sample dataset ──────────────────────────────────────── *
+     * Represents work items for the Wander editorial team.
+     * Dates are relative to 2026-07-06 so the demo is always
+     * meaningful inside any reasonable date range.
+     * ─────────────────────────────────────────────────────────── */
+    const TODAY = new Date('2026-07-06T00:00:00Z');
+    const daysAgo = (n) => new Date(TODAY.getTime() - n * 86_400_000).toISOString();
+
+    /** @type {Array<{id:string, title:string, status:string, assignee:string|null, createdAt:string, completedAt:string|null}>} */
+    const ITEMS = [
+      // Open items
+      { id: 'I-01', title: 'Write Amalfi spring update',      status: 'open',      assignee: 'alice',   createdAt: daysAgo(45), completedAt: null },
+      { id: 'I-02', title: 'Review Norway photography set',   status: 'open',      assignee: 'bob',     createdAt: daysAgo(38), completedAt: null },
+      { id: 'I-03', title: 'SEO audit — destination pages',   status: 'open',      assignee: 'carol',   createdAt: daysAgo(30), completedAt: null },
+      { id: 'I-04', title: 'Update Kyoto visa information',   status: 'open',      assignee: 'alice',   createdAt: daysAgo(22), completedAt: null },
+      { id: 'I-05', title: 'Draft Bali guide outline',        status: 'open',      assignee: 'dan',     createdAt: daysAgo(18), completedAt: null },
+      { id: 'I-06', title: 'Newsletter issue #13 copy',       status: 'open',      assignee: 'eve',     createdAt: daysAgo(14), completedAt: null },
+      { id: 'I-07', title: 'Patagonia itinerary corrections', status: 'open',      assignee: 'bob',     createdAt: daysAgo(10), completedAt: null },
+      { id: 'I-08', title: 'Add Rajasthan packing checklist', status: 'open',      assignee: 'carol',   createdAt: daysAgo(8),  completedAt: null },
+      { id: 'I-09', title: 'Site performance review',         status: 'open',      assignee: 'dan',     createdAt: daysAgo(5),  completedAt: null },
+      { id: 'I-10', title: 'Santorini gallery refresh',       status: 'open',      assignee: null,      createdAt: daysAgo(3),  completedAt: null },
+
+      // Completed items
+      { id: 'I-11', title: 'Publish quiz feature',            status: 'completed', assignee: 'alice',   createdAt: daysAgo(60), completedAt: daysAgo(50) },
+      { id: 'I-12', title: 'Add contact page',                status: 'completed', assignee: 'bob',     createdAt: daysAgo(55), completedAt: daysAgo(48) },
+      { id: 'I-13', title: 'Fix broken destination links',    status: 'completed', assignee: 'carol',   createdAt: daysAgo(50), completedAt: daysAgo(42) },
+      { id: 'I-14', title: 'Write Norway fjords guide',       status: 'completed', assignee: 'alice',   createdAt: daysAgo(40), completedAt: daysAgo(34) },
+      { id: 'I-15', title: 'Add Rajasthan guide',             status: 'completed', assignee: 'dan',     createdAt: daysAgo(35), completedAt: daysAgo(28) },
+      { id: 'I-16', title: 'Replace mismatched images',       status: 'completed', assignee: 'eve',     createdAt: daysAgo(30), completedAt: daysAgo(22) },
+      { id: 'I-17', title: 'Hero image optimisation',         status: 'completed', assignee: 'bob',     createdAt: daysAgo(25), completedAt: daysAgo(18) },
+      { id: 'I-18', title: 'Newsletter sign-up form',         status: 'completed', assignee: 'carol',   createdAt: daysAgo(20), completedAt: daysAgo(14) },
+      { id: 'I-19', title: 'Patagonia guide draft',           status: 'completed', assignee: 'alice',   createdAt: daysAgo(18), completedAt: daysAgo(10) },
+      { id: 'I-20', title: 'Rename Surprise Me to quiz CTA',  status: 'completed', assignee: 'dan',     createdAt: daysAgo(15), completedAt: daysAgo(8)  },
+      { id: 'I-21', title: 'Dark-mode proto spike',           status: 'completed', assignee: 'eve',     createdAt: daysAgo(12), completedAt: daysAgo(6)  },
+      { id: 'I-22', title: 'ESLint config for API modules',   status: 'completed', assignee: 'bob',     createdAt: daysAgo(10), completedAt: daysAgo(4)  },
+      { id: 'I-23', title: 'Booking data-layer tests',        status: 'completed', assignee: 'carol',   createdAt: daysAgo(8),  completedAt: daysAgo(2)  },
+    ];
+
+    /** @type {Array<{id:string, actor:string, action:string, subject:string, timestamp:string}>} */
+    const EVENTS = [
+      { id: 'E-01', actor: 'alice',  action: 'completed',   subject: 'Patagonia guide draft',          timestamp: daysAgo(10) },
+      { id: 'E-02', actor: 'bob',    action: 'commented',   subject: 'Norway photography set review',  timestamp: daysAgo(9)  },
+      { id: 'E-03', actor: 'carol',  action: 'created',     subject: 'Add Rajasthan packing checklist',timestamp: daysAgo(8)  },
+      { id: 'E-04', actor: 'carol',  action: 'completed',   subject: 'Booking data-layer tests',       timestamp: daysAgo(7.5) },
+      { id: 'E-05', actor: 'dan',    action: 'completed',   subject: 'Rename Surprise Me to quiz CTA', timestamp: daysAgo(8)  },
+      { id: 'E-06', actor: 'eve',    action: 'in-progress', subject: 'Newsletter issue #13 copy',      timestamp: daysAgo(7)  },
+      { id: 'E-07', actor: 'alice',  action: 'commented',   subject: 'Update Kyoto visa information',  timestamp: daysAgo(6)  },
+      { id: 'E-08', actor: 'eve',    action: 'completed',   subject: 'Dark-mode proto spike',           timestamp: daysAgo(6)  },
+      { id: 'E-09', actor: 'bob',    action: 'completed',   subject: 'ESLint config for API modules',  timestamp: daysAgo(5)  },
+      { id: 'E-10', actor: 'dan',    action: 'created',     subject: 'Site performance review',        timestamp: daysAgo(5)  },
+      { id: 'E-11', actor: 'carol',  action: 'reviewed',    subject: 'Add Rajasthan packing checklist',timestamp: daysAgo(4)  },
+      { id: 'E-12', actor: 'alice',  action: 'commented',   subject: 'Bali guide outline',             timestamp: daysAgo(3)  },
+      { id: 'E-13', actor: 'bob',    action: 'in-progress', subject: 'Patagonia itinerary corrections', timestamp: daysAgo(2)  },
+      { id: 'E-14', actor: 'dan',    action: 'blocked',     subject: 'Site performance review',        timestamp: daysAgo(1.5) },
+      { id: 'E-15', actor: 'eve',    action: 'commented',   subject: 'Santorini gallery refresh',      timestamp: daysAgo(1)  },
+      { id: 'E-16', actor: 'alice',  action: 'created',     subject: 'Santorini gallery refresh',      timestamp: daysAgo(3)  },
+      { id: 'E-17', actor: 'carol',  action: 'commented',   subject: 'SEO audit — destination pages',  timestamp: daysAgo(0.5) },
+    ];
+
+    /* ── Helpers ─────────────────────────────────────────────── */
+
+    /**
+     * Format milliseconds as a human-readable day count.
+     * @param {number|null} ms
+     * @returns {string}
+     */
+    function formatCycleTime(ms) {
+      if (ms === null) return '—';
+      const days = ms / 86_400_000;
+      if (days < 1)   return `${Math.round(days * 24)}h`;
+      return days.toFixed(1);
+    }
+
+    /**
+     * Initials from a name string.
+     * @param {string} name
+     * @returns {string}
+     */
+    function initials(name) {
+      return name
+        .split(' ')
+        .slice(0, 2)
+        .map((w) => w[0].toUpperCase())
+        .join('');
+    }
+
+    /**
+     * Relative timestamp label.
+     * @param {string|Date} ts
+     * @returns {string}
+     */
+    function relativeTime(ts) {
+      const diffMs  = TODAY.getTime() - new Date(ts).getTime();
+      const diffMin = Math.round(diffMs / 60_000);
+      if (diffMin < 60)   return `${diffMin}m ago`;
+      const diffH   = Math.round(diffMin / 60);
+      if (diffH < 24)     return `${diffH}h ago`;
+      const diffD   = Math.round(diffH / 24);
+      return `${diffD}d ago`;
+    }
+
+    /* ── DOM refs ─────────────────────────────────────────────── */
+    const elOpen        = document.getElementById('stat-open');
+    const elCompletions = document.getElementById('stat-completions');
+    const elCycle       = document.getElementById('stat-cycle');
+    const elCycleUnit   = document.getElementById('stat-cycle-unit');
+    const elFeed        = document.getElementById('activity-feed');
+    const elWorkload    = document.getElementById('workload-list');
+    const elFrom        = document.getElementById('date-from');
+    const elTo          = document.getElementById('date-to');
+    const presetBtns    = document.querySelectorAll('.preset-btn');
+
+    /* ── Render ──────────────────────────────────────────────── */
+
+    /**
+     * Render all three dashboard sections for the given date window.
+     * @param {Date} from
+     * @param {Date} to
+     */
+    function render(from, to) {
+      const fromISO = from.toISOString();
+      const toISO   = to.toISOString();
+
+      // Filter items whose createdAt falls within [from, to]
+      const rangeItems = ITEMS.filter((item) => {
+        const t = new Date(item.createdAt).getTime();
+        return t >= from.getTime() && t <= to.getTime();
+      });
+
+      // ── Stats ──────────────────────────────────────────────── //
+      elOpen.textContent        = openCount(rangeItems);
+      elCompletions.textContent = completionCount(rangeItems, fromISO, toISO);
+
+      const cycleMs = avgCompletionTime(rangeItems);
+      const cycleDays = formatCycleTime(cycleMs);
+      elCycle.textContent = cycleDays;
+
+      // Unit label
+      if (cycleMs === null) {
+        elCycleUnit.textContent = 'no completions yet';
+      } else if (cycleMs < 86_400_000) {
+        elCycleUnit.textContent = 'hours per item';
+      } else {
+        elCycleUnit.textContent = 'days per item';
+      }
+
+      // ── Activity feed ──────────────────────────────────────── //
+      const rangeEvents = EVENTS.filter((ev) => {
+        const t = new Date(ev.timestamp).getTime();
+        return t >= from.getTime() && t <= to.getTime();
+      });
+      const latestEvents = recentActivity(rangeEvents, 20);
+
+      if (latestEvents.length === 0) {
+        elFeed.innerHTML = '<p class="activity-empty">No activity in this date range.</p>';
+      } else {
+        elFeed.innerHTML = latestEvents.map((ev) => {
+          const badge = `<span class="activity-badge activity-badge--${ev.action}">${ev.action}</span>`;
+          return `
+            <div class="activity-item" role="listitem">
+              <div class="activity-item__avatar" aria-hidden="true">${initials(ev.actor)}</div>
+              <div class="activity-item__body">
+                <p class="activity-item__line">
+                  <span class="activity-item__actor">${ev.actor}</span>
+                  ${badge}
+                  <span class="activity-item__subject">${ev.subject}</span>
+                </p>
+                <p class="activity-item__time">${relativeTime(ev.timestamp)}</p>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      // ── Workload ───────────────────────────────────────────── //
+      const wl = workload(rangeItems);
+      const entries = Object.entries(wl).sort((a, b) => b[1] - a[1]);
+      const maxCount = entries.length > 0 ? entries[0][1] : 1;
+
+      if (entries.length === 0) {
+        elWorkload.innerHTML = '<li><p class="workload-empty">No open items in this range.</p></li>';
+      } else {
+        elWorkload.innerHTML = entries.map(([name, count]) => {
+          const pct  = Math.round((count / maxCount) * 100);
+          const high = pct >= 80 ? 'workload-bar__fill--high' : '';
+          return `
+            <li class="workload-item">
+              <div class="workload-item__top">
+                <span class="workload-item__name">
+                  <span class="workload-item__avatar" aria-hidden="true">${initials(name)}</span>
+                  ${name}
+                </span>
+                <span class="workload-item__count">${count} open</span>
+              </div>
+              <div class="workload-bar" role="progressbar" aria-valuenow="${count}" aria-valuemax="${maxCount}" aria-label="${name}: ${count} open items">
+                <div class="workload-bar__fill ${high}" style="width:${pct}%"></div>
+              </div>
+            </li>`;
+        }).join('');
+      }
+    }
+
+    /* ── Date helpers ─────────────────────────────────────────── */
+
+    /**
+     * Format a Date as YYYY-MM-DD for input[type=date].
+     * @param {Date} d
+     * @returns {string}
+     */
+    function toInputDate(d) {
+      return d.toISOString().slice(0, 10);
+    }
+
+    /**
+     * Apply a preset (last N days) and re-render.
+     * @param {number} days
+     * @param {HTMLButtonElement} [activeBtn]
+     */
+    function applyPreset(days, activeBtn) {
+      const to   = new Date(TODAY);
+      const from = new Date(TODAY.getTime() - days * 86_400_000);
+      elFrom.value = toInputDate(from);
+      elTo.value   = toInputDate(to);
+      presetBtns.forEach((btn) => btn.classList.remove('active'));
+      if (activeBtn) activeBtn.classList.add('active');
+      render(from, to);
+    }
+
+    /* ── Event listeners ─────────────────────────────────────── */
+
+    presetBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        applyPreset(Number(btn.dataset.days), btn);
+      });
+    });
+
+    function onDateChange() {
+      const fromVal = elFrom.value;
+      const toVal   = elTo.value;
+      if (!fromVal || !toVal) return;
+      const from = new Date(fromVal + 'T00:00:00Z');
+      const to   = new Date(toVal   + 'T23:59:59Z');
+      if (from > to) return;
+      // Clear active preset — custom range selected
+      presetBtns.forEach((btn) => btn.classList.remove('active'));
+      render(from, to);
+    }
+
+    elFrom.addEventListener('change', onDateChange);
+    elTo.addEventListener('change', onDateChange);
+
+    /* ── Initial render (last 14 days) ──────────────────────── */
+    applyPreset(14, document.querySelector('.preset-btn[data-days="14"]'));
+  </script>
+
+</body>
+</html>
