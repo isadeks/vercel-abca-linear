@@ -448,6 +448,62 @@
       transition: color 0.25s ease;
     }
 
+    /* ── Notifications section ───────────────────────────────── */
+    .notif-list {
+      display: flex;
+      flex-direction: column;
+    }
+    .notif-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      transition: border-color 0.25s ease;
+    }
+    .notif-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .notif-item:first-child { padding-top: 0; }
+
+    /* Unread indicator dot */
+    .notif-item__dot {
+      flex-shrink: 0;
+      margin-top: 6px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--teal);
+      transition: background 0.25s ease;
+    }
+    .notif-item--read .notif-item__dot {
+      background: transparent;
+      border: 1px solid var(--border);
+    }
+
+    .notif-item__body { flex: 1; min-width: 0; }
+    .notif-item__title {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      line-height: 1.45;
+      transition: color 0.25s ease;
+    }
+    .notif-item--read .notif-item__title {
+      color: var(--text-secondary);
+    }
+    .notif-item__time {
+      display: block;
+      margin-top: 3px;
+      font-size: 0.73rem;
+      color: var(--text-secondary);
+      letter-spacing: 0.02em;
+      transition: color 0.25s ease;
+    }
+
+    .notif-empty {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      padding: 8px 0;
+    }
+
     /* ── Footer ───────────────────────────────────────────────── */
     footer {
       background: var(--ink);
@@ -672,6 +728,14 @@
             </div>
           </section>
 
+          <!-- Notifications -->
+          <section class="settings-section" id="notifications-section">
+            <h2 class="settings-section__heading">Notifications</h2>
+            <div class="notif-list" id="notif-list" aria-live="polite" aria-label="Notifications">
+              <p class="notif-empty" id="notif-placeholder">Loading notifications…</p>
+            </div>
+          </section>
+
         </div><!-- /settings-panel -->
 
       </div><!-- /account-grid -->
@@ -746,6 +810,66 @@
       applyTheme(next);
       localStorage.setItem(STORAGE_KEY, next);
     });
+
+    // ── Notifications ────────────────────────────────────────────
+    (async function loadNotifications() {
+      const listEl       = document.getElementById('notif-list');
+      const placeholder  = document.getElementById('notif-placeholder');
+
+      function formatRelativeTime(isoString) {
+        const diff = Date.now() - new Date(isoString).getTime();
+        const minutes = Math.floor(diff / 60_000);
+        const hours   = Math.floor(diff / 3_600_000);
+        const days    = Math.floor(diff / 86_400_000);
+        if (minutes < 60) return minutes <= 1 ? 'Just now' : `${minutes} minutes ago`;
+        if (hours   < 24) return hours  === 1 ? '1 hour ago'  : `${hours} hours ago`;
+        if (days    < 30) return days   === 1 ? 'Yesterday'   : `${days} days ago`;
+        return new Date(isoString).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      }
+
+      function renderNotifications(notifications) {
+        if (!notifications || notifications.length === 0) {
+          placeholder.textContent = 'No notifications.';
+          return;
+        }
+        listEl.innerHTML = '';
+        for (const notif of notifications) {
+          const item = document.createElement('div');
+          item.className = 'notif-item' + (notif.read ? ' notif-item--read' : '');
+
+          const dot = document.createElement('span');
+          dot.className = 'notif-item__dot';
+          dot.setAttribute('aria-hidden', 'true');
+
+          const body = document.createElement('div');
+          body.className = 'notif-item__body';
+
+          const title = document.createElement('p');
+          title.className = 'notif-item__title';
+          title.textContent = notif.title;
+
+          const time = document.createElement('time');
+          time.className = 'notif-item__time';
+          time.setAttribute('datetime', notif.timestamp);
+          time.textContent = formatRelativeTime(notif.timestamp);
+
+          body.appendChild(title);
+          body.appendChild(time);
+          item.appendChild(dot);
+          item.appendChild(body);
+          listEl.appendChild(item);
+        }
+      }
+
+      try {
+        const response = await fetch('/api/notifications');
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        renderNotifications(data.notifications);
+      } catch (_err) {
+        placeholder.textContent = 'Unable to load notifications.';
+      }
+    })();
 
     // ── Avatar error fallback ─────────────────────────────────────
     const avatarImg      = document.getElementById('profile-avatar');
