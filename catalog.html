@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Catalog — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--ink); font-size: 16px; line-height: 1.6; }
+    img  { display: block; width: 100%; object-fit: cover; }
+    a    { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: 0.06em; color: var(--ink); }
+    .nav__back  { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); transition: opacity 0.2s; }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ────────────────────────────────────────────── */
+    .page-hero {
+      padding: 72px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .page-hero__title   { font-family: var(--font-serif); font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 300; line-height: 1.1; margin-bottom: 14px; }
+    .page-hero__sub     { font-size: 0.95rem; color: var(--ash); max-width: 480px; line-height: 1.75; }
+
+    /* ── Filter panel ─────────────────────────────────────────── */
+    .filter-bar {
+      background: var(--cream);
+      border-bottom: 1px solid var(--stone);
+      padding: 24px 0;
+      position: sticky;
+      top: 61px; /* below nav */
+      z-index: 90;
+    }
+    .filter-bar__inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: flex-end;
+    }
+
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+    .filter-group--search { flex: 1 1 260px; }
+    .filter-group--category { flex: 0 0 160px; }
+    .filter-group--price { flex: 0 0 220px; }
+    .filter-group--sort { flex: 0 0 180px; }
+
+    .filter-label {
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+
+    .filter-input,
+    .filter-select {
+      padding: 10px 14px;
+      border: 1px solid var(--stone);
+      background: white;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+      border-radius: 0;
+    }
+    .filter-input::placeholder { color: #b0a898; }
+    .filter-input:focus,
+    .filter-select:focus { border-color: var(--teal); }
+
+    .filter-select-wrap {
+      position: relative;
+    }
+    .filter-select-wrap::after {
+      content: '';
+      pointer-events: none;
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 5px solid var(--ash);
+    }
+    .filter-select { width: 100%; padding-right: 32px; }
+
+    /* Price range sub-row */
+    .price-inputs {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .price-inputs .filter-input {
+      width: 90px;
+      padding: 10px 10px;
+    }
+    .price-sep {
+      font-size: 0.75rem;
+      color: var(--ash);
+      flex-shrink: 0;
+    }
+
+    /* Active filter chips */
+    .active-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 0 0;
+    }
+    .filter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      background: var(--teal-lt);
+      border: 1px solid var(--teal);
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      color: var(--teal);
+      cursor: default;
+    }
+    .filter-chip__remove {
+      cursor: pointer;
+      font-size: 0.9rem;
+      line-height: 1;
+      color: var(--teal);
+      background: none;
+      border: none;
+      padding: 0;
+      display: flex;
+      align-items: center;
+    }
+    .filter-chip__remove:hover { color: var(--ink); }
+
+    /* ── Results section ──────────────────────────────────────── */
+    .catalog-body { padding: 56px 0 96px; }
+
+    .results-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .results-count {
+      font-size: 0.82rem;
+      color: var(--ash);
+      font-weight: 400;
+    }
+    .results-count strong { color: var(--ink); font-weight: 500; }
+
+    /* Results grid */
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    @media (max-width: 900px) { .product-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .product-grid { grid-template-columns: 1fr; } }
+
+    /* Product card */
+    .product-card {
+      background: white;
+      border: 1px solid var(--stone);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .product-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.08); }
+
+    .product-card__badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px 0;
+    }
+    .product-card__category {
+      font-size: 0.63rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      background: var(--teal-lt);
+      padding: 3px 8px;
+    }
+    .product-card__date {
+      font-size: 0.7rem;
+      color: var(--ash);
+    }
+
+    .product-card__body { padding: 14px 16px 16px; flex: 1; display: flex; flex-direction: column; }
+    .product-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .product-card__desc {
+      font-size: 0.84rem;
+      color: var(--ash);
+      line-height: 1.65;
+      flex: 1;
+    }
+    .product-card__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 16px;
+      padding-top: 14px;
+      border-top: 1px solid var(--stone);
+    }
+    .product-card__price {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+    .product-card__price-label {
+      font-size: 0.7rem;
+      color: var(--ash);
+      margin-left: 2px;
+    }
+    .product-card__cta {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--teal);
+      border-bottom: 1px solid var(--teal);
+      padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .product-card__cta:hover { opacity: 0.65; }
+
+    /* Empty & loading states */
+    .results-empty,
+    .results-loading,
+    .results-error {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 24px;
+    }
+    .results-empty__icon,
+    .results-loading__icon,
+    .results-error__icon {
+      font-size: 2.4rem;
+      margin-bottom: 16px;
+    }
+    .results-empty h3,
+    .results-error h3 {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+    .results-empty p,
+    .results-loading p,
+    .results-error p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      max-width: 360px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+    .results-loading__spinner {
+      display: inline-block;
+      width: 32px; height: 32px;
+      border: 2px solid var(--stone);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-bottom: 12px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Footer ──────────────────────────────────────────────── */
+    footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px; }
+    .footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer__brand { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: white; margin-bottom: 14px; letter-spacing: 0.04em; }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ──────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .filter-bar { top: 57px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 680px) {
+      .filter-group--price { flex: 1 1 100%; }
+      .filter-group--sort { flex: 1 1 100%; }
+      .filter-group--category { flex: 1 1 100%; }
+      .filter-group--search { flex: 1 1 100%; }
+      .filter-select-wrap,
+      .filter-select { width: 100%; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Catalog</p>
+      <h1 class="page-hero__title">Tours, stays &amp; activities</h1>
+      <p class="page-hero__sub">Find the perfect experience — search by keyword, category, budget, or date.</p>
+    </div>
+  </div>
+
+  <!-- ── Filter bar ─────────────────────────────────────────── -->
+  <div class="filter-bar" id="filterBar" role="search" aria-label="Filter products">
+    <div class="container">
+      <div class="filter-bar__inner">
+
+        <!-- Text search -->
+        <div class="filter-group filter-group--search">
+          <label class="filter-label" for="searchInput">Search</label>
+          <input
+            id="searchInput"
+            class="filter-input"
+            type="search"
+            placeholder="e.g. Santorini, glacier, kayaking…"
+            autocomplete="off"
+            aria-label="Search products"
+          />
+        </div>
+
+        <!-- Category -->
+        <div class="filter-group filter-group--category">
+          <label class="filter-label" for="categorySelect">Category</label>
+          <div class="filter-select-wrap">
+            <select id="categorySelect" class="filter-select" aria-label="Filter by category">
+              <option value="">All categories</option>
+              <option value="tour">Tour</option>
+              <option value="accommodation">Accommodation</option>
+              <option value="activity">Activity</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Price range -->
+        <div class="filter-group filter-group--price">
+          <label class="filter-label">Price (USD)</label>
+          <div class="price-inputs">
+            <input
+              id="minPriceInput"
+              class="filter-input"
+              type="number"
+              min="0"
+              step="10"
+              placeholder="Min"
+              aria-label="Minimum price"
+            />
+            <span class="price-sep">–</span>
+            <input
+              id="maxPriceInput"
+              class="filter-input"
+              type="number"
+              min="0"
+              step="10"
+              placeholder="Max"
+              aria-label="Maximum price"
+            />
+          </div>
+        </div>
+
+        <!-- Sort -->
+        <div class="filter-group filter-group--sort">
+          <label class="filter-label" for="sortSelect">Sort by</label>
+          <div class="filter-select-wrap">
+            <select id="sortSelect" class="filter-select" aria-label="Sort results">
+              <option value="relevance">Relevance</option>
+              <option value="price_asc">Price: low to high</option>
+              <option value="price_desc">Price: high to low</option>
+              <option value="date_asc">Date: earliest first</option>
+              <option value="date_desc">Date: latest first</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Active filter chips -->
+      <div class="active-filters" id="activeFilters" aria-live="polite" aria-label="Active filters"></div>
+    </div>
+  </div>
+
+  <!-- ── Results ────────────────────────────────────────────── -->
+  <div class="catalog-body">
+    <div class="container">
+      <div class="results-header">
+        <p class="results-count" id="resultsCount" aria-live="polite">Loading…</p>
+      </div>
+      <div class="product-grid" id="productGrid" aria-live="polite" aria-label="Product results">
+        <!-- Results injected by JS -->
+        <div class="results-loading">
+          <div class="results-loading__spinner"></div>
+          <p>Fetching catalog…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* ── DOM refs ────────────────────────────────────────────────── */
+    const searchInput    = document.getElementById('searchInput');
+    const categorySelect = document.getElementById('categorySelect');
+    const minPriceInput  = document.getElementById('minPriceInput');
+    const maxPriceInput  = document.getElementById('maxPriceInput');
+    const sortSelect     = document.getElementById('sortSelect');
+    const productGrid    = document.getElementById('productGrid');
+    const resultsCount   = document.getElementById('resultsCount');
+    const activeFilters  = document.getElementById('activeFilters');
+
+    /* ── State ───────────────────────────────────────────────────── */
+    let debounceTimer = null;
+    const DEBOUNCE_MS = 350;
+
+    /* ── Helpers ─────────────────────────────────────────────────── */
+
+    /** Read current filter values from the DOM controls. */
+    function getFilters() {
+      return {
+        q:        searchInput.value.trim(),
+        category: categorySelect.value,
+        minPrice: minPriceInput.value !== '' ? minPriceInput.value : '',
+        maxPrice: maxPriceInput.value !== '' ? maxPriceInput.value : '',
+        sort:     sortSelect.value,
+      };
+    }
+
+    /**
+     * Build a URL search-params string from a filters object,
+     * omitting empty / default values to keep the URL clean.
+     */
+    function filtersToParams(f) {
+      const p = new URLSearchParams();
+      if (f.q)                         p.set('q', f.q);
+      if (f.category)                  p.set('category', f.category);
+      if (f.minPrice !== '')           p.set('minPrice', f.minPrice);
+      if (f.maxPrice !== '')           p.set('maxPrice', f.maxPrice);
+      if (f.sort && f.sort !== 'relevance') p.set('sort', f.sort);
+      return p;
+    }
+
+    /**
+     * Apply saved URL params to the DOM controls (for shareable links /
+     * browser back-button restoration).
+     */
+    function applyParamsToControls() {
+      const p = new URLSearchParams(window.location.search);
+      if (p.has('q'))        searchInput.value    = p.get('q');
+      if (p.has('category')) categorySelect.value = p.get('category');
+      if (p.has('minPrice')) minPriceInput.value  = p.get('minPrice');
+      if (p.has('maxPrice')) maxPriceInput.value  = p.get('maxPrice');
+      if (p.has('sort'))     sortSelect.value     = p.get('sort');
+    }
+
+    /**
+     * Push current filter state into the URL (replaceState — no extra
+     * history entries while the user is typing).
+     */
+    function syncURL(filters) {
+      const params = filtersToParams(filters);
+      const newSearch = params.toString() ? '?' + params.toString() : location.pathname;
+      history.replaceState(null, '', newSearch || location.pathname);
+    }
+
+    /* ── Active-filter chips ─────────────────────────────────────── */
+    const CHIP_LABELS = {
+      q:        (v) => `"${v}"`,
+      category: (v) => v.charAt(0).toUpperCase() + v.slice(1),
+      minPrice: (v) => `From $${v}`,
+      maxPrice: (v) => `Up to $${v}`,
+      sort:     (v) => {
+        const map = {
+          price_asc:  'Price ↑',
+          price_desc: 'Price ↓',
+          date_asc:   'Date ↑',
+          date_desc:  'Date ↓',
+        };
+        return map[v] || v;
+      },
+    };
+
+    function renderChips(filters) {
+      activeFilters.innerHTML = '';
+      const activeKeys = Object.entries(filters).filter(([key, val]) => {
+        if (!val) return false;
+        if (key === 'sort' && val === 'relevance') return false;
+        return true;
+      });
+      for (const [key, val] of activeKeys) {
+        const chip = document.createElement('span');
+        chip.className = 'filter-chip';
+        chip.innerHTML = `
+          ${CHIP_LABELS[key] ? CHIP_LABELS[key](val) : val}
+          <button class="filter-chip__remove" aria-label="Remove filter" data-key="${key}">&#x2715;</button>
+        `;
+        activeFilters.appendChild(chip);
+      }
+    }
+
+    activeFilters.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-key]');
+      if (!btn) return;
+      const key = btn.dataset.key;
+      if (key === 'q')        { searchInput.value    = ''; }
+      if (key === 'category') { categorySelect.value = ''; }
+      if (key === 'minPrice') { minPriceInput.value  = ''; }
+      if (key === 'maxPrice') { maxPriceInput.value  = ''; }
+      if (key === 'sort')     { sortSelect.value     = 'relevance'; }
+      scheduleSearch();
+    });
+
+    /* ── Render helpers ──────────────────────────────────────────── */
+
+    /** Format ISO date to something readable, e.g. "15 Aug 2026" */
+    function formatDate(iso) {
+      const [year, month, day] = iso.split('-');
+      const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+      return `${parseInt(day, 10)} ${months[parseInt(month, 10) - 1]} ${year}`;
+    }
+
+    function renderProducts(products) {
+      if (!products.length) {
+        productGrid.innerHTML = `
+          <div class="results-empty">
+            <div class="results-empty__icon">🔍</div>
+            <h3>No results found</h3>
+            <p>Try adjusting your search or removing some filters to see more options.</p>
+          </div>`;
+        return;
+      }
+
+      productGrid.innerHTML = products.map((p) => `
+        <article class="product-card" data-id="${p.id}">
+          <div class="product-card__badge-row">
+            <span class="product-card__category">${p.category}</span>
+            <span class="product-card__date">${formatDate(p.date)}</span>
+          </div>
+          <div class="product-card__body">
+            <h3 class="product-card__name">${escapeHtml(p.name)}</h3>
+            <p class="product-card__desc">${escapeHtml(p.description)}</p>
+            <div class="product-card__footer">
+              <span class="product-card__price">
+                $${p.price}<span class="product-card__price-label">USD</span>
+              </span>
+              <a href="#" class="product-card__cta">View details</a>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    function renderError(message) {
+      productGrid.innerHTML = `
+        <div class="results-error">
+          <div class="results-error__icon">⚠️</div>
+          <h3>Something went wrong</h3>
+          <p>${escapeHtml(message)}</p>
+        </div>`;
+    }
+
+    function renderLoading() {
+      productGrid.innerHTML = `
+        <div class="results-loading">
+          <div class="results-loading__spinner"></div>
+          <p>Searching…</p>
+        </div>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    /* ── API call ────────────────────────────────────────────────── */
+    async function fetchResults(filters) {
+      const params = filtersToParams(filters);
+      // Always use GET /api/search — works on Vercel; falls back gracefully
+      // when running the static files locally without the serverless layer.
+      const url = '/api/search' + (params.toString() ? '?' + params.toString() : '');
+
+      const res  = await fetch(url);
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+      return data; // { results: Product[], total: number }
+    }
+
+    /* ── Main search orchestrator ────────────────────────────────── */
+    async function runSearch() {
+      const filters = getFilters();
+      syncURL(filters);
+      renderChips(filters);
+      renderLoading();
+      resultsCount.textContent = 'Searching…';
+
+      try {
+        const { results, total } = await fetchResults(filters);
+        renderProducts(results);
+        const noun = total === 1 ? 'result' : 'results';
+        resultsCount.innerHTML = `<strong>${total}</strong> ${noun}`;
+      } catch (err) {
+        renderError(err.message);
+        resultsCount.textContent = 'Error fetching results';
+      }
+    }
+
+    /** Debounced wrapper — used for text/price inputs. */
+    function scheduleSearch() {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(runSearch, DEBOUNCE_MS);
+    }
+
+    /** Immediate wrapper — used for select changes. */
+    function immediateSearch() {
+      clearTimeout(debounceTimer);
+      runSearch();
+    }
+
+    /* ── Event listeners ─────────────────────────────────────────── */
+    searchInput.addEventListener('input', scheduleSearch);
+    minPriceInput.addEventListener('input', scheduleSearch);
+    maxPriceInput.addEventListener('input', scheduleSearch);
+    categorySelect.addEventListener('change', immediateSearch);
+    sortSelect.addEventListener('change', immediateSearch);
+
+    // Browser back/forward navigation restores filter state
+    window.addEventListener('popstate', () => {
+      applyParamsToControls();
+      runSearch();
+    });
+
+    /* ── Initialise ──────────────────────────────────────────────── */
+    applyParamsToControls();
+    runSearch();
+  </script>
+
+</body>
+</html>
