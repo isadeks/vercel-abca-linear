@@ -519,6 +519,36 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── About strip ─────────────────────────────────────────── */
+    .about-strip {
+      padding: 80px 0;
+      background: var(--sand);
+    }
+    .about-strip__inner {
+      max-width: 640px;
+    }
+    .about-strip__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .about-strip__title {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      margin-bottom: 20px;
+      line-height: 1.2;
+    }
+    .about-strip__bio {
+      font-size: 0.97rem;
+      line-height: 1.85;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -558,6 +588,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="#about">About</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -778,6 +809,20 @@
           <button type="submit" class="btn btn--teal">Subscribe — it's free</button>
           <p class="newsletter__note">No spam, ever. Unsubscribe in one click. We respect your inbox.</p>
         </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About strip ─────────────────────────────────────────────── -->
+  <section class="about-strip" id="about">
+    <div class="container">
+      <div class="about-strip__inner">
+        <p class="about-strip__eyebrow">About Wander</p>
+        <h2 class="about-strip__title">Independent travel journalism<br/>for <em style="font-style:italic;">curious</em> souls</h2>
+        <p class="about-strip__bio">Wander is an independent travel publication founded on the belief that travel writing, done well, is a form of literature. Our editors and contributors are writers first — people who go to places not to check them off but to understand them, then come back and describe what they found with care and precision. We are not affiliated with any hotel group, airline, or booking platform.</p>
+        <a href="about.html" class="btn btn--teal">Meet the team
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
       </div>
     </div>
   </section>
