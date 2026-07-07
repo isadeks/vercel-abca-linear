@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 820px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ────────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ──────────────────────────────────────────────── */
+    .page-hero {
+      padding: 80px 0 52px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      line-height: 1.6;
+    }
+
+    /* ── Settings layout ────────────────────────────────────────── */
+    .settings-body {
+      padding: 64px 0 96px;
+    }
+
+    .settings-section {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--stone);
+    }
+    .settings-section:first-child { padding-top: 0; }
+    .settings-section:last-child  { border-bottom: none; }
+
+    @media (max-width: 680px) {
+      .settings-section { grid-template-columns: 1fr; gap: 24px; }
+    }
+
+    .settings-section__label {
+      padding-top: 4px;
+    }
+    .settings-section__label h2 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .settings-section__label p {
+      font-size: 0.82rem;
+      color: var(--ash);
+      line-height: 1.7;
+    }
+
+    /* ── Form primitives ────────────────────────────────────────── */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-group input {
+      padding: 12px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-group input:focus { border-color: var(--teal); }
+    .form-group input::placeholder { color: #b0a898; }
+    .form-group input[aria-invalid="true"] { border-color: var(--coral); }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 2px;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--teal);
+      border: 1px solid var(--teal);
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      align-self: flex-start;
+    }
+    .btn:hover   { background: #22665c; border-color: #22665c; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── Feedback banner ────────────────────────────────────────── */
+    .banner {
+      padding: 12px 16px;
+      font-size: 0.85rem;
+      border-left: 3px solid transparent;
+      display: none;
+    }
+    .banner--success {
+      background: var(--teal-lt);
+      border-color: var(--teal);
+      color: #185c53;
+    }
+    .banner--error {
+      background: #fdecea;
+      border-color: var(--coral);
+      color: #8b2e1e;
+    }
+    .banner.is-visible { display: block; }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Your account</p>
+      <h1 class="page-hero__title">Account Settings</h1>
+      <p class="page-hero__sub">Manage your profile, security, and notification preferences.</p>
+    </div>
+  </div>
+
+  <div class="settings-body">
+    <div class="container">
+
+      <!-- ── Change Password ──────────────────────────────────────── -->
+      <section class="settings-section" aria-labelledby="pwd-heading">
+        <div class="settings-section__label">
+          <h2 id="pwd-heading">Password</h2>
+          <p>Choose a strong password with at least 8 characters. You'll need your current password to make changes.</p>
+        </div>
+
+        <div>
+          <div id="pwd-banner" class="banner" role="status" aria-live="polite"></div>
+
+          <form class="form" id="pwd-form" novalidate>
+            <div class="form-group">
+              <label for="current-password">Current password</label>
+              <input
+                type="password"
+                id="current-password"
+                name="currentPassword"
+                autocomplete="current-password"
+                placeholder="Enter your current password"
+                required
+              />
+            </div>
+
+            <div class="form-group">
+              <label for="new-password">New password</label>
+              <input
+                type="password"
+                id="new-password"
+                name="newPassword"
+                autocomplete="new-password"
+                placeholder="At least 8 characters"
+                required
+                minlength="8"
+              />
+              <p class="form-hint">Must be at least 8 characters.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm-password">Confirm new password</label>
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirmPassword"
+                autocomplete="new-password"
+                placeholder="Repeat your new password"
+                required
+              />
+            </div>
+
+            <div>
+              <button type="submit" class="btn" id="pwd-submit">Update password</button>
+            </div>
+          </form>
+        </div>
+      </section>
+
+    </div><!-- /.container -->
+  </div><!-- /.settings-body -->
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Travel stories and guides for the curious.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Account</p>
+          <ul class="footer__links">
+            <li><a href="settings.html">Settings</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2025 Wander Travel Guide</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;&middot;&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Password-change form ─────────────────────────────────────────────────
+
+    const pwdForm    = document.getElementById('pwd-form');
+    const pwdBanner  = document.getElementById('pwd-banner');
+    const pwdSubmit  = document.getElementById('pwd-submit');
+
+    /** Show a feedback banner above the form. */
+    function showBanner(type, message) {
+      pwdBanner.textContent = message;
+      pwdBanner.className   = `banner banner--${type} is-visible`;
+    }
+
+    /** Clear any previous field-level error indicators. */
+    function clearFieldErrors() {
+      pwdForm.querySelectorAll('input').forEach(function(el) {
+        el.removeAttribute('aria-invalid');
+      });
+    }
+
+    /** Mark a specific field as invalid. */
+    function markInvalid(name) {
+      const el = pwdForm.querySelector('[name="' + name + '"]');
+      if (el) el.setAttribute('aria-invalid', 'true');
+    }
+
+    pwdForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearFieldErrors();
+      pwdBanner.className = 'banner';
+
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword     = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      // ── Client-side pre-validation ───────────────────────────────────────
+      if (!currentPassword) {
+        markInvalid('currentPassword');
+        showBanner('error', 'Please enter your current password.');
+        return;
+      }
+      if (newPassword.length < 8) {
+        markInvalid('newPassword');
+        showBanner('error', 'New password must be at least 8 characters.');
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        markInvalid('confirmPassword');
+        showBanner('error', 'New password and confirmation do not match.');
+        return;
+      }
+
+      // ── Submit to API ────────────────────────────────────────────────────
+      pwdSubmit.disabled = true;
+      pwdSubmit.textContent = 'Updating…';
+
+      try {
+        // NOTE: userId would come from a real auth session; using a placeholder here.
+        const userId = document.cookie.match(/userId=([^;]+)/)?.[1] ?? 'demo-user';
+
+        const res = await fetch('/api/account/password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, currentPassword, newPassword, confirmPassword }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          pwdForm.reset();
+          showBanner('success', 'Your password has been updated successfully.');
+        } else {
+          // Map error codes to field highlights
+          if (data.code === 'WRONG_CURRENT_PASSWORD') markInvalid('currentPassword');
+          if (data.code === 'PASSWORD_MISMATCH')       markInvalid('confirmPassword');
+          if (data.code === 'PASSWORD_TOO_SHORT')      markInvalid('newPassword');
+          showBanner('error', data.error || 'Something went wrong. Please try again.');
+        }
+      } catch {
+        showBanner('error', 'Could not reach the server. Please check your connection.');
+      } finally {
+        pwdSubmit.disabled = false;
+        pwdSubmit.textContent = 'Update password';
+      }
+    });
+  </script>
+</body>
+</html>
