@@ -21,7 +21,7 @@
       --coral:   #c9624a;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
-      --max-w: 800px;
+      --max-w: 820px;
     }
 
     html { scroll-behavior: smooth; }
@@ -35,9 +35,8 @@
     img { display: block; width: 100%; object-fit: cover; }
     a   { color: inherit; text-decoration: none; }
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
-    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
-    /* ── Nav ─────────────────────────────────────────────────── */
+    /* ── Nav ────────────────────────────────────────────────────── */
     .nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -63,9 +62,9 @@
     }
     .nav__back:hover { opacity: 0.7; }
 
-    /* ── Page hero ───────────────────────────────────────────── */
+    /* ── Page hero ──────────────────────────────────────────────── */
     .page-hero {
-      padding: 72px 0 48px;
+      padding: 80px 0 52px;
       background: var(--sand);
       border-bottom: 1px solid var(--stone);
     }
@@ -90,131 +89,54 @@
       font-weight: 300;
       font-style: italic;
       color: var(--ash);
-      max-width: 440px;
       line-height: 1.6;
     }
 
-    /* ── Settings layout ─────────────────────────────────────── */
+    /* ── Settings layout ────────────────────────────────────────── */
     .settings-body {
       padding: 64px 0 96px;
     }
+
     .settings-section {
-      margin-bottom: 56px;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 48px;
+      padding: 48px 0;
+      border-bottom: 1px solid var(--stone);
     }
-    .settings-section + .settings-section {
-      padding-top: 56px;
-      border-top: 1px solid var(--stone);
-    }
-    .settings-section__header {
-      margin-bottom: 28px;
-    }
-    .settings-section__title {
-      font-family: var(--font-serif);
-      font-size: 1.5rem;
-      font-weight: 400;
-      margin-bottom: 6px;
-    }
-    .settings-section__desc {
-      font-size: 0.88rem;
-      color: var(--ash);
+    .settings-section:first-child { padding-top: 0; }
+    .settings-section:last-child  { border-bottom: none; }
+
+    @media (max-width: 680px) {
+      .settings-section { grid-template-columns: 1fr; gap: 24px; }
     }
 
-    /* ── Avatar upload ───────────────────────────────────────── */
-    .avatar-upload {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      margin-bottom: 28px;
-      padding: 24px;
-      background: var(--sand);
-      border: 1px solid var(--stone);
+    .settings-section__label {
+      padding-top: 4px;
     }
-    .avatar-preview {
-      flex-shrink: 0;
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      background: var(--stone);
-      overflow: hidden;
-      position: relative;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .settings-section__label h2 {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
     }
-    .avatar-preview img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      border-radius: 50%;
-    }
-    .avatar-placeholder {
-      font-size: 2rem;
+    .settings-section__label p {
+      font-size: 0.82rem;
       color: var(--ash);
-      line-height: 1;
-      user-select: none;
+      line-height: 1.7;
     }
-    .avatar-controls {
+
+    /* ── Form primitives ────────────────────────────────────────── */
+    .form {
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 16px;
     }
-    .avatar-controls__label {
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: var(--ink);
-    }
-    .avatar-controls__hint {
-      font-size: 0.78rem;
-      color: var(--ash);
-    }
-    .avatar-controls__actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    .btn-upload {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: 1px solid var(--teal);
-      color: var(--teal);
-      background: transparent;
-      cursor: pointer;
-      transition: background 0.2s, color 0.2s;
-    }
-    .btn-upload:hover { background: var(--teal-lt); }
-    .btn-clear {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 9px 18px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      border: 1px solid var(--stone);
-      color: var(--ash);
-      background: transparent;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .btn-clear:hover { border-color: var(--coral); color: var(--coral); }
-    /* visually-hidden real file input */
-    #avatar-file-input { display: none; }
-
-    /* ── Form elements ───────────────────────────────────────── */
     .form-group {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      margin-bottom: 18px;
     }
-    .form-group:last-of-type { margin-bottom: 0; }
     .form-group label {
       font-size: 0.75rem;
       font-weight: 500;
@@ -222,9 +144,7 @@
       text-transform: uppercase;
       color: var(--ash);
     }
-    .form-group input[type="text"],
-    .form-group input[type="email"],
-    .form-group input[type="url"] {
+    .form-group input {
       padding: 12px 16px;
       border: 1px solid var(--stone);
       background: var(--cream);
@@ -233,72 +153,55 @@
       color: var(--ink);
       outline: none;
       transition: border-color 0.2s;
+      width: 100%;
     }
     .form-group input:focus { border-color: var(--teal); }
     .form-group input::placeholder { color: #b0a898; }
     .form-group input[aria-invalid="true"] { border-color: var(--coral); }
 
-    .field-error {
-      font-size: 0.76rem;
-      color: var(--coral);
-      display: none;
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-top: 2px;
     }
-    .field-error.visible { display: block; }
 
-    /* ── Action buttons ──────────────────────────────────────── */
-    .form-actions {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      margin-top: 28px;
-      flex-wrap: wrap;
-    }
     .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
+      display: inline-flex; align-items: center; gap: 10px;
       padding: 13px 26px;
       font-size: 0.78rem;
       font-weight: 500;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      border: none;
-    }
-    .btn--primary {
       background: var(--teal);
+      border: 1px solid var(--teal);
       color: white;
+      cursor: pointer;
+      transition: background 0.2s, opacity 0.2s;
+      align-self: flex-start;
     }
-    .btn--primary:hover  { background: #22665c; }
-    .btn--primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+    .btn:hover   { background: #22665c; border-color: #22665c; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* ── Toast / status banner ───────────────────────────────── */
-    .toast {
-      display: none;
-      align-items: center;
-      gap: 10px;
-      padding: 12px 18px;
+    /* ── Feedback banner ────────────────────────────────────────── */
+    .banner {
+      padding: 12px 16px;
       font-size: 0.85rem;
       border-left: 3px solid transparent;
-      margin-top: 20px;
+      display: none;
     }
-    .toast.visible { display: flex; }
-    .toast--success {
+    .banner--success {
       background: var(--teal-lt);
       border-color: var(--teal);
-      color: var(--teal);
+      color: #185c53;
     }
-    .toast--error {
-      background: #fde8e4;
+    .banner--error {
+      background: #fdecea;
       border-color: var(--coral);
-      color: var(--coral);
+      color: #8b2e1e;
     }
+    .banner.is-visible { display: block; }
 
-    /* ── Footer ──────────────────────────────────────────────── */
+    /* ── Footer ─────────────────────────────────────────────────── */
     footer {
       background: var(--ink);
       color: rgba(255,255,255,0.5);
@@ -332,19 +235,11 @@
     }
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
-
-    /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
       .footer__grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 600px) {
-      .avatar-upload { flex-direction: column; align-items: flex-start; gap: 16px; }
-      .footer__grid  { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 400px) {
-      .avatar-controls__actions { flex-direction: column; }
-    }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -354,121 +249,88 @@
     <a href="index.html" class="nav__back">← Home</a>
   </nav>
 
-  <!-- ── Page hero ─────────────────────────────────────────────── -->
   <div class="page-hero">
     <div class="container">
       <p class="page-hero__eyebrow">Your account</p>
-      <h1 class="page-hero__title">Account settings</h1>
-      <p class="page-hero__sub">Manage your display name, email address, and profile picture.</p>
+      <h1 class="page-hero__title">Account Settings</h1>
+      <p class="page-hero__sub">Manage your profile, security, and notification preferences.</p>
     </div>
   </div>
 
-  <!-- ── Settings body ─────────────────────────────────────────── -->
   <div class="settings-body">
     <div class="container">
 
-      <!-- ── Profile section ──────────────────────────────────── -->
-      <section class="settings-section" aria-labelledby="profile-section-title">
-        <div class="settings-section__header">
-          <h2 class="settings-section__title" id="profile-section-title">Profile</h2>
-          <p class="settings-section__desc">Your public name, contact email, and profile picture.</p>
+      <!-- ── Change Password ──────────────────────────────────────── -->
+      <section class="settings-section" aria-labelledby="pwd-heading">
+        <div class="settings-section__label">
+          <h2 id="pwd-heading">Password</h2>
+          <p>Choose a strong password with at least 8 characters. You'll need your current password to make changes.</p>
         </div>
 
-        <!-- Avatar upload control -->
-        <div class="avatar-upload" role="group" aria-labelledby="avatar-label">
-          <div class="avatar-preview" id="avatar-preview" aria-hidden="true">
-            <span class="avatar-placeholder" id="avatar-placeholder" aria-hidden="true">&#128100;</span>
-            <img id="avatar-img" src="" alt="Your profile picture" style="display:none;" />
-          </div>
-          <div class="avatar-controls">
-            <p class="avatar-controls__label" id="avatar-label">Profile picture</p>
-            <p class="avatar-controls__hint">JPG, PNG or WebP · max 5 MB</p>
-            <div class="avatar-controls__actions">
-              <label for="avatar-file-input" class="btn-upload">
-                &#8593; Upload photo
-              </label>
+        <div>
+          <div id="pwd-banner" class="banner" role="status" aria-live="polite"></div>
+
+          <form class="form" id="pwd-form" novalidate>
+            <div class="form-group">
+              <label for="current-password">Current password</label>
               <input
-                type="file"
-                id="avatar-file-input"
-                accept="image/jpeg,image/png,image/webp"
-                aria-label="Upload a profile picture"
+                type="password"
+                id="current-password"
+                name="currentPassword"
+                autocomplete="current-password"
+                placeholder="Enter your current password"
+                required
               />
-              <button type="button" class="btn-clear" id="btn-clear-avatar">
-                Remove photo
-              </button>
             </div>
-          </div>
+
+            <div class="form-group">
+              <label for="new-password">New password</label>
+              <input
+                type="password"
+                id="new-password"
+                name="newPassword"
+                autocomplete="new-password"
+                placeholder="At least 8 characters"
+                required
+                minlength="8"
+              />
+              <p class="form-hint">Must be at least 8 characters.</p>
+            </div>
+
+            <div class="form-group">
+              <label for="confirm-password">Confirm new password</label>
+              <input
+                type="password"
+                id="confirm-password"
+                name="confirmPassword"
+                autocomplete="new-password"
+                placeholder="Repeat your new password"
+                required
+              />
+            </div>
+
+            <div>
+              <button type="submit" class="btn" id="pwd-submit">Update password</button>
+            </div>
+          </form>
         </div>
-
-        <!-- Profile edit form -->
-        <form id="profile-form" novalidate>
-
-          <div class="form-group">
-            <label for="display-name">Display name</label>
-            <input
-              type="text"
-              id="display-name"
-              name="displayName"
-              placeholder="e.g. Alex Rivera"
-              maxlength="100"
-              autocomplete="name"
-            />
-            <span class="field-error" id="display-name-error" role="alert"></span>
-          </div>
-
-          <div class="form-group">
-            <label for="email">Email address</label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="you@example.com"
-              maxlength="254"
-              autocomplete="email"
-            />
-            <span class="field-error" id="email-error" role="alert"></span>
-          </div>
-
-          <!-- Hidden field — populated by the avatar upload logic -->
-          <input type="hidden" id="avatar-url" name="avatarUrl" value="" />
-
-          <div class="form-actions">
-            <button type="submit" class="btn btn--primary" id="save-btn">
-              Save changes
-            </button>
-          </div>
-
-          <div class="toast" id="profile-toast" role="status" aria-live="polite"></div>
-
-        </form>
       </section>
-      <!-- end profile section -->
 
-    </div>
-  </div>
+    </div><!-- /.container -->
+  </div><!-- /.settings-body -->
 
-  <!-- ── Footer ────────────────────────────────────────────────── -->
   <footer>
     <div class="container">
       <div class="footer__grid">
         <div>
           <p class="footer__brand">Wander</p>
-          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+          <p class="footer__tagline">Travel stories and guides for the curious.</p>
         </div>
         <div>
           <p class="footer__heading">Explore</p>
           <ul class="footer__links">
             <li><a href="destinations.html">Destinations</a></li>
-            <li><a href="index.html#guides">Guides</a></li>
-            <li><a href="index.html#regions">Regions</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="footer__heading">Company</p>
-          <ul class="footer__links">
             <li><a href="about.html">About</a></li>
-            <li><a href="about.html#write">Write for us</a></li>
-            <li><a href="index.html#newsletter">Newsletter</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -479,179 +341,105 @@
             <li><a href="terms.html">Terms</a></li>
           </ul>
         </div>
+        <div>
+          <p class="footer__heading">Account</p>
+          <ul class="footer__links">
+            <li><a href="settings.html">Settings</a></li>
+          </ul>
+        </div>
       </div>
       <div class="footer__bottom">
-        <span>&copy; 2026 Wander. All rights reserved.</span>
-        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+        <span>&copy; 2025 Wander Travel Guide</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;&middot;&nbsp; <a href="terms.html">Terms</a></span>
       </div>
     </div>
   </footer>
 
   <script>
-    (() => {
-      'use strict';
+    // ── Password-change form ─────────────────────────────────────────────────
 
-      // ── Demo userId (replace with real session/token logic) ────────────────
-      const DEMO_USER_ID = 'demo-user';
+    const pwdForm    = document.getElementById('pwd-form');
+    const pwdBanner  = document.getElementById('pwd-banner');
+    const pwdSubmit  = document.getElementById('pwd-submit');
 
-      // ── Element refs ───────────────────────────────────────────────────────
-      const form          = document.getElementById('profile-form');
-      const saveBtn       = document.getElementById('save-btn');
-      const toast         = document.getElementById('profile-toast');
+    /** Show a feedback banner above the form. */
+    function showBanner(type, message) {
+      pwdBanner.textContent = message;
+      pwdBanner.className   = `banner banner--${type} is-visible`;
+    }
 
-      const displayNameInput = document.getElementById('display-name');
-      const emailInput       = document.getElementById('email');
-      const avatarUrlInput   = document.getElementById('avatar-url');
+    /** Clear any previous field-level error indicators. */
+    function clearFieldErrors() {
+      pwdForm.querySelectorAll('input').forEach(function(el) {
+        el.removeAttribute('aria-invalid');
+      });
+    }
 
-      const displayNameError = document.getElementById('display-name-error');
-      const emailError       = document.getElementById('email-error');
+    /** Mark a specific field as invalid. */
+    function markInvalid(name) {
+      const el = pwdForm.querySelector('[name="' + name + '"]');
+      if (el) el.setAttribute('aria-invalid', 'true');
+    }
 
-      const avatarFileInput  = document.getElementById('avatar-file-input');
-      const avatarImg        = document.getElementById('avatar-img');
-      const avatarPlaceholder = document.getElementById('avatar-placeholder');
-      const clearAvatarBtn   = document.getElementById('btn-clear-avatar');
+    pwdForm.addEventListener('submit', async function(e) {
+      e.preventDefault();
+      clearFieldErrors();
+      pwdBanner.className = 'banner';
 
-      // ── Toast helpers ──────────────────────────────────────────────────────
-      function showToast(type, message) {
-        toast.className = `toast toast--${type} visible`;
-        toast.textContent = message;
-        if (type === 'success') {
-          setTimeout(() => { toast.className = 'toast'; }, 5000);
-        }
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword     = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+
+      // ── Client-side pre-validation ───────────────────────────────────────
+      if (!currentPassword) {
+        markInvalid('currentPassword');
+        showBanner('error', 'Please enter your current password.');
+        return;
+      }
+      if (newPassword.length < 8) {
+        markInvalid('newPassword');
+        showBanner('error', 'New password must be at least 8 characters.');
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        markInvalid('confirmPassword');
+        showBanner('error', 'New password and confirmation do not match.');
+        return;
       }
 
-      // ── Field validation (mirrors server-side rules) ───────────────────────
-      function validateDisplayName(value) {
-        const trimmed = value.trim();
-        if (!trimmed) return 'Display name must not be blank.';
-        if (trimmed.length > 100) return 'Display name must be 100 characters or fewer.';
-        return '';
-      }
+      // ── Submit to API ────────────────────────────────────────────────────
+      pwdSubmit.disabled = true;
+      pwdSubmit.textContent = 'Updating…';
 
-      function validateEmail(value) {
-        const normalised = value.trim();
-        if (!normalised) return 'Email address must not be blank.';
-        if (normalised.length > 254) return 'Email must be 254 characters or fewer.';
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalised)) {
-          return 'Please enter a valid email address.';
-        }
-        return '';
-      }
+      try {
+        // NOTE: userId would come from a real auth session; using a placeholder here.
+        const userId = document.cookie.match(/userId=([^;]+)/)?.[1] ?? 'demo-user';
 
-      function setFieldError(input, errorEl, message) {
-        if (message) {
-          input.setAttribute('aria-invalid', 'true');
-          errorEl.textContent = message;
-          errorEl.classList.add('visible');
+        const res = await fetch('/api/account/password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId, currentPassword, newPassword, confirmPassword }),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          pwdForm.reset();
+          showBanner('success', 'Your password has been updated successfully.');
         } else {
-          input.removeAttribute('aria-invalid');
-          errorEl.textContent = '';
-          errorEl.classList.remove('visible');
+          // Map error codes to field highlights
+          if (data.code === 'WRONG_CURRENT_PASSWORD') markInvalid('currentPassword');
+          if (data.code === 'PASSWORD_MISMATCH')       markInvalid('confirmPassword');
+          if (data.code === 'PASSWORD_TOO_SHORT')      markInvalid('newPassword');
+          showBanner('error', data.error || 'Something went wrong. Please try again.');
         }
-        return !message;
+      } catch {
+        showBanner('error', 'Could not reach the server. Please check your connection.');
+      } finally {
+        pwdSubmit.disabled = false;
+        pwdSubmit.textContent = 'Update password';
       }
-
-      // ── Avatar: file-picker → data URL ─────────────────────────────────────
-      avatarFileInput.addEventListener('change', () => {
-        const file = avatarFileInput.files && avatarFileInput.files[0];
-        if (!file) return;
-
-        if (file.size > 5 * 1024 * 1024) {
-          showToast('error', 'Image must be smaller than 5 MB.');
-          avatarFileInput.value = '';
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          const dataUrl = e.target.result;
-          // Show preview immediately (data URL).
-          // In production you'd upload to a storage bucket and use the returned URL.
-          avatarImg.src = dataUrl;
-          avatarImg.style.display = 'block';
-          avatarPlaceholder.style.display = 'none';
-          // Store the data URL in the hidden field so the form submission picks it up.
-          // A real integration would swap this for the CDN URL returned by the upload API.
-          avatarUrlInput.value = dataUrl;
-        };
-        reader.readAsDataURL(file);
-      });
-
-      // ── Avatar: clear button ───────────────────────────────────────────────
-      clearAvatarBtn.addEventListener('click', () => {
-        avatarImg.src = '';
-        avatarImg.style.display = 'none';
-        avatarPlaceholder.style.display = '';
-        avatarUrlInput.value = '';
-        avatarFileInput.value = '';
-      });
-
-      // ── Form submission ────────────────────────────────────────────────────
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        // Client-side validation
-        const nameOk  = setFieldError(displayNameInput, displayNameError,
-          validateDisplayName(displayNameInput.value));
-        const emailOk = setFieldError(emailInput, emailError,
-          validateEmail(emailInput.value));
-
-        if (!nameOk || !emailOk) return;
-
-        // Build payload — only include fields that changed
-        const payload = { userId: DEMO_USER_ID };
-        const nameVal  = displayNameInput.value.trim();
-        const emailVal = emailInput.value.trim().toLowerCase();
-        const avatarVal = avatarUrlInput.value.trim();
-
-        if (nameVal)  payload.displayName = nameVal;
-        if (emailVal) payload.email       = emailVal;
-        // avatarVal may be empty string (clearing) or a URL — include it always
-        // when the user has interacted with the avatar control.
-        if (avatarFileInput.dataset.touched || avatarVal !== '') {
-          payload.avatarUrl = avatarVal;
-        }
-
-        if (Object.keys(payload).length <= 1) {
-          showToast('error', 'Please fill in at least one field before saving.');
-          return;
-        }
-
-        saveBtn.disabled = true;
-        saveBtn.textContent = 'Saving…';
-
-        try {
-          const res = await fetch('/api/account/profile', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-          });
-
-          const data = await res.json();
-
-          if (res.ok) {
-            showToast('success', 'Profile updated successfully.');
-          } else {
-            showToast('error', data.error || 'Something went wrong. Please try again.');
-          }
-        } catch {
-          showToast('error', 'Network error — please check your connection and try again.');
-        } finally {
-          saveBtn.disabled = false;
-          saveBtn.textContent = 'Save changes';
-        }
-      });
-
-      // Track avatar control interaction
-      avatarFileInput.addEventListener('change', () => {
-        avatarFileInput.dataset.touched = '1';
-      });
-      clearAvatarBtn.addEventListener('click', () => {
-        avatarFileInput.dataset.touched = '1';
-      });
-
-    })();
+    });
   </script>
-
 </body>
 </html>
