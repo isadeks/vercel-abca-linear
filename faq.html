@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 860px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+    .nav__links a[aria-current="page"] { color: var(--teal); }
+
+    /* ── Page hero ────────────────────────────────────────────── */
+    .page-hero {
+      padding: 96px 0 64px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 540px;
+      line-height: 1.6;
+    }
+
+    /* ── FAQ body ─────────────────────────────────────────────── */
+    .faq-body {
+      padding: 72px 0 96px;
+    }
+
+    /* ── Category heading ─────────────────────────────────────── */
+    .faq-category {
+      margin-bottom: 40px;
+    }
+    .faq-category + .faq-category {
+      margin-top: 56px;
+    }
+    .faq-category__label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    /* ── Accordion ────────────────────────────────────────────── */
+    .faq-list {
+      list-style: none;
+    }
+    .faq-item {
+      border-bottom: 1px solid var(--stone);
+    }
+    .faq-item:first-child {
+      border-top: 1px solid var(--stone);
+    }
+
+    /* The <button> trigger */
+    .faq-item__trigger {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 22px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.35;
+      transition: color 0.2s;
+    }
+    .faq-item__trigger:hover { color: var(--teal); }
+    .faq-item__trigger:focus-visible {
+      outline: 2px solid var(--teal);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Chevron icon */
+    .faq-item__icon {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      color: var(--teal);
+      transition: transform 0.28s ease;
+    }
+    .faq-item[data-open="true"] .faq-item__icon {
+      transform: rotate(180deg);
+    }
+
+    /* The collapsible panel — CSS-driven via max-height */
+    .faq-item__panel {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, opacity 0.28s ease;
+      opacity: 0;
+    }
+    .faq-item[data-open="true"] .faq-item__panel {
+      max-height: 600px;  /* generous ceiling; actual height drives expansion */
+      opacity: 1;
+    }
+    .faq-item__answer {
+      padding: 0 32px 28px 0;
+      font-size: 0.95rem;
+      color: #3d3830;
+      line-height: 1.85;
+    }
+    .faq-item__answer a {
+      color: var(--teal);
+      border-bottom: 1px solid currentColor;
+      transition: opacity 0.2s;
+    }
+    .faq-item__answer a:hover { opacity: 0.7; }
+    .faq-item__answer p + p { margin-top: 14px; }
+
+    /* ── Still have questions CTA ─────────────────────────────── */
+    .faq-cta {
+      margin-top: 64px;
+      background: var(--teal-lt);
+      padding: 40px 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .faq-cta__text h2 {
+      font-family: var(--font-serif);
+      font-size: 1.7rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .faq-cta__text p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      line-height: 1.7;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 13px 26px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      white-space: nowrap;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+      .faq-cta { padding: 32px 24px; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+      .faq-item__answer { padding-right: 0; }
+      .faq-cta { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="faq.html" aria-current="page">FAQ</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page hero ─────────────────────────────────────────────── -->
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Help &amp; information</p>
+      <h1 class="page-hero__title">Frequently asked<br/>questions</h1>
+      <p class="page-hero__sub">Everything you need to know about how Wander works — from how we choose destinations to how we protect your privacy.</p>
+    </div>
+  </div>
+
+  <!-- ── FAQ body ──────────────────────────────────────────────── -->
+  <div class="faq-body">
+    <div class="container">
+
+      <!-- Category 1: About the guides -->
+      <section class="faq-category" aria-labelledby="cat-guides">
+        <h2 class="faq-category__label" id="cat-guides">About the guides</h2>
+        <ul class="faq-list">
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-1">
+              How do you choose which destinations to cover?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-1" role="region">
+              <div class="faq-item__answer">
+                <p>Every destination we cover has been visited in person by one of our writers. We look for places that reward slow, attentive travel — locations with genuine character, strong local culture, and enough depth to justify a long-form guide rather than a listicle.</p>
+                <p>We deliberately avoid destinations that are already over-documented. If a place has ten thousand near-identical articles, we'd rather put our energy somewhere that deserves more attention.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-2">
+              Are your recommendations paid for or sponsored?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-2" role="region">
+              <div class="faq-item__answer">
+                <p>No. We do not accept payment for editorial coverage. No hotel, restaurant, tour operator, or tourism board pays to appear in our guides. Every recommendation exists because a Wander writer visited, evaluated, and genuinely recommends it.</p>
+                <p>We believe this is the only honest way to do travel journalism. It means we publish fewer guides than ad-supported publications, but every one we do publish is trustworthy.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-3">
+              How often are the guides updated?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-3" role="region">
+              <div class="faq-item__answer">
+                <p>We aim to revisit each guide at least once a year. Practical details — transport links, prices, visa requirements, opening hours — change frequently, and we flag when a section was last verified at the bottom of each guide.</p>
+                <p>If you spot something out of date, please <a href="contact.html">let us know</a>. We take accuracy seriously and act quickly on reader reports.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-4">
+              Can I use information from your guides in my own content?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-4" role="region">
+              <div class="faq-item__answer">
+                <p>Short quotes with a clear attribution and a link back to the original guide are generally fine. Reproducing substantial portions of our text — even with attribution — is not permitted without written permission.</p>
+                <p>For licensing enquiries, please <a href="contact.html">contact us</a> and we will respond within a few working days.</p>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </section>
+
+      <!-- Category 2: Planning your trip -->
+      <section class="faq-category" aria-labelledby="cat-planning">
+        <h2 class="faq-category__label" id="cat-planning">Planning your trip</h2>
+        <ul class="faq-list">
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-5">
+              I don't know where to go — where should I start?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-5" role="region">
+              <div class="faq-item__answer">
+                <p>Our <a href="quiz.html">destination finder quiz</a> is the best place to start. Answer eight short questions about your travel style — pace, climate, budget, interests — and it will match you to one of our covered destinations. It takes around 90 seconds and requires no account.</p>
+                <p>Alternatively, browse <a href="destinations.html">all destinations</a> and filter by region or style.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-6">
+              Do your guides include visa and entry information?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-6" role="region">
+              <div class="faq-item__answer">
+                <p>Each guide includes a "Practical info" section with general visa and entry notes as of the last update. However, entry requirements change frequently and vary by nationality, so we strongly recommend verifying with your country's official foreign travel advisory and the destination country's embassy before booking.</p>
+                <p>We flag the date each practical section was last reviewed so you know how current the information is.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-7">
+              Do you provide custom itinerary planning?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-7" role="region">
+              <div class="faq-item__answer">
+                <p>Not currently. Wander is an editorial publication — we write and publish guides, but we are not a travel agency and do not offer bespoke planning services. Our guides are designed to be detailed enough that you can plan your own trip from them with confidence.</p>
+                <p>If you have specific questions about a destination we cover, the best route is via our <a href="contact.html">contact page</a> — we read every message and help where we can, though response times vary.</p>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </section>
+
+      <!-- Category 3: Newsletter & account -->
+      <section class="faq-category" aria-labelledby="cat-newsletter">
+        <h2 class="faq-category__label" id="cat-newsletter">Newsletter &amp; privacy</h2>
+        <ul class="faq-list">
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-8">
+              How do I unsubscribe from the newsletter?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-8" role="region">
+              <div class="faq-item__answer">
+                <p>Every newsletter we send includes an unsubscribe link at the bottom — one click removes you instantly, no confirmation required. We process all unsubscribe requests within 24 hours.</p>
+                <p>If you have trouble unsubscribing, <a href="contact.html">contact us</a> directly and we will remove you manually.</p>
+              </div>
+            </div>
+          </li>
+
+          <li class="faq-item">
+            <button class="faq-item__trigger" aria-expanded="false" aria-controls="faq-9">
+              What data do you collect and how is it used?
+              <svg class="faq-item__icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="faq-item__panel" id="faq-9" role="region">
+              <div class="faq-item__answer">
+                <p>If you subscribe to our newsletter, we collect your email address and nothing else. We use it only to send you the newsletter. We do not sell it, share it with third parties, or use it for advertising.</p>
+                <p>Our site uses minimal, privacy-respecting analytics to understand which guides people find useful. No personally identifiable data is collected during regular browsing. You can read the full details in our <a href="privacy.html">privacy policy</a>.</p>
+              </div>
+            </div>
+          </li>
+
+        </ul>
+      </section>
+
+      <!-- Still have questions CTA -->
+      <div class="faq-cta">
+        <div class="faq-cta__text">
+          <h2>Still have a question?</h2>
+          <p>We read every message. If something isn't answered here, drop us a line and we'll get back to you.</p>
+        </div>
+        <a href="contact.html" class="btn btn--teal">
+          Get in touch
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container" style="max-width:1160px;">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Minimal accordion — toggle data-open attribute on each item.
+    // CSS transitions (max-height + opacity) handle the animation.
+    document.querySelectorAll('.faq-item__trigger').forEach(function(trigger) {
+      trigger.addEventListener('click', function() {
+        var item = trigger.closest('.faq-item');
+        var isOpen = item.getAttribute('data-open') === 'true';
+
+        // Optional: close other open items in the same list (comment out to allow multiple open)
+        var list = item.closest('.faq-list');
+        list.querySelectorAll('.faq-item[data-open="true"]').forEach(function(openItem) {
+          if (openItem !== item) {
+            openItem.setAttribute('data-open', 'false');
+            openItem.querySelector('.faq-item__trigger').setAttribute('aria-expanded', 'false');
+          }
+        });
+
+        // Toggle the clicked item
+        item.setAttribute('data-open', isOpen ? 'false' : 'true');
+        trigger.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      });
+    });
+  </script>
+
+</body>
+</html>
