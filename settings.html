@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --red:     #c0392b;
+      --red-lt:  #fdecea;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Page hero ── */
+    .page-hero {
+      padding: 72px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    /* ── Layout ── */
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 48px;
+      padding: 56px 0 96px;
+      align-items: start;
+    }
+    @media (max-width: 680px) {
+      .settings-layout { grid-template-columns: 1fr; gap: 32px; }
+      .settings-nav    { display: none; }
+    }
+
+    /* ── Sidebar nav ── */
+    .settings-nav {
+      position: sticky; top: 80px;
+    }
+    .settings-nav__list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .settings-nav__link {
+      display: block;
+      padding: 8px 12px;
+      font-size: 0.86rem;
+      color: var(--ash);
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .settings-nav__link:hover,
+    .settings-nav__link.is-active {
+      background: var(--teal-lt);
+      color: var(--teal);
+    }
+
+    /* ── Section cards ── */
+    .settings-section {
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .settings-section:last-child { margin-bottom: 0; }
+
+    .section-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--stone);
+      background: var(--sand);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    }
+    .section-header--danger {
+      background: var(--red-lt);
+      border-bottom-color: #f5c6c3;
+    }
+    .section-header__title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .section-header__sub {
+      font-size: 0.83rem;
+      color: var(--ash);
+      line-height: 1.5;
+      max-width: 480px;
+    }
+    .section-body { padding: 28px; }
+
+    /* ── Status badge ── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .badge--on  { background: var(--teal-lt); color: var(--teal); }
+    .badge--off { background: var(--stone);   color: var(--ash); }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* ── Form elements ── */
+    .form-group { margin-bottom: 20px; }
+    .form-group:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    input[type="text"],
+    input[type="password"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-lt); }
+    input.input--error { border-color: var(--red); }
+    input.input--error:focus { box-shadow: 0 0 0 3px #fde8e6; }
+    .input-hint {
+      font-size: 0.78rem;
+      color: var(--ash);
+      margin-top: 6px;
+    }
+    .input-hint--error { color: var(--red); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn--primary { background: var(--teal); color: white; }
+    .btn--primary:not(:disabled):hover { background: #236b61; }
+    .btn--secondary { background: var(--stone); color: var(--ink); }
+    .btn--secondary:not(:disabled):hover { background: #d8d0c0; }
+    .btn--danger  { background: var(--red); color: white; }
+    .btn--danger:not(:disabled):hover { background: #a93226; }
+    .btn--sm { padding: 7px 14px; font-size: 0.8rem; }
+
+    /* ── QR code area ── */
+    .qr-container {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .qr-box {
+      flex-shrink: 0;
+      width: 160px; height: 160px;
+      background: var(--sand);
+      border: 1px dashed var(--stone);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .qr-box img { width: 100%; height: 100%; object-fit: contain; }
+    .qr-box__placeholder {
+      text-align: center;
+      padding: 16px;
+      color: var(--ash);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .qr-instructions {
+      flex: 1;
+      min-width: 200px;
+    }
+    .qr-instructions__title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .qr-instructions__steps {
+      list-style: none;
+      counter-reset: steps;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .qr-instructions__steps li {
+      counter-increment: steps;
+      display: flex; gap: 10px;
+      font-size: 0.88rem;
+      color: var(--ash);
+      line-height: 1.5;
+    }
+    .qr-instructions__steps li::before {
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+
+    /* ── 2FA step panels ── */
+    .tfa-step { display: none; }
+    .tfa-step.is-active { display: block; }
+
+    /* ── OTP input ── */
+    .otp-input-wrap { position: relative; display: inline-block; }
+    .otp-input-wrap input {
+      width: 160px;
+      font-size: 1.4rem;
+      letter-spacing: 0.25em;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* ── Feedback messages ── */
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+    .feedback.is-visible { display: flex; align-items: flex-start; gap: 10px; }
+    .feedback--success { background: var(--teal-lt); color: var(--teal); }
+    .feedback--error   { background: var(--red-lt);  color: var(--red); }
+    .feedback__icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
+
+    /* ── Divider ── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--stone);
+      margin: 24px 0;
+    }
+
+    /* ── Danger zone warning ── */
+    .danger-warning {
+      background: var(--red-lt);
+      border: 1px solid #f5c6c3;
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #7b1f18;
+    }
+    .danger-warning strong { font-weight: 600; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Your account</p>
+      <h1 class="page-hero__title">Account Settings</h1>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="settings-layout">
+
+      <!-- ── Sidebar nav ── -->
+      <nav class="settings-nav" aria-label="Settings sections">
+        <ul class="settings-nav__list">
+          <li><a href="#profile"   class="settings-nav__link">Profile</a></li>
+          <li><a href="#security"  class="settings-nav__link is-active">Security</a></li>
+          <li><a href="#two-factor" class="settings-nav__link">Two-factor auth</a></li>
+          <li><a href="#notifications" class="settings-nav__link">Notifications</a></li>
+          <li><a href="#danger-zone"   class="settings-nav__link">Danger zone</a></li>
+        </ul>
+      </nav>
+
+      <!-- ── Main content ── -->
+      <main>
+
+        <!-- ─────────────────────────────────────────────
+             TWO-FACTOR AUTHENTICATION
+        ───────────────────────────────────────────── -->
+        <section id="two-factor" class="settings-section" aria-labelledby="tfa-heading">
+          <div class="section-header">
+            <div>
+              <h2 class="section-header__title" id="tfa-heading">Two-factor authentication</h2>
+              <p class="section-header__sub">
+                Add a second layer of security to your account. Each time you sign in
+                you'll be prompted for a one-time code from your authenticator app.
+              </p>
+            </div>
+            <span id="tfa-badge" class="badge badge--off" role="status" aria-live="polite">Off</span>
+          </div>
+
+          <div class="section-body">
+
+            <!-- Step 0: 2FA is enabled — show disable option -->
+            <div id="tfa-enabled-view" class="tfa-step">
+              <p style="font-size:0.9rem;color:var(--ash);margin-bottom:20px;">
+                Two-factor authentication is currently <strong style="color:var(--teal)">enabled</strong> on your account.
+                You can disable it below, but doing so reduces your account security.
+              </p>
+              <button id="btn-disable-tfa" class="btn btn--secondary">Disable two-factor authentication</button>
+              <div id="tfa-disable-feedback" class="feedback" role="alert"></div>
+            </div>
+
+            <!-- Step 1: Start setup -->
+            <div id="tfa-start-view" class="tfa-step is-active">
+              <p style="font-size:0.9rem;color:var(--ash);margin-bottom:20px;">
+                Use any authenticator app — Google Authenticator, Authy, 1Password, or Bitwarden —
+                to scan the QR code. We'll then ask you to confirm a code to make sure everything is set up correctly.
+              </p>
+              <button id="btn-start-tfa" class="btn btn--primary">Set up two-factor authentication</button>
+            </div>
+
+            <!-- Step 2: Scan QR code -->
+            <div id="tfa-setup-view" class="tfa-step">
+              <div class="qr-container">
+                <div class="qr-box" id="qr-image-box">
+                  <div class="qr-box__placeholder" id="qr-placeholder">
+                    QR code will appear here
+                  </div>
+                  <!-- Populated by JS: <img id="qr-img" src="…" alt="QR code for two-factor authentication"> -->
+                </div>
+                <div class="qr-instructions">
+                  <h3 class="qr-instructions__title">Scan with your authenticator app</h3>
+                  <ol class="qr-instructions__steps">
+                    <li>Open your authenticator app (Google Authenticator, Authy, 1Password, etc.).</li>
+                    <li>Tap <em>Add account</em> or the <strong>+</strong> icon.</li>
+                    <li>Choose <em>Scan QR code</em> and point your camera at the code on the left.</li>
+                    <li>Your app will show a 6-digit code that changes every 30 seconds.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Manual entry fallback -->
+              <details style="margin-top:20px;">
+                <summary style="font-size:0.83rem;color:var(--ash);cursor:pointer;">Can't scan the code? Enter it manually</summary>
+                <div style="margin-top:12px;">
+                  <label for="tfa-manual-secret">Secret key</label>
+                  <input id="tfa-manual-secret" type="text" readonly
+                         placeholder="Loading…"
+                         style="font-family:monospace;letter-spacing:0.1em;font-size:0.88rem;" />
+                  <p class="input-hint">Enter this key in your authenticator app to add the account manually.</p>
+                </div>
+              </details>
+
+              <hr class="divider" />
+
+              <p style="font-size:0.88rem;color:var(--ash);margin-bottom:16px;">
+                Once you've scanned the code, enter the 6-digit confirmation code your app shows:
+              </p>
+
+              <div class="form-group">
+                <label for="tfa-token-input">Confirmation code</label>
+                <div class="otp-input-wrap">
+                  <input id="tfa-token-input" type="number" min="0" max="999999"
+                         inputmode="numeric" pattern="[0-9]{6}"
+                         placeholder="000000" autocomplete="one-time-code" />
+                </div>
+                <p class="input-hint" id="tfa-token-hint">Enter the 6-digit code from your authenticator app.</p>
+              </div>
+
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+                <button id="btn-verify-tfa" class="btn btn--primary">Confirm and enable</button>
+                <button id="btn-cancel-tfa" class="btn btn--secondary btn--sm">Cancel</button>
+              </div>
+              <div id="tfa-verify-feedback" class="feedback" role="alert"></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────
+             DELETE ACCOUNT
+        ───────────────────────────────────────────── -->
+        <section id="danger-zone" class="settings-section" aria-labelledby="delete-heading">
+          <div class="section-header section-header--danger">
+            <div>
+              <h2 class="section-header__title" id="delete-heading">Delete account</h2>
+              <p class="section-header__sub">
+                Permanently delete your Wander account and all associated data.
+                This action cannot be undone.
+              </p>
+            </div>
+          </div>
+
+          <div class="section-body">
+
+            <div class="danger-warning" role="note">
+              <strong>Warning — this cannot be undone.</strong><br />
+              Deleting your account will immediately and permanently erase your profile,
+              saved itineraries, booking history, and all other personal data associated
+              with this account. We cannot recover this information after deletion.
+            </div>
+
+            <!-- Confirmation method tabs -->
+            <div style="display:flex;gap:8px;margin-bottom:24px;" role="group" aria-label="Confirmation method">
+              <button id="tab-password" class="btn btn--primary btn--sm" aria-pressed="true"
+                      onclick="switchDeleteTab('password')">Use password</button>
+              <button id="tab-phrase" class="btn btn--secondary btn--sm" aria-pressed="false"
+                      onclick="switchDeleteTab('phrase')">Type confirmation phrase</button>
+            </div>
+
+            <!-- Password confirmation panel -->
+            <div id="delete-by-password" class="form-group">
+              <label for="delete-password-input">Current password</label>
+              <input id="delete-password-input" type="password"
+                     autocomplete="current-password"
+                     placeholder="Enter your current password" />
+              <p class="input-hint" id="delete-password-hint">We need to verify it's really you before deleting anything.</p>
+            </div>
+
+            <!-- Phrase confirmation panel -->
+            <div id="delete-by-phrase" class="form-group" style="display:none;">
+              <label for="delete-phrase-input">
+                Type <em style="font-style:italic;color:var(--ink)">delete my account</em> to confirm
+              </label>
+              <input id="delete-phrase-input" type="text"
+                     autocomplete="off"
+                     placeholder="delete my account" />
+              <p class="input-hint" id="delete-phrase-hint">Type the phrase exactly as shown (lower-case, no quotes).</p>
+            </div>
+
+            <button id="btn-delete-account" class="btn btn--danger" disabled>
+              Permanently delete my account
+            </button>
+            <div id="delete-feedback" class="feedback" role="alert"></div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="privacy.html">Privacy</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="terms.html">Terms</a></li>
+            <li><a href="privacy.html">Privacy policy</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2025 Wander. All rights reserved.</span>
+        <span><a href="terms.html">Terms</a> &middot; <a href="privacy.html">Privacy</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Simulated current user (replace with real session in production) ────
+    const CURRENT_USER_ID = 'demo-user';
+
+    // ── Simulated 2FA state (in production, read from session / API) ────────
+    let tfaEnabled = false;
+    let pendingSecret = null;   // secret generated during setup, not yet confirmed
+
+    // ── 2FA UI helpers ───────────────────────────────────────────────────────
+
+    function showTfaView(viewId) {
+      document.querySelectorAll('.tfa-step').forEach(el => el.classList.remove('is-active'));
+      document.getElementById(viewId).classList.add('is-active');
+    }
+
+    function setTfaBadge(enabled) {
+      const badge = document.getElementById('tfa-badge');
+      badge.textContent = enabled ? 'On' : 'Off';
+      badge.className = 'badge ' + (enabled ? 'badge--on' : 'badge--off');
+    }
+
+    function showFeedback(id, type, message) {
+      const el = document.getElementById(id);
+      el.className = 'feedback is-visible feedback--' + type;
+      el.innerHTML = '<span class="feedback__icon">' + (type === 'success' ? '✓' : '✕') + '</span>' + message;
+    }
+
+    function clearFeedback(id) {
+      const el = document.getElementById(id);
+      el.className = 'feedback';
+      el.textContent = '';
+    }
+
+    // Render a QR code image from an otpauth URI using an external QR library.
+    // In production, generate the QR on the server or use a bundled library.
+    // Here we use the Google Charts QR API (no-JS fallback note in placeholder).
+    function renderQrCode(uri) {
+      const box = document.getElementById('qr-image-box');
+      const encoded = encodeURIComponent(uri);
+      const src = 'https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl=' + encoded;
+      box.innerHTML = '<img id="qr-img" src="' + src + '" alt="QR code for two-factor authentication" width="160" height="160" />';
+    }
+
+    // ── Start 2FA setup ──────────────────────────────────────────────────────
+    document.getElementById('btn-start-tfa').addEventListener('click', async () => {
+      const btn = document.getElementById('btn-start-tfa');
+      btn.disabled = true;
+      btn.textContent = 'Generating…';
+
+      try {
+        const res = await fetch('/api/account/2fa/setup', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: CURRENT_USER_ID }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Setup failed');
+
+        pendingSecret = data.secret;
+        renderQrCode(data.uri);
+        document.getElementById('tfa-manual-secret').value = data.secret;
+        showTfaView('tfa-setup-view');
+      } catch (err) {
+        showFeedback('tfa-verify-feedback', 'error', err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Set up two-factor authentication';
+      }
+    });
+
+    // ── Cancel 2FA setup ────────────────────────────────────────────────────
+    document.getElementById('btn-cancel-tfa').addEventListener('click', () => {
+      pendingSecret = null;
+      clearFeedback('tfa-verify-feedback');
+      document.getElementById('tfa-token-input').value = '';
+      document.getElementById('tfa-token-input').classList.remove('input--error');
+      document.getElementById('tfa-token-hint').textContent = 'Enter the 6-digit code from your authenticator app.';
+      document.getElementById('tfa-token-hint').classList.remove('input-hint--error');
+      showTfaView('tfa-start-view');
+    });
+
+    // ── Verify and enable 2FA ────────────────────────────────────────────────
+    document.getElementById('btn-verify-tfa').addEventListener('click', async () => {
+      const tokenInput = document.getElementById('tfa-token-input');
+      const token = String(tokenInput.value).padStart(6, '0');
+      const hint = document.getElementById('tfa-token-hint');
+
+      tokenInput.classList.remove('input--error');
+      hint.textContent = 'Enter the 6-digit code from your authenticator app.';
+      hint.classList.remove('input-hint--error');
+      clearFeedback('tfa-verify-feedback');
+
+      if (!pendingSecret) {
+        showFeedback('tfa-verify-feedback', 'error', 'No setup in progress. Please start again.');
+        return;
+      }
+      if (!/^\d{6}$/.test(token)) {
+        tokenInput.classList.add('input--error');
+        hint.textContent = 'Please enter a 6-digit numeric code.';
+        hint.classList.add('input-hint--error');
+        return;
+      }
+
+      const btn = document.getElementById('btn-verify-tfa');
+      btn.disabled = true;
+      btn.textContent = 'Verifying…';
+
+      try {
+        const res = await fetch('/api/account/2fa/verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: CURRENT_USER_ID, secret: pendingSecret, token }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Verification failed');
+
+        tfaEnabled = true;
+        pendingSecret = null;
+        setTfaBadge(true);
+        showTfaView('tfa-enabled-view');
+        showFeedback('tfa-disable-feedback', 'success', 'Two-factor authentication is now enabled on your account.');
+      } catch (err) {
+        tokenInput.classList.add('input--error');
+        hint.textContent = err.message;
+        hint.classList.add('input-hint--error');
+        showFeedback('tfa-verify-feedback', 'error', 'Code not recognised. Check that your device clock is correct and try again.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Confirm and enable';
+      }
+    });
+
+    // ── Disable 2FA ──────────────────────────────────────────────────────────
+    document.getElementById('btn-disable-tfa').addEventListener('click', async () => {
+      clearFeedback('tfa-disable-feedback');
+      const btn = document.getElementById('btn-disable-tfa');
+      btn.disabled = true;
+      btn.textContent = 'Disabling…';
+
+      try {
+        const res = await fetch('/api/account/2fa', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userId: CURRENT_USER_ID }),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Could not disable 2FA');
+
+        tfaEnabled = false;
+        setTfaBadge(false);
+        showTfaView('tfa-start-view');
+      } catch (err) {
+        showFeedback('tfa-disable-feedback', 'error', err.message);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Disable two-factor authentication';
+      }
+    });
+
+    // ── Delete account — tab switch ──────────────────────────────────────────
+    function switchDeleteTab(tab) {
+      const isPassword = tab === 'password';
+      document.getElementById('delete-by-password').style.display = isPassword ? '' : 'none';
+      document.getElementById('delete-by-phrase').style.display   = isPassword ? 'none' : '';
+      document.getElementById('tab-password').className = 'btn btn--sm ' + (isPassword ? 'btn--primary' : 'btn--secondary');
+      document.getElementById('tab-phrase').className   = 'btn btn--sm ' + (isPassword ? 'btn--secondary' : 'btn--primary');
+      document.getElementById('tab-password').setAttribute('aria-pressed', isPassword);
+      document.getElementById('tab-phrase').setAttribute('aria-pressed', !isPassword);
+      validateDeleteForm();
+    }
+
+    // ── Delete account — real-time validation ────────────────────────────────
+    function validateDeleteForm() {
+      const passwordVisible = document.getElementById('delete-by-password').style.display !== 'none';
+      let ready = false;
+
+      if (passwordVisible) {
+        const pw = document.getElementById('delete-password-input').value;
+        ready = pw.length > 0;
+      } else {
+        const phrase = document.getElementById('delete-phrase-input').value;
+        ready = phrase === 'delete my account';
+      }
+
+      document.getElementById('btn-delete-account').disabled = !ready;
+    }
+
+    document.getElementById('delete-password-input').addEventListener('input', validateDeleteForm);
+    document.getElementById('delete-phrase-input').addEventListener('input', () => {
+      validateDeleteForm();
+      const input = document.getElementById('delete-phrase-input');
+      const val = input.value;
+      if (val.length > 0 && val !== 'delete my account') {
+        input.classList.add('input--error');
+      } else {
+        input.classList.remove('input--error');
+      }
+    });
+
+    // ── Delete account — submit ──────────────────────────────────────────────
+    document.getElementById('btn-delete-account').addEventListener('click', async () => {
+      clearFeedback('delete-feedback');
+
+      const passwordVisible = document.getElementById('delete-by-password').style.display !== 'none';
+      const body = { userId: CURRENT_USER_ID };
+
+      if (passwordVisible) {
+        body.password = document.getElementById('delete-password-input').value;
+      } else {
+        body.phrase = document.getElementById('delete-phrase-input').value;
+      }
+
+      const btn = document.getElementById('btn-delete-account');
+      btn.disabled = true;
+      btn.textContent = 'Deleting account…';
+
+      try {
+        const res = await fetch('/api/account', {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Deletion failed');
+
+        // Account gone — redirect to homepage or show terminal message.
+        showFeedback('delete-feedback', 'success',
+          'Your account has been deleted. You will be signed out shortly.');
+        btn.textContent = 'Account deleted';
+        document.getElementById('delete-password-input').disabled = true;
+        document.getElementById('delete-phrase-input').disabled = true;
+      } catch (err) {
+        showFeedback('delete-feedback', 'error', err.message);
+        btn.disabled = false;
+        btn.textContent = 'Permanently delete my account';
+        validateDeleteForm();
+      }
+    });
+
+    // ── Initialise state from session (mock) ─────────────────────────────────
+    // In production, read tfaEnabled from the user session or a GET endpoint.
+    (function init() {
+      setTfaBadge(tfaEnabled);
+      if (tfaEnabled) {
+        showTfaView('tfa-enabled-view');
+      } else {
+        showTfaView('tfa-start-view');
+      }
+    })();
+  </script>
+
+</body>
+</html>
