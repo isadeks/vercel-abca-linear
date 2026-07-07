@@ -229,6 +229,16 @@
     }
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
+    .footer__nl-form { margin-top: 18px; }
+    .footer__nl-form form { display: flex; gap: 0; }
+    .footer__nl-input { flex: 1; min-width: 0; padding: 9px 12px; background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.18); border-right: none; font-family: var(--font-sans); font-size: 0.82rem; color: white; outline: none; transition: border-color 0.2s; }
+    .footer__nl-input::placeholder { color: rgba(255,255,255,0.35); }
+    .footer__nl-input:focus { border-color: var(--teal); }
+    .footer__nl-btn { padding: 9px 14px; background: var(--teal); border: 1px solid var(--teal); color: white; font-family: var(--font-sans); font-size: 0.78rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .footer__nl-btn:hover { background: #22665c; }
+    .footer__nl-msg { margin-top: 8px; font-size: 0.78rem; line-height: 1.5; min-height: 1.2em; }
+    .footer__nl-msg--ok    { color: #d5ecea; }
+    .footer__nl-msg--error { color: #f4a090; }
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
       .footer__grid { grid-template-columns: 1fr 1fr; }
@@ -326,9 +336,15 @@
           <ul class="footer__links">
             <li><a href="about.html">About</a></li>
             <li><a href="about.html#write">Write for us</a></li>
-            <li><a href="index.html#newsletter">Newsletter</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
+          <div class="footer__nl-form">
+            <form action="/api/newsletter" method="POST" novalidate>
+              <input class="footer__nl-input" type="email" name="email" placeholder="your@email.com" aria-label="Email for newsletter" />
+              <button class="footer__nl-btn" type="submit">Join</button>
+            </form>
+            <p class="footer__nl-msg" aria-live="polite"></p>
+          </div>
         </div>
         <div>
           <p class="footer__heading">Legal</p>
@@ -345,5 +361,53 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      document.querySelectorAll('.footer__nl-form').forEach(function (widget) {
+        var form  = widget.querySelector('form');
+        var input = widget.querySelector('.footer__nl-input');
+        var msg   = widget.querySelector('.footer__nl-msg');
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = input.value.trim();
+          if (!EMAIL_RE.test(email)) {
+            msg.textContent = 'Please enter a valid email address.';
+            msg.className   = 'footer__nl-msg footer__nl-msg--error';
+            input.focus();
+            return;
+          }
+          var btn = form.querySelector('.footer__nl-btn');
+          btn.disabled    = true;
+          btn.textContent = '…';
+          fetch('/api/newsletter', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ email: email })
+          })
+          .then(function (res) { return res.json(); })
+          .then(function (data) {
+            if (data.status === 'ok') {
+              msg.textContent    = data.message || 'Subscribed — thank you!';
+              msg.className      = 'footer__nl-msg footer__nl-msg--ok';
+              input.value        = '';
+              form.style.display = 'none';
+            } else {
+              msg.textContent = data.message || 'Something went wrong. Please try again.';
+              msg.className   = 'footer__nl-msg footer__nl-msg--error';
+              btn.disabled    = false;
+              btn.textContent = 'Join';
+            }
+          })
+          .catch(function () {
+            msg.textContent = 'Unable to reach the server. Please try again later.';
+            msg.className   = 'footer__nl-msg footer__nl-msg--error';
+            btn.disabled    = false;
+            btn.textContent = 'Join';
+          });
+        });
+      });
+    }());
+  </script>
 </body>
 </html>
