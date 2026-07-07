@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Week at the End of the World: Patagonia — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -22,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 800px;
+      --shadow-sm: 0 2px 16px rgba(26,23,20,0.07);
     }
 
     html { scroll-behavior: smooth; }
@@ -181,6 +183,12 @@
     .city-card {
       background: var(--sand);
       padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .city-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(26,23,20,0.11);
     }
     .city-card__name {
       font-family: var(--font-serif);
@@ -218,6 +226,25 @@
       font-style: italic;
     }
 
+    /* ── Reading progress bar ── */
+    #read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--teal);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     /* ── Back CTA ── */
     .guide-back-cta {
       padding: 64px 0;
@@ -250,6 +277,7 @@
   </style>
 </head>
 <body>
+  <div id="read-progress"></div>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -273,23 +301,23 @@
         Wind-scoured granite towers, electric-blue glaciers calving into jade lakes, and trails that push your legs for days. Patagonia sits at the bottom of the world and rewards every kilometre with scenery that defies description.
       </p>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Why Patagonia?</h2>
         <p>Few places on Earth feel as genuinely remote as Patagonia. Shared between the southern reaches of Chile and Argentina, this vast region encompasses some of the most dramatic landscapes on the planet — the jagged spires of Torres del Paine, the grinding immensity of the Perito Moreno Glacier, and the wild Fuegian channels that stretch towards Antarctica.</p>
         <p>The rewards are proportional to the effort. Getting here takes time and planning, but that journey is part of the experience. Once in the park, you join a community of hikers from every corner of the world who have come for the same reason: to stand in weather that means it, beneath mountains that look too dramatic to be real.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Practical tip</p>
         <p>Book refugio and campsite accommodation for the W Trek at least three to four months in advance through the official CONAF-approved operators (Fantastico Sur and Vertice Patagonia). Spots fill early, especially for December and January. Arrivals by air land at Punta Arenas or Puerto Natales — Puerto Natales is closer and the better base.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>The W Trek</h2>
         <p>The classic route through Torres del Paine traces a W-shape across the park over four to five days. Most trekkers walk it west to east, finishing at the Mirador Las Torres viewpoint on the final morning — saving the signature view for last is a decision you will not regret.</p>
       </div>
 
-      <div class="guide-city">
+      <div class="guide-city reveal">
         <div class="city-card">
           <h3 class="city-card__name">Valle del Francés</h3>
           <p class="city-card__desc">A hanging valley of crumbling peaks and dangling glaciers at the heart of the W. The constant crack of avalanches echoes off granite walls that rise 2,000 metres above the trail.</p>
@@ -312,29 +340,29 @@
         </div>
       </div>
 
-      <figure class="guide-img-block">
+      <figure class="guide-img-block reveal">
         <img src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=1200&q=80" alt="Machu Picchu ruins in the Andes, South America" />
         <figcaption>South America's ancient landscapes — from the Inca citadel of Machu Picchu in the Andes to the wild granite towers of Torres del Paine, the continent rewards every kilometre of effort.</figcaption>
       </figure>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>When to go</h2>
         <p>The trekking season runs November through March (Southern Hemisphere summer). December and January offer the longest daylight and warmest temperatures but are also the busiest months. November and March are excellent alternatives — fewer crowds, lower prices, and equally stunning scenery. April brings autumn colour to the lenga beech forests; trails are quieter but some facilities close.</p>
         <p>Weather in Patagonia is famously unpredictable. Sunshine, rain, hail, and gale-force winds can arrive within the same afternoon. Pack layers regardless of the forecast and treat any calm morning as a gift.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Where to stay</h2>
         <p>Inside Torres del Paine, accommodation splits between <em>refugios</em> (hut-style lodges with bunk beds, meals, and hot showers) and designated campsites. The refugios are comfortable and social — shared dinners become easy conversation between trekkers of all nationalities. For a more immersive experience, camping under Patagonian stars is unforgettable, provided you carry the right gear.</p>
         <p>Outside the park, Puerto Natales has a full range of options from backpacker hostels to boutique hotels. For those who want luxury with the landscape, the Explora Patagonia lodge inside the park is widely considered one of the finest wilderness hotels in South America.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Budget guide</p>
         <p>W Trek accommodation (refugio bed + dinner + breakfast) runs approximately CLP 80,000–120,000 (USD 85–130) per person per night. Camping is cheaper at CLP 15,000–25,000 (USD 16–27). Park entrance fees add CLP 21,000 (USD 22) for foreigners. Budget at least USD 150–200 per day all-in for a comfortable guided experience.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Food &amp; gear</h2>
         <p>Refugio meals are hearty and filling — thick soups, slow-roasted lamb, and generous breakfasts. If camping, carry calorie-dense food from Puerto Natales; there are no resupply points on the trail. A quality waterproof jacket, trekking poles, and well-broken-in boots are non-negotiable. Puerto Natales has good gear rental shops if you'd rather not carry equipment on the flight down.</p>
         <p>The local lamb (cordero) is exceptional throughout Patagonia. In Puerto Natales, look for restaurants that slow-roast a whole animal over an open fire — it is one of South America's finest meals.</p>
@@ -350,6 +378,23 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <script>
+    // Reading progress bar
+    const bar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Scroll-reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Where Should I Go? — Wander</title>
   <meta name="description" content="Answer 8 quick questions and discover which destination matches your travel personality." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -268,12 +269,14 @@
       background: white;
       border: 1.5px solid var(--stone);
       text-align: left;
-      transition: border-color 0.15s, background 0.15s, transform 0.1s;
+      box-shadow: 0 1px 6px rgba(26,23,20,0.06);
+      transition: border-color 0.15s, background 0.15s, transform 0.15s, box-shadow 0.15s;
       cursor: pointer;
     }
     .answer-btn:hover {
       border-color: var(--teal);
-      transform: translateY(-1px);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(42,122,111,0.15);
     }
     .answer-btn.selected {
       border-color: var(--teal);

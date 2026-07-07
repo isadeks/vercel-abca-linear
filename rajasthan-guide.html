@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rajasthan by Rail: The Golden Cities — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -22,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 800px;
+      --shadow-sm: 0 2px 16px rgba(26,23,20,0.07);
     }
 
     html { scroll-behavior: smooth; }
@@ -181,6 +183,12 @@
     .city-card {
       background: var(--sand);
       padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .city-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(26,23,20,0.11);
     }
     .city-card__name {
       font-family: var(--font-serif);
@@ -218,6 +226,25 @@
       font-style: italic;
     }
 
+    /* ── Reading progress bar ── */
+    #read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--teal);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     /* ── Back CTA ── */
     .guide-back-cta {
       padding: 64px 0;
@@ -250,6 +277,7 @@
   </style>
 </head>
 <body>
+  <div id="read-progress"></div>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -273,23 +301,23 @@
         From the pink walls of Jaipur to the blue labyrinth of Jodhpur, a two-week rail journey through India's most regal state reveals a land of fairy-tale forts, camel-dotted deserts, and centuries of Rajput grandeur.
       </p>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Why Rajasthan?</h2>
         <p>No region of India concentrates so much history, colour, and spectacle into such a compact area. Rajasthan — "Land of Kings" — was once a mosaic of independent princely states, each ruling from a fortress that seems to grow directly from the rock beneath it. The royal legacy lives on in the grand palaces-turned-hotels, the intricate miniature paintings sold in bazaars, and the proud local pride in regional dress and cuisine.</p>
         <p>Travelling by rail is the most romantic way to link the cities. The overnight trains are comfortable, the scenery is dramatic, and you arrive rested and ready to explore rather than worn down by long road transfers.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Practical tip</p>
         <p>Book train tickets well in advance through the IRCTC website or a local travel agent. The Shatabdi and Rajdhani express services are fast and air-conditioned; overnight sleepers on the Jaipur–Jodhpur and Jodhpur–Jaisalmer routes are perfectly safe and a genuine experience.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>The route</h2>
         <p>The classic two-week circuit runs Jaipur → Pushkar → Jodhpur → Jaisalmer → Udaipur, finishing at Udaipur airport or returning to Jaipur by overnight train.</p>
       </div>
 
-      <div class="guide-city">
+      <div class="guide-city reveal">
         <div class="city-card">
           <h3 class="city-card__name">Jaipur</h3>
           <p class="city-card__desc">The Pink City is the usual entry point. Amber Fort, the City Palace, and Jantar Mantar are a full day each. Don't miss the textile bazaars of Johari Bazaar.</p>
@@ -312,27 +340,27 @@
         </div>
       </div>
 
-      <figure class="guide-img-block">
+      <figure class="guide-img-block reveal">
         <img src="https://images.unsplash.com/photo-1548013146-72479768bada?w=1200&q=80" alt="Taj Mahal at dawn, Agra, Rajasthan" />
         <figcaption>The Taj Mahal framed through an arched gateway at dawn — one of the world's most recognisable sights, the centrepiece of any Rajasthan itinerary.</figcaption>
       </figure>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>When to go</h2>
         <p>October to March is the prime season. Winters (December–February) bring clear skies and cool evenings perfect for exploring on foot. Avoid the April–June peak summer — daytime temperatures regularly exceed 45 °C. The monsoon (July–September) brings dramatic skies and lush greenery but some roads and smaller attractions may close.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Where to stay</h2>
         <p>Rajasthan excels at heritage accommodation. Many former havelis (merchant mansions) and royal guesthouses have been converted into characterful hotels. In Jaipur, look for riads in the old city. In Jodhpur, guesthouses near Mehrangarh offer fort views from rooftop terraces. In Jaisalmer, staying one night inside the fort is a rite of passage (though choosing guesthouses that have proper drainage helps preserve the monument).</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Budget guide</p>
         <p>Budget travellers can cover Rajasthan comfortably on ₹3,000–5,000 (£28–47) per day including accommodation, food, and transport. Mid-range visitors spending ₹8,000–15,000 (£75–140) per day will unlock palace hotels and AC train compartments. The state's top heritage hotels can run to ₹40,000+ (£375+) per night.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Food &amp; drink</h2>
         <p>Rajasthani cuisine evolved around the desert — preserved, slow-cooked, and deeply spiced. Dal baati churma (lentils with baked wheat balls and sweet crumble) is the signature dish. Laal maas (fiery red lamb curry) is essential eating in Jodhpur. Finish meals with rabri (thick condensed-milk dessert) or the cardamom-scented chai sold at every railway station.</p>
         <p>Rajasthan is officially a dry state — alcohol is available in tourist hotels and licensed restaurants, but don't expect a wine list. Lassi and fresh lime soda are the drinks of choice.</p>
@@ -348,6 +376,23 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <script>
+    // Reading progress bar
+    const bar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Scroll-reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>

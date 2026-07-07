@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Norway's Fjords in the Midnight Sun — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -22,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 800px;
+      --shadow-sm: 0 2px 16px rgba(26,23,20,0.07);
     }
 
     html { scroll-behavior: smooth; }
@@ -181,6 +183,12 @@
     .city-card {
       background: var(--sand);
       padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .city-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(26,23,20,0.11);
     }
     .city-card__name {
       font-family: var(--font-serif);
@@ -218,6 +226,25 @@
       font-style: italic;
     }
 
+    /* ── Reading progress bar ── */
+    #read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--teal);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     /* ── Back CTA ── */
     .guide-back-cta {
       padding: 64px 0;
@@ -250,6 +277,7 @@
   </style>
 </head>
 <body>
+  <div id="read-progress"></div>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -273,23 +301,23 @@
         Long, golden evenings on still water, surrounded by walls of granite that plunge straight into the sea. Norway's fjords in summer are among Europe's great natural spectacles — and with the midnight sun stretching each day past midnight, there is almost too much light to take in.
       </p>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Why Norway's fjords?</h2>
         <p>The fjords of western Norway are a UNESCO World Heritage landscape — ancient valleys carved by glaciers and then flooded by the sea after the last ice age. The result is a geography of improbable beauty: water so calm it mirrors the mountains above, waterfalls that free-fall hundreds of metres directly into the fjord, and villages clinging to the few flat ledges the terrain allows.</p>
         <p>In summer, the midnight sun transforms the light into something continuous and golden. There is no darkness — just a slow, imperceptible dimming around midnight before the sun climbs again. For photographers and those who struggle with sleep, it is simultaneously wonderful and disorienting.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Practical tip</p>
         <p>The Norway in a Nutshell route (Bergen → Flåm by Flåmsbana railway → Gudvangen by Nærøyfjord ferry → Voss by bus → Bergen by train) can be done in a single day but deserves at least two. Book ferry and train tickets through NSB or Fjord Tours in advance during peak summer season. Bergen makes an excellent base for exploring the wider region.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>The route</h2>
         <p>A ten-day circuit from Bergen allows you to explore the Nærøyfjord and Sognefjord in depth, drive the Aurlandsvegen (Snow Road) to the Stegastein viewpoint, and still leave time for Ålesund — Norway's most beautiful town, rebuilt in Art Nouveau style after an 1904 fire — and the Geirangerfjord to the north.</p>
       </div>
 
-      <div class="guide-city">
+      <div class="guide-city reveal">
         <div class="city-card">
           <h3 class="city-card__name">Bergen</h3>
           <p class="city-card__desc">Norway's second city and the gateway to the fjords. The Bryggen Wharf, Funicular up Mount Fløyen, and the excellent fish market set the tone for what follows. Expect rain — Bergen is one of Europe's wettest cities.</p>
@@ -312,28 +340,28 @@
         </div>
       </div>
 
-      <figure class="guide-img-block">
+      <figure class="guide-img-block reveal">
         <img src="https://images.unsplash.com/photo-1615729947596-a598e5de0ab3?w=1200&q=80" alt="Geirangerfjord from above, Norway" />
         <figcaption>Norway's mountain terrain at its most dramatic — the Sunnmøre Alps that frame the Geirangerfjord rise steeply from sea level to flower-covered summits.</figcaption>
       </figure>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>When to go</h2>
         <p>June to August offers the midnight sun, the warmest temperatures (15–22 °C), and all ferry and mountain road services running. July is peak season — fully booked accommodation and busier viewpoints. June and August are excellent alternatives with noticeably smaller crowds. September brings the first autumn colours to the mountainsides and is one of the most beautiful months to visit, though some routes start closing.</p>
         <p>For the Northern Lights, visit between October and March. The fjord experience changes entirely — cold, dark, and sparsely visited, but extraordinarily atmospheric when a clear night brings the aurora dancing over the black water.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Where to stay</h2>
         <p>Accommodation in the fjord villages ranges from simple guesthouses and historic wooden hotels to spectacular designer lodges cantilevered over the water. In Flåm, the Fretheim Hotel is a charming historic property with fjord views from many rooms. In Geiranger, the Union Hotel has served guests since 1891 and offers one of the most dramatic outlooks in Europe. For something contemporary, the Juvet Landscape Hotel near Ålesund is architecturally extraordinary — glass-fronted rooms positioned to look directly into the forest.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Budget guide</p>
         <p>Norway is one of Europe's most expensive countries. Budget travellers staying in hostels and self-catering can manage on NOK 700–1,000 (€60–85) per day. Mid-range visitors should budget NOK 2,000–3,500 (€170–300) per day including accommodation, meals, and ferry tickets. The Norway in a Nutshell full ticket costs approximately NOK 1,500–2,000 (€130–170) per person.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Food &amp; drink</h2>
         <p>Norwegian food has quietly become one of Scandinavia's most interesting cuisines. Bergen's fish market is the place to try fresh prawns, smoked salmon, and brown crab straight from the boat. In the fjord villages, look for <em>rakfisk</em> (fermented trout) if you're feeling adventurous, or simply enjoy the exceptional quality of local lamb, reindeer, and freshwater fish prepared with minimal fuss.</p>
         <p>Coffee culture is serious in Norway — the country consistently ranks among the world's highest per-capita coffee consumers. Expect well-sourced specialty coffee even in small towns. Beer and aquavit (caraway-spiced spirit) are the traditional drinks; the craft beer scene in Bergen is worth exploring on your first evening.</p>
@@ -349,6 +377,23 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <script>
+    // Reading progress bar
+    const bar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Scroll-reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>
