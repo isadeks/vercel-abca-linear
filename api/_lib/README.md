@@ -1,8 +1,8 @@
 # Booking engine (`api/_lib/`)
 
 Domain logic for the Wander booking API. These are framework-free ES modules,
-unit-tested with Vitest, and consumed by the Vercel serverless functions under
-`api/`.
+unit-tested with Vitest, and consumed by the serverless functions under `api/`
+(deployed on AWS Amplify).
 
 Module dependency graph (built incrementally by the orchestration epic):
 
