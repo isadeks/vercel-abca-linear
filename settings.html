@@ -19,9 +19,11 @@
       --teal:    #2a7a6f;
       --teal-lt: #d5ecea;
       --coral:   #c9624a;
+      --red:     #c0392b;
+      --red-lt:  #fdecea;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
-      --max-w: 820px;
+      --max-w: 800px;
     }
 
     html { scroll-behavior: smooth; }
@@ -35,8 +37,9 @@
     img { display: block; width: 100%; object-fit: cover; }
     a   { color: inherit; text-decoration: none; }
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
-    /* ── Nav ────────────────────────────────────────────────────── */
+    /* ── Nav ─────────────────────────────────────────────────── */
     .nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
@@ -62,9 +65,9 @@
     }
     .nav__back:hover { opacity: 0.7; }
 
-    /* ── Page hero ──────────────────────────────────────────────── */
+    /* ── Page hero ───────────────────────────────────────────── */
     .page-hero {
-      padding: 80px 0 52px;
+      padding: 72px 0 48px;
       background: var(--sand);
       border-bottom: 1px solid var(--stone);
     }
@@ -89,105 +92,301 @@
       font-weight: 300;
       font-style: italic;
       color: var(--ash);
+      max-width: 440px;
       line-height: 1.6;
     }
 
-    /* ── Settings layout ────────────────────────────────────────── */
-    .settings-body {
-      padding: 64px 0 96px;
-    }
-
-    .settings-section {
+    /* ── Settings layout ─────────────────────────────────────── */
+    .settings-layout {
       display: grid;
-      grid-template-columns: 220px 1fr;
+      grid-template-columns: 200px 1fr;
       gap: 48px;
-      padding: 48px 0;
-      border-bottom: 1px solid var(--stone);
+      padding: 56px 0 96px;
+      align-items: start;
     }
-    .settings-section:first-child { padding-top: 0; }
-    .settings-section:last-child  { border-bottom: none; }
-
     @media (max-width: 680px) {
-      .settings-section { grid-template-columns: 1fr; gap: 24px; }
+      .settings-layout { grid-template-columns: 1fr; gap: 32px; }
+      .settings-nav    { display: none; }
     }
 
-    .settings-section__label {
-      padding-top: 4px;
+    /* ── Sidebar nav ─────────────────────────────────────────── */
+    .settings-nav {
+      position: sticky; top: 80px;
     }
-    .settings-section__label h2 {
+    .settings-nav__list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 2px;
+    }
+    .settings-nav__link {
+      display: block;
+      padding: 8px 12px;
+      font-size: 0.86rem;
+      color: var(--ash);
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .settings-nav__link:hover,
+    .settings-nav__link.is-active {
+      background: var(--teal-lt);
+      color: var(--teal);
+    }
+
+    /* ── Section cards ───────────────────────────────────────── */
+    .settings-section {
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      overflow: hidden;
+      margin-bottom: 32px;
+    }
+    .settings-section:last-child { margin-bottom: 0; }
+
+    .section-header {
+      padding: 24px 28px;
+      border-bottom: 1px solid var(--stone);
+      background: var(--sand);
+      display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    }
+    .section-header--danger {
+      background: var(--red-lt);
+      border-bottom-color: #f5c6c3;
+    }
+    .section-header__title {
       font-family: var(--font-serif);
       font-size: 1.3rem;
       font-weight: 400;
-      margin-bottom: 8px;
+      margin-bottom: 4px;
     }
-    .settings-section__label p {
-      font-size: 0.82rem;
+    .section-header__sub {
+      font-size: 0.83rem;
       color: var(--ash);
-      line-height: 1.7;
+      line-height: 1.5;
+      max-width: 480px;
     }
+    .section-body { padding: 28px; }
 
-    /* ── Form primitives ────────────────────────────────────────── */
-    .form {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
+    /* ── Status badge ────────────────────────────────────────── */
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.74rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
-    .form-group {
+    .badge--on  { background: var(--teal-lt); color: var(--teal); }
+    .badge--off { background: var(--stone);   color: var(--ash); }
+    .badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+    /* ── Avatar upload ───────────────────────────────────────── */
+    .avatar-upload {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      margin-bottom: 28px;
+      padding: 24px;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      border-radius: 4px;
+    }
+    .avatar-preview {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: var(--stone);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .avatar-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .avatar-placeholder {
+      font-size: 2rem;
+      color: var(--ash);
+      line-height: 1;
+      user-select: none;
+    }
+    .avatar-controls {
       display: flex;
       flex-direction: column;
+      gap: 10px;
+    }
+    .avatar-controls__label {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--ink);
+    }
+    .avatar-controls__hint {
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+    .avatar-controls__actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn-upload {
+      display: inline-flex;
+      align-items: center;
       gap: 6px;
-    }
-    .form-group label {
+      padding: 9px 18px;
       font-size: 0.75rem;
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--ash);
-    }
-    .form-group input {
-      padding: 12px 16px;
-      border: 1px solid var(--stone);
-      background: var(--cream);
-      font-family: var(--font-sans);
-      font-size: 0.9rem;
-      color: var(--ink);
-      outline: none;
-      transition: border-color 0.2s;
-      width: 100%;
-    }
-    .form-group input:focus { border-color: var(--teal); }
-    .form-group input::placeholder { color: #b0a898; }
-    .form-group input[aria-invalid="true"] { border-color: var(--coral); }
-
-    .form-hint {
-      font-size: 0.75rem;
-      color: var(--ash);
-      margin-top: 2px;
-    }
-
-    .btn {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 13px 26px;
-      font-size: 0.78rem;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      background: var(--teal);
       border: 1px solid var(--teal);
-      color: white;
+      color: var(--teal);
+      background: transparent;
       cursor: pointer;
-      transition: background 0.2s, opacity 0.2s;
-      align-self: flex-start;
+      transition: background 0.2s, color 0.2s;
+      border-radius: 4px;
     }
-    .btn:hover   { background: #22665c; border-color: #22665c; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-upload:hover { background: var(--teal-lt); }
+    .btn-clear {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      color: var(--ash);
+      background: transparent;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+      border-radius: 4px;
+    }
+    .btn-clear:hover { border-color: var(--coral); color: var(--coral); }
+    /* visually-hidden real file input */
+    #avatar-file-input { display: none; }
 
-    /* ── Feedback banner ────────────────────────────────────────── */
+    /* ── Form elements ───────────────────────────────────────── */
+    .form-group { margin-bottom: 20px; }
+    .form-group:last-child { margin-bottom: 0; }
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="url"],
+    input[type="password"],
+    input[type="number"] {
+      width: 100%;
+      padding: 10px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 4px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-lt); }
+    input.input--error { border-color: var(--red); }
+    input.input--error:focus { box-shadow: 0 0 0 3px #fde8e6; }
+    input[aria-invalid="true"] { border-color: var(--coral); }
+    .input-hint {
+      font-size: 0.78rem;
+      color: var(--ash);
+      margin-top: 6px;
+    }
+    .input-hint--error { color: var(--red); }
+    .field-error {
+      font-size: 0.76rem;
+      color: var(--coral);
+      display: none;
+      margin-top: 4px;
+    }
+    .field-error.visible { display: block; }
+
+    /* ── Buttons ─────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      padding: 10px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: opacity 0.15s, background 0.15s;
+    }
+    .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+    .btn--primary { background: var(--teal); color: white; }
+    .btn--primary:not(:disabled):hover { background: #236b61; }
+    .btn--secondary { background: var(--stone); color: var(--ink); }
+    .btn--secondary:not(:disabled):hover { background: #d8d0c0; }
+    .btn--danger  { background: var(--red); color: white; }
+    .btn--danger:not(:disabled):hover { background: #a93226; }
+    .btn--sm { padding: 7px 14px; font-size: 0.8rem; }
+    .form-actions {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    /* ── Toast / status banners ──────────────────────────────── */
+    .toast {
+      display: none;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      font-size: 0.85rem;
+      border-left: 3px solid transparent;
+      margin-top: 20px;
+      border-radius: 4px;
+    }
+    .toast.visible { display: flex; }
+    .toast--success {
+      background: var(--teal-lt);
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+    .toast--error {
+      background: #fde8e4;
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+    .feedback {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: 4px;
+      font-size: 0.86rem;
+      line-height: 1.5;
+    }
+    .feedback.is-visible { display: flex; align-items: flex-start; gap: 10px; }
+    .feedback--success { background: var(--teal-lt); color: var(--teal); }
+    .feedback--error   { background: var(--red-lt);  color: var(--red); }
+    .feedback__icon { flex-shrink: 0; font-size: 1rem; margin-top: 1px; }
     .banner {
       padding: 12px 16px;
       font-size: 0.85rem;
       border-left: 3px solid transparent;
+      border-radius: 4px;
       display: none;
+      margin-bottom: 16px;
     }
     .banner--success {
       background: var(--teal-lt);
@@ -201,7 +400,100 @@
     }
     .banner.is-visible { display: block; }
 
-    /* ── Footer ─────────────────────────────────────────────────── */
+    /* ── QR code area ────────────────────────────────────────── */
+    .qr-container {
+      display: flex;
+      gap: 32px;
+      align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    .qr-box {
+      flex-shrink: 0;
+      width: 160px; height: 160px;
+      background: var(--sand);
+      border: 1px dashed var(--stone);
+      border-radius: 4px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .qr-box img { width: 100%; height: 100%; object-fit: contain; }
+    .qr-box__placeholder {
+      text-align: center;
+      padding: 16px;
+      color: var(--ash);
+      font-size: 0.78rem;
+      line-height: 1.5;
+    }
+    .qr-instructions {
+      flex: 1;
+      min-width: 200px;
+    }
+    .qr-instructions__title {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+      margin-bottom: 10px;
+    }
+    .qr-instructions__steps {
+      list-style: none;
+      counter-reset: steps;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .qr-instructions__steps li {
+      counter-increment: steps;
+      display: flex; gap: 10px;
+      font-size: 0.88rem;
+      color: var(--ash);
+      line-height: 1.5;
+    }
+    .qr-instructions__steps li::before {
+      content: counter(steps);
+      flex-shrink: 0;
+      width: 22px; height: 22px;
+      background: var(--teal);
+      color: white;
+      border-radius: 50%;
+      font-size: 0.72rem;
+      font-weight: 500;
+      display: flex; align-items: center; justify-content: center;
+      margin-top: 1px;
+    }
+
+    /* ── 2FA step panels ─────────────────────────────────────── */
+    .tfa-step { display: none; }
+    .tfa-step.is-active { display: block; }
+
+    /* ── OTP input ───────────────────────────────────────────── */
+    .otp-input-wrap { position: relative; display: inline-block; }
+    .otp-input-wrap input {
+      width: 160px;
+      font-size: 1.4rem;
+      letter-spacing: 0.25em;
+      text-align: center;
+      font-weight: 500;
+    }
+
+    /* ── Divider ─────────────────────────────────────────────── */
+    .divider {
+      border: none;
+      border-top: 1px solid var(--stone);
+      margin: 24px 0;
+    }
+
+    /* ── Danger zone warning ─────────────────────────────────── */
+    .danger-warning {
+      background: var(--red-lt);
+      border: 1px solid #f5c6c3;
+      border-radius: 4px;
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      font-size: 0.88rem;
+      line-height: 1.6;
+      color: #7b1f18;
+    }
+    .danger-warning strong { font-weight: 600; }
+
+    /* ── Footer ──────────────────────────────────────────────── */
     footer {
       background: var(--ink);
       color: rgba(255,255,255,0.5);
@@ -235,102 +527,376 @@
     }
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ──────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
       .footer__grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+    @media (max-width: 600px) {
+      .avatar-upload { flex-direction: column; align-items: flex-start; gap: 16px; }
+      .footer__grid  { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 400px) {
+      .avatar-controls__actions { flex-direction: column; }
+    }
   </style>
 </head>
 <body>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html" class="nav__back">← Home</a>
+    <a href="index.html" class="nav__back">&#8592; Home</a>
   </nav>
 
+  <!-- ── Page hero ─────────────────────────────────────────────── -->
   <div class="page-hero">
     <div class="container">
       <p class="page-hero__eyebrow">Your account</p>
-      <h1 class="page-hero__title">Account Settings</h1>
-      <p class="page-hero__sub">Manage your profile, security, and notification preferences.</p>
+      <h1 class="page-hero__title">Account settings</h1>
+      <p class="page-hero__sub">Manage your profile, password, and security settings.</p>
     </div>
   </div>
 
-  <div class="settings-body">
-    <div class="container">
+  <div class="container">
+    <div class="settings-layout">
 
-      <!-- ── Change Password ──────────────────────────────────────── -->
-      <section class="settings-section" aria-labelledby="pwd-heading">
-        <div class="settings-section__label">
-          <h2 id="pwd-heading">Password</h2>
-          <p>Choose a strong password with at least 8 characters. You'll need your current password to make changes.</p>
-        </div>
+      <!-- ── Sidebar nav ── -->
+      <nav class="settings-nav" aria-label="Settings sections">
+        <ul class="settings-nav__list">
+          <li><a href="#profile"     class="settings-nav__link is-active">Profile</a></li>
+          <li><a href="#password"    class="settings-nav__link">Password</a></li>
+          <li><a href="#two-factor"  class="settings-nav__link">Two-factor auth</a></li>
+          <li><a href="#danger-zone" class="settings-nav__link">Danger zone</a></li>
+        </ul>
+      </nav>
 
-        <div>
-          <div id="pwd-banner" class="banner" role="status" aria-live="polite"></div>
+      <!-- ── Main content ── -->
+      <main>
 
-          <form class="form" id="pwd-form" novalidate>
-            <div class="form-group">
-              <label for="current-password">Current password</label>
-              <input
-                type="password"
-                id="current-password"
-                name="currentPassword"
-                autocomplete="current-password"
-                placeholder="Enter your current password"
-                required
-              />
-            </div>
-
-            <div class="form-group">
-              <label for="new-password">New password</label>
-              <input
-                type="password"
-                id="new-password"
-                name="newPassword"
-                autocomplete="new-password"
-                placeholder="At least 8 characters"
-                required
-                minlength="8"
-              />
-              <p class="form-hint">Must be at least 8 characters.</p>
-            </div>
-
-            <div class="form-group">
-              <label for="confirm-password">Confirm new password</label>
-              <input
-                type="password"
-                id="confirm-password"
-                name="confirmPassword"
-                autocomplete="new-password"
-                placeholder="Repeat your new password"
-                required
-              />
-            </div>
-
+        <!-- ─────────────────────────────────────────────
+             PROFILE
+        ───────────────────────────────────────────── -->
+        <section id="profile" class="settings-section" aria-labelledby="profile-section-title">
+          <div class="section-header">
             <div>
-              <button type="submit" class="btn" id="pwd-submit">Update password</button>
+              <h2 class="section-header__title" id="profile-section-title">Profile</h2>
+              <p class="section-header__sub">Your public name, contact email, and profile picture.</p>
             </div>
-          </form>
-        </div>
-      </section>
+          </div>
 
-    </div><!-- /.container -->
-  </div><!-- /.settings-body -->
+          <div class="section-body">
 
+            <!-- Avatar upload control -->
+            <div class="avatar-upload" role="group" aria-labelledby="avatar-label">
+              <div class="avatar-preview" id="avatar-preview" aria-hidden="true">
+                <span class="avatar-placeholder" id="avatar-placeholder" aria-hidden="true">&#128100;</span>
+                <img id="avatar-img" src="" alt="Your profile picture" style="display:none;" />
+              </div>
+              <div class="avatar-controls">
+                <p class="avatar-controls__label" id="avatar-label">Profile picture</p>
+                <p class="avatar-controls__hint">JPG, PNG or WebP &#183; max 5 MB</p>
+                <div class="avatar-controls__actions">
+                  <label for="avatar-file-input" class="btn-upload">
+                    &#8593; Upload photo
+                  </label>
+                  <input
+                    type="file"
+                    id="avatar-file-input"
+                    accept="image/jpeg,image/png,image/webp"
+                    aria-label="Upload a profile picture"
+                  />
+                  <button type="button" class="btn-clear" id="btn-clear-avatar">
+                    Remove photo
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Profile edit form -->
+            <form id="profile-form" novalidate>
+
+              <div class="form-group">
+                <label for="display-name">Display name</label>
+                <input
+                  type="text"
+                  id="display-name"
+                  name="displayName"
+                  placeholder="e.g. Alex Rivera"
+                  maxlength="100"
+                  autocomplete="name"
+                />
+                <span class="field-error" id="display-name-error" role="alert"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email address</label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  maxlength="254"
+                  autocomplete="email"
+                />
+                <span class="field-error" id="email-error" role="alert"></span>
+              </div>
+
+              <!-- Hidden field — populated by the avatar upload logic -->
+              <input type="hidden" id="avatar-url" name="avatarUrl" value="" />
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn--primary" id="save-btn">
+                  Save changes
+                </button>
+              </div>
+
+              <div class="toast" id="profile-toast" role="status" aria-live="polite"></div>
+
+            </form>
+
+          </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────
+             PASSWORD
+        ───────────────────────────────────────────── -->
+        <section id="password" class="settings-section" aria-labelledby="pwd-heading">
+          <div class="section-header">
+            <div>
+              <h2 class="section-header__title" id="pwd-heading">Password</h2>
+              <p class="section-header__sub">Choose a strong password with at least 8 characters. You&#8217;ll need your current password to make changes.</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <div id="pwd-banner" class="banner" role="status" aria-live="polite"></div>
+
+            <form id="pwd-form" novalidate>
+              <div class="form-group">
+                <label for="current-password">Current password</label>
+                <input
+                  type="password"
+                  id="current-password"
+                  name="currentPassword"
+                  autocomplete="current-password"
+                  placeholder="Enter your current password"
+                  required
+                />
+              </div>
+
+              <div class="form-group">
+                <label for="new-password">New password</label>
+                <input
+                  type="password"
+                  id="new-password"
+                  name="newPassword"
+                  autocomplete="new-password"
+                  placeholder="At least 8 characters"
+                  required
+                  minlength="8"
+                />
+                <p class="input-hint">Must be at least 8 characters.</p>
+              </div>
+
+              <div class="form-group">
+                <label for="confirm-password">Confirm new password</label>
+                <input
+                  type="password"
+                  id="confirm-password"
+                  name="confirmPassword"
+                  autocomplete="new-password"
+                  placeholder="Repeat your new password"
+                  required
+                />
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn--primary" id="pwd-submit">Update password</button>
+              </div>
+            </form>
+          </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────
+             TWO-FACTOR AUTHENTICATION
+        ───────────────────────────────────────────── -->
+        <section id="two-factor" class="settings-section" aria-labelledby="tfa-heading">
+          <div class="section-header">
+            <div>
+              <h2 class="section-header__title" id="tfa-heading">Two-factor authentication</h2>
+              <p class="section-header__sub">
+                Add a second layer of security to your account. Each time you sign in
+                you&#8217;ll be prompted for a one-time code from your authenticator app.
+              </p>
+            </div>
+            <span id="tfa-badge" class="badge badge--off" role="status" aria-live="polite">Off</span>
+          </div>
+
+          <div class="section-body">
+
+            <!-- Step 0: 2FA is enabled — show disable option -->
+            <div id="tfa-enabled-view" class="tfa-step">
+              <p style="font-size:0.9rem;color:var(--ash);margin-bottom:20px;">
+                Two-factor authentication is currently <strong style="color:var(--teal)">enabled</strong> on your account.
+                You can disable it below, but doing so reduces your account security.
+              </p>
+              <button id="btn-disable-tfa" class="btn btn--secondary">Disable two-factor authentication</button>
+              <div id="tfa-disable-feedback" class="feedback" role="alert"></div>
+            </div>
+
+            <!-- Step 1: Start setup -->
+            <div id="tfa-start-view" class="tfa-step is-active">
+              <p style="font-size:0.9rem;color:var(--ash);margin-bottom:20px;">
+                Use any authenticator app &#8212; Google Authenticator, Authy, 1Password, or Bitwarden &#8212;
+                to scan the QR code. We&#8217;ll then ask you to confirm a code to make sure everything is set up correctly.
+              </p>
+              <button id="btn-start-tfa" class="btn btn--primary">Set up two-factor authentication</button>
+            </div>
+
+            <!-- Step 2: Scan QR code -->
+            <div id="tfa-setup-view" class="tfa-step">
+              <div class="qr-container">
+                <div class="qr-box" id="qr-image-box">
+                  <div class="qr-box__placeholder" id="qr-placeholder">
+                    QR code will appear here
+                  </div>
+                  <!-- Populated by JS: <img id="qr-img" src="..." alt="QR code for two-factor authentication"> -->
+                </div>
+                <div class="qr-instructions">
+                  <h3 class="qr-instructions__title">Scan with your authenticator app</h3>
+                  <ol class="qr-instructions__steps">
+                    <li>Open your authenticator app (Google Authenticator, Authy, 1Password, etc.).</li>
+                    <li>Tap <em>Add account</em> or the <strong>+</strong> icon.</li>
+                    <li>Choose <em>Scan QR code</em> and point your camera at the code on the left.</li>
+                    <li>Your app will show a 6-digit code that changes every 30 seconds.</li>
+                  </ol>
+                </div>
+              </div>
+
+              <!-- Manual entry fallback -->
+              <details style="margin-top:20px;">
+                <summary style="font-size:0.83rem;color:var(--ash);cursor:pointer;">Can&#8217;t scan the code? Enter it manually</summary>
+                <div style="margin-top:12px;">
+                  <label for="tfa-manual-secret">Secret key</label>
+                  <input id="tfa-manual-secret" type="text" readonly
+                         placeholder="Loading&#8230;"
+                         style="font-family:monospace;letter-spacing:0.1em;font-size:0.88rem;" />
+                  <p class="input-hint">Enter this key in your authenticator app to add the account manually.</p>
+                </div>
+              </details>
+
+              <hr class="divider" />
+
+              <p style="font-size:0.88rem;color:var(--ash);margin-bottom:16px;">
+                Once you&#8217;ve scanned the code, enter the 6-digit confirmation code your app shows:
+              </p>
+
+              <div class="form-group">
+                <label for="tfa-token-input">Confirmation code</label>
+                <div class="otp-input-wrap">
+                  <input id="tfa-token-input" type="number" min="0" max="999999"
+                         inputmode="numeric" pattern="[0-9]{6}"
+                         placeholder="000000" autocomplete="one-time-code" />
+                </div>
+                <p class="input-hint" id="tfa-token-hint">Enter the 6-digit code from your authenticator app.</p>
+              </div>
+
+              <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+                <button id="btn-verify-tfa" class="btn btn--primary">Confirm and enable</button>
+                <button id="btn-cancel-tfa" class="btn btn--secondary btn--sm">Cancel</button>
+              </div>
+              <div id="tfa-verify-feedback" class="feedback" role="alert"></div>
+            </div>
+
+          </div>
+        </section>
+
+        <!-- ─────────────────────────────────────────────
+             DELETE ACCOUNT
+        ───────────────────────────────────────────── -->
+        <section id="danger-zone" class="settings-section" aria-labelledby="delete-heading">
+          <div class="section-header section-header--danger">
+            <div>
+              <h2 class="section-header__title" id="delete-heading">Delete account</h2>
+              <p class="section-header__sub">
+                Permanently delete your Wander account and all associated data.
+                This action cannot be undone.
+              </p>
+            </div>
+          </div>
+
+          <div class="section-body">
+
+            <div class="danger-warning" role="note">
+              <strong>Warning &#8212; this cannot be undone.</strong><br />
+              Deleting your account will immediately and permanently erase your profile,
+              saved itineraries, booking history, and all other personal data associated
+              with this account. We cannot recover this information after deletion.
+            </div>
+
+            <!-- Confirmation method tabs -->
+            <div style="display:flex;gap:8px;margin-bottom:24px;" role="group" aria-label="Confirmation method">
+              <button id="tab-password" class="btn btn--primary btn--sm" aria-pressed="true"
+                      onclick="switchDeleteTab('password')">Use password</button>
+              <button id="tab-phrase" class="btn btn--secondary btn--sm" aria-pressed="false"
+                      onclick="switchDeleteTab('phrase')">Type confirmation phrase</button>
+            </div>
+
+            <!-- Password confirmation panel -->
+            <div id="delete-by-password" class="form-group">
+              <label for="delete-password-input">Current password</label>
+              <input id="delete-password-input" type="password"
+                     autocomplete="current-password"
+                     placeholder="Enter your current password" />
+              <p class="input-hint" id="delete-password-hint">We need to verify it&#8217;s really you before deleting anything.</p>
+            </div>
+
+            <!-- Phrase confirmation panel -->
+            <div id="delete-by-phrase" class="form-group" style="display:none;">
+              <label for="delete-phrase-input">
+                Type <em style="font-style:italic;color:var(--ink)">delete my account</em> to confirm
+              </label>
+              <input id="delete-phrase-input" type="text"
+                     autocomplete="off"
+                     placeholder="delete my account" />
+              <p class="input-hint" id="delete-phrase-hint">Type the phrase exactly as shown (lower-case, no quotes).</p>
+            </div>
+
+            <button id="btn-delete-account" class="btn btn--danger" disabled>
+              Permanently delete my account
+            </button>
+            <div id="delete-feedback" class="feedback" role="alert"></div>
+
+          </div>
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────────────── -->
   <footer>
     <div class="container">
       <div class="footer__grid">
         <div>
           <p class="footer__brand">Wander</p>
-          <p class="footer__tagline">Travel stories and guides for the curious.</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
         </div>
         <div>
           <p class="footer__heading">Explore</p>
           <ul class="footer__links">
             <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
             <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
             <li><a href="contact.html">Contact</a></li>
           </ul>
         </div>
@@ -341,105 +907,468 @@
             <li><a href="terms.html">Terms</a></li>
           </ul>
         </div>
-        <div>
-          <p class="footer__heading">Account</p>
-          <ul class="footer__links">
-            <li><a href="settings.html">Settings</a></li>
-          </ul>
-        </div>
       </div>
       <div class="footer__bottom">
-        <span>&copy; 2025 Wander Travel Guide</span>
-        <span><a href="privacy.html">Privacy</a> &nbsp;&middot;&nbsp; <a href="terms.html">Terms</a></span>
+        <span>&#169; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;&#183;&nbsp; <a href="terms.html">Terms</a></span>
       </div>
     </div>
   </footer>
 
   <script>
-    // ── Password-change form ─────────────────────────────────────────────────
+    (() => {
+      'use strict';
 
-    const pwdForm    = document.getElementById('pwd-form');
-    const pwdBanner  = document.getElementById('pwd-banner');
-    const pwdSubmit  = document.getElementById('pwd-submit');
+      // ── Demo userId (replace with real session/token logic) ──────────────
+      const DEMO_USER_ID = 'demo-user';
 
-    /** Show a feedback banner above the form. */
-    function showBanner(type, message) {
-      pwdBanner.textContent = message;
-      pwdBanner.className   = `banner banner--${type} is-visible`;
-    }
+      // ── Simulated 2FA state (in production, read from session / API) ─────
+      let tfaEnabled = false;
+      let pendingSecret = null; // secret generated during setup, not yet confirmed
 
-    /** Clear any previous field-level error indicators. */
-    function clearFieldErrors() {
-      pwdForm.querySelectorAll('input').forEach(function(el) {
-        el.removeAttribute('aria-invalid');
-      });
-    }
+      // ── Profile form ──────────────────────────────────────────────────────
+      const profileForm    = document.getElementById('profile-form');
+      const saveBtn        = document.getElementById('save-btn');
+      const profileToast   = document.getElementById('profile-toast');
 
-    /** Mark a specific field as invalid. */
-    function markInvalid(name) {
-      const el = pwdForm.querySelector('[name="' + name + '"]');
-      if (el) el.setAttribute('aria-invalid', 'true');
-    }
+      const displayNameInput  = document.getElementById('display-name');
+      const emailInput        = document.getElementById('email');
+      const avatarUrlInput    = document.getElementById('avatar-url');
 
-    pwdForm.addEventListener('submit', async function(e) {
-      e.preventDefault();
-      clearFieldErrors();
-      pwdBanner.className = 'banner';
+      const displayNameError  = document.getElementById('display-name-error');
+      const emailError        = document.getElementById('email-error');
 
-      const currentPassword = document.getElementById('current-password').value;
-      const newPassword     = document.getElementById('new-password').value;
-      const confirmPassword = document.getElementById('confirm-password').value;
+      const avatarFileInput   = document.getElementById('avatar-file-input');
+      const avatarImg         = document.getElementById('avatar-img');
+      const avatarPlaceholder = document.getElementById('avatar-placeholder');
+      const clearAvatarBtn    = document.getElementById('btn-clear-avatar');
 
-      // ── Client-side pre-validation ───────────────────────────────────────
-      if (!currentPassword) {
-        markInvalid('currentPassword');
-        showBanner('error', 'Please enter your current password.');
-        return;
-      }
-      if (newPassword.length < 8) {
-        markInvalid('newPassword');
-        showBanner('error', 'New password must be at least 8 characters.');
-        return;
-      }
-      if (newPassword !== confirmPassword) {
-        markInvalid('confirmPassword');
-        showBanner('error', 'New password and confirmation do not match.');
-        return;
-      }
-
-      // ── Submit to API ────────────────────────────────────────────────────
-      pwdSubmit.disabled = true;
-      pwdSubmit.textContent = 'Updating…';
-
-      try {
-        // NOTE: userId would come from a real auth session; using a placeholder here.
-        const userId = document.cookie.match(/userId=([^;]+)/)?.[1] ?? 'demo-user';
-
-        const res = await fetch('/api/account/password', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ userId, currentPassword, newPassword, confirmPassword }),
-        });
-
-        const data = await res.json();
-
-        if (res.ok) {
-          pwdForm.reset();
-          showBanner('success', 'Your password has been updated successfully.');
-        } else {
-          // Map error codes to field highlights
-          if (data.code === 'WRONG_CURRENT_PASSWORD') markInvalid('currentPassword');
-          if (data.code === 'PASSWORD_MISMATCH')       markInvalid('confirmPassword');
-          if (data.code === 'PASSWORD_TOO_SHORT')      markInvalid('newPassword');
-          showBanner('error', data.error || 'Something went wrong. Please try again.');
+      function showToast(type, message) {
+        profileToast.className = 'toast toast--' + type + ' visible';
+        profileToast.textContent = message;
+        if (type === 'success') {
+          setTimeout(() => { profileToast.className = 'toast'; }, 5000);
         }
-      } catch {
-        showBanner('error', 'Could not reach the server. Please check your connection.');
-      } finally {
-        pwdSubmit.disabled = false;
-        pwdSubmit.textContent = 'Update password';
       }
-    });
+
+      function validateDisplayName(value) {
+        const trimmed = value.trim();
+        if (!trimmed) return 'Display name must not be blank.';
+        if (trimmed.length > 100) return 'Display name must be 100 characters or fewer.';
+        return '';
+      }
+
+      function validateEmail(value) {
+        const normalised = value.trim();
+        if (!normalised) return 'Email address must not be blank.';
+        if (normalised.length > 254) return 'Email must be 254 characters or fewer.';
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(normalised)) {
+          return 'Please enter a valid email address.';
+        }
+        return '';
+      }
+
+      function setFieldError(input, errorEl, message) {
+        if (message) {
+          input.setAttribute('aria-invalid', 'true');
+          errorEl.textContent = message;
+          errorEl.classList.add('visible');
+        } else {
+          input.removeAttribute('aria-invalid');
+          errorEl.textContent = '';
+          errorEl.classList.remove('visible');
+        }
+        return !message;
+      }
+
+      avatarFileInput.addEventListener('change', () => {
+        const file = avatarFileInput.files && avatarFileInput.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+          showToast('error', 'Image must be smaller than 5 MB.');
+          avatarFileInput.value = '';
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const dataUrl = e.target.result;
+          avatarImg.src = dataUrl;
+          avatarImg.style.display = 'block';
+          avatarPlaceholder.style.display = 'none';
+          avatarUrlInput.value = dataUrl;
+          avatarFileInput.dataset.touched = '1';
+        };
+        reader.readAsDataURL(file);
+      });
+
+      clearAvatarBtn.addEventListener('click', () => {
+        avatarImg.src = '';
+        avatarImg.style.display = 'none';
+        avatarPlaceholder.style.display = '';
+        avatarUrlInput.value = '';
+        avatarFileInput.value = '';
+        avatarFileInput.dataset.touched = '1';
+      });
+
+      profileForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const nameOk  = setFieldError(displayNameInput, displayNameError,
+          validateDisplayName(displayNameInput.value));
+        const emailOk = setFieldError(emailInput, emailError,
+          validateEmail(emailInput.value));
+
+        if (!nameOk || !emailOk) return;
+
+        const payload = { userId: DEMO_USER_ID };
+        const nameVal   = displayNameInput.value.trim();
+        const emailVal  = emailInput.value.trim().toLowerCase();
+        const avatarVal = avatarUrlInput.value.trim();
+
+        if (nameVal)  payload.displayName = nameVal;
+        if (emailVal) payload.email       = emailVal;
+        if (avatarFileInput.dataset.touched || avatarVal !== '') {
+          payload.avatarUrl = avatarVal;
+        }
+
+        if (Object.keys(payload).length <= 1) {
+          showToast('error', 'Please fill in at least one field before saving.');
+          return;
+        }
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = 'Saving…';
+
+        try {
+          const res = await fetch('/api/account/profile', {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+          });
+          const data = await res.json();
+          if (res.ok) {
+            showToast('success', 'Profile updated successfully.');
+          } else {
+            showToast('error', data.error || 'Something went wrong. Please try again.');
+          }
+        } catch {
+          showToast('error', 'Network error — please check your connection and try again.');
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = 'Save changes';
+        }
+      });
+
+      // ── Password-change form ──────────────────────────────────────────────
+      const pwdForm   = document.getElementById('pwd-form');
+      const pwdBanner = document.getElementById('pwd-banner');
+      const pwdSubmit = document.getElementById('pwd-submit');
+
+      function showBanner(type, message) {
+        pwdBanner.textContent = message;
+        pwdBanner.className   = 'banner banner--' + type + ' is-visible';
+      }
+
+      function clearPwdFieldErrors() {
+        pwdForm.querySelectorAll('input').forEach(function(el) {
+          el.removeAttribute('aria-invalid');
+        });
+      }
+
+      function markInvalid(name) {
+        const el = pwdForm.querySelector('[name="' + name + '"]');
+        if (el) el.setAttribute('aria-invalid', 'true');
+      }
+
+      pwdForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        clearPwdFieldErrors();
+        pwdBanner.className = 'banner';
+
+        const currentPassword = document.getElementById('current-password').value;
+        const newPassword     = document.getElementById('new-password').value;
+        const confirmPassword = document.getElementById('confirm-password').value;
+
+        if (!currentPassword) {
+          markInvalid('currentPassword');
+          showBanner('error', 'Please enter your current password.');
+          return;
+        }
+        if (newPassword.length < 8) {
+          markInvalid('newPassword');
+          showBanner('error', 'New password must be at least 8 characters.');
+          return;
+        }
+        if (newPassword !== confirmPassword) {
+          markInvalid('confirmPassword');
+          showBanner('error', 'New password and confirmation do not match.');
+          return;
+        }
+
+        pwdSubmit.disabled = true;
+        pwdSubmit.textContent = 'Updating…';
+
+        try {
+          const userId = document.cookie.match(/userId=([^;]+)/)?.[1] ?? DEMO_USER_ID;
+
+          const res = await fetch('/api/account/password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId, currentPassword, newPassword, confirmPassword }),
+          });
+          const data = await res.json();
+
+          if (res.ok) {
+            pwdForm.reset();
+            showBanner('success', 'Your password has been updated successfully.');
+          } else {
+            if (data.code === 'WRONG_CURRENT_PASSWORD') markInvalid('currentPassword');
+            if (data.code === 'PASSWORD_MISMATCH')       markInvalid('confirmPassword');
+            if (data.code === 'PASSWORD_TOO_SHORT')      markInvalid('newPassword');
+            showBanner('error', data.error || 'Something went wrong. Please try again.');
+          }
+        } catch {
+          showBanner('error', 'Could not reach the server. Please check your connection.');
+        } finally {
+          pwdSubmit.disabled = false;
+          pwdSubmit.textContent = 'Update password';
+        }
+      });
+
+      // ── 2FA UI helpers ────────────────────────────────────────────────────
+      function showTfaView(viewId) {
+        document.querySelectorAll('.tfa-step').forEach(el => el.classList.remove('is-active'));
+        document.getElementById(viewId).classList.add('is-active');
+      }
+
+      function setTfaBadge(enabled) {
+        const badge = document.getElementById('tfa-badge');
+        badge.textContent = enabled ? 'On' : 'Off';
+        badge.className = 'badge ' + (enabled ? 'badge--on' : 'badge--off');
+      }
+
+      function showFeedback(id, type, message) {
+        const el = document.getElementById(id);
+        el.className = 'feedback is-visible feedback--' + type;
+        el.innerHTML = '<span class="feedback__icon">' + (type === 'success' ? '✓' : '✕') + '</span>' + message;
+      }
+
+      function clearFeedback(id) {
+        const el = document.getElementById(id);
+        el.className = 'feedback';
+        el.textContent = '';
+      }
+
+      function renderQrCode(uri) {
+        const box = document.getElementById('qr-image-box');
+        const encoded = encodeURIComponent(uri);
+        const src = 'https://chart.googleapis.com/chart?cht=qr&chs=160x160&chl=' + encoded;
+        box.innerHTML = '<img id="qr-img" src="' + src + '" alt="QR code for two-factor authentication" width="160" height="160" />';
+      }
+
+      // ── Start 2FA setup ───────────────────────────────────────────────────
+      document.getElementById('btn-start-tfa').addEventListener('click', async () => {
+        const btn = document.getElementById('btn-start-tfa');
+        btn.disabled = true;
+        btn.textContent = 'Generating…';
+
+        try {
+          const res = await fetch('/api/account/2fa/setup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: DEMO_USER_ID }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Setup failed');
+
+          pendingSecret = data.secret;
+          renderQrCode(data.uri);
+          document.getElementById('tfa-manual-secret').value = data.secret;
+          showTfaView('tfa-setup-view');
+        } catch (err) {
+          showFeedback('tfa-verify-feedback', 'error', err.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Set up two-factor authentication';
+        }
+      });
+
+      // ── Cancel 2FA setup ──────────────────────────────────────────────────
+      document.getElementById('btn-cancel-tfa').addEventListener('click', () => {
+        pendingSecret = null;
+        clearFeedback('tfa-verify-feedback');
+        document.getElementById('tfa-token-input').value = '';
+        document.getElementById('tfa-token-input').classList.remove('input--error');
+        document.getElementById('tfa-token-hint').textContent = 'Enter the 6-digit code from your authenticator app.';
+        document.getElementById('tfa-token-hint').classList.remove('input-hint--error');
+        showTfaView('tfa-start-view');
+      });
+
+      // ── Verify and enable 2FA ─────────────────────────────────────────────
+      document.getElementById('btn-verify-tfa').addEventListener('click', async () => {
+        const tokenInput = document.getElementById('tfa-token-input');
+        const token = String(tokenInput.value).padStart(6, '0');
+        const hint = document.getElementById('tfa-token-hint');
+
+        tokenInput.classList.remove('input--error');
+        hint.textContent = 'Enter the 6-digit code from your authenticator app.';
+        hint.classList.remove('input-hint--error');
+        clearFeedback('tfa-verify-feedback');
+
+        if (!pendingSecret) {
+          showFeedback('tfa-verify-feedback', 'error', 'No setup in progress. Please start again.');
+          return;
+        }
+        if (!/^\d{6}$/.test(token)) {
+          tokenInput.classList.add('input--error');
+          hint.textContent = 'Please enter a 6-digit numeric code.';
+          hint.classList.add('input-hint--error');
+          return;
+        }
+
+        const btn = document.getElementById('btn-verify-tfa');
+        btn.disabled = true;
+        btn.textContent = 'Verifying…';
+
+        try {
+          const res = await fetch('/api/account/2fa/verify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: DEMO_USER_ID, secret: pendingSecret, token }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Verification failed');
+
+          tfaEnabled = true;
+          pendingSecret = null;
+          setTfaBadge(true);
+          showTfaView('tfa-enabled-view');
+          showFeedback('tfa-disable-feedback', 'success', 'Two-factor authentication is now enabled on your account.');
+        } catch (err) {
+          tokenInput.classList.add('input--error');
+          hint.textContent = err.message;
+          hint.classList.add('input-hint--error');
+          showFeedback('tfa-verify-feedback', 'error', 'Code not recognised. Check that your device clock is correct and try again.');
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Confirm and enable';
+        }
+      });
+
+      // ── Disable 2FA ───────────────────────────────────────────────────────
+      document.getElementById('btn-disable-tfa').addEventListener('click', async () => {
+        clearFeedback('tfa-disable-feedback');
+        const btn = document.getElementById('btn-disable-tfa');
+        btn.disabled = true;
+        btn.textContent = 'Disabling…';
+
+        try {
+          const res = await fetch('/api/account/2fa', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userId: DEMO_USER_ID }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Could not disable 2FA');
+
+          tfaEnabled = false;
+          setTfaBadge(false);
+          showTfaView('tfa-start-view');
+        } catch (err) {
+          showFeedback('tfa-disable-feedback', 'error', err.message);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = 'Disable two-factor authentication';
+        }
+      });
+
+      // ── Delete account — tab switch ───────────────────────────────────────
+      window.switchDeleteTab = function(tab) {
+        const isPassword = tab === 'password';
+        document.getElementById('delete-by-password').style.display = isPassword ? '' : 'none';
+        document.getElementById('delete-by-phrase').style.display   = isPassword ? 'none' : '';
+        document.getElementById('tab-password').className = 'btn btn--sm ' + (isPassword ? 'btn--primary' : 'btn--secondary');
+        document.getElementById('tab-phrase').className   = 'btn btn--sm ' + (isPassword ? 'btn--secondary' : 'btn--primary');
+        document.getElementById('tab-password').setAttribute('aria-pressed', isPassword);
+        document.getElementById('tab-phrase').setAttribute('aria-pressed', !isPassword);
+        validateDeleteForm();
+      };
+
+      function validateDeleteForm() {
+        const passwordVisible = document.getElementById('delete-by-password').style.display !== 'none';
+        let ready = false;
+        if (passwordVisible) {
+          const pw = document.getElementById('delete-password-input').value;
+          ready = pw.length > 0;
+        } else {
+          const phrase = document.getElementById('delete-phrase-input').value;
+          ready = phrase === 'delete my account';
+        }
+        document.getElementById('btn-delete-account').disabled = !ready;
+      }
+
+      document.getElementById('delete-password-input').addEventListener('input', validateDeleteForm);
+      document.getElementById('delete-phrase-input').addEventListener('input', () => {
+        validateDeleteForm();
+        const input = document.getElementById('delete-phrase-input');
+        const val = input.value;
+        if (val.length > 0 && val !== 'delete my account') {
+          input.classList.add('input--error');
+        } else {
+          input.classList.remove('input--error');
+        }
+      });
+
+      // ── Delete account — submit ───────────────────────────────────────────
+      document.getElementById('btn-delete-account').addEventListener('click', async () => {
+        clearFeedback('delete-feedback');
+
+        const passwordVisible = document.getElementById('delete-by-password').style.display !== 'none';
+        const body = { userId: DEMO_USER_ID };
+
+        if (passwordVisible) {
+          body.password = document.getElementById('delete-password-input').value;
+        } else {
+          body.phrase = document.getElementById('delete-phrase-input').value;
+        }
+
+        const btn = document.getElementById('btn-delete-account');
+        btn.disabled = true;
+        btn.textContent = 'Deleting account…';
+
+        try {
+          const res = await fetch('/api/account', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'Deletion failed');
+
+          showFeedback('delete-feedback', 'success',
+            'Your account has been deleted. You will be signed out shortly.');
+          btn.textContent = 'Account deleted';
+          document.getElementById('delete-password-input').disabled = true;
+          document.getElementById('delete-phrase-input').disabled = true;
+        } catch (err) {
+          showFeedback('delete-feedback', 'error', err.message);
+          btn.disabled = false;
+          btn.textContent = 'Permanently delete my account';
+          validateDeleteForm();
+        }
+      });
+
+      // ── Initialise state from session (mock) ──────────────────────────────
+      // In production, read tfaEnabled from the user session or a GET endpoint.
+      setTfaBadge(tfaEnabled);
+      if (tfaEnabled) {
+        showTfaView('tfa-enabled-view');
+      } else {
+        showTfaView('tfa-start-view');
+      }
+
+    })();
   </script>
+
 </body>
 </html>
