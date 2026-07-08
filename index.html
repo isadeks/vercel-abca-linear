@@ -467,6 +467,84 @@
       line-height: 1.6;
     }
 
+    /* ── FAQ Accordion ───────────────────────────────────────── */
+    .faq {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+    .faq__intro {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.75;
+      margin-top: -28px;
+      margin-bottom: 40px;
+    }
+    .faq__list {
+      list-style: none;
+      border-top: 1px solid var(--stone);
+    }
+    .faq__item {
+      border-bottom: 1px solid var(--stone);
+    }
+    .faq__question {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      width: 100%;
+      padding: 24px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: var(--font-serif);
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.3;
+      transition: color 0.2s;
+    }
+    .faq__question:hover { color: var(--teal); }
+    .faq__question[aria-expanded="true"] { color: var(--teal); }
+    .faq__icon {
+      flex-shrink: 0;
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--stone);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, border-color 0.2s, transform 0.3s;
+    }
+    .faq__question:hover .faq__icon,
+    .faq__question[aria-expanded="true"] .faq__icon {
+      background: var(--teal);
+      border-color: var(--teal);
+    }
+    .faq__icon svg { transition: transform 0.3s; }
+    .faq__icon svg line { stroke: var(--ash); transition: stroke 0.2s; }
+    .faq__question:hover .faq__icon svg line,
+    .faq__question[aria-expanded="true"] .faq__icon svg line { stroke: white; }
+    .faq__question[aria-expanded="true"] .faq__icon svg { transform: rotate(45deg); }
+    .faq__answer {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s ease, padding 0.35s ease;
+      padding-bottom: 0;
+    }
+    .faq__answer.is-open {
+      max-height: 400px;
+      padding-bottom: 24px;
+    }
+    .faq__answer p {
+      font-size: 0.93rem;
+      color: var(--ash);
+      line-height: 1.8;
+      max-width: 720px;
+    }
+    .faq__answer p + p { margin-top: 12px; }
+
     /* ── Footer ───────────────────────────────────────────────── */
     footer {
       background: var(--ink);
@@ -561,6 +639,8 @@
       .regions__row   { grid-template-columns: repeat(2, 1fr); }
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
+      .faq            { padding: 64px 0; }
+      .faq__question  { font-size: 1rem; padding: 20px 0; }
     }
   </style>
 </head>
@@ -798,6 +878,94 @@
     </div>
   </section>
 
+  <!-- ── FAQ ──────────────────────────────────────────────────────── -->
+  <section class="faq" id="faq">
+    <div class="container">
+      <div class="section-header">
+        <h2>Frequently asked questions</h2>
+      </div>
+      <p class="faq__intro">Everything you need to know before you start planning your next journey.</p>
+      <ul class="faq__list" id="faqList">
+
+        <li class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-1">
+            <span>When is the best time to visit most destinations?</span>
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-1" role="region">
+            <p>It depends on the destination — we cover the ideal visiting windows in every guide. As a general rule, shoulder seasons (spring and autumn) offer thinner crowds, lower prices, and often better light for photography. Our guides include a "When to go" section with month-by-month breakdowns.</p>
+          </div>
+        </li>
+
+        <li class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-2">
+            <span>Are the guides free to read?</span>
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-2" role="region">
+            <p>Yes — all destination guides on Wander are completely free. We're supported by occasional affiliate partnerships and our newsletter. Subscribing helps us keep the editorial independent and the content ungated.</p>
+          </div>
+        </li>
+
+        <li class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-3">
+            <span>How do I find the right destination for me?</span>
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-3" role="region">
+            <p>Try our <a href="quiz.html" style="color:var(--teal);border-bottom:1px solid var(--teal);">destination finder quiz</a> — answer eight short questions about your travel style and we'll match you to a destination from our library. It takes about 90 seconds and requires no login.</p>
+          </div>
+        </li>
+
+        <li class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-4">
+            <span>How often is the content updated?</span>
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-4" role="region">
+            <p>We review each guide before the destination's peak travel season and update practical details (visa rules, entry requirements, prices, recommended stays) whenever meaningful changes occur. The publication date at the top of every guide tells you when it was last reviewed.</p>
+          </div>
+        </li>
+
+        <li class="faq__item">
+          <button class="faq__question" aria-expanded="false" aria-controls="faq-5">
+            <span>Can I contribute a guide or suggest a destination?</span>
+            <span class="faq__icon" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <line x1="6" y1="1" x2="6" y2="11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+                <line x1="1" y1="6" x2="11" y2="6" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+              </svg>
+            </span>
+          </button>
+          <div class="faq__answer" id="faq-5" role="region">
+            <p>We welcome pitches from experienced travel writers. Head to our <a href="about.html#write" style="color:var(--teal);border-bottom:1px solid var(--teal);">write for us</a> page for submission guidelines. Destination suggestions from readers are always appreciated — drop us a line via the <a href="contact.html" style="color:var(--teal);border-bottom:1px solid var(--teal);">contact page</a>.</p>
+          </div>
+        </li>
+
+      </ul>
+    </div>
+  </section>
+
   <!-- ── Footer ─────────────────────────────────────────────────── -->
   <footer>
     <div class="container">
@@ -858,6 +1026,34 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // FAQ accordion
+    (function () {
+      const faqList = document.getElementById('faqList');
+      if (!faqList) return;
+
+      faqList.addEventListener('click', function (e) {
+        const btn = e.target.closest('.faq__question');
+        if (!btn) return;
+
+        const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+        const answerId  = btn.getAttribute('aria-controls');
+        const answer    = document.getElementById(answerId);
+
+        // Collapse all other open items
+        faqList.querySelectorAll('.faq__question[aria-expanded="true"]').forEach(function (openBtn) {
+          if (openBtn !== btn) {
+            openBtn.setAttribute('aria-expanded', 'false');
+            const openAnswer = document.getElementById(openBtn.getAttribute('aria-controls'));
+            if (openAnswer) openAnswer.classList.remove('is-open');
+          }
+        });
+
+        // Toggle current item
+        btn.setAttribute('aria-expanded', String(!isExpanded));
+        if (answer) answer.classList.toggle('is-open', !isExpanded);
+      });
+    }());
 
   </script>
 
