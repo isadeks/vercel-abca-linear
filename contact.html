@@ -191,10 +191,35 @@
       border: 1px solid var(--teal);
       color: white;
       cursor: pointer;
-      transition: background 0.2s;
+      transition: background 0.2s, opacity 0.2s;
       align-self: flex-start;
     }
     .btn:hover { background: #22665c; border-color: #22665c; }
+    .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* Form feedback banners */
+    .form-banner {
+      display: none;
+      padding: 14px 18px;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      border-radius: 2px;
+    }
+    .form-banner--success {
+      background: var(--teal-lt);
+      color: var(--teal);
+      border: 1px solid #b0d9d5;
+    }
+    .form-banner--error {
+      background: #fde8e8;
+      color: #b91c1c;
+      border: 1px solid #f9bcbc;
+    }
+    .form-banner.is-visible { display: block; }
+
+    /* Hide form fields once successfully submitted */
+    .contact-form.is-submitted .form-fields { display: none; }
+    .contact-form.is-submitted .form-submit-row { display: none; }
 
     footer {
       background: var(--ink);
@@ -289,34 +314,119 @@
           </div>
         </div>
 
-        <form class="contact-form" onsubmit="return false;">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" placeholder="Your name" />
+        <form class="contact-form" id="contact-form" novalidate>
+          <!-- Success banner (shown after successful submission) -->
+          <div class="form-banner form-banner--success" id="form-success" role="status" aria-live="polite">
+            ✓ Your message has been received. We'll be in touch within five working days.
+          </div>
+
+          <!-- Error banner (shown on network failure or server error) -->
+          <div class="form-banner form-banner--error" id="form-error" role="alert" aria-live="assertive"></div>
+
+          <div class="form-fields">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" placeholder="Your name" autocomplete="name" />
+              </div>
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="your@email.com" autocomplete="email" />
+              </div>
             </div>
             <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" placeholder="your@email.com" />
+              <label for="subject">Subject</label>
+              <select id="subject">
+                <option value="">Select a subject…</option>
+                <option>General enquiry</option>
+                <option>Writer pitch</option>
+                <option>Factual correction</option>
+                <option>Partnership enquiry</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message</label>
+              <textarea id="message" rows="6" placeholder="Tell us what's on your mind…"></textarea>
             </div>
           </div>
-          <div class="form-group">
-            <label for="subject">Subject</label>
-            <select id="subject">
-              <option value="">Select a subject…</option>
-              <option>General enquiry</option>
-              <option>Writer pitch</option>
-              <option>Factual correction</option>
-              <option>Partnership enquiry</option>
-              <option>Other</option>
-            </select>
+
+          <div class="form-submit-row">
+            <button type="submit" class="btn" id="submit-btn">Send message</button>
           </div>
-          <div class="form-group">
-            <label for="message">Message</label>
-            <textarea id="message" rows="6" placeholder="Tell us what's on your mind…"></textarea>
-          </div>
-          <button type="submit" class="btn">Send message</button>
         </form>
+
+        <script>
+          (function () {
+            const form      = document.getElementById('contact-form');
+            const submitBtn = document.getElementById('submit-btn');
+            const successEl = document.getElementById('form-success');
+            const errorEl   = document.getElementById('form-error');
+
+            const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+            function showError(msg) {
+              errorEl.textContent = msg;
+              errorEl.classList.add('is-visible');
+              successEl.classList.remove('is-visible');
+            }
+
+            function clearError() {
+              errorEl.classList.remove('is-visible');
+              errorEl.textContent = '';
+            }
+
+            function clientValidate(name, email, subject, message) {
+              if (!name.trim())               return 'Please enter your name.';
+              if (!EMAIL_RE.test(email.trim())) return 'Please enter a valid email address.';
+              if (!subject.trim())             return 'Please select a subject.';
+              if (!message.trim())             return 'Please enter a message.';
+              return null;
+            }
+
+            form.addEventListener('submit', async function (e) {
+              e.preventDefault();
+              clearError();
+
+              const name    = document.getElementById('name').value;
+              const email   = document.getElementById('email').value;
+              const subject = document.getElementById('subject').value;
+              const message = document.getElementById('message').value;
+
+              const clientError = clientValidate(name, email, subject, message);
+              if (clientError) {
+                showError(clientError);
+                return;
+              }
+
+              submitBtn.disabled = true;
+              submitBtn.textContent = 'Sending…';
+
+              try {
+                const res = await fetch('/api/contact', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ name, email, subject, message }),
+                });
+
+                const data = await res.json();
+
+                if (res.ok && data.ok) {
+                  form.classList.add('is-submitted');
+                  successEl.classList.add('is-visible');
+                } else {
+                  showError(data.error || 'Something went wrong. Please try again.');
+                  submitBtn.disabled = false;
+                  submitBtn.textContent = 'Send message';
+                }
+              } catch (_err) {
+                showError('Unable to send your message — please check your connection and try again.');
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send message';
+              }
+            });
+          }());
+        </script>
 
       </div>
     </div>
