@@ -519,6 +519,114 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Booking section ─────────────────────────────────────── */
+    .booking {
+      padding: 80px 0;
+      background: var(--sand);
+    }
+    .booking__inner {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .booking__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .booking__copy h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .booking__copy h2 em { font-style: italic; }
+    .booking__copy p {
+      font-size: 0.92rem;
+      color: var(--ash);
+      line-height: 1.75;
+    }
+    .booking-form {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-group input,
+    .form-group select {
+      padding: 12px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+    .form-group select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236b6560' stroke-width='1.4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 36px;
+    }
+    .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+    .form-group input:focus,
+    .form-group select:focus { border-color: var(--teal); }
+    .form-group input::placeholder { color: #b0a898; }
+    .booking-form__feedback {
+      font-size: 0.875rem;
+      line-height: 1.6;
+      padding: 0;
+      min-height: 0;
+    }
+    .booking-form__feedback:empty { display: none; }
+    .booking-form__feedback--error {
+      padding: 12px 16px;
+      background: #fdf2f0;
+      border-left: 3px solid var(--coral);
+      color: var(--coral);
+    }
+    .booking-form__feedback--success {
+      padding: 12px 16px;
+      background: #f0f9f8;
+      border-left: 3px solid var(--teal);
+      color: var(--teal);
+    }
+    .booking-form__feedback--loading {
+      color: var(--ash);
+      font-style: italic;
+    }
+    @media (max-width: 700px) {
+      .booking__inner { grid-template-columns: 1fr; gap: 32px; }
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -557,6 +665,7 @@
       <li><a href="#destinations">Destinations</a></li>
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
+      <li><a href="#booking">Book</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
@@ -596,6 +705,65 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Booking ──────────────────────────────────────────────────── -->
+  <section class="booking" id="booking">
+    <div class="container">
+      <div class="booking__inner">
+        <div class="booking__copy">
+          <p class="booking__eyebrow">Reserve your stay</p>
+          <h2>Plan your <em>perfect</em> trip</h2>
+          <p>Tell us where and when — we'll confirm availability and send your booking details by email within 24 hours.</p>
+        </div>
+        <form class="booking-form" id="booking-form" novalidate>
+          <div class="form-group">
+            <label for="book-destination">Destination</label>
+            <select id="book-destination" name="destination" required>
+              <option value="">Choose a destination…</option>
+              <option value="amalfi-coast">Amalfi Coast, Italy</option>
+              <option value="kyoto">Kyoto, Japan</option>
+              <option value="santorini">Santorini, Greece</option>
+              <option value="patagonia">Patagonia, South America</option>
+              <option value="rajasthan">Rajasthan, India</option>
+              <option value="norway">Norwegian Fjords, Norway</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="book-checkin">Check-in</label>
+              <input type="date" id="book-checkin" name="checkIn" required />
+            </div>
+            <div class="form-group">
+              <label for="book-checkout">Check-out</label>
+              <input type="date" id="book-checkout" name="checkOut" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="book-guests">Guests</label>
+              <select id="book-guests" name="guests" required>
+                <option value="">Number of guests…</option>
+                <option value="1">1 guest</option>
+                <option value="2">2 guests</option>
+                <option value="3">3 guests</option>
+                <option value="4">4 guests</option>
+                <option value="5+">5 or more</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="book-email">Email address</label>
+              <input type="email" id="book-email" name="email" placeholder="your@email.com" required />
+            </div>
+          </div>
+          <div class="booking-form__feedback" id="booking-feedback" role="status" aria-live="polite"></div>
+          <button type="submit" class="btn btn--teal" id="booking-submit">
+            Check availability
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </form>
       </div>
     </div>
   </section>
@@ -831,6 +999,93 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // ── Booking form ───────────────────────────────────────────
+    (function () {
+      const form     = document.getElementById('booking-form');
+      const feedback = document.getElementById('booking-feedback');
+      const submitBtn = document.getElementById('booking-submit');
+
+      if (!form) return;
+
+      function showFeedback(type, message) {
+        feedback.className = 'booking-form__feedback booking-form__feedback--' + type;
+        feedback.textContent = message;
+      }
+
+      function clearFeedback() {
+        feedback.className = 'booking-form__feedback';
+        feedback.textContent = '';
+      }
+
+      function validateClient(data) {
+        const errors = [];
+        if (!data.destination) errors.push('Please choose a destination.');
+        if (!data.checkIn)     errors.push('Check-in date is required.');
+        if (!data.checkOut)    errors.push('Check-out date is required.');
+        if (data.checkIn && data.checkOut && data.checkOut <= data.checkIn) {
+          errors.push('Check-out must be after check-in.');
+        }
+        if (!data.guests)      errors.push('Please select the number of guests.');
+        if (!data.email)       errors.push('Email address is required.');
+        else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email)) {
+          errors.push('Please enter a valid email address.');
+        }
+        return errors;
+      }
+
+      form.addEventListener('submit', async function (e) {
+        e.preventDefault();
+        clearFeedback();
+
+        const data = {
+          destination: form.querySelector('[name="destination"]').value.trim(),
+          checkIn:     form.querySelector('[name="checkIn"]').value,
+          checkOut:    form.querySelector('[name="checkOut"]').value,
+          guests:      form.querySelector('[name="guests"]').value,
+          email:       form.querySelector('[name="email"]').value.trim(),
+        };
+
+        const clientErrors = validateClient(data);
+        if (clientErrors.length > 0) {
+          showFeedback('error', clientErrors.join(' '));
+          return;
+        }
+
+        submitBtn.disabled = true;
+        showFeedback('loading', 'Checking availability…');
+
+        try {
+          const response = await fetch('/api/book', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data),
+          });
+
+          const result = await response.json();
+
+          if (response.ok && result.success) {
+            showFeedback(
+              'success',
+              'Your booking request has been received! Confirmation details will be sent to ' + data.email + '.'
+              + (result.booking && result.booking.bookingRef
+                  ? ' Reference: ' + result.booking.bookingRef + '.'
+                  : '')
+            );
+            form.reset();
+          } else {
+            const serverErrors = result.errors && result.errors.length
+              ? result.errors.join(' ')
+              : (result.error || 'Something went wrong. Please try again.');
+            showFeedback('error', serverErrors);
+          }
+        } catch (_err) {
+          showFeedback('error', 'Could not reach the server. Please check your connection and try again.');
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+    }());
 
   </script>
 
