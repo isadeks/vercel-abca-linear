@@ -6,10 +6,12 @@
   "type": "module",
   "scripts": {
     "lint": "eslint . --max-warnings=0",
-    "test": "vitest run"
+    "test": "vitest run",
+    "deploy:preview": "vercel --yes"
   },
   "devDependencies": {
     "eslint": "^9.13.0",
+    "vercel": "^54.21.1",
     "vitest": "^2.1.4"
   }
 }
