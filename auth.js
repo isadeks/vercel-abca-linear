@@ -19,6 +19,9 @@
 
   var ACCOUNTS_KEY = 'wander:accounts';
   var SESSION_KEY = 'wander:session';
+  // A result the visitor asked to save while signed out. Held here until they
+  // sign in, then flushed to their account by consumePendingQuizResult().
+  var PENDING_QUIZ_KEY = 'wander:pendingQuizResult';
 
   // ── Storage helpers ──────────────────────────────────────────
   function readAccounts() {
@@ -136,6 +139,113 @@
     return { ok: true };
   }
 
+  // ── Quiz results ─────────────────────────────────────────────
+  // Saved quiz outcomes live on the account record under `quizResults`, an
+  // array kept newest-first. Each entry is a plain snapshot of the outcome:
+  //   { destinationId, name, region, country, url, hasGuide, answers, savedAt }
+
+  // Save a quiz result to the signed-in account. `result` is an outcome object
+  // as produced by the quiz result screen. Returns { ok, error }.
+  function saveQuizResult(result) {
+    var email = localStorage.getItem(SESSION_KEY);
+    if (!email) return { ok: false, error: 'You are not signed in.' };
+
+    var accounts = readAccounts();
+    var account = accounts[email];
+    if (!account) return { ok: false, error: 'Account not found.' };
+
+    if (!result || !result.destinationId) {
+      return { ok: false, error: 'Nothing to save.' };
+    }
+
+    var entry = {
+      destinationId: String(result.destinationId),
+      name: String(result.name || ''),
+      region: String(result.region || ''),
+      country: String(result.country || ''),
+      url: String(result.url || ''),
+      hasGuide: !!result.hasGuide,
+      answers: String(result.answers || ''),
+      savedAt: new Date().toISOString()
+    };
+
+    if (!Array.isArray(account.quizResults)) account.quizResults = [];
+
+    // Avoid duplicating an identical outcome (same destination + answers): if it
+    // already exists, refresh its timestamp and move it to the top instead.
+    var existingIdx = account.quizResults.findIndex(function (r) {
+      return r.destinationId === entry.destinationId && r.answers === entry.answers;
+    });
+    if (existingIdx !== -1) account.quizResults.splice(existingIdx, 1);
+    account.quizResults.unshift(entry);
+
+    accounts[email] = account;
+    writeAccounts(accounts);
+    return { ok: true };
+  }
+
+  // The signed-in account's saved quiz results (newest first), or [].
+  function getQuizResults() {
+    var email = localStorage.getItem(SESSION_KEY);
+    if (!email) return [];
+    var account = readAccounts()[email];
+    if (!account || !Array.isArray(account.quizResults)) return [];
+    return account.quizResults.slice();
+  }
+
+  // Remove a saved quiz result by its savedAt timestamp. Returns { ok, error }.
+  function removeQuizResult(savedAt) {
+    var email = localStorage.getItem(SESSION_KEY);
+    if (!email) return { ok: false, error: 'You are not signed in.' };
+
+    var accounts = readAccounts();
+    var account = accounts[email];
+    if (!account || !Array.isArray(account.quizResults)) {
+      return { ok: false, error: 'Nothing to remove.' };
+    }
+
+    var before = account.quizResults.length;
+    account.quizResults = account.quizResults.filter(function (r) {
+      return r.savedAt !== savedAt;
+    });
+    if (account.quizResults.length === before) {
+      return { ok: false, error: 'Result not found.' };
+    }
+    accounts[email] = account;
+    writeAccounts(accounts);
+    return { ok: true };
+  }
+
+  // Stash a result to save once the visitor signs in (used when logged out).
+  function setPendingQuizResult(result) {
+    try {
+      localStorage.setItem(PENDING_QUIZ_KEY, JSON.stringify(result));
+    } catch (e) { /* storage full or unavailable — ignore */ }
+  }
+
+  // Remove any pending result without saving it.
+  function clearPendingQuizResult() {
+    localStorage.removeItem(PENDING_QUIZ_KEY);
+  }
+
+  // If a result was stashed while signed out and someone is now signed in, save
+  // it to their account and clear the stash. Returns the saved entry or null.
+  function consumePendingQuizResult() {
+    var raw = localStorage.getItem(PENDING_QUIZ_KEY);
+    if (!raw) return null;
+    if (!isSignedIn()) return null;
+    var result;
+    try {
+      result = JSON.parse(raw);
+    } catch (e) {
+      localStorage.removeItem(PENDING_QUIZ_KEY);
+      return null;
+    }
+    var outcome = saveQuizResult(result);
+    localStorage.removeItem(PENDING_QUIZ_KEY);
+    return outcome.ok ? result : null;
+  }
+
   // ── Shared nav entry point ───────────────────────────────────
   // Injects an account link into the page's top nav, matching whichever nav
   // markup the page uses:
@@ -206,6 +316,12 @@
     currentUser: currentUser,
     isSignedIn: isSignedIn,
     updateProfile: updateProfile,
+    saveQuizResult: saveQuizResult,
+    getQuizResults: getQuizResults,
+    removeQuizResult: removeQuizResult,
+    setPendingQuizResult: setPendingQuizResult,
+    clearPendingQuizResult: clearPendingQuizResult,
+    consumePendingQuizResult: consumePendingQuizResult,
     renderNav: renderNav,
     requireAuth: requireAuth
   };
