@@ -1376,11 +1376,8 @@
     if (auth.isSignedIn()) {
       const result = auth.saveQuizResult(currentResult);
       if (result.ok) {
+        // Re-render reflects the now-saved state (button hidden, saved note).
         renderSaveSection();
-        saveBtn.style.display = 'none';
-        saveIntro.textContent = 'This result is saved to your account.';
-        saveNote.innerHTML = 'Saved. View it on your <a href="account.html" style="color:var(--teal);border-bottom:1px solid var(--teal);">account page</a>.';
-        saveNote.className = 'save-result__note visible';
       } else {
         showSaveNote(result.error || 'Could not save your result.', true);
       }
