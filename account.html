@@ -163,6 +163,55 @@
     }
     .btn--ghost:hover { background: var(--teal-lt); border-color: var(--teal); }
 
+    .account-quiz {
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--stone);
+    }
+    .account-quiz__empty { font-size: 0.9rem; color: var(--ash); line-height: 1.7; }
+    .account-quiz__link {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--teal);
+      border-bottom: 1px solid var(--teal); padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .account-quiz__link:hover { opacity: 0.7; }
+
+    .quiz-result-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .quiz-result {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; padding: 20px;
+      border: 1px solid var(--stone); background: var(--sand);
+    }
+    .quiz-result__info { min-width: 0; }
+    .quiz-result__eyebrow {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
+    }
+    .quiz-result__name {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400;
+      line-height: 1.2; margin-bottom: 4px;
+    }
+    .quiz-result__region { font-size: 0.82rem; color: var(--ash); }
+    .quiz-result__date { font-size: 0.75rem; color: var(--ash); margin-top: 8px; }
+    .quiz-result__actions {
+      flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    .quiz-result__link {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--teal); white-space: nowrap;
+      border-bottom: 1px solid var(--teal); padding-bottom: 1px; transition: opacity 0.2s;
+    }
+    .quiz-result__link:hover { opacity: 0.7; }
+    .quiz-result__remove {
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ash); background: none; border: none; cursor: pointer;
+      padding: 0; transition: color 0.2s;
+    }
+    .quiz-result__remove:hover { color: var(--coral); }
+
     .account-msg {
       font-size: 0.85rem;
       padding: 12px 16px;
@@ -259,6 +308,15 @@
           </div>
         </form>
 
+        <div class="account-quiz">
+          <p class="account-section-title">Quiz results</p>
+          <p class="account-quiz__empty" id="quiz-empty">
+            You haven't saved any quiz results yet.
+            <a href="quiz.html" class="account-quiz__link">Take the “Where Should I Go?” quiz →</a>
+          </p>
+          <ul class="quiz-result-list" id="quiz-result-list"></ul>
+        </div>
+
       </div>
     </div>
   </div>
@@ -329,6 +387,63 @@
       }
 
       fill(user);
+
+      // ── Quiz results ─────────────────────────────────────────
+      var quizList = document.getElementById('quiz-result-list');
+      var quizEmpty = document.getElementById('quiz-empty');
+
+      function formatDate(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function renderQuizResults() {
+        var results = WanderAuth.getQuizResults();
+        if (!results.length) {
+          quizEmpty.style.display = '';
+          quizList.innerHTML = '';
+          return;
+        }
+        quizEmpty.style.display = 'none';
+        quizList.innerHTML = results.map(function (r) {
+          var region = [r.region, r.country].filter(Boolean).map(escapeHtml).join(' · ');
+          var retake = r.answers ? 'quiz.html#' + encodeURIComponent(r.answers) : 'quiz.html';
+          var action = r.hasGuide && r.url
+            ? '<a class="quiz-result__link" href="' + escapeHtml(r.url) + '">Read the guide →</a>'
+            : '<a class="quiz-result__link" href="' + escapeHtml(retake) + '">View result →</a>';
+          return '' +
+            '<li class="quiz-result">' +
+              '<div class="quiz-result__info">' +
+                '<p class="quiz-result__eyebrow">Your match</p>' +
+                '<p class="quiz-result__name">' + escapeHtml(r.name) + '</p>' +
+                (region ? '<p class="quiz-result__region">' + region + '</p>' : '') +
+                (r.savedAt ? '<p class="quiz-result__date">Saved ' + escapeHtml(formatDate(r.savedAt)) + '</p>' : '') +
+              '</div>' +
+              '<div class="quiz-result__actions">' +
+                action +
+                '<button type="button" class="quiz-result__remove" data-saved-at="' + escapeHtml(r.savedAt || '') + '">Remove</button>' +
+              '</div>' +
+            '</li>';
+        }).join('');
+      }
+
+      quizList.addEventListener('click', function (e) {
+        var btn = e.target.closest('.quiz-result__remove');
+        if (!btn) return;
+        var result = WanderAuth.removeQuizResult(btn.dataset.savedAt);
+        if (result.ok) renderQuizResults();
+      });
+
+      // If a result was saved while signed out, flush it now, then render.
+      WanderAuth.consumePendingQuizResult();
+      renderQuizResults();
 
       document.getElementById('account-form').addEventListener('submit', function (e) {
         e.preventDefault();
