@@ -76,6 +76,7 @@
       email: normEmail,
       passwordHash: hashPassword(password),
       bio: '',
+      favorites: [],
       createdAt: new Date().toISOString()
     };
     writeAccounts(accounts);
@@ -134,6 +135,85 @@
     accounts[email] = account;
     writeAccounts(accounts);
     return { ok: true };
+  }
+
+  // ── Favorite places ──────────────────────────────────────────
+  // Favorites are tied to the signed-in account and persist in localStorage
+  // (inside the account record) between visits. Each favorite is a small
+  // record: { id, title, url } where `id` is the guide URL used as a stable
+  // key so the same place can't be saved twice.
+
+  // Return the signed-in account's saved favorites (newest first), or [].
+  function getFavorites() {
+    var email = localStorage.getItem(SESSION_KEY);
+    if (!email) return [];
+    var account = readAccounts()[email];
+    if (!account || !Array.isArray(account.favorites)) return [];
+    // Return copies so callers can't mutate stored state directly.
+    return account.favorites.map(function (f) {
+      return { id: f.id, title: f.title, url: f.url };
+    });
+  }
+
+  // Is a given place (by id) in the signed-in account's favorites?
+  function isFavorite(id) {
+    id = String(id || '');
+    return getFavorites().some(function (f) { return f.id === id; });
+  }
+
+  // Add or update a favorite. Returns { ok, error }. Requires sign-in.
+  function addFavorite(place) {
+    var email = localStorage.getItem(SESSION_KEY);
+    if (!email) return { ok: false, error: 'You are not signed in.' };
+    place = place || {};
+    var id = String(place.id || '').trim();
+    if (!id) return { ok: false, error: 'A favorite needs an id.' };
+
+    var accounts = readAccounts();
+    var account = accounts[email];
+    if (!account) return { ok: false, error: 'Account not found.' };
+    if (!Array.isArray(account.favorites)) account.favorites = [];
+
+    var record = {
+      id: id,
+      title: String(place.title || id).trim(),
+      url: String(place.url || id).trim()
+    };
+    var existing = account.favorites.filter(function (f) { return f.id !== id; });
+    existing.unshift(record);
+    account.favorites = existing;
+    accounts[email] = account;
+    writeAccounts(accounts);
+    return { ok: true };
+  }
+
+  // Remove a favorite by id. Returns { ok, error }. Requires sign-in.
+  function removeFavorite(id) {
+    var email = localStorage.getItem(SESSION_KEY);
+    if (!email) return { ok: false, error: 'You are not signed in.' };
+    id = String(id || '');
+
+    var accounts = readAccounts();
+    var account = accounts[email];
+    if (!account) return { ok: false, error: 'Account not found.' };
+    if (!Array.isArray(account.favorites)) account.favorites = [];
+
+    account.favorites = account.favorites.filter(function (f) { return f.id !== id; });
+    accounts[email] = account;
+    writeAccounts(accounts);
+    return { ok: true };
+  }
+
+  // Toggle a favorite on or off. Returns { ok, favorited, error }.
+  function toggleFavorite(place) {
+    place = place || {};
+    var id = String(place.id || '').trim();
+    if (isFavorite(id)) {
+      var removed = removeFavorite(id);
+      return { ok: removed.ok, favorited: false, error: removed.error };
+    }
+    var added = addFavorite(place);
+    return { ok: added.ok, favorited: added.ok ? true : isFavorite(id), error: added.error };
   }
 
   // ── Shared nav entry point ───────────────────────────────────
@@ -206,6 +286,11 @@
     currentUser: currentUser,
     isSignedIn: isSignedIn,
     updateProfile: updateProfile,
+    getFavorites: getFavorites,
+    isFavorite: isFavorite,
+    addFavorite: addFavorite,
+    removeFavorite: removeFavorite,
+    toggleFavorite: toggleFavorite,
     renderNav: renderNav,
     requireAuth: requireAuth
   };
