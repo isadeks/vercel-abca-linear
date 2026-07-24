@@ -60,6 +60,25 @@
     @media (max-width: 900px) { .dest-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .dest-grid { grid-template-columns: 1fr; } }
 
+    .dest-cell { position: relative; }
+    .dest-cell .wander-fav-btn {
+      position: absolute; top: 14px; right: 14px; z-index: 5;
+      padding: 8px 14px; font-size: 0.68rem;
+      background: rgba(255,255,255,0.92); color: var(--ink);
+      border: 1px solid rgba(255,255,255,0.6);
+      backdrop-filter: blur(4px);
+    }
+    .dest-cell .wander-fav-btn:hover,
+    .dest-cell .wander-fav-btn[aria-pressed="true"] {
+      background: var(--teal); color: #fff; border-color: var(--teal);
+    }
+    .dest-cell .wander-fav-note {
+      position: absolute; top: 52px; right: 14px; z-index: 5;
+      margin: 0; padding: 6px 10px; border-radius: 6px;
+      background: rgba(255,255,255,0.95); color: var(--ink);
+      font-size: 0.72rem; box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+    }
+
     .dest-card {
       position: relative; overflow: hidden; cursor: pointer;
       display: block;
@@ -128,60 +147,78 @@
     <div class="container">
       <div class="dest-grid">
 
-        <a href="amalfi-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Amalfi Coast, Italy" />
-          <div class="dest-card__overlay"></div>
-          <div class="dest-card__body">
-            <p class="dest-card__region">Southern Italy</p>
-            <h3 class="dest-card__name">Amalfi Coast</h3>
-            <span class="dest-card__tag">Editor's pick</span>
-          </div>
-        </a>
+        <div class="dest-cell">
+          <div data-fav-button data-fav-type="destination" data-fav-id="dest-amalfi" data-fav-title="Amalfi Coast" data-fav-url="amalfi-guide.html" data-fav-region="Southern Italy"></div>
+          <a href="amalfi-guide.html" class="dest-card">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Amalfi Coast, Italy" />
+            <div class="dest-card__overlay"></div>
+            <div class="dest-card__body">
+              <p class="dest-card__region">Southern Italy</p>
+              <h3 class="dest-card__name">Amalfi Coast</h3>
+              <span class="dest-card__tag">Editor's pick</span>
+            </div>
+          </a>
+        </div>
 
-        <a href="kyoto-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan" />
-          <div class="dest-card__overlay"></div>
-          <div class="dest-card__body">
-            <p class="dest-card__region">Japan</p>
-            <h3 class="dest-card__name">Kyoto</h3>
-          </div>
-        </a>
+        <div class="dest-cell">
+          <div data-fav-button data-fav-type="destination" data-fav-id="dest-kyoto" data-fav-title="Kyoto" data-fav-url="kyoto-guide.html" data-fav-region="Japan"></div>
+          <a href="kyoto-guide.html" class="dest-card">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan" />
+            <div class="dest-card__overlay"></div>
+            <div class="dest-card__body">
+              <p class="dest-card__region">Japan</p>
+              <h3 class="dest-card__name">Kyoto</h3>
+            </div>
+          </a>
+        </div>
 
-        <a href="santorini-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Santorini, Greece" />
-          <div class="dest-card__overlay"></div>
-          <div class="dest-card__body">
-            <p class="dest-card__region">Greece</p>
-            <h3 class="dest-card__name">Santorini</h3>
-          </div>
-        </a>
+        <div class="dest-cell">
+          <div data-fav-button data-fav-type="destination" data-fav-id="dest-santorini" data-fav-title="Santorini" data-fav-url="santorini-guide.html" data-fav-region="Greece"></div>
+          <a href="santorini-guide.html" class="dest-card">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Santorini, Greece" />
+            <div class="dest-card__overlay"></div>
+            <div class="dest-card__body">
+              <p class="dest-card__region">Greece</p>
+              <h3 class="dest-card__name">Santorini</h3>
+            </div>
+          </a>
+        </div>
 
-        <a href="patagonia-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Patagonia, South America" />
-          <div class="dest-card__overlay"></div>
-          <div class="dest-card__body">
-            <p class="dest-card__region">South America</p>
-            <h3 class="dest-card__name">Patagonia</h3>
-          </div>
-        </a>
+        <div class="dest-cell">
+          <div data-fav-button data-fav-type="destination" data-fav-id="dest-patagonia" data-fav-title="Patagonia" data-fav-url="patagonia-guide.html" data-fav-region="South America"></div>
+          <a href="patagonia-guide.html" class="dest-card">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Patagonia, South America" />
+            <div class="dest-card__overlay"></div>
+            <div class="dest-card__body">
+              <p class="dest-card__region">South America</p>
+              <h3 class="dest-card__name">Patagonia</h3>
+            </div>
+          </a>
+        </div>
 
-        <a href="rajasthan-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" />
-          <div class="dest-card__overlay"></div>
-          <div class="dest-card__body">
-            <p class="dest-card__region">India</p>
-            <h3 class="dest-card__name">Rajasthan</h3>
-          </div>
-        </a>
+        <div class="dest-cell">
+          <div data-fav-button data-fav-type="destination" data-fav-id="dest-rajasthan" data-fav-title="Rajasthan" data-fav-url="rajasthan-guide.html" data-fav-region="India"></div>
+          <a href="rajasthan-guide.html" class="dest-card">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" />
+            <div class="dest-card__overlay"></div>
+            <div class="dest-card__body">
+              <p class="dest-card__region">India</p>
+              <h3 class="dest-card__name">Rajasthan</h3>
+            </div>
+          </a>
+        </div>
 
-        <a href="norway-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Norwegian fjords" />
-          <div class="dest-card__overlay"></div>
-          <div class="dest-card__body">
-            <p class="dest-card__region">Scandinavia</p>
-            <h3 class="dest-card__name">Norway's Fjords</h3>
-          </div>
-        </a>
+        <div class="dest-cell">
+          <div data-fav-button data-fav-type="destination" data-fav-id="dest-norway" data-fav-title="Norway's Fjords" data-fav-url="norway-guide.html" data-fav-region="Scandinavia"></div>
+          <a href="norway-guide.html" class="dest-card">
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Norwegian fjords" />
+            <div class="dest-card__overlay"></div>
+            <div class="dest-card__body">
+              <p class="dest-card__region">Scandinavia</p>
+              <h3 class="dest-card__name">Norway's Fjords</h3>
+            </div>
+          </a>
+        </div>
 
       </div>
     </div>
