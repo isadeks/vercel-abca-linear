@@ -555,6 +555,46 @@
     }
     .retake-btn:hover { border-color: var(--ash); color: var(--ink); }
 
+    /* Saved-result history (signed-in visitors) */
+    .hidden { display: none !important; }
+    .history-status {
+      font-size: 0.8rem;
+      color: var(--ash);
+      margin-bottom: 14px;
+    }
+    .history-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .history-item {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .history-item:last-child { border-bottom: none; padding-bottom: 0; }
+    .history-item__name {
+      font-family: var(--font-serif);
+      font-size: 1rem;
+      line-height: 1.2;
+    }
+    .history-item__meta {
+      font-size: 0.72rem;
+      color: var(--ash);
+      letter-spacing: 0.06em;
+      margin-top: 2px;
+    }
+    .history-item__date {
+      font-size: 0.72rem;
+      color: var(--ash);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 960px) {
       .quiz-layout { grid-template-columns: 1fr; }
@@ -679,6 +719,13 @@
               <ul class="runner-up-list" id="runner-up-list"></ul>
             </div>
 
+            <!-- Saved-result history — populated only for signed-in visitors. -->
+            <div class="result-sidebar__section hidden" id="history-section">
+              <p class="result-sidebar__heading">Your past results</p>
+              <p class="history-status" id="history-status"></p>
+              <ul class="history-list" id="history-list"></ul>
+            </div>
+
             <div class="result-sidebar__section">
               <p class="result-sidebar__heading">Share your result</p>
               <div class="share-row">
@@ -700,6 +747,9 @@
 
   </div><!-- /.quiz-wrap -->
 
+  <!-- Auth helper loaded before the quiz logic so WanderAuth is available when
+       a shared permalink restores a result on load. -->
+  <script src="js/auth.js"></script>
   <script>
   /* ================================================================
      QUIZ DATA
@@ -1221,9 +1271,11 @@
      SHOW RESULT
      ================================================================ */
 
-  function showResult() {
+  function showResult(options) {
+    const opts = options || {};
     const ranked = scoreDestinations(answers);
     const winner = ranked[0].dest;
+    const winnerScore = ranked[0].score;
     const runnerUps = ranked.slice(1, 4).map(r => r.dest);
 
     // Hero
@@ -1274,6 +1326,87 @@
     document.getElementById('progress-fill').style.width = '100%';
 
     showScreen('screen-result');
+
+    // Persist to the signed-in visitor's account (and refresh history).
+    // `save: false` is used when restoring from a shared permalink so we don't
+    // re-save someone else's shared result as our own.
+    if (opts.save === false) {
+      loadHistory();
+    } else {
+      persistResult(winner, winnerScore, answers.slice());
+    }
+  }
+
+  /* ================================================================
+     SAVE RESULT + HISTORY (signed-in visitors only)
+     The quiz works for everyone; saving is a no-op when not signed in.
+     ================================================================ */
+
+  const historySection = document.getElementById('history-section');
+  const historyStatus = document.getElementById('history-status');
+  const historyList = document.getElementById('history-list');
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    if (isNaN(d.getTime())) return '';
+    return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
+  }
+
+  function renderHistory(results) {
+    if (!results || !results.length) {
+      historyStatus.textContent = 'No saved results yet — this is your first!';
+      historyList.innerHTML = '';
+      return;
+    }
+    historyStatus.textContent = '';
+    historyList.innerHTML = results.map(r => `
+      <li class="history-item">
+        <div>
+          <p class="history-item__name">${r.destinationName || r.destinationId}</p>
+          <p class="history-item__meta">${[r.destinationRegion, r.destinationCountry].filter(Boolean).join(' · ')}${
+            (r.destinationRegion || r.destinationCountry) ? ' · ' : ''
+          }Score ${r.score}</p>
+        </div>
+        <span class="history-item__date">${formatDate(r.createdAt)}</span>
+      </li>`).join('');
+  }
+
+  // Load + display the signed-in user's saved results. Hides the section for
+  // anonymous visitors (no WanderAuth or empty session).
+  async function loadHistory() {
+    if (!window.WanderAuth) return;
+    const user = await WanderAuth.currentUser();
+    if (!user) {
+      historySection.classList.add('hidden');
+      return;
+    }
+    historySection.classList.remove('hidden');
+    const results = await WanderAuth.quizResults();
+    renderHistory(results);
+  }
+
+  // Save the current result if the visitor is signed in, then refresh history.
+  // A 401 (not signed in) is expected and silently ignored — the quiz result is
+  // still shown, it just isn't persisted.
+  async function persistResult(winner, score, answerList) {
+    if (!window.WanderAuth) return;
+    const user = await WanderAuth.currentUser();
+    if (!user) {
+      historySection.classList.add('hidden');
+      return;
+    }
+    historySection.classList.remove('hidden');
+    historyStatus.textContent = 'Saving your result…';
+    await WanderAuth.saveQuizResult({
+      destinationId: winner.id,
+      destinationName: winner.name,
+      destinationRegion: winner.region,
+      destinationCountry: winner.country,
+      score,
+      answers: answerList,
+    });
+    const results = await WanderAuth.quizResults();
+    renderHistory(results);
   }
 
   /* ================================================================
@@ -1301,10 +1434,11 @@
     const valid = parsed.every((a, i) => a >= 0 && a < QUESTIONS[i].answers.length);
     if (!valid) return;
     parsed.forEach((a, i) => { answers[i] = a; });
-    showResult();
+    // A shared permalink shows the encoded result but must NOT be saved as the
+    // viewer's own — only quizzes the visitor actually completes are persisted.
+    showResult({ save: false });
   })();
 
   </script>
-  <script src="js/auth.js"></script>
 </body>
 </html>

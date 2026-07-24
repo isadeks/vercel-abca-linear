@@ -48,6 +48,34 @@
       }
     },
 
+    // Persist a completed quiz result for the signed-in visitor.
+    // Returns { ok: true, result } on success, or { ok: false, error }.
+    // For anonymous visitors the endpoint returns 401 and nothing is saved —
+    // callers should treat that as a no-op, not an error to surface.
+    async saveQuizResult(result) {
+      try {
+        const { res, data } = await postJson('/api/quiz-results', result);
+        return res.ok
+          ? { ok: true, result: data.result }
+          : { ok: false, error: data.error, status: res.status };
+      } catch (err) {
+        return { ok: false, error: (err && err.message) || 'Network error' };
+      }
+    },
+
+    // Fetch the signed-in visitor's saved quiz results (newest first).
+    // Returns an array; anonymous visitors (or errors) yield [].
+    async quizResults() {
+      try {
+        const res = await fetch('/api/quiz-results', { credentials: 'same-origin' });
+        if (!res.ok) return [];
+        const data = await res.json();
+        return Array.isArray(data.results) ? data.results : [];
+      } catch {
+        return [];
+      }
+    },
+
     // Wire up a nav indicator. Pass the <li>/container element; it gets filled
     // with either an "Account" link or a "Sign in" link based on session state.
     async mountNavIndicator(el) {
