@@ -4,4 +4,4 @@
 
 Contributions are welcome!
 
-See the [Glossary](docs/GLOSSARY.md) for definitions of common terms used in this project.
+**See the [Glossary](docs/GLOSSARY.md) for definitions of common terms used in this project.**
