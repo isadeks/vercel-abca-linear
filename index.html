@@ -140,6 +140,62 @@
     }
     .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
 
+    /* ── Pricing banner ───────────────────────────────────────── */
+    .pricing-banner {
+      background: var(--teal);
+      color: white;
+    }
+    .pricing-banner__inner {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 22px 0;
+    }
+    .pricing-banner__text {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .pricing-banner__tag {
+      font-size: 0.68rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: white;
+      background: rgba(255,255,255,0.18);
+      padding: 4px 10px;
+      border-radius: 100px;
+    }
+    .pricing-banner__headline {
+      font-family: var(--font-serif);
+      font-size: clamp(1.15rem, 2.4vw, 1.6rem);
+      font-weight: 300;
+    }
+    .pricing-banner__headline strong {
+      font-weight: 500;
+    }
+    .pricing-banner__price {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.85);
+    }
+    .pricing-banner__price s {
+      opacity: 0.6;
+      margin-right: 6px;
+    }
+    .btn--banner {
+      background: white;
+      border-color: white;
+      color: var(--teal);
+      white-space: nowrap;
+    }
+    .btn--banner:hover { background: var(--sand); border-color: var(--sand); color: var(--teal); }
+    @media (max-width: 640px) {
+      .pricing-banner__inner { flex-direction: column; align-items: flex-start; }
+    }
+
     /* ── Quiz CTA banner ──────────────────────────────────────── */
     .quiz-cta {
       background: var(--ink);
@@ -572,6 +628,23 @@
       <a href="#destinations" class="btn">Explore destinations</a>
     </div>
     <div class="hero__scroll">Scroll</div>
+  </section>
+
+  <!-- ── Pricing banner ───────────────────────────────────────── -->
+  <section class="pricing-banner">
+    <div class="container">
+      <div class="pricing-banner__inner">
+        <div class="pricing-banner__text">
+          <span class="pricing-banner__tag">Summer offer</span>
+          <span class="pricing-banner__headline">All guides, <strong>one annual pass</strong></span>
+          <span class="pricing-banner__price"><s>$48/yr</s> $29/yr — 40% off through August</span>
+        </div>
+        <a href="#newsletter" class="btn btn--banner">
+          Get the pass
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+      </div>
+    </div>
   </section>
 
   <!-- ── Quiz CTA ─────────────────────────────────────────────── -->
