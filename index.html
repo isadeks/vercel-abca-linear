@@ -523,6 +523,137 @@
       line-height: 1.6;
     }
 
+    /* ── Pricing ──────────────────────────────────────────────── */
+    .pricing {
+      padding: 96px 0;
+      background: var(--cream);
+    }
+    .pricing__intro {
+      text-align: center;
+      max-width: 560px;
+      margin: 0 auto 56px;
+    }
+    .pricing__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 14px;
+    }
+    .pricing__intro h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 400;
+      line-height: 1.15;
+      margin-bottom: 14px;
+    }
+    .pricing__intro p {
+      font-size: 0.95rem;
+      color: var(--ash);
+      line-height: 1.75;
+    }
+    .pricing__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      align-items: start;
+    }
+    .plan {
+      display: flex; flex-direction: column;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      padding: 36px 32px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .plan:hover { transform: translateY(-4px); }
+    .plan--featured {
+      background: var(--ink);
+      border-color: var(--ink);
+      position: relative;
+    }
+    .plan__badge {
+      position: absolute; top: -12px; left: 32px;
+      padding: 5px 14px;
+      font-size: 0.62rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      background: var(--teal);
+      color: white;
+    }
+    .plan__name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 6px;
+    }
+    .plan--featured .plan__name { color: white; }
+    .plan__tagline {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.6;
+      margin-bottom: 24px;
+      min-height: 40px;
+    }
+    .plan--featured .plan__tagline { color: rgba(255,255,255,0.55); }
+    .plan__price {
+      display: flex; align-items: baseline; gap: 6px;
+      margin-bottom: 4px;
+    }
+    .plan__amount {
+      font-family: var(--font-serif);
+      font-size: 2.8rem;
+      font-weight: 400;
+      line-height: 1;
+    }
+    .plan--featured .plan__amount { color: white; }
+    .plan__period {
+      font-size: 0.82rem;
+      color: var(--ash);
+    }
+    .plan--featured .plan__period { color: rgba(255,255,255,0.5); }
+    .plan__billing {
+      font-size: 0.75rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .plan--featured .plan__billing { color: rgba(255,255,255,0.4); }
+    .plan__features {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 14px;
+      margin-bottom: 32px;
+      flex: 1;
+    }
+    .plan__features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: 0.88rem;
+      line-height: 1.5;
+      color: var(--ink);
+    }
+    .plan--featured .plan__features li { color: rgba(255,255,255,0.82); }
+    .plan__features svg {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      margin-top: 3px;
+      color: var(--teal);
+    }
+    .plan__features li.is-off { color: #b0a898; }
+    .plan--featured .plan__features li.is-off { color: rgba(255,255,255,0.3); }
+    .plan__features li.is-off svg { color: currentColor; }
+    .plan .btn { justify-content: center; width: 100%; }
+    .plan--featured .btn {
+      background: white;
+      border-color: white;
+      color: var(--ink);
+    }
+    .plan--featured .btn:hover { background: var(--sand); border-color: var(--sand); }
+
+    @media (max-width: 900px) {
+      .pricing__grid { grid-template-columns: 1fr; max-width: 420px; margin: 0 auto; }
+      .plan__tagline { min-height: 0; }
+    }
+
     /* ── Footer ───────────────────────────────────────────────── */
     footer {
       background: var(--ink);
@@ -614,6 +745,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="#pricing">Pricing</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -838,6 +970,78 @@
     </div>
   </section>
 
+  <!-- ── Pricing ────────────────────────────────────────────────── -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="pricing__intro">
+        <p class="pricing__eyebrow">Membership</p>
+        <h2>Travel deeper, for less</h2>
+        <p>Choose the plan that fits how you explore. Every tier unlocks our full library of long-form guides — upgrade any time as your wanderlust grows.</p>
+      </div>
+
+      <div class="pricing__grid">
+
+        <!-- Explorer -->
+        <article class="plan">
+          <h3 class="plan__name">Explorer</h3>
+          <p class="plan__tagline">For the occasional dreamer planning their next escape.</p>
+          <div class="plan__price">
+            <span class="plan__amount">Free</span>
+          </div>
+          <p class="plan__billing">No card required</p>
+          <ul class="plan__features">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Access to 3 featured guides</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Bi-weekly newsletter</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>"Where should I go?" quiz</li>
+            <li class="is-off"><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Offline reading</li>
+            <li class="is-off"><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>Custom itineraries</li>
+          </ul>
+          <a href="#newsletter" class="btn btn--teal">Start free</a>
+        </article>
+
+        <!-- Voyager (featured) -->
+        <article class="plan plan--featured">
+          <span class="plan__badge">Most popular</span>
+          <h3 class="plan__name">Voyager</h3>
+          <p class="plan__tagline">For the frequent traveller who wants the whole library.</p>
+          <div class="plan__price">
+            <span class="plan__amount">$9</span>
+            <span class="plan__period">/ month</span>
+          </div>
+          <p class="plan__billing">Billed monthly · cancel any time</p>
+          <ul class="plan__features">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited access to every guide</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Explorer</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Offline reading & downloads</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Custom itineraries</li>
+            <li class="is-off"><svg viewBox="0 0 16 16" fill="none"><path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>1-on-1 trip consultation</li>
+          </ul>
+          <a href="#newsletter" class="btn">Choose Voyager</a>
+        </article>
+
+        <!-- Pathfinder -->
+        <article class="plan">
+          <h3 class="plan__name">Pathfinder</h3>
+          <p class="plan__tagline">For the devoted explorer who wants a human in the loop.</p>
+          <div class="plan__price">
+            <span class="plan__amount">$24</span>
+            <span class="plan__period">/ month</span>
+          </div>
+          <p class="plan__billing">Billed monthly · cancel any time</p>
+          <ul class="plan__features">
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Everything in Voyager</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Monthly 1-on-1 trip consultation</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority access to new guides</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Curated packing lists</li>
+            <li><svg viewBox="0 0 16 16" fill="none"><path d="M3 8.5l3.5 3.5L13 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>Members-only field notes</li>
+          </ul>
+          <a href="contact.html" class="btn btn--teal">Go Pathfinder</a>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
   <!-- ── Newsletter ─────────────────────────────────────────────── -->
   <section class="newsletter" id="newsletter">
     <div class="container">
@@ -876,6 +1080,7 @@
           <p class="footer__heading">Plan</p>
           <ul class="footer__links">
             <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="#pricing">Pricing</a></li>
             <li><a href="#guides">Itineraries</a></li>
             <li><a href="#guides">Packing lists</a></li>
             <li><a href="contact.html">Visa info</a></li>
