@@ -749,7 +749,7 @@
         </div>
       </div>
       <div class="footer__bottom">
-        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span>&copy; <span class="footer__year">2026</span> Wander. All rights reserved.</span>
         <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
       </div>
     </div>
@@ -1359,6 +1359,11 @@
     showResult();
   })();
 
+  </script>
+  <script>
+    document.querySelectorAll('.footer__year').forEach(function (el) {
+      el.textContent = new Date().getFullYear();
+    });
   </script>
 </body>
 </html>
