@@ -140,6 +140,70 @@
     }
     .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
 
+    /* ── Newsletter banner (top) ──────────────────────────────── */
+    .newsletter-banner {
+      background: var(--teal);
+      color: white;
+      padding: 20px 0;
+    }
+    .newsletter-banner__inner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 16px 28px;
+    }
+    .newsletter-banner__copy {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .newsletter-banner__title {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 400;
+      line-height: 1.2;
+    }
+    .newsletter-banner__sub {
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.75);
+    }
+    .newsletter-banner__form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .newsletter-banner__form input[type="email"] {
+      padding: 11px 16px;
+      min-width: 220px;
+      border: 1px solid rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.12);
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      color: white;
+      outline: none;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .newsletter-banner__form input[type="email"]::placeholder { color: rgba(255,255,255,0.6); }
+    .newsletter-banner__form input[type="email"]:focus {
+      border-color: white;
+      background: rgba(255,255,255,0.18);
+    }
+    .btn--banner {
+      background: white;
+      border-color: white;
+      color: var(--teal);
+      white-space: nowrap;
+    }
+    .btn--banner:hover { background: var(--sand); border-color: var(--sand); color: var(--teal); }
+    @media (max-width: 640px) {
+      .newsletter-banner__inner { flex-direction: column; align-items: stretch; text-align: center; }
+      .newsletter-banner__copy { justify-content: center; }
+      .newsletter-banner__form { justify-content: center; }
+      .newsletter-banner__form input[type="email"] { flex: 1; min-width: 0; }
+    }
+
     /* ── Quiz CTA banner ──────────────────────────────────────── */
     .quiz-cta {
       background: var(--ink);
@@ -572,6 +636,22 @@
       <a href="#destinations" class="btn">Explore destinations</a>
     </div>
     <div class="hero__scroll">Scroll</div>
+  </section>
+
+  <!-- ── Newsletter signup banner ─────────────────────────────── -->
+  <section class="newsletter-banner" aria-label="Newsletter signup">
+    <div class="container">
+      <div class="newsletter-banner__inner">
+        <div class="newsletter-banner__copy">
+          <p class="newsletter-banner__title">Get the best of Wander in your inbox</p>
+          <p class="newsletter-banner__sub">Destination profiles &amp; travel wisdom, every two weeks.</p>
+        </div>
+        <form class="newsletter-banner__form" action="#newsletter" onsubmit="return false;">
+          <input type="email" placeholder="your@email.com" aria-label="Email address" required />
+          <button type="submit" class="btn btn--banner">Subscribe</button>
+        </form>
+      </div>
+    </div>
   </section>
 
   <!-- ── Quiz CTA ─────────────────────────────────────────────── -->
