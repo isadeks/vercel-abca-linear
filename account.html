@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    .page-hero {
+      padding: 96px 0 56px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+      text-align: center;
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 3.6rem);
+      font-weight: 300;
+      line-height: 1.1;
+    }
+
+    .auth {
+      max-width: 420px;
+      margin: -32px auto 96px;
+      background: #fff;
+      border: 1px solid var(--stone);
+      border-radius: 14px;
+      box-shadow: 0 12px 40px rgba(26,23,20,0.06);
+      padding: 8px 32px 32px;
+    }
+
+    .auth__tabs {
+      display: flex;
+      gap: 8px;
+      margin: 0 -32px 28px;
+      padding: 0 32px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .auth__tab {
+      flex: 1;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 20px 0 16px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .auth__tab[aria-selected="true"] {
+      color: var(--ink);
+      border-bottom-color: var(--teal);
+    }
+
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    .field input {
+      width: 100%;
+      padding: 12px 14px;
+      font-family: var(--font-sans);
+      font-size: 0.95rem;
+      color: var(--ink);
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    .field input:focus {
+      outline: none;
+      border-color: var(--teal);
+    }
+    .field__hint { font-size: 0.75rem; color: var(--ash); margin-top: 6px; }
+
+    .btn {
+      width: 100%;
+      padding: 13px 0;
+      font-family: var(--font-sans);
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #fff;
+      background: var(--teal);
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      margin-top: 4px;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn:disabled { opacity: 0.5; cursor: default; }
+
+    .msg {
+      font-size: 0.85rem;
+      padding: 11px 14px;
+      border-radius: 8px;
+      margin-bottom: 18px;
+      display: none;
+    }
+    .msg--error {
+      display: block;
+      color: var(--coral);
+      background: #fbeae6;
+      border: 1px solid #f0cabf;
+    }
+    .msg--ok {
+      display: block;
+      color: var(--teal);
+      background: var(--teal-lt);
+      border: 1px solid #bfe0dc;
+    }
+
+    /* Signed-in view */
+    .account-card { text-align: center; padding: 8px 0 4px; }
+    .account-card__email {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      margin: 6px 0 4px;
+    }
+    .account-card__since { font-size: 0.85rem; color: var(--ash); margin-bottom: 26px; }
+    .btn--ghost {
+      color: var(--ink);
+      background: transparent;
+      border: 1px solid var(--stone);
+    }
+    .hidden { display: none !important; }
+    .foot-note { text-align: center; font-size: 0.8rem; color: var(--ash); margin-top: 18px; }
+    .foot-note a { color: var(--teal); border-bottom: 1px solid currentColor; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Your Wander</p>
+      <h1 class="page-hero__title" id="hero-title">Welcome back</h1>
+    </div>
+  </div>
+
+  <main class="auth" id="auth">
+    <!-- Loading placeholder replaced once we know the session state -->
+    <p class="foot-note" id="loading" style="margin: 28px 0;">Loading…</p>
+
+    <!-- Signed-out: sign in / create account -->
+    <section id="signed-out" class="hidden">
+      <div class="auth__tabs" role="tablist">
+        <button class="auth__tab" id="tab-login" role="tab" aria-selected="true">Sign in</button>
+        <button class="auth__tab" id="tab-signup" role="tab" aria-selected="false">Create account</button>
+      </div>
+
+      <p class="msg" id="form-msg" role="alert"></p>
+
+      <form id="auth-form" novalidate>
+        <div class="field">
+          <label for="email">Email</label>
+          <input type="email" id="email" name="email" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" autocomplete="current-password" required />
+          <p class="field__hint hidden" id="password-hint">At least 8 characters.</p>
+        </div>
+        <button type="submit" class="btn" id="submit-btn">Sign in</button>
+      </form>
+    </section>
+
+    <!-- Signed-in: account + sign out -->
+    <section id="signed-in" class="hidden">
+      <div class="account-card">
+        <p class="page-hero__eyebrow" style="color: var(--teal);">Signed in as</p>
+        <p class="account-card__email" id="account-email"></p>
+        <p class="account-card__since" id="account-since"></p>
+        <button class="btn btn--ghost" id="signout-btn">Sign out</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    (function () {
+      const heroTitle = document.getElementById('hero-title');
+      const loading = document.getElementById('loading');
+      const signedOut = document.getElementById('signed-out');
+      const signedIn = document.getElementById('signed-in');
+      const tabLogin = document.getElementById('tab-login');
+      const tabSignup = document.getElementById('tab-signup');
+      const form = document.getElementById('auth-form');
+      const emailInput = document.getElementById('email');
+      const passwordInput = document.getElementById('password');
+      const submitBtn = document.getElementById('submit-btn');
+      const formMsg = document.getElementById('form-msg');
+      const passwordHint = document.getElementById('password-hint');
+      const accountEmail = document.getElementById('account-email');
+      const accountSince = document.getElementById('account-since');
+      const signoutBtn = document.getElementById('signout-btn');
+
+      let mode = 'login'; // 'login' | 'signup'
+
+      function showMessage(text, kind) {
+        formMsg.textContent = text;
+        formMsg.className = 'msg msg--' + (kind === 'ok' ? 'ok' : 'error');
+      }
+      function clearMessage() {
+        formMsg.textContent = '';
+        formMsg.className = 'msg';
+      }
+
+      function setMode(next) {
+        mode = next;
+        const isSignup = next === 'signup';
+        tabLogin.setAttribute('aria-selected', String(!isSignup));
+        tabSignup.setAttribute('aria-selected', String(isSignup));
+        submitBtn.textContent = isSignup ? 'Create account' : 'Sign in';
+        passwordInput.setAttribute('autocomplete', isSignup ? 'new-password' : 'current-password');
+        passwordHint.classList.toggle('hidden', !isSignup);
+        clearMessage();
+      }
+
+      function renderSignedIn(user) {
+        loading.classList.add('hidden');
+        signedOut.classList.add('hidden');
+        signedIn.classList.remove('hidden');
+        heroTitle.textContent = 'Your account';
+        accountEmail.textContent = user.email;
+        if (user.createdAt) {
+          const d = new Date(user.createdAt);
+          accountSince.textContent = 'Member since ' +
+            d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+        }
+      }
+
+      function renderSignedOut() {
+        loading.classList.add('hidden');
+        signedIn.classList.add('hidden');
+        signedOut.classList.remove('hidden');
+        heroTitle.textContent = 'Welcome back';
+      }
+
+      tabLogin.addEventListener('click', () => setMode('login'));
+      tabSignup.addEventListener('click', () => setMode('signup'));
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        clearMessage();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        if (!email || !password) {
+          showMessage('Please enter your email and password.', 'error');
+          return;
+        }
+        submitBtn.disabled = true;
+        const original = submitBtn.textContent;
+        submitBtn.textContent = mode === 'signup' ? 'Creating…' : 'Signing in…';
+        try {
+          const result = mode === 'signup'
+            ? await WanderAuth.signup(email, password)
+            : await WanderAuth.login(email, password);
+          if (result.ok) {
+            renderSignedIn(result.user);
+          } else {
+            showMessage(result.error || 'Something went wrong. Please try again.', 'error');
+          }
+        } catch {
+          showMessage('Network error. Please try again.', 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.textContent = original;
+        }
+      });
+
+      signoutBtn.addEventListener('click', async () => {
+        signoutBtn.disabled = true;
+        await WanderAuth.logout();
+        setMode('login');
+        renderSignedOut();
+        signoutBtn.disabled = false;
+      });
+
+      // On load, resolve the current session.
+      WanderAuth.currentUser().then((user) => {
+        if (user) renderSignedIn(user);
+        else renderSignedOut();
+      }).catch(renderSignedOut);
+    })();
+  </script>
+</body>
+</html>
