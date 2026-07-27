@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your account — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    .page-hero {
+      padding: 96px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 20px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ash);
+      max-width: 480px;
+      line-height: 1.6;
+    }
+
+    .account-body { padding: 56px 0 96px; }
+    .account-card { max-width: 520px; }
+
+    .account-summary {
+      display: flex; align-items: center; gap: 20px;
+      padding-bottom: 32px; margin-bottom: 32px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .account-avatar {
+      flex: none;
+      width: 64px; height: 64px; border-radius: 50%;
+      background: var(--teal); color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif); font-size: 1.8rem; font-weight: 400;
+      text-transform: uppercase;
+    }
+    .account-summary__name { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; }
+    .account-summary__email { font-size: 0.9rem; color: var(--ash); }
+
+    .account-section-title {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 20px;
+    }
+
+    .account-form { display: flex; flex-direction: column; gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label {
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--ash);
+    }
+    .form-group input,
+    .form-group textarea {
+      padding: 12px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus { border-color: var(--teal); }
+    .form-group input::placeholder,
+    .form-group textarea::placeholder { color: #b0a898; }
+    .form-group input:disabled { color: var(--ash); background: var(--sand); }
+    .form-hint { font-size: 0.78rem; color: var(--ash); }
+
+    .account-actions {
+      display: flex; align-items: center; gap: 16px;
+      margin-top: 8px; flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      background: var(--teal);
+      border: 1px solid var(--teal);
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #22665c; border-color: #22665c; }
+    .btn--ghost {
+      background: none; color: var(--teal);
+    }
+    .btn--ghost:hover { background: var(--teal-lt); border-color: var(--teal); }
+
+    .account-quiz {
+      margin-top: 48px;
+      padding-top: 40px;
+      border-top: 1px solid var(--stone);
+    }
+    .account-quiz__empty { font-size: 0.9rem; color: var(--ash); line-height: 1.7; }
+    .account-quiz__link {
+      display: inline-block;
+      margin-top: 6px;
+      font-size: 0.78rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--teal);
+      border-bottom: 1px solid var(--teal); padding-bottom: 1px;
+      transition: opacity 0.2s;
+    }
+    .account-quiz__link:hover { opacity: 0.7; }
+
+    .quiz-result-list { list-style: none; display: flex; flex-direction: column; gap: 16px; }
+    .quiz-result {
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; padding: 20px;
+      border: 1px solid var(--stone); background: var(--sand);
+    }
+    .quiz-result__info { min-width: 0; }
+    .quiz-result__eyebrow {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.16em;
+      text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
+    }
+    .quiz-result__name {
+      font-family: var(--font-serif); font-size: 1.5rem; font-weight: 400;
+      line-height: 1.2; margin-bottom: 4px;
+    }
+    .quiz-result__region { font-size: 0.82rem; color: var(--ash); }
+    .quiz-result__date { font-size: 0.75rem; color: var(--ash); margin-top: 8px; }
+    .quiz-result__actions {
+      flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+    .quiz-result__link {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--teal); white-space: nowrap;
+      border-bottom: 1px solid var(--teal); padding-bottom: 1px; transition: opacity 0.2s;
+    }
+    .quiz-result__link:hover { opacity: 0.7; }
+    .quiz-result__remove {
+      font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--ash); background: none; border: none; cursor: pointer;
+      padding: 0; transition: color 0.2s;
+    }
+    .quiz-result__remove:hover { color: var(--coral); }
+
+    .account-msg {
+      font-size: 0.85rem;
+      padding: 12px 16px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+      display: none;
+    }
+    .account-msg.error { display: block; background: #f7e4df; color: var(--coral); border: 1px solid #eac9c0; }
+    .account-msg.success { display: block; background: var(--teal-lt); color: var(--teal); border: 1px solid #b6ddd9; }
+
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif); font-size: 2rem; font-weight: 400;
+      color: white; margin-bottom: 14px; letter-spacing: 0.04em;
+    }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading {
+      font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em;
+      text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px;
+    }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Your account</p>
+      <h1 class="page-hero__title">Account</h1>
+      <p class="page-hero__sub">Your profile details, kept in this browser between visits.</p>
+    </div>
+  </div>
+
+  <div class="account-body">
+    <div class="container">
+      <div class="account-card">
+
+        <div class="account-summary">
+          <div class="account-avatar" id="account-avatar">·</div>
+          <div>
+            <p class="account-summary__name" id="account-name">—</p>
+            <p class="account-summary__email" id="account-email">—</p>
+          </div>
+        </div>
+
+        <p class="account-msg" id="account-msg"></p>
+
+        <p class="account-section-title">Profile details</p>
+        <form class="account-form" id="account-form" novalidate>
+          <div class="form-group">
+            <label for="profile-name">Name</label>
+            <input type="text" id="profile-name" autocomplete="name" placeholder="Your name" required />
+          </div>
+          <div class="form-group">
+            <label for="profile-email">Email</label>
+            <input type="email" id="profile-email" disabled />
+            <p class="form-hint">Your email is the account identifier and can't be changed.</p>
+          </div>
+          <div class="form-group">
+            <label for="profile-bio">About you</label>
+            <textarea id="profile-bio" rows="4" placeholder="A sentence or two about the kind of travel you love…"></textarea>
+          </div>
+          <div class="account-actions">
+            <button type="submit" class="btn">Save changes</button>
+            <button type="button" class="btn btn--ghost" id="signout-btn">Sign out</button>
+          </div>
+        </form>
+
+        <div class="account-quiz">
+          <p class="account-section-title">Quiz results</p>
+          <p class="account-quiz__empty" id="quiz-empty">
+            You haven't saved any quiz results yet.
+            <a href="quiz.html" class="account-quiz__link">Take the “Where Should I Go?” quiz →</a>
+          </p>
+          <ul class="quiz-result-list" id="quiz-result-list"></ul>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="auth.js"></script>
+  <script>
+    (function () {
+      // Gate the page: bounce to login if not signed in.
+      if (!window.WanderAuth || !WanderAuth.requireAuth('login.html')) return;
+
+      var user = WanderAuth.currentUser();
+      var msg = document.getElementById('account-msg');
+      var nameInput = document.getElementById('profile-name');
+      var emailInput = document.getElementById('profile-email');
+      var bioInput = document.getElementById('profile-bio');
+
+      function fill(u) {
+        document.getElementById('account-name').textContent = u.name;
+        document.getElementById('account-email').textContent = u.email;
+        document.getElementById('account-avatar').textContent = (u.name || u.email).charAt(0);
+        nameInput.value = u.name;
+        emailInput.value = u.email;
+        bioInput.value = u.bio || '';
+      }
+
+      function showMsg(type, text) {
+        msg.className = 'account-msg ' + type;
+        msg.textContent = text;
+      }
+
+      fill(user);
+
+      // ── Quiz results ─────────────────────────────────────────
+      var quizList = document.getElementById('quiz-result-list');
+      var quizEmpty = document.getElementById('quiz-empty');
+
+      function formatDate(iso) {
+        var d = new Date(iso);
+        if (isNaN(d.getTime())) return '';
+        return d.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+      }
+
+      function escapeHtml(str) {
+        return String(str).replace(/[&<>"']/g, function (c) {
+          return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+        });
+      }
+
+      function renderQuizResults() {
+        var results = WanderAuth.getQuizResults();
+        if (!results.length) {
+          quizEmpty.style.display = '';
+          quizList.innerHTML = '';
+          return;
+        }
+        quizEmpty.style.display = 'none';
+        quizList.innerHTML = results.map(function (r) {
+          var region = [r.region, r.country].filter(Boolean).map(escapeHtml).join(' · ');
+          var retake = r.answers ? 'quiz.html#' + encodeURIComponent(r.answers) : 'quiz.html';
+          var action = r.hasGuide && r.url
+            ? '<a class="quiz-result__link" href="' + escapeHtml(r.url) + '">Read the guide →</a>'
+            : '<a class="quiz-result__link" href="' + escapeHtml(retake) + '">View result →</a>';
+          return '' +
+            '<li class="quiz-result">' +
+              '<div class="quiz-result__info">' +
+                '<p class="quiz-result__eyebrow">Your match</p>' +
+                '<p class="quiz-result__name">' + escapeHtml(r.name) + '</p>' +
+                (region ? '<p class="quiz-result__region">' + region + '</p>' : '') +
+                (r.savedAt ? '<p class="quiz-result__date">Saved ' + escapeHtml(formatDate(r.savedAt)) + '</p>' : '') +
+              '</div>' +
+              '<div class="quiz-result__actions">' +
+                action +
+                '<button type="button" class="quiz-result__remove" data-saved-at="' + escapeHtml(r.savedAt || '') + '">Remove</button>' +
+              '</div>' +
+            '</li>';
+        }).join('');
+      }
+
+      quizList.addEventListener('click', function (e) {
+        var btn = e.target.closest('.quiz-result__remove');
+        if (!btn) return;
+        var result = WanderAuth.removeQuizResult(btn.dataset.savedAt);
+        if (result.ok) renderQuizResults();
+      });
+
+      // If a result was saved while signed out, flush it now, then render.
+      WanderAuth.consumePendingQuizResult();
+      renderQuizResults();
+
+      document.getElementById('account-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        var result = WanderAuth.updateProfile({
+          name: nameInput.value,
+          bio: bioInput.value
+        });
+        if (result.ok) {
+          fill(WanderAuth.currentUser());
+          WanderAuth.renderNav();
+          showMsg('success', 'Your profile has been updated.');
+        } else {
+          showMsg('error', result.error);
+        }
+      });
+
+      document.getElementById('signout-btn').addEventListener('click', function () {
+        WanderAuth.signOut();
+        window.location.href = 'index.html';
+      });
+    })();
+  </script>
+
+</body>
+</html>

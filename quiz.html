@@ -509,6 +509,29 @@
       letter-spacing: 0.08em;
     }
 
+    /* Save result */
+    .save-result {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .save-result__intro {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.6;
+    }
+    .save-result__btn {
+      align-self: flex-start;
+    }
+    .save-result__note {
+      font-size: 0.8rem;
+      color: var(--teal);
+      line-height: 1.5;
+      display: none;
+    }
+    .save-result__note.visible { display: block; }
+    .save-result__note.error { color: var(--coral); }
+
     /* Share row */
     .share-row {
       display: flex;
@@ -672,6 +695,15 @@
 
           <aside>
             <div class="result-sidebar__section">
+              <p class="result-sidebar__heading">Save your result</p>
+              <div class="save-result" id="save-result">
+                <p class="save-result__intro" id="save-result-intro"></p>
+                <button type="button" class="btn save-result__btn" id="save-result-btn"></button>
+                <p class="save-result__note" id="save-result-note"></p>
+              </div>
+            </div>
+
+            <div class="result-sidebar__section">
               <p class="result-sidebar__heading">Runner-up destinations</p>
               <ul class="runner-up-list" id="runner-up-list"></ul>
             </div>
@@ -697,6 +729,7 @@
 
   </div><!-- /.quiz-wrap -->
 
+  <script src="auth.js"></script>
   <script>
   /* ================================================================
      QUIZ DATA
@@ -1091,6 +1124,8 @@
 
   let currentQ = 0;
   const answers = new Array(QUESTIONS.length).fill(-1);
+  // The outcome currently shown on the result screen (for saving to an account).
+  let currentResult = null;
 
   /* ================================================================
      SCREEN MANAGEMENT
@@ -1208,6 +1243,8 @@
   document.getElementById('retake-btn').addEventListener('click', () => {
     answers.fill(-1);
     currentQ = 0;
+    currentResult = null;
+    clearSaveNote();
     showScreen('screen-quiz');
     buildSidebar();
     renderQuestion(0);
@@ -1270,8 +1307,87 @@
 
     document.getElementById('progress-fill').style.width = '100%';
 
+    // Snapshot the outcome so it can be saved to an account.
+    currentResult = {
+      destinationId: winner.id,
+      name: winner.name,
+      region: winner.region,
+      country: winner.country,
+      url: winner.url,
+      hasGuide: winner.hasGuide,
+      answers: encoded
+    };
+    renderSaveSection();
+
     showScreen('screen-result');
   }
+
+  /* ================================================================
+     SAVE RESULT TO ACCOUNT
+     ================================================================ */
+
+  const saveBtn = document.getElementById('save-result-btn');
+  const saveIntro = document.getElementById('save-result-intro');
+  const saveNote = document.getElementById('save-result-note');
+
+  function showSaveNote(text, isError) {
+    saveNote.textContent = text;
+    saveNote.className = 'save-result__note visible' + (isError ? ' error' : '');
+  }
+
+  function clearSaveNote() {
+    saveNote.textContent = '';
+    saveNote.className = 'save-result__note';
+  }
+
+  // Render the "Save your result" panel based on sign-in state and whether the
+  // current outcome is already saved to the account.
+  function renderSaveSection() {
+    clearSaveNote();
+    const auth = window.WanderAuth;
+    if (!auth || !currentResult) return;
+
+    if (auth.isSignedIn()) {
+      const already = auth.getQuizResults().some(function (r) {
+        return r.destinationId === currentResult.destinationId
+          && r.answers === currentResult.answers;
+      });
+      if (already) {
+        saveIntro.textContent = 'This result is saved to your account.';
+        saveBtn.style.display = 'none';
+        saveNote.innerHTML = 'View it on your <a href="account.html" style="color:var(--teal);border-bottom:1px solid var(--teal);">account page</a>.';
+        saveNote.className = 'save-result__note visible';
+      } else {
+        saveIntro.textContent = 'Keep this result so you can revisit it later.';
+        saveBtn.textContent = 'Save to my account';
+        saveBtn.style.display = '';
+      }
+    } else {
+      saveIntro.textContent = 'Sign in to save this result to your account and revisit it later.';
+      saveBtn.textContent = 'Sign in to save';
+      saveBtn.style.display = '';
+    }
+  }
+
+  saveBtn.addEventListener('click', function () {
+    const auth = window.WanderAuth;
+    if (!auth || !currentResult) return;
+
+    if (auth.isSignedIn()) {
+      const result = auth.saveQuizResult(currentResult);
+      if (result.ok) {
+        // Re-render reflects the now-saved state (button hidden, saved note).
+        renderSaveSection();
+      } else {
+        showSaveNote(result.error || 'Could not save your result.', true);
+      }
+    } else {
+      // Stash the outcome, then send them to sign in / create an account. On
+      // return (any page load with a session) the pending result is flushed.
+      auth.setPendingQuizResult(currentResult);
+      window.location.href = 'login.html';
+    }
+  });
 
   /* ================================================================
      COPY LINK
