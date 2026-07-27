@@ -28,10 +28,26 @@ same conventions (ES modules, Vitest tests, ESLint-clean):
 ```
 crypto.js     # scrypt password hashing + token/email helpers — no deps
 store.js      # pluggable async key/value persistence — no deps
-  ├─ users.js     # createUser / authenticate — imports store + crypto
-  └─ sessions.js  # createSession / getSession — imports store + crypto
+  ├─ users.js         # createUser / authenticate — imports store + crypto
+  ├─ sessions.js      # createSession / getSession — imports store + crypto
+  └─ quiz-results.js  # saveQuizResult / listQuizResults — imports store + crypto
 http.js       # cookie parsing, Set-Cookie building, JSON req/res — imports sessions
 ```
+
+### Per-user personalization (quiz results)
+
+`ABCA-888` is the first feature to persist *per-user* data on top of the auth
+stack. `quiz-results.js` stores each completed "Where Should I Go?" result under
+`quiz-results:<userId>` (an array, newest-first, capped at `MAX_RESULTS`), reusing
+the same `getStore()` interface as accounts + sessions — so wiring KV once makes
+quiz history durable too. The `/api/quiz-results` endpoint resolves the current
+user from the session cookie (the same `getSession` + `findUserById` pattern as
+`/api/current-session`) and requires a signed-in session for both GET and POST.
+
+The quiz page (`quiz.html`) stays fully usable for anonymous visitors: the client
+only calls the endpoint when a user is signed in, and a 401 is treated as a no-op
+(the result is shown, just not saved). Shared result permalinks are never saved as
+the viewer's own.
 
 The Vercel serverless functions that expose these over HTTP live one level up:
 
@@ -41,6 +57,8 @@ The Vercel serverless functions that expose these over HTTP live one level up:
 | `/api/login`               | POST   | Sign in with email + password                |
 | `/api/logout`              | POST   | Sign out (destroy session, clear cookie)     |
 | `/api/current-session`     | GET    | Return the signed-in user, or `{user:null}`  |
+| `/api/quiz-results`        | GET    | List the signed-in user's saved quiz results |
+| `/api/quiz-results`        | POST   | Save a completed quiz result for the user     |
 
 ### Session model — how "stay signed in" works
 
