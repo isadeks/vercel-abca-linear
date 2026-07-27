@@ -579,7 +579,10 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html" class="nav__back">← Back to home</a>
+    <span style="display:inline-flex; align-items:center; gap:28px;">
+      <a href="index.html" class="nav__back">← Back to home</a>
+      <span data-auth-nav class="nav__back"><a href="account.html">Sign in</a></span>
+    </span>
   </nav>
 
   <div class="quiz-wrap">
@@ -1302,5 +1305,6 @@
   })();
 
   </script>
+  <script src="js/auth.js"></script>
 </body>
 </html>

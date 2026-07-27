@@ -253,7 +253,10 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html#guides" class="nav__back">← All guides</a>
+    <span style="display:inline-flex; align-items:center; gap:28px;">
+      <a href="index.html#guides" class="nav__back">← All guides</a>
+      <span data-auth-nav class="nav__back"><a href="account.html">Sign in</a></span>
+    </span>
   </nav>
 
   <div class="guide-hero">
@@ -268,6 +271,8 @@
 
   <section class="guide-body">
     <div class="container">
+
+      <div class="guide-save" data-fav-button data-fav-type="guide" data-fav-id="guide-rajasthan" data-fav-title="Rajasthan by rail: the golden cities" data-fav-url="rajasthan-guide.html" data-fav-region="India" style="margin-bottom:40px;"></div>
 
       <p class="guide-intro">
         From the pink walls of Jaipur to the blue labyrinth of Jodhpur, a two-week rail journey through India's most regal state reveals a land of fairy-tale forts, camel-dotted deserts, and centuries of Rajput grandeur.
@@ -349,5 +354,6 @@
     </div>
   </div>
 
+  <script src="js/auth.js"></script>
 </body>
 </html>

@@ -253,7 +253,10 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html#guides" class="nav__back">← All guides</a>
+    <span style="display:inline-flex; align-items:center; gap:28px;">
+      <a href="index.html#guides" class="nav__back">← All guides</a>
+      <span data-auth-nav class="nav__back"><a href="account.html">Sign in</a></span>
+    </span>
   </nav>
 
   <div class="guide-hero">
@@ -268,6 +271,8 @@
 
   <section class="guide-body">
     <div class="container">
+
+      <div class="guide-save" data-fav-button data-fav-type="guide" data-fav-id="guide-norway" data-fav-title="Norway's fjords in the midnight sun" data-fav-url="norway-guide.html" data-fav-region="Norway" style="margin-bottom:40px;"></div>
 
       <p class="guide-intro">
         Long, golden evenings on still water, surrounded by walls of granite that plunge straight into the sea. Norway's fjords in summer are among Europe's great natural spectacles — and with the midnight sun stretching each day past midnight, there is almost too much light to take in.
@@ -350,5 +355,6 @@
     </div>
   </div>
 
+  <script src="js/auth.js"></script>
 </body>
 </html>

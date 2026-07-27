@@ -253,7 +253,10 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+    <span style="display:inline-flex; align-items:center; gap:28px;">
+      <a href="index.html#destinations" class="nav__back">← All destinations</a>
+      <span data-auth-nav class="nav__back"><a href="account.html">Sign in</a></span>
+    </span>
   </nav>
 
   <div class="guide-hero">
@@ -268,6 +271,8 @@
 
   <section class="guide-body">
     <div class="container">
+
+      <div class="guide-save" data-fav-button data-fav-type="guide" data-fav-id="guide-kyoto" data-fav-title="Kyoto" data-fav-url="kyoto-guide.html" data-fav-region="Japan" style="margin-bottom:40px;"></div>
 
       <p class="guide-intro">
         For over a thousand years, Kyoto was the imperial capital of Japan — a city of temples, tea houses, and garden philosophy where a different aesthetic logic governs every surface, every season, and every hour of the day. No city in the world rewards slow, attentive travel quite like this one.
@@ -350,5 +355,6 @@
     </div>
   </div>
 
+  <script src="js/auth.js"></script>
 </body>
 </html>

@@ -253,7 +253,10 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+    <span style="display:inline-flex; align-items:center; gap:28px;">
+      <a href="index.html#destinations" class="nav__back">← All destinations</a>
+      <span data-auth-nav class="nav__back"><a href="account.html">Sign in</a></span>
+    </span>
   </nav>
 
   <div class="guide-hero">
@@ -268,6 +271,8 @@
 
   <section class="guide-body">
     <div class="container">
+
+      <div class="guide-save" data-fav-button data-fav-type="guide" data-fav-id="guide-amalfi" data-fav-title="The Amalfi Coast" data-fav-url="amalfi-guide.html" data-fav-region="Southern Italy" style="margin-bottom:40px;"></div>
 
       <p class="guide-intro">
         Clinging to cliffs above a sea of impossible blue, the Amalfi Coast is one of Europe's most celebrated stretches of coastline — a UNESCO World Heritage landscape where lemon groves tumble over whitewashed terraces and fishing villages cling to the rock as if in defiance of gravity.
@@ -350,5 +355,6 @@
     </div>
   </div>
 
+  <script src="js/auth.js"></script>
 </body>
 </html>

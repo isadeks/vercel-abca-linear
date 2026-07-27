@@ -253,7 +253,10 @@
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
-    <a href="index.html#guides" class="nav__back">← All guides</a>
+    <span style="display:inline-flex; align-items:center; gap:28px;">
+      <a href="index.html#guides" class="nav__back">← All guides</a>
+      <span data-auth-nav class="nav__back"><a href="account.html">Sign in</a></span>
+    </span>
   </nav>
 
   <div class="guide-hero">
@@ -268,6 +271,8 @@
 
   <section class="guide-body">
     <div class="container">
+
+      <div class="guide-save" data-fav-button data-fav-type="guide" data-fav-id="guide-patagonia" data-fav-title="A week at the end of the world: Patagonia" data-fav-url="patagonia-guide.html" data-fav-region="South America" style="margin-bottom:40px;"></div>
 
       <p class="guide-intro">
         Wind-scoured granite towers, electric-blue glaciers calving into jade lakes, and trails that push your legs for days. Patagonia sits at the bottom of the world and rewards every kilometre with scenery that defies description.
@@ -351,5 +356,6 @@
     </div>
   </div>
 
+  <script src="js/auth.js"></script>
 </body>
 </html>
