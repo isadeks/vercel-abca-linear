@@ -71,3 +71,36 @@ No datastore existed in the repo, and Vercel serverless functions run on an
   everything.
 
 Tests use `resetStore()` to get a clean in-memory backend per test.
+
+---
+
+## Favorites (per-user saved places)
+
+`ABCA-887` is the first personalization feature built on the auth layer. It lets
+signed-in visitors save destinations and travel guides and see them on later
+visits. It follows the same conventions (framework-free ES module, Vitest tests,
+ESLint-clean) and reuses the same `getStore()` interface for per-user data:
+
+```
+favorites.js   # normalize/list/add/remove per-user favorites — imports store
+```
+
+The Vercel serverless function that exposes it over HTTP:
+
+| Endpoint         | Method | Purpose                                            |
+| ---------------- | ------ | -------------------------------------------------- |
+| `/api/favorites` | GET    | List the signed-in user's saved favorites          |
+| `/api/favorites` | POST   | Save one — body `{ id, type, title, url?, region? }`|
+| `/api/favorites` | DELETE | Remove one by id (`?id=…` or `{ id }` in the body) |
+
+Every method resolves the current user from the session cookie via the same
+`getSession` + `findUserById` helpers used by `/api/current-session`. Anonymous
+callers get `401 { error, code: 'AUTH_REQUIRED' }` so the UI can prompt them to
+sign in rather than block browsing. Favorites are keyed `favorites:<userId>`, so
+they persist between visits once KV is configured and stay private per account.
+
+On the client, `js/auth.js` exposes `listFavorites`/`addFavorite`/`removeFavorite`
+plus a `mountFavoriteButton` helper. Any element with `data-fav-button` (and the
+`data-fav-*` attributes describing the place) auto-mounts a save/favorite toggle;
+`favorites.html` renders the saved list. Both live on the static pages with no
+build step, matching the rest of the site.
