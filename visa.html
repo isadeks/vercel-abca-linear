@@ -76,6 +76,20 @@
     }
     .note p:last-child { margin-bottom: 0; }
 
+    .coming-soon { list-style: none; padding-left: 0; }
+    .coming-soon li {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      padding: 12px 16px; margin-bottom: 10px;
+      background: var(--sand); border: 1px solid var(--stone); border-radius: 6px;
+      font-size: 0.95rem; color: var(--ink);
+    }
+    .coming-soon__tag {
+      flex-shrink: 0;
+      font-size: 0.66rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); background: rgba(42,122,111,0.1);
+      padding: 4px 10px; border-radius: 999px;
+    }
+
     .visa-table {
       width: 100%; border-collapse: collapse; margin: 18px 0 28px; font-size: 0.9rem;
     }
@@ -219,6 +233,16 @@
       <div class="note">
         <p>The Japan details above are a summary provided for convenience and were accurate at the time of writing (July 2026). For the definitive, up-to-date requirements, always consult the <a href="https://www.uk.emb-japan.go.jp/itpr_en/index_000025.html" target="_blank" rel="noopener">Embassy of Japan's official visa page</a>.</p>
       </div>
+
+      <h2>More destinations coming soon</h2>
+      <p>We're working on detailed visa guides for the rest of our featured destinations. In the meantime, always confirm current requirements with the relevant official embassy or consulate. Guides on the way:</p>
+      <ul class="coming-soon">
+        <li>Patagonia <span class="coming-soon__tag">Coming soon</span></li>
+        <li>Rajasthan, India <span class="coming-soon__tag">Coming soon</span></li>
+        <li>The Amalfi Coast, Italy <span class="coming-soon__tag">Coming soon</span></li>
+        <li>Norway <span class="coming-soon__tag">Coming soon</span></li>
+        <li>Santorini, Greece <span class="coming-soon__tag">Coming soon</span></li>
+      </ul>
 
       <h2>Questions?</h2>
       <p>Wander publishes independent travel journalism and cannot process visa applications or give legal immigration advice. If you have a question about our guides or the information on this page, please <a href="contact.html">contact us</a>.</p>
