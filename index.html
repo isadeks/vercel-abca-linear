@@ -834,5 +834,11 @@
 
   </script>
 
+  <!-- Render the Footer component (build timestamp) at the bottom of the page -->
+  <script type="module">
+    import { Footer } from './components/Footer.js';
+    document.body.insertAdjacentHTML('beforeend', Footer());
+  </script>
+
 </body>
 </html>
