@@ -519,6 +519,38 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Preview ribbon (top-left) ────────────────────────────── */
+    .preview-ribbon-tl {
+      position: fixed;
+      top: 12px;
+      left: 12px;
+      z-index: 200;
+      padding: 6px 14px;
+      border-radius: 6px;
+      background: var(--coral);
+      color: white;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* ── Dev build tag ────────────────────────────────────────── */
+    .dev-build-tag {
+      position: fixed;
+      bottom: 12px;
+      right: 12px;
+      z-index: 200;
+      padding: 4px 10px;
+      font-family: var(--font-sans);
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: #fff;
+      background: rgba(107,101,96,0.85);
+      border-radius: 999px;
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -549,6 +581,9 @@
   </style>
 </head>
 <body>
+
+  <!-- ── Preview ribbon (top-left) ────────────────────────────── -->
+  <div class="preview-ribbon-tl">Preview</div>
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
@@ -833,6 +868,9 @@
     }, { passive: true });
 
   </script>
+
+  <!-- ── Dev build tag ─────────────────────────────────────────── -->
+  <span class="dev-build-tag">dev build</span>
 
 </body>
 </html>
