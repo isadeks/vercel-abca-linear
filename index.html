@@ -139,6 +139,7 @@
       color: white;
     }
     .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
+    .hero__actions { display: flex; flex-wrap: wrap; gap: 14px; }
 
     /* ── Quiz CTA banner ──────────────────────────────────────── */
     .quiz-cta {
@@ -558,6 +559,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="booking.html">Plan my trip</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -569,7 +571,13 @@
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <div class="hero__actions">
+        <a href="booking.html" class="btn btn--teal">
+          Plan my trip
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#destinations" class="btn">Explore destinations</a>
+      </div>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
