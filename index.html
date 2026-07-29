@@ -546,6 +546,72 @@
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
+
+    /* ── Quick note widget ────────────────────────────────────── */
+    .quick-note {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 280px;
+      max-width: calc(100vw - 40px);
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      border-radius: 10px;
+      box-shadow: 0 8px 28px rgba(26, 23, 20, 0.15);
+      padding: 16px;
+      z-index: 50;
+    }
+    .quick-note__heading {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 10px;
+    }
+    .quick-note__textarea {
+      width: 100%;
+      min-height: 84px;
+      resize: vertical;
+      font-family: var(--font-sans);
+      font-size: 14px;
+      line-height: 1.5;
+      color: var(--ink);
+      background: white;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .quick-note__textarea:focus { outline: none; border-color: var(--teal); }
+    .quick-note__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .quick-note__save {
+      font-family: var(--font-sans);
+      font-size: 13px;
+      font-weight: 500;
+      color: white;
+      background: var(--teal);
+      border: 1px solid var(--teal);
+      border-radius: 6px;
+      padding: 7px 14px;
+      cursor: pointer;
+    }
+    .quick-note__save:hover { background: #22665c; border-color: #22665c; }
+    .quick-note__saved {
+      font-size: 12px;
+      color: var(--ash);
+      flex: 1;
+      text-align: right;
+    }
+    @media (max-width: 560px) {
+      .quick-note { width: calc(100vw - 40px); }
+    }
   </style>
 </head>
 <body>
@@ -825,6 +891,17 @@
     </div>
   </footer>
 
+  <!-- Quick note widget -->
+  <aside class="quick-note" aria-label="Quick note">
+    <p class="quick-note__heading">Quick note</p>
+    <textarea id="quickNoteText" class="quick-note__textarea"
+              placeholder="Jot down a travel idea…"></textarea>
+    <div class="quick-note__row">
+      <button type="button" id="quickNoteSave" class="quick-note__save">Save note</button>
+      <span id="quickNoteSaved" class="quick-note__saved">Not saved yet</span>
+    </div>
+  </aside>
+
   <script>
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
@@ -832,6 +909,38 @@
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
+  </script>
+
+  <script type="module">
+    import { loadQuickNote, saveQuickNote } from './components/quickNote.js';
+
+    const textarea = document.getElementById('quickNoteText');
+    const saveBtn = document.getElementById('quickNoteSave');
+    const savedLine = document.getElementById('quickNoteSaved');
+
+    function renderSavedAt(savedAt) {
+      if (!savedAt) {
+        savedLine.textContent = 'Not saved yet';
+        return;
+      }
+      const when = new Date(savedAt);
+      const label = isNaN(when.getTime()) ? savedAt : when.toLocaleString();
+      savedLine.textContent = 'Last saved ' + label;
+    }
+
+    // Populate from the store on load.
+    const existing = loadQuickNote();
+    if (existing) {
+      textarea.value = existing.noteText || '';
+      renderSavedAt(existing.savedAt);
+    }
+
+    // Write through the store on save and update the "last saved" line.
+    saveBtn.addEventListener('click', () => {
+      saveQuickNote(textarea.value);
+      const saved = loadQuickNote();
+      renderSavedAt(saved ? saved.savedAt : new Date().toISOString());
+    });
   </script>
 
 </body>
