@@ -44,6 +44,17 @@ describe('Footer', () => {
     expect(html).toContain('<time datetime="2026-07-29T12:00:00Z">');
   });
 
+  it('exposes the timestamp as a machine-readable data-build-time attribute', () => {
+    const html = Footer({ buildTime: '2026-07-29T12:00:00Z' });
+    expect(html).toContain('data-build-time="2026-07-29T12:00:00Z"');
+  });
+
+  it('escapes the data-build-time attribute value', () => {
+    const html = Footer({ buildTime: '"><script>' });
+    expect(html).not.toContain('data-build-time=""><script>');
+    expect(html).toContain('data-build-time="&quot;&gt;&lt;script&gt;"');
+  });
+
   it('uses the BUILD_TIME env var by default', () => {
     process.env.BUILD_TIME = '2025-05-05T05:05:05Z';
     expect(Footer()).toContain('2025-05-05T05:05:05Z');
