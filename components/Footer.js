@@ -56,9 +56,11 @@ export function Footer({ buildTime } = {}) {
     'color:#888',
   ].join(';');
 
+  const escapedTimestamp = escapeHtml(timestamp);
+
   return (
-    `<footer class="site-footer" style="${style}">` +
-    `Built <time datetime="${escapeHtml(timestamp)}">${escapeHtml(timestamp)}</time>` +
+    `<footer class="site-footer" data-build-time="${escapedTimestamp}" style="${style}">` +
+    `Built <time datetime="${escapedTimestamp}">${escapedTimestamp}</time>` +
     `</footer>`
   );
 }
