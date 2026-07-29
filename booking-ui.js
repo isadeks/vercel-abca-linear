@@ -261,6 +261,53 @@ function renderSuccess(data) {
 }
 
 /**
+ * Pull a list of human-readable error strings out of a backend rejection body,
+ * tolerating the shapes a rejection can realistically take. A 4xx means the
+ * service was reached and rejected the request, so we must surface *something*
+ * meaningful rather than fall through to the generic "connection problem"
+ * state. Recognised shapes:
+ *   - { errors: ["a", "b"] }            (the primary contract)
+ *   - { errors: [{ message: "a" }] }    (objects with a message field)
+ *   - { errors: { field: "msg", … } }   (field → message map)
+ *   - { error: "a" } / { message: "a" } (single-message bodies)
+ *
+ * @param {Record<string, unknown>} json
+ * @returns {string[]} zero or more error strings
+ */
+function extractBackendErrors(json) {
+  const out = [];
+
+  const push = (v) => {
+    if (v == null) return;
+    if (typeof v === 'string') {
+      const s = v.trim();
+      if (s) out.push(s);
+    } else if (typeof v === 'object') {
+      // Common nested shapes: { message } / { msg } / { detail }.
+      const nested = v.message ?? v.msg ?? v.detail;
+      if (typeof nested === 'string' && nested.trim()) out.push(nested.trim());
+    }
+  };
+
+  const { errors } = json;
+  if (Array.isArray(errors)) {
+    errors.forEach(push);
+  } else if (errors && typeof errors === 'object') {
+    Object.values(errors).forEach(push);
+  } else if (typeof errors === 'string') {
+    push(errors);
+  }
+
+  // Single-message fallbacks used by many serverless handlers.
+  if (out.length === 0) {
+    push(json.error);
+    push(json.message);
+  }
+
+  return out;
+}
+
+/**
  * Error state for backend rejections — renders the returned `errors` verbatim.
  * These are the server's authoritative validation / availability messages and
  * are NOT replaced with a generic client message.
@@ -382,20 +429,34 @@ async function handleSubmit(event) {
     return;
   }
 
-  // Success: backend signals ok:true. Trust its figures verbatim.
+  // Success: a 2xx with the contract's ok:true flag. Trust its figures verbatim.
   if (response.ok && json.ok === true) {
     renderSuccess(json);
     return;
   }
 
-  // Rejection: backend returned a structured error list — show it verbatim.
-  if (json.ok === false && Array.isArray(json.errors) && json.errors.length > 0) {
-    renderBackendErrors(json.errors);
+  // Backend rejection. A 4xx (or an explicit ok:false) means the service WAS
+  // reached and deliberately rejected the request — this is a validation /
+  // availability verdict, never a connection problem. Surface the server's own
+  // messages verbatim, tolerating the shapes a rejection body can take.
+  const isRejection =
+    json.ok === false || (response.status >= 400 && response.status < 500);
+  if (isRejection) {
+    const backendErrors = extractBackendErrors(json);
+    if (backendErrors.length > 0) {
+      renderBackendErrors(backendErrors);
+    } else {
+      // Rejected, but we couldn't find any message to show. Still frame it as a
+      // rejection (not a connection problem) so the user knows to adjust input.
+      renderBackendErrors([
+        `The booking service declined this request (HTTP ${response.status}).`,
+      ]);
+    }
     return;
   }
 
-  // Anything else (unexpected shape) is treated as a service problem, not a
-  // fabricated validation message.
+  // A 2xx without ok:true, or a 5xx — genuinely unexpected/service-side. Treat
+  // it as a service problem rather than a fabricated validation message.
   renderNetworkError(`Unexpected response from the booking service (HTTP ${response.status}).`);
 }
 
