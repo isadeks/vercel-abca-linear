@@ -546,9 +546,27 @@
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
+
+    /* Fixed "beta" badge — top-right */
+    .beta-badge--top-right {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      z-index: 1000;
+      padding: 6px 12px;
+      background: #e5484d;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      border-radius: 999px;
+    }
   </style>
 </head>
 <body>
+
+  <!-- Fixed "beta" badge — top-right -->
+  <div class="beta-badge--top-right">BETA</div>
 
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
