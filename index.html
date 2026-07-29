@@ -81,7 +81,7 @@
 
     /* ── Hero ─────────────────────────────────────────────────── */
     .hero {
-      position: relative; height: 100vh; min-height: 600px;
+      position: relative; height: 82vh; min-height: 520px;
       display: flex; align-items: flex-end;
       overflow: hidden;
     }
@@ -574,6 +574,9 @@
     <div class="hero__scroll">Scroll</div>
   </section>
 
+  <!-- ── Trusted By ───────────────────────────────────────────── -->
+  <div id="trusted-by-root"></div>
+
   <!-- ── Quiz CTA ─────────────────────────────────────────────── -->
   <section class="quiz-cta">
     <div class="container">
@@ -832,6 +835,12 @@
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
+  </script>
+
+  <!-- Render the TrustedBy strip beneath the hero (framework-free ES module). -->
+  <script type="module">
+    import { TrustedBy } from './components/TrustedBy.js';
+    document.getElementById('trusted-by-root').innerHTML = TrustedBy();
   </script>
 
 </body>
