@@ -6,12 +6,13 @@
  * Responsibilities:
  *   - Collect the trip-quote form and POST it to /api/book using the exact
  *     field names owned by the backend contract:
- *         { destinationId, startDate, endDate, rooms, guests, email }
+ *         { destinationId, checkIn, checkOut, rooms, guests, email }
  *   - Render four visible, layout-stable states in the status panel:
  *         idle → loading → (success | error)
- *   - Success  (HTTP 2xx, { ok: true, ... })  → confirmation + price breakdown
- *   - Rejection (HTTP 4xx, { ok: false, errors }) → the backend's own error
- *     strings, shown verbatim — never swapped for a generic client message.
+ *   - Success  (HTTP 200, { ok: true, requestId, quote }) → confirmation +
+ *     price breakdown (nights, subtotal, tax, total, currency), verbatim.
+ *   - Rejection (HTTP 4xx, { ok: false, error: { message } }) → the backend's
+ *     own error string, shown verbatim — never swapped for a generic message.
  *   - Network / unexpected failure → a distinct "couldn't reach the service"
  *     state that invites a retry.
  *
@@ -28,12 +29,12 @@ const API_ENDPOINT = '/api/book';
  * @type {Record<string, string>}
  */
 const DESTINATION_LABELS = {
-  'wander-kyoto': 'Kyoto',
-  'wander-amalfi': 'Amalfi Coast',
-  'wander-santorini': 'Santorini',
-  'wander-patagonia': 'Patagonia',
-  'wander-rajasthan': 'Rajasthan',
-  'wander-norway': "Norway's Fjords",
+  kyoto: 'Kyoto',
+  amalfi: 'Amalfi Coast',
+  santorini: 'Santorini',
+  patagonia: 'Patagonia',
+  rajasthan: 'Rajasthan',
+  norway: "Norway's Fjords",
 };
 
 // --------------------------------------------------------------------------
@@ -101,7 +102,7 @@ let submitBtn = null;
  * order so focus lands on the first offending control.
  * @type {string[]}
  */
-const FIELD_IDS = ['destinationId', 'startDate', 'endDate', 'rooms', 'guests', 'email'];
+const FIELD_IDS = ['destinationId', 'checkIn', 'checkOut', 'rooms', 'guests', 'email'];
 
 // --------------------------------------------------------------------------
 // Client-side pre-checks (intentionally minimal)
@@ -122,13 +123,13 @@ function validateClient(values) {
   const errors = {};
 
   if (!values.destinationId) errors.destinationId = 'Please choose a destination.';
-  if (!values.startDate) errors.startDate = 'Please choose a check-in date.';
-  if (!values.endDate) errors.endDate = 'Please choose a check-out date.';
+  if (!values.checkIn) errors.checkIn = 'Please choose a check-in date.';
+  if (!values.checkOut) errors.checkOut = 'Please choose a check-out date.';
 
   // Only compare dates when both are present and well-formed; the server is the
   // authority on availability, but an obviously reversed range is worth catching.
-  if (values.startDate && values.endDate && values.endDate <= values.startDate) {
-    errors.endDate = 'Check-out must be after check-in.';
+  if (values.checkIn && values.checkOut && values.checkOut <= values.checkIn) {
+    errors.checkOut = 'Check-out must be after check-in.';
   }
 
   const rooms = Number(values.rooms);
@@ -211,49 +212,46 @@ function renderLoading() {
 }
 
 /**
- * Success state — confirmation ID, nights, subtotal, taxes, total, currency.
+ * Success state — request ID, nights, subtotal, taxes, total, currency.
  * All figures come straight from the backend quote; nothing is recomputed.
  *
- * @param {{
- *   confirmationId?: string,
- *   destinationId?: string,
- *   startDate?: string,
- *   endDate?: string,
- *   rooms?: number,
- *   guests?: number,
- *   quote?: {
- *     nights?: number,
- *     roomSubtotalUsd?: number,
- *     taxesUsd?: number,
- *     totalUsd?: number,
- *     currency?: string,
- *   },
- * }} data
+ * Backend success contract (HTTP 200):
+ *   { ok: true, requestId, quote: {
+ *       destinationId, destinationName, checkIn, checkOut, rooms, guests,
+ *       currency, nights, nightlyRate, subtotal, tax, total, ...
+ *   } }
+ * The money fields (subtotal, tax, total, nightlyRate) are decimal strings.
+ *
+ * @param {{ requestId?: string, quote?: Record<string, unknown> }} data
  */
 function renderSuccess(data) {
   const quote = data.quote ?? {};
   const currency = quote.currency ?? 'USD';
-  const label = DESTINATION_LABELS[data.destinationId] ?? data.destinationId ?? '';
+  const label =
+    quote.destinationName ??
+    DESTINATION_LABELS[quote.destinationId] ??
+    quote.destinationId ??
+    '';
 
   setPanel(
     'result--success',
     `
       <p class="status-panel__eyebrow">Quote confirmed</p>
       <h2 class="result-heading result-heading--ok">${escapeHtml(label)}</h2>
-      <p class="conf-id">Confirmation ID: <strong>${escapeHtml(data.confirmationId ?? '—')}</strong></p>
+      <p class="conf-id">Request ID: <strong>${escapeHtml(data.requestId ?? '—')}</strong></p>
 
       <ul class="price-rows">
-        <li><span class="label">Check-in</span><span class="value">${escapeHtml(formatDate(data.startDate))}</span></li>
-        <li><span class="label">Check-out</span><span class="value">${escapeHtml(formatDate(data.endDate))}</span></li>
+        <li><span class="label">Check-in</span><span class="value">${escapeHtml(formatDate(quote.checkIn))}</span></li>
+        <li><span class="label">Check-out</span><span class="value">${escapeHtml(formatDate(quote.checkOut))}</span></li>
         <li><span class="label">Nights</span><span class="value">${escapeHtml(quote.nights ?? '—')}</span></li>
-        <li><span class="label">Rooms</span><span class="value">${escapeHtml(data.rooms ?? '—')}</span></li>
-        <li><span class="label">Guests</span><span class="value">${escapeHtml(data.guests ?? '—')}</span></li>
-        <li><span class="label">Subtotal</span><span class="value">${escapeHtml(formatMoney(quote.roomSubtotalUsd, currency))}</span></li>
-        <li><span class="label">Taxes &amp; fees</span><span class="value">${escapeHtml(formatMoney(quote.taxesUsd, currency))}</span></li>
-        <li class="total"><span class="label">Total</span><span class="value">${escapeHtml(formatMoney(quote.totalUsd, currency))} ${escapeHtml(currency)}</span></li>
+        <li><span class="label">Rooms</span><span class="value">${escapeHtml(quote.rooms ?? '—')}</span></li>
+        <li><span class="label">Guests</span><span class="value">${escapeHtml(quote.guests ?? '—')}</span></li>
+        <li><span class="label">Subtotal</span><span class="value">${escapeHtml(formatMoney(quote.subtotal, currency))}</span></li>
+        <li><span class="label">Taxes &amp; fees</span><span class="value">${escapeHtml(formatMoney(quote.tax, currency))}</span></li>
+        <li class="total"><span class="label">Total</span><span class="value">${escapeHtml(formatMoney(quote.total, currency))} ${escapeHtml(currency)}</span></li>
       </ul>
 
-      <p class="result-note">Keep your confirmation ID for your records. Request another quote at any time.</p>
+      <p class="result-note">Keep your request ID for your records. Request another quote at any time.</p>
       <p class="result-actions"><a href="destinations.html">← Back to destinations</a></p>
     `,
     true,
@@ -266,10 +264,12 @@ function renderSuccess(data) {
  * service was reached and rejected the request, so we must surface *something*
  * meaningful rather than fall through to the generic "connection problem"
  * state. Recognised shapes:
- *   - { errors: ["a", "b"] }            (the primary contract)
- *   - { errors: [{ message: "a" }] }    (objects with a message field)
+ *   - { error: { reason, message } }    (the /api/book contract)
+ *   - { error: "a" }                    (single-string error body)
+ *   - { errors: ["a", "b"] }            (array of strings)
+ *   - { errors: [{ message: "a" }] }    (array of objects with a message field)
  *   - { errors: { field: "msg", … } }   (field → message map)
- *   - { error: "a" } / { message: "a" } (single-message bodies)
+ *   - { message: "a" }                  (single-message body)
  *
  * @param {Record<string, unknown>} json
  * @returns {string[]} zero or more error strings
@@ -298,7 +298,8 @@ function extractBackendErrors(json) {
     push(errors);
   }
 
-  // Single-message fallbacks used by many serverless handlers.
+  // Single-message fallbacks. The /api/book contract nests the human-readable
+  // string under `error.message`; push() unwraps both string and object forms.
   if (out.length === 0) {
     push(json.error);
     push(json.message);
@@ -371,8 +372,8 @@ async function handleSubmit(event) {
   const data = new FormData(form);
   const values = {
     destinationId: String(data.get('destinationId') ?? '').trim(),
-    startDate: String(data.get('startDate') ?? '').trim(),
-    endDate: String(data.get('endDate') ?? '').trim(),
+    checkIn: String(data.get('checkIn') ?? '').trim(),
+    checkOut: String(data.get('checkOut') ?? '').trim(),
     rooms: String(data.get('rooms') ?? '').trim(),
     guests: String(data.get('guests') ?? '').trim(),
     email: String(data.get('email') ?? '').trim(),
@@ -389,8 +390,8 @@ async function handleSubmit(event) {
   // Build the exact payload the backend expects. Numbers are sent as numbers.
   const payload = {
     destinationId: values.destinationId,
-    startDate: values.startDate,
-    endDate: values.endDate,
+    checkIn: values.checkIn,
+    checkOut: values.checkOut,
     rooms: Number(values.rooms),
     guests: Number(values.guests),
     email: values.email,
