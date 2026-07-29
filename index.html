@@ -546,6 +546,23 @@
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
+
+    /* Fixed build-info pill (bottom-left) */
+    .build-pill {
+      position: fixed;
+      bottom: 16px;
+      left: 16px;
+      z-index: 200;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background: rgba(100, 116, 139, 0.85);
+      color: #f1f5f9;
+      font-size: 11px;
+      line-height: 1;
+      letter-spacing: 0.02em;
+      font-family: inherit;
+      pointer-events: none;
+    }
   </style>
 </head>
 <body>
@@ -833,6 +850,9 @@
     }, { passive: true });
 
   </script>
+
+  <!-- Build-info pill (bottom-left) -->
+  <div class="build-pill" aria-label="Build version">v1 · dev</div>
 
 </body>
 </html>
