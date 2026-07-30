@@ -89,6 +89,24 @@
       background: var(--sand); font-weight: 500; letter-spacing: 0.02em; color: var(--ink);
     }
 
+    .soon-grid {
+      list-style: none; display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 14px; padding-left: 0; margin: 18px 0 24px;
+    }
+    .soon-grid li {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      background: var(--sand); border: 1px solid var(--stone); border-radius: 4px;
+      padding: 16px 18px; margin-bottom: 0; font-size: 0.95rem;
+    }
+    .soon-grid__place { font-weight: 500; color: var(--ink); }
+    .soon-grid__region { display: block; font-size: 0.8rem; color: var(--ash); margin-top: 2px; }
+    .soon-badge {
+      flex-shrink: 0; font-size: 0.66rem; font-weight: 500; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--teal); background: var(--cream);
+      border: 1px solid var(--teal); border-radius: 999px; padding: 4px 10px;
+    }
+    @media (max-width: 560px) { .soon-grid { grid-template-columns: 1fr; } }
+
     footer {
       background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px;
     }
@@ -208,6 +226,31 @@
         <li><a href="https://www.japan.travel/" target="_blank" rel="noopener">Japan National Tourism Organization</a></li>
       </ul>
       <p>Japan Visa Information Hotline: <strong>0844-986-4968</strong> (available 24 hours a day, 7 days a week; calls answered in English).</p>
+
+      <h2>More destinations coming soon</h2>
+      <p>We're working on dedicated visa guides for the rest of Wander's featured destinations. In the meantime, always check the relevant embassy or consulate for these countries before you travel.</p>
+      <ul class="soon-grid">
+        <li>
+          <span class="soon-grid__place">Patagonia<span class="soon-grid__region">Argentina &amp; Chile</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span class="soon-grid__place">Rajasthan<span class="soon-grid__region">India</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span class="soon-grid__place">Amalfi Coast<span class="soon-grid__region">Italy</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span class="soon-grid__place">Santorini<span class="soon-grid__region">Greece</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span class="soon-grid__place">Norwegian Fjords<span class="soon-grid__region">Norway</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+      </ul>
 
       <h2>Questions?</h2>
       <p>Wander can't process visas or advise on individual cases, but if you spot an error on this page or have feedback, please <a href="contact.html">get in touch</a>.</p>
