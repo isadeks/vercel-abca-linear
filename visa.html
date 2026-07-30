@@ -73,6 +73,19 @@
     .callout p { margin-bottom: 0; font-size: 0.9rem; }
     .note { font-size: 0.82rem; color: var(--ash); font-style: italic; }
 
+    .soon-grid { list-style: none; padding: 0; margin: 8px 0 24px; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .soon-grid li {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 12px; padding: 14px 16px; margin: 0;
+      background: var(--sand); border: 1px solid var(--stone); border-radius: 6px;
+    }
+    .soon-grid .soon-place { font-weight: 500; color: var(--ink); }
+    .soon-grid .soon-region { display: block; font-size: 0.78rem; color: var(--ash); margin-top: 2px; }
+    .soon-badge {
+      flex-shrink: 0; font-size: 0.64rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); background: rgba(42,122,111,0.1); padding: 4px 9px; border-radius: 999px;
+    }
+
     footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px; }
     .footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
     .footer__brand { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: white; margin-bottom: 14px; letter-spacing: 0.04em; }
@@ -188,6 +201,32 @@
         <li>Your own government's foreign travel advice service</li>
         <li>Any official electronic travel authorisation (eVisa / ETA) portal for your destination</li>
       </ul>
+
+      <h2>Coming soon</h2>
+      <p>Japan is the first of our destinations with a full visa spotlight. We're preparing the same detailed guidance for every other place we cover — check back soon:</p>
+      <ul class="soon-grid">
+        <li>
+          <span><span class="soon-place">Amalfi Coast</span><span class="soon-region">Southern Italy</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span><span class="soon-place">Santorini</span><span class="soon-region">Greece</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span><span class="soon-place">Patagonia</span><span class="soon-region">South America</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span><span class="soon-place">Rajasthan</span><span class="soon-region">India</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+        <li>
+          <span><span class="soon-place">Norway's Fjords</span><span class="soon-region">Scandinavia</span></span>
+          <span class="soon-badge">Coming soon</span>
+        </li>
+      </ul>
+      <p class="note">In the meantime, use the official resources listed above to check the entry requirements for these destinations.</p>
 
       <div class="callout">
         <p>Visa rules can change without notice. The information on this page is provided as general guidance only and does not constitute legal or immigration advice. Always verify entry requirements with the relevant official authority before you travel.</p>
