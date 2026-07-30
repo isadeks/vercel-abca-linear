@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visa Information — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 760px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--ink); font-size: 16px; line-height: 1.6; }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: 0.06em; color: var(--ink); }
+    .nav__back { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); transition: opacity 0.2s; }
+    .nav__back:hover { opacity: 0.7; }
+
+    .page-hero {
+      padding: 80px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px; }
+    .page-hero__title { font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15; margin-bottom: 14px; }
+    .page-hero__intro { font-size: 0.95rem; color: var(--ash); max-width: 560px; line-height: 1.8; }
+
+    .page-body { padding: 64px 0 96px; }
+    .page-body h2 { font-family: var(--font-serif); font-size: 1.65rem; font-weight: 400; margin: 40px 0 14px; color: var(--ink); }
+    .page-body h2:first-child { margin-top: 0; }
+    .page-body h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 500; margin: 24px 0 10px; color: var(--ink); }
+    .page-body p, .page-body li { font-size: 0.95rem; line-height: 1.85; color: #3d3830; margin-bottom: 14px; }
+    .page-body ul { padding-left: 22px; margin-bottom: 14px; }
+    .page-body a { color: var(--teal); border-bottom: 1px solid currentColor; transition: opacity 0.2s; }
+    .page-body a:hover { opacity: 0.7; }
+
+    .visa-table { width: 100%; border-collapse: collapse; margin: 8px 0 24px; font-size: 0.9rem; }
+    .visa-table th, .visa-table td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--stone); vertical-align: top; color: #3d3830; }
+    .visa-table thead th { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ash); }
+    .visa-table tbody td { line-height: 1.7; }
+
+    .callout {
+      background: var(--sand);
+      border-left: 3px solid var(--teal);
+      padding: 18px 22px;
+      margin: 24px 0;
+      border-radius: 0 6px 6px 0;
+    }
+    .callout p { margin-bottom: 0; font-size: 0.9rem; }
+    .note { font-size: 0.82rem; color: var(--ash); font-style: italic; }
+
+    footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px; }
+    .footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer__brand { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: white; margin-bottom: 14px; letter-spacing: 0.04em; }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) { .nav { padding: 18px 24px; } .footer__grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Plan</p>
+      <h1 class="page-hero__title">Visa Information</h1>
+      <p class="page-hero__intro">Entry requirements vary by nationality and the purpose and length of your stay. This page collects practical visa guidance to help you plan — always confirm the details with the official embassy or consulate before you travel.</p>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="container">
+
+      <p>Whether you need a visa depends on your nationality — not on where you currently live — as well as how long you plan to stay and what you intend to do. Below is a worked example for one of our most-requested destinations, Japan. For every other country, use the linked official resources to check the rules that apply to you.</p>
+
+      <h2>Spotlight: Japan</h2>
+      <p>The guidance below summarises the general visa information published by the Embassy of Japan in the UK. It applies to travellers whose place of residence is in the UK.</p>
+
+      <h3>Who needs a visa?</h3>
+      <p>The Visa Exemption Arrangement applies based on your <strong>nationality</strong>, not your UK residence status.</p>
+
+      <table class="visa-table">
+        <thead>
+          <tr>
+            <th>Traveller</th>
+            <th>Purpose &amp; length of stay</th>
+            <th>Visa required?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>British Citizens</td>
+            <td>Short-term stay (less than 6 months) for tourism, business (without paid activities from the organiser/inviter in Japan), conference, or study purposes</td>
+            <td>Not required</td>
+          </tr>
+          <tr>
+            <td>Nationals of Visa Exemption Countries and Regions</td>
+            <td>Short-term stay (less than 90 days) for tourism, business (without paid activities from the organiser/inviter in Japan), conference, or study purposes</td>
+            <td>Not required</td>
+          </tr>
+          <tr>
+            <td>Nationals of Non-Visa Exemption Countries and Regions</td>
+            <td>Any purpose</td>
+            <td>Required</td>
+          </tr>
+          <tr>
+            <td>Certificate of Eligibility (COE) holders</td>
+            <td>Long-term stay</td>
+            <td>Required</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="note">British Overseas Citizens, British Subjects, British Overseas Territories Citizens and holders of British Overseas Territories issued passports or Convention Travel Documents are not included in "British Citizens" or "Visa Exemption Countries and Regions" above, and must obtain a visa prior to travel.</p>
+
+      <h3>How to apply</h3>
+      <p>Applications from non-residents in the UK (e.g. visitor visa holders) cannot be accepted. There are three main routes:</p>
+      <ul>
+        <li><strong>At the embassy</strong> — submit all required documents for your visa category at the Consular Section in person. An appointment must be booked in advance.</li>
+        <li><strong>Through a registered visa agent</strong> — available for most categories, except Student, Working Holiday, or Spouse or Child of a Japanese National visas.</li>
+        <li><strong>Via the Japan eVISA system</strong> — submit your application, receive your eVISA, and pay the fee by credit/debit card online. eVISA is available for tourism.</li>
+      </ul>
+
+      <h3>Visa categories</h3>
+      <ul>
+        <li>Temporary Visitor Visa (eVISA available for tourism)</li>
+        <li>Work or Long-term Stay Visa</li>
+        <li>Working Holiday Visa</li>
+        <li>Volunteer Visa</li>
+        <li>Spouse or Child of Japanese National Visa</li>
+        <li>Medical Stay Visa</li>
+      </ul>
+
+      <h3>Processing time</h3>
+      <p>Once an in-person application has been accepted as valid, it usually takes around 5 working days. eVISA (online) applications normally take about 2 weeks on average.</p>
+
+      <h3>Fees &amp; opening hours</h3>
+      <p>Visa fees vary depending on the applicant's nationality and the type of visa. The Consular Section is open 09:30–16:30, Monday to Friday, excluding British national holidays, the year-end and New Year holidays, and some Japanese national holidays.</p>
+
+      <h3>Jurisdiction</h3>
+      <p>Visa applications should be made at the Japanese Embassy with jurisdiction over your place of residence. Applicants living in Scotland and the North of England (Cumbria, County Durham, Darlington, Gateshead, Hartlepool, Middlesbrough, Newcastle upon Tyne, North Tyneside, Northumberland, Redcar and Cleveland, South Tyneside, Stockton-on-Tees and Sunderland) should contact the Consulate-General of Japan in Edinburgh.</p>
+
+      <div class="callout">
+        <p><strong>Official contacts (Japan)</strong><br />
+        Japan Visa Information Hotline: 0844-986-4968 (24 hours a day, 7 days a week; calls answered in English)<br />
+        Email: japan-visa@bridge-ms.com<br />
+        Consular Section, Embassy of Japan in the UK — 101-104 Piccadilly, London W1J 7JT · Tel: 020 7465 6565 (09:30–18:00)</p>
+      </div>
+
+      <h2>Other destinations</h2>
+      <p>Requirements change frequently and differ for every country. Before booking, confirm the current rules with an official source such as:</p>
+      <ul>
+        <li>The embassy or consulate of the country you are visiting</li>
+        <li>Your own government's foreign travel advice service</li>
+        <li>Any official electronic travel authorisation (eVisa / ETA) portal for your destination</li>
+      </ul>
+
+      <div class="callout">
+        <p>Visa rules can change without notice. The information on this page is provided as general guidance only and does not constitute legal or immigration advice. Always verify entry requirements with the relevant official authority before you travel.</p>
+      </div>
+
+      <h2>Questions?</h2>
+      <p>If you have a question about a specific destination guide, feel free to <a href="contact.html">contact us</a> — but for binding visa decisions, please rely on the official embassy or consulate for your destination.</p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="visa.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
