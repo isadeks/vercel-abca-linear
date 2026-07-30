@@ -90,6 +90,25 @@
       font-weight: 500; color: var(--ink); background: var(--sand);
     }
 
+    .soon-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 18px 0 24px;
+    }
+    .soon-card {
+      background: var(--sand); border: 1px solid var(--stone); border-radius: 6px;
+      padding: 18px 20px;
+    }
+    .soon-card__region {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--teal); margin-bottom: 6px;
+    }
+    .soon-card__name {
+      font-family: var(--font-serif); font-size: 1.25rem; font-weight: 400; color: var(--ink); margin-bottom: 8px;
+    }
+    .soon-card__tag {
+      display: inline-block; font-size: 0.68rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--ash); background: var(--cream); border: 1px solid var(--stone); border-radius: 999px; padding: 3px 10px;
+    }
+    @media (max-width: 560px) { .soon-grid { grid-template-columns: 1fr; } }
+
     footer {
       background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px;
     }
@@ -201,6 +220,37 @@
 
       <h3>Official contacts</h3>
       <p>For general visa enquiries, the Japan Visa Information Hotline is available 24 hours a day, 7 days a week on <strong>0844-986-4968</strong> (calls answered in English), or by email at <a href="mailto:japan-visa@bridge-ms.com">japan-visa@bridge-ms.com</a>. Full, up-to-date details are published by the <a href="https://www.uk.emb-japan.go.jp/itpr_en/index_000025.html" target="_blank" rel="noopener">Embassy of Japan in the UK</a>.</p>
+
+      <h2>More destinations — coming soon</h2>
+      <p>We're building detailed visa guidance for every destination we cover. Dedicated pages for the following are on the way:</p>
+      <div class="soon-grid">
+        <div class="soon-card">
+          <p class="soon-card__region">Southern Italy</p>
+          <p class="soon-card__name">Amalfi Coast</p>
+          <span class="soon-card__tag">Coming soon</span>
+        </div>
+        <div class="soon-card">
+          <p class="soon-card__region">Greece</p>
+          <p class="soon-card__name">Santorini</p>
+          <span class="soon-card__tag">Coming soon</span>
+        </div>
+        <div class="soon-card">
+          <p class="soon-card__region">South America</p>
+          <p class="soon-card__name">Patagonia</p>
+          <span class="soon-card__tag">Coming soon</span>
+        </div>
+        <div class="soon-card">
+          <p class="soon-card__region">India</p>
+          <p class="soon-card__name">Rajasthan</p>
+          <span class="soon-card__tag">Coming soon</span>
+        </div>
+        <div class="soon-card">
+          <p class="soon-card__region">Scandinavia</p>
+          <p class="soon-card__name">Norway's Fjords</p>
+          <span class="soon-card__tag">Coming soon</span>
+        </div>
+      </div>
+      <p>In the meantime, please verify entry requirements for these destinations with the relevant official embassy or government source.</p>
 
       <h2>Need help planning?</h2>
       <p>We cover the practical side of travel across all of our guides, but we can't advise on individual visa applications. If you have a question about our content, please <a href="contact.html">contact us</a>.</p>
