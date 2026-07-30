@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visa Information — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 760px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-sans); background: var(--cream); color: var(--ink); font-size: 16px; line-height: 1.6; }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo { font-family: var(--font-serif); font-size: 1.6rem; font-weight: 400; letter-spacing: 0.06em; color: var(--ink); }
+    .nav__back { font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--teal); transition: opacity 0.2s; }
+    .nav__back:hover { opacity: 0.7; }
+
+    .page-hero {
+      padding: 80px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal); margin-bottom: 14px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif); font-size: clamp(2rem, 4vw, 3rem); font-weight: 300; line-height: 1.15; margin-bottom: 14px;
+    }
+    .page-hero__date { font-size: 0.8rem; color: var(--ash); }
+
+    .page-body {
+      padding: 64px 0 96px;
+    }
+    .page-body h2 {
+      font-family: var(--font-serif); font-size: 1.65rem; font-weight: 400; margin: 40px 0 14px; color: var(--ink);
+    }
+    .page-body h2:first-child { margin-top: 0; }
+    .page-body h3 {
+      font-family: var(--font-sans); font-size: 0.95rem; font-weight: 500; letter-spacing: 0.02em; margin: 26px 0 10px; color: var(--ink);
+    }
+    .page-body p, .page-body li {
+      font-size: 0.95rem; line-height: 1.85; color: #3d3830; margin-bottom: 14px;
+    }
+    .page-body ul { padding-left: 22px; margin-bottom: 14px; }
+    .page-body a { color: var(--teal); border-bottom: 1px solid currentColor; transition: opacity 0.2s; }
+    .page-body a:hover { opacity: 0.7; }
+
+    .note {
+      background: var(--sand); border-left: 3px solid var(--teal);
+      padding: 18px 22px; margin: 24px 0; border-radius: 2px;
+    }
+    .note p { margin-bottom: 0; }
+
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px;
+    }
+    .footer__brand { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: white; margin-bottom: 14px; letter-spacing: 0.04em; }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) { .nav { padding: 18px 24px; } .footer__grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">Plan</p>
+      <h1 class="page-hero__title">Visa Information</h1>
+      <p class="page-hero__date">Last updated: July 2026</p>
+    </div>
+  </div>
+
+  <div class="page-body">
+    <div class="container">
+
+      <p>Entry requirements change often and depend on your nationality, your residence status, the length of your stay, and the purpose of your trip. This page offers general guidance to help you plan — but it is not legal advice. Always confirm the current rules with the official embassy or consulate of your destination before you book or travel.</p>
+
+      <div class="note">
+        <p><strong>Rule of thumb:</strong> visa requirements are usually determined by your <em>nationality</em>, not by where you currently live. Check the rules for the passport you will actually travel on.</p>
+      </div>
+
+      <h2>Before you travel</h2>
+      <ul>
+        <li>Check that your passport is valid for at least six months beyond your planned return date.</li>
+        <li>Confirm how many blank passport pages you need for entry stamps and visas.</li>
+        <li>Work out whether your trip qualifies for visa-free entry, an e-visa, or a visa applied for in advance.</li>
+        <li>Note any transit-visa requirements if you are changing planes in a third country.</li>
+        <li>Arrange appropriate travel insurance — some destinations require proof of cover.</li>
+      </ul>
+
+      <h2>Common types of travel</h2>
+      <h3>Short-term stays (tourism &amp; business)</h3>
+      <p>Many countries allow visa-free entry for short visits for tourism, conferences, or business meetings that do not involve paid work for a local organiser. The permitted length varies widely — commonly anywhere from 30 to 180 days — so always check the specific limit for your nationality.</p>
+
+      <h3>Work &amp; long-term stays</h3>
+      <p>Working, studying, or living in a country for an extended period almost always requires a visa arranged in advance, and often a sponsoring employer, institution, or certificate of eligibility. Start these applications early, as processing can take weeks.</p>
+
+      <h3>Working holiday, volunteer &amp; family visas</h3>
+      <p>Special categories such as working-holiday schemes, volunteer visas, or spouse/family visas have their own eligibility rules and documentation. These usually cannot be handled by a visa agent and must be applied for by the traveller directly.</p>
+
+      <h2>How to apply</h2>
+      <ul>
+        <li><strong>In person:</strong> submit your documents at the relevant embassy or consulate, usually by appointment booked in advance.</li>
+        <li><strong>Through an e-visa system:</strong> many countries now let you apply, receive your visa, and pay online for eligible short stays.</li>
+        <li><strong>Via a registered visa agent:</strong> permitted for some categories, but typically not for student, working-holiday, or family visas.</li>
+      </ul>
+      <p>Applications are normally made at the embassy or consulate with jurisdiction over your place of residence, so confirm which office handles your region.</p>
+
+      <h2>Processing time &amp; fees</h2>
+      <p>In-person applications are often processed within about five working days once accepted, while online (e-visa) applications can take around two weeks on average. Fees vary by nationality and visa type, so budget for them and apply well ahead of your departure date.</p>
+
+      <h2>Country spotlight: Japan</h2>
+      <p>Japan is one of our most-requested destinations, so here is a practical example of how these rules play out in practice (details based on the Embassy of Japan in the UK).</p>
+      <ul>
+        <li><strong>British citizens</strong> do not need a visa for short-term stays of up to six months for tourism, business without paid activity, conferences, or study.</li>
+        <li>Nationals of other <strong>visa-exemption countries</strong> can generally stay up to 90 days without a visa for the same purposes.</li>
+        <li>Travellers from <strong>non-exemption countries</strong>, and anyone holding a Certificate of Eligibility (COE), must obtain a visa before travelling.</li>
+        <li>An <strong>eVISA</strong> is available for tourism through Japan's eVISA system, letting you apply and pay online.</li>
+        <li>Applications from non-residents of your country of application (e.g. visitor-visa holders) usually cannot be accepted.</li>
+      </ul>
+      <p>Useful official resources include the <a href="https://www.mofa.go.jp/j_info/visit/visa/index.html" rel="noopener" target="_blank">Guide to Japanese Visas (Ministry of Foreign Affairs of Japan)</a> and the <a href="https://www.jnto.go.jp/" rel="noopener" target="_blank">Japan National Tourism Organization</a>.</p>
+
+      <div class="note">
+        <p><strong>Beware of scams.</strong> Only ever apply through official embassy channels or the destination's genuine e-visa portal. Fraudulent websites, emails, and social-media accounts sometimes try to extract payments from visa applicants.</p>
+      </div>
+
+      <h2>Need a hand?</h2>
+      <p>We can't process visas on your behalf, but if you have a question about planning a trip we're happy to point you in the right direction. Feel free to <a href="contact.html">contact us</a>.</p>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="visa.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
