@@ -76,6 +76,22 @@
     }
     .note p { margin-bottom: 0; }
 
+    .coming-soon { list-style: none; padding-left: 0; margin-bottom: 14px; }
+    .coming-soon li {
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+      padding: 14px 18px; margin-bottom: 10px;
+      background: var(--sand); border: 1px solid var(--stone); border-radius: 4px;
+      font-size: 0.95rem; color: #3d3830;
+    }
+    .coming-soon__place { font-weight: 500; color: var(--ink); }
+    .coming-soon__region { font-weight: 400; color: var(--ash); font-size: 0.85rem; margin-left: 8px; }
+    .coming-soon__badge {
+      flex-shrink: 0;
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); background: var(--cream);
+      border: 1px solid var(--teal); border-radius: 999px; padding: 4px 12px;
+    }
+
     footer {
       background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px;
     }
@@ -159,6 +175,17 @@
         <li>Applications from non-residents of your country of application (e.g. visitor-visa holders) usually cannot be accepted.</li>
       </ul>
       <p>Useful official resources include the <a href="https://www.mofa.go.jp/j_info/visit/visa/index.html" rel="noopener" target="_blank">Guide to Japanese Visas (Ministry of Foreign Affairs of Japan)</a> and the <a href="https://www.jnto.go.jp/" rel="noopener" target="_blank">Japan National Tourism Organization</a>.</p>
+
+      <h2>More country guides — coming soon</h2>
+      <p>We're expanding this page with detailed, destination-specific visa guidance for every place we cover. These country spotlights are on the way:</p>
+      <ul class="coming-soon">
+        <li><span class="coming-soon__place">Amalfi Coast <span class="coming-soon__region">Italy</span></span><span class="coming-soon__badge">Coming soon</span></li>
+        <li><span class="coming-soon__place">Santorini <span class="coming-soon__region">Greece</span></span><span class="coming-soon__badge">Coming soon</span></li>
+        <li><span class="coming-soon__place">Patagonia <span class="coming-soon__region">South America</span></span><span class="coming-soon__badge">Coming soon</span></li>
+        <li><span class="coming-soon__place">Rajasthan <span class="coming-soon__region">India</span></span><span class="coming-soon__badge">Coming soon</span></li>
+        <li><span class="coming-soon__place">Norway's Fjords <span class="coming-soon__region">Scandinavia</span></span><span class="coming-soon__badge">Coming soon</span></li>
+      </ul>
+      <p>In the meantime, always confirm entry requirements with the official embassy or consulate for your destination.</p>
 
       <div class="note">
         <p><strong>Beware of scams.</strong> Only ever apply through official embassy channels or the destination's genuine e-visa portal. Fraudulent websites, emails, and social-media accounts sometimes try to extract payments from visa applicants.</p>
