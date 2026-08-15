@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "lint": "eslint . --max-warnings=0",
-    "test": "vitest run"
+    "test": "vitest run",
+    "health": "node api/_lib/health-cli.js"
   },
   "devDependencies": {
     "eslint": "^9.13.0",
