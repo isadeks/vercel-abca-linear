@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account settings — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+
+    /* ── Settings layout ──────────────────────────────────────── */
+    .settings-page {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 100vh;
+    }
+
+    /* Left panel — scenic image */
+    .settings-page__visual {
+      position: relative;
+      background:
+        linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.5) 100%),
+        url('https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200&q=80') center/cover no-repeat;
+    }
+    .settings-page__visual-inner {
+      position: absolute;
+      bottom: 60px;
+      left: 56px;
+      right: 56px;
+    }
+    .settings-page__visual-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.65);
+      margin-bottom: 14px;
+    }
+    .settings-page__visual-quote {
+      font-family: var(--font-serif);
+      font-size: clamp(1.6rem, 2.5vw, 2.2rem);
+      font-weight: 300;
+      font-style: italic;
+      color: white;
+      line-height: 1.35;
+    }
+
+    /* Right panel — settings form */
+    .settings-page__form-panel {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 100px 48px 60px;
+      background: var(--cream);
+    }
+
+    .settings-form {
+      width: 100%;
+      max-width: 400px;
+    }
+
+    .settings-form__header {
+      margin-bottom: 36px;
+    }
+    .settings-form__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .settings-form__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      font-weight: 400;
+      line-height: 1.15;
+      color: var(--ink);
+    }
+    .settings-form__title em { font-style: italic; }
+
+    /* Current user summary */
+    .user-summary {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      margin-bottom: 32px;
+    }
+    .user-summary__avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: white;
+      font-size: 1.1rem;
+      font-family: var(--font-serif);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .user-summary__info {}
+    .user-summary__name {
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .user-summary__email {
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+
+    /* Divider */
+    .settings-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+    }
+    .settings-divider span {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ash);
+      white-space: nowrap;
+    }
+    .settings-divider::before,
+    .settings-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--stone);
+    }
+
+    /* Form fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-group input {
+      padding: 13px 16px;
+      border: 1px solid var(--stone);
+      background: white;
+      font-family: var(--font-sans);
+      font-size: 0.9rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .form-group input::placeholder { color: #b0a898; }
+    .form-group input:focus { border-color: var(--teal); }
+    .form-group input:disabled {
+      background: var(--sand);
+      color: var(--ash);
+      cursor: not-allowed;
+    }
+
+    /* Success / error banners */
+    .form-banner {
+      font-size: 0.82rem;
+      padding: 10px 14px;
+      margin-bottom: 18px;
+      border-left: 3px solid;
+      display: none;
+    }
+    .form-banner.visible { display: block; }
+    .form-banner--success {
+      background: var(--teal-lt);
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+    .form-banner--error {
+      background: #fdf0ed;
+      border-color: var(--coral);
+      color: var(--coral);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+      padding: 14px 28px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+      width: 100%;
+    }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+
+    .btn--ghost {
+      background: transparent;
+      border-color: var(--stone);
+      color: var(--ash);
+    }
+    .btn--ghost:hover { border-color: var(--coral); color: var(--coral); }
+
+    /* Sign-out section */
+    .signout-section {
+      margin-top: 36px;
+      padding-top: 28px;
+      border-top: 1px solid var(--stone);
+    }
+    .signout-section__label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 14px;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 28px 0;
+    }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+      .settings-page { grid-template-columns: 1fr; }
+      .settings-page__visual { display: none; }
+      .settings-page__form-panel { padding: 100px 32px 60px; }
+    }
+
+    @media (max-width: 480px) {
+      .settings-page__form-panel { padding: 88px 20px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="index.html#newsletter">Newsletter</a></li>
+      <li><a href="#" id="nav-auth-link">Sign out</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Settings page ────────────────────────────────────────── -->
+  <main class="settings-page">
+
+    <!-- Visual / scenic panel -->
+    <div class="settings-page__visual" role="presentation">
+      <div class="settings-page__visual-inner">
+        <p class="settings-page__visual-eyebrow">Wander — your travel companion</p>
+        <p class="settings-page__visual-quote">"Not all those<br/><em>who wander are lost.</em>"</p>
+      </div>
+    </div>
+
+    <!-- Settings form panel -->
+    <div class="settings-page__form-panel">
+      <div class="settings-form">
+
+        <div class="settings-form__header">
+          <p class="settings-form__eyebrow">Account</p>
+          <h1 class="settings-form__title">Your <em>settings</em></h1>
+        </div>
+
+        <!-- Current user summary -->
+        <div class="user-summary" id="user-summary">
+          <div class="user-summary__avatar" id="user-avatar" aria-hidden="true"></div>
+          <div class="user-summary__info">
+            <p class="user-summary__name" id="user-name"></p>
+            <p class="user-summary__email" id="user-email"></p>
+          </div>
+        </div>
+
+        <div class="settings-divider"><span>Edit profile</span></div>
+
+        <!-- Success / error banners -->
+        <div class="form-banner form-banner--success" id="banner-success" role="status"></div>
+        <div class="form-banner form-banner--error"   id="banner-error"   role="alert"></div>
+
+        <!-- Display name form -->
+        <form id="settings-form" novalidate onsubmit="handleSave(event)">
+
+          <div class="form-group">
+            <label for="display-name">Display name</label>
+            <input type="text"
+                   id="display-name"
+                   name="displayName"
+                   placeholder="How should we call you?"
+                   autocomplete="name"
+                   required />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email address</label>
+            <input type="email"
+                   id="email"
+                   name="email"
+                   disabled
+                   title="Email cannot be changed here." />
+          </div>
+
+          <button type="submit" class="btn btn--teal">
+            Save changes
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+
+        </form>
+
+        <!-- Sign-out section -->
+        <div class="signout-section">
+          <p class="signout-section__label">Session</p>
+          <button type="button" class="btn btn--ghost" onclick="handleSignOut()">
+            Sign out
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M5 2H2v10h3M9 4l4 3-4 3M6 7h7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- auth.js and guard.js must load before inline script -->
+  <script src="auth.js"></script>
+  <script src="guard.js"></script>
+  <script>
+    'use strict';
+
+    // ── Route guard: redirect to login if not signed in ──────────
+    WanderGuard.requireAuth('login.html');
+
+    // ── Populate UI from session ─────────────────────────────────
+    (function populatePage() {
+      var session = WanderAuth.getSession();
+      if (!session) return; // requireAuth will redirect, but guard against race
+
+      // Avatar initial
+      var name = (session.displayName || session.email || '').trim();
+      var initial = name.charAt(0).toUpperCase() || '?';
+      document.getElementById('user-avatar').textContent = initial;
+
+      // Summary row
+      document.getElementById('user-name').textContent  = session.displayName || '—';
+      document.getElementById('user-email').textContent = session.email || '';
+
+      // Pre-fill form fields
+      document.getElementById('display-name').value = session.displayName || '';
+      document.getElementById('email').value        = session.email || '';
+
+      // Initialise nav sign-out link
+      WanderGuard.initNav('#nav-auth-link');
+    }());
+
+    // ── Show/hide banners ────────────────────────────────────────
+    function showBanner(type, msg) {
+      var successEl = document.getElementById('banner-success');
+      var errorEl   = document.getElementById('banner-error');
+      successEl.textContent = '';
+      errorEl.textContent   = '';
+      successEl.classList.remove('visible');
+      errorEl.classList.remove('visible');
+
+      if (msg) {
+        var el = type === 'success' ? successEl : errorEl;
+        el.textContent = msg;
+        el.classList.add('visible');
+      }
+    }
+
+    // ── Save display name ────────────────────────────────────────
+    function handleSave(e) {
+      e.preventDefault();
+
+      var displayName = document.getElementById('display-name').value.trim();
+      if (!displayName) {
+        showBanner('error', 'Display name cannot be empty.');
+        document.getElementById('display-name').focus();
+        return;
+      }
+
+      var session = WanderAuth.getSession();
+      if (!session) {
+        // Session disappeared — redirect to login
+        window.location.href = 'login.html';
+        return;
+      }
+
+      // Update display name and persist
+      session.displayName = displayName;
+      WanderAuth.setSession(session);
+
+      // Refresh nav and summary
+      WanderGuard.initNav('#nav-auth-link');
+      document.getElementById('user-name').textContent  = displayName;
+      document.getElementById('user-avatar').textContent = displayName.charAt(0).toUpperCase() || '?';
+
+      showBanner('success', 'Your display name has been updated.');
+    }
+
+    // ── Sign out ─────────────────────────────────────────────────
+    function handleSignOut() {
+      WanderAuth.clearSession();
+      window.location.href = 'index.html';
+    }
+  </script>
+
+</body>
+</html>
