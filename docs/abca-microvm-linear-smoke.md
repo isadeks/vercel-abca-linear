@@ -3,7 +3,7 @@
 Marker: `ABCA_LINEAR_MICROVM_20260918`
 
 Documentation-only smoke check for Linear task submission running on Lambda MicroVM
-compute (`backgroundagent-dev`, `us-west-2`). Tracking issue: ABCA #645 / CLO-25.
+compute (`backgroundagent-vault-it-0918`, `us-east-1`). Tracking issue: ABCA #645 / CLO-25.
 
 ## Repository summary (from the root README)
 
