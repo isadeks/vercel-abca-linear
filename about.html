@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>About — Wander</title>
+  <title>About Wander — Independent Travel Journalism</title>
+  <meta name="description" content="Wander is an independent travel publication with no paid placement: meet the editors and read about our values and how we research every guide." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -204,14 +205,26 @@
     @media (max-width: 560px) {
       .footer__grid { grid-template-columns: 1fr; }
     }
+    /* Visually-hidden skip link, revealed on keyboard focus */
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: var(--ink); color: var(--cream);
+      font-size: 0.8rem; text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
   </style>
 </head>
 <body>
 
-  <nav class="nav">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <nav class="nav" aria-label="Main navigation">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html" class="nav__back">← Home</a>
   </nav>
+  <main id="main">
 
   <div class="page-hero">
     <div class="container">
@@ -258,6 +271,8 @@
 
     </div>
   </div>
+
+  </main>
 
   <footer>
     <div class="container">

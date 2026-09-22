@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>All Destinations — Wander</title>
+  <title>All Destinations — Wander Travel Guides</title>
+  <meta name="description" content="Every destination Wander has covered in depth, from Southern Italy's clifftop villages to Japan's ancient capital and Patagonia's granite towers." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -104,14 +105,26 @@
     .footer__bottom a:hover { color: white; }
     @media (max-width: 900px) { .nav { padding: 18px 24px; } .footer__grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
+    /* Visually-hidden skip link, revealed on keyboard focus */
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: var(--ink); color: var(--cream);
+      font-size: 0.8rem; text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
   </style>
 </head>
 <body>
 
-  <nav class="nav">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <nav class="nav" aria-label="Main navigation">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html" class="nav__back">← Home</a>
   </nav>
+  <main id="main">
 
   <div class="page-hero">
     <div class="container">
@@ -126,7 +139,7 @@
       <div class="dest-grid">
 
         <a href="amalfi-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Amalfi Coast, Italy" />
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Clifftop village above the sea on Italy's Amalfi Coast" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Southern Italy</p>
@@ -136,7 +149,7 @@
         </a>
 
         <a href="kyoto-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan" />
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Temple rooftops among trees in Kyoto, Japan" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Japan</p>
@@ -145,7 +158,7 @@
         </a>
 
         <a href="santorini-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Santorini, Greece" />
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Whitewashed buildings above the caldera in Santorini, Greece" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Greece</p>
@@ -154,7 +167,7 @@
         </a>
 
         <a href="patagonia-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Patagonia, South America" />
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Mountain peaks and open steppe in Patagonia, South America" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">South America</p>
@@ -163,7 +176,7 @@
         </a>
 
         <a href="rajasthan-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" />
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Historic fort architecture in Rajasthan, India" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">India</p>
@@ -172,7 +185,7 @@
         </a>
 
         <a href="norway-guide.html" class="dest-card">
-          <img class="dest-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Norwegian fjords" />
+          <img class="dest-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Steep cliffs rising from a Norwegian fjord" />
           <div class="dest-card__overlay"></div>
           <div class="dest-card__body">
             <p class="dest-card__region">Scandinavia</p>
@@ -183,6 +196,8 @@
       </div>
     </div>
   </div>
+
+  </main>
 
   <footer>
     <div class="container">

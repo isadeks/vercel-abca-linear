@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Where Should I Go? — Wander</title>
+  <title>Where Should I Go? Travel Personality Quiz — Wander</title>
   <meta name="description" content="Answer 8 quick questions and discover which destination matches your travel personality." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -573,16 +573,27 @@
       .result-hero__content { padding: 0 24px 32px; }
       .trait-list { grid-template-columns: 1fr; }
     }
+    /* Visually-hidden skip link, revealed on keyboard focus */
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: var(--ink); color: var(--cream);
+      font-size: 0.8rem; text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
   </style>
 </head>
 <body>
 
-  <nav class="nav">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <nav class="nav" aria-label="Main navigation">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html" class="nav__back">← Back to home</a>
   </nav>
 
-  <div class="quiz-wrap">
+  <main class="quiz-wrap" id="main">
 
     <!-- ── Intro ──────────────────────────────────────────────── -->
     <section class="screen active" id="screen-intro">
@@ -627,7 +638,7 @@
         </aside>
 
         <!-- Main question area -->
-        <main class="quiz-main">
+        <section class="quiz-main">
           <p class="quiz-main__counter" id="q-counter">Question 1 of 8</p>
           <h2 class="quiz-main__question" id="q-text"></h2>
           <p class="quiz-main__hint" id="q-hint"></p>
@@ -636,7 +647,7 @@
             <button class="quiz-nav__back" id="nav-back">← Back</button>
             <button class="btn quiz-nav__next" id="nav-next" disabled>Next →</button>
           </div>
-        </main>
+        </section>
 
       </div>
     </section>
@@ -695,7 +706,7 @@
       </div>
     </section>
 
-  </div><!-- /.quiz-wrap -->
+  </main><!-- /.quiz-wrap -->
 
   <script>
   /* ================================================================
@@ -1252,7 +1263,7 @@
     const ruList = document.getElementById('runner-up-list');
     ruList.innerHTML = runnerUps.map(d => `
       <li class="runner-up">
-        <img class="runner-up__img" src="${d.thumbImg}" alt="${d.name}" loading="lazy" />
+        <img class="runner-up__img" src="${d.thumbImg}" alt="${d.name}, ${d.region}" loading="lazy" />
         <div class="runner-up__info">
           <p class="runner-up__name">${d.name}</p>
           <p class="runner-up__region">${d.region}</p>
