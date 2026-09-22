@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>A Week at the End of the World: Patagonia — Wander</title>
+  <meta name="description" content="A week in Patagonia at the end of the world — Torres del Paine, trekking logistics, weather and what to pack." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -247,17 +248,29 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn:hover { background: var(--teal); color: white; }
+    /* Visually-hidden skip link, revealed on keyboard focus */
+    .skip-link {
+      position: absolute; left: -9999px; top: 0;
+      z-index: 1000;
+      padding: 12px 20px;
+      background: var(--ink); color: var(--cream);
+      font-size: 0.8rem; text-decoration: none;
+    }
+    .skip-link:focus { left: 8px; top: 8px; }
   </style>
 </head>
 <body>
 
-  <nav class="nav">
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <nav class="nav" aria-label="Main navigation">
     <a href="index.html" class="nav__logo">Wander</a>
     <a href="index.html#guides" class="nav__back">← All guides</a>
   </nav>
+  <main id="main">
 
   <div class="guide-hero">
-    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80" alt="Torres del Paine, Patagonia" />
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=1600&q=80" alt="The granite towers of Torres del Paine, Patagonia" />
     <div class="guide-hero__overlay"></div>
     <div class="guide-hero__content">
       <p class="guide-hero__cat">Adventure &nbsp;·&nbsp; South America</p>
@@ -350,6 +363,8 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  </main>
 
 </body>
 </html>
