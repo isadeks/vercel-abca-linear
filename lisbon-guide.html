@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lisbon: Portugal's City of Light — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=1600&q=80" alt="Lisbon, Portugal" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">City &nbsp;·&nbsp; Portugal</p>
+      <h1 class="guide-hero__title">Lisbon:<br/>Portugal's city of light</h1>
+      <p class="guide-hero__meta">10 min read &nbsp;·&nbsp; Four-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Lisbon is built on seven hills above the widest river mouth in Europe, and the light that comes off the Tejo turns its tiled façades the colour of weak tea by late afternoon. It is a capital that has been repeatedly knocked down and rebuilt, and it wears both the grandeur and the wear with unusual grace.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Lisbon?</h2>
+        <p>The great earthquake of 1755 flattened the city centre and gave Lisbon something no other European capital has: a downtown laid out in a single deliberate grid, the Baixa Pombalina, bracketed on either side by medieval hills that the tremor largely spared. The result is a city of abrupt transitions — you leave an orderly eighteenth-century boulevard, climb four flights of stone stairs, and arrive in a tangle of laundry lines and nine-hundred-year-old walls.</p>
+        <p>It is also, still, a city that operates at a human pace. Trams rattle rather than glide. Lunch is long. The best viewpoints are free, unsignposted, and reached by walking uphill. Four days is enough to know the shape of the place; a week lets you add the coast at Cascais and the palaces of Sintra without feeling rushed.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Buy a rechargeable Navegante (Viva Viagem) card at any metro station for €0.50 and load it with zapping credit — it works on the metro, buses, the historic trams, the funiculars, and the ferries across the river to Cacilhas. Single fares bought from the tram driver cost roughly three times as much. Wear shoes with real grip: Lisbon's calçada pavement is polished limestone and becomes genuinely slippery in the rain.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The districts</h2>
+        <p>Lisbon is best understood hill by hill rather than sight by sight. Each quarter has a distinct temperament, and the walk between them — usually a steep one — is half the pleasure. Give each of the four below at least half a day, and plan your climbs for the morning, when the stone is still cool.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Alfama</h3>
+          <p class="city-card__desc">The oldest quarter, a Moorish maze of stepped alleys beneath the castle where washing hangs over the street and fado drifts out of small restaurants after nine. Ride tram 28 up, then walk back down.</p>
+          <span class="city-card__detail">Evening essential</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Baixa &amp; Chiado</h3>
+          <p class="city-card__desc">The rebuilt grid running from the riverside Praça do Comércio up to Rossio, with bookshops, coffee houses, and the wrought-iron Santa Justa lift. Busy, handsome, and the easiest place to orient yourself.</p>
+          <span class="city-card__detail">Start here</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Belém</h3>
+          <p class="city-card__desc">Six kilometres west along the river: the Manueline cloister of the Jerónimos monastery, the Torre de Belém, and the original pastelaria that has been making custard tarts to a monastery recipe since 1837.</p>
+          <span class="city-card__detail">Half-day excursion</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Príncipe Real</h3>
+          <p class="city-card__desc">Uphill from Bairro Alto and far calmer — a leafy square, independent design shops, and some of the city's best cooking. The neighbourhood Lisboetas themselves recommend for a slow afternoon.</p>
+          <span class="city-card__detail">Afternoon wander</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1200&q=80" alt="Yellow tram on a steep Lisbon street" />
+        <figcaption>Tram 28 grinding up through Graça — the century-old Remodelado cars still run the hill routes the modern fleet cannot manage.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>March to May and late September to early November are the sweet spots: daytime temperatures in the high teens to mid-twenties, long clear evenings, and hotel rates well below the summer peak. July and August are hot, dry, and crowded, with the Alfama's Festas de Lisboa in mid-June filling the old quarter with grilled sardines, paper garlands, and street parties that run until dawn.</p>
+        <p>Winter is the city's underrated season. It rains in bursts rather than steadily, temperatures rarely drop below 10°C, and the viewpoints, monasteries, and tram routes are almost empty. Pack a waterproof layer and accept that a few afternoons will be lost to a downpour.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>For a first visit, Baixa or Chiado puts almost everything within walking distance and keeps you close to the metro, at the cost of some street noise. Alfama is the most atmospheric option but involves luggage, stairs, and no vehicle access to many doors. Príncipe Real and Estrela are quieter, greener, and better value, with a ten-minute tram ride into the centre.</p>
+        <p>Lisbon has an unusually good supply of small hotels in restored pombaline buildings — high ceilings, azulejo-tiled stairwells, twelve or fifteen rooms. Avoid ground-floor rooms on the tram routes unless you sleep deeply, and check whether a listed building has a lift before booking the top floor.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Hostels and simple guesthouses run €30–55 per night, with a filling lunchtime <em>prato do dia</em> around €10–14 including wine. A comfortable mid-range trip — small hotel, dinner out, the occasional taxi — works out at €140–200 per day for two. Museum entries are €6–12, the Jerónimos and Belém tower combined ticket is around €18, and a custard tart with a coffee standing at the counter still costs less than €3.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Portuguese cooking is plain in the best sense: excellent ingredients, minimal interference, salt and olive oil. Order grilled fish by the kilo at a tiled <em>tasca</em>, ask for whatever came in that morning, and expect it to arrive whole with boiled potatoes and greens. Bacalhau — salt cod, soaked and reworked in a hundred ways — is the national obsession; the version baked with onions, eggs and matchstick potatoes is the easiest introduction.</p>
+        <p>Drink vinho verde or a chilled red from the Alentejo, finish with a glass of ginjinha from a hole-in-the-wall bar near Rossio, and eat at least one pastel de nata straight from the oven with cinnamon on top. The Time Out Market in Cais do Sodré is a useful, if touristy, way to sample a dozen kitchens at once; for something better, walk twenty minutes uphill and eat where the menu is handwritten.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's garden temples to Patagonia's granite towers — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
