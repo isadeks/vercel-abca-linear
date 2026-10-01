@@ -5,6 +5,7 @@
   "description": "Wander travel guide site + booking API (Vercel serverless functions).",
   "type": "module",
   "scripts": {
+    "dev": "npx --yes vercel dev",
     "lint": "eslint . --max-warnings=0",
     "test": "vitest run"
   },
