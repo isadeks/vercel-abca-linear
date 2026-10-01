@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Team Dashboard — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+      --sidebar-w: 240px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Dashboard nav (injected by dashboard-shell.js) ────────── */
+    .dash-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; gap: 40px;
+      height: 56px; padding: 0 32px;
+      background: var(--ink);
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .dash-nav__brand {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 400;
+      color: white;
+      letter-spacing: 0.04em;
+      flex-shrink: 0;
+    }
+    .dash-nav__brand span {
+      font-family: var(--font-sans);
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-left: 8px;
+    }
+    .dash-nav__links {
+      list-style: none;
+      display: flex; gap: 28px;
+    }
+    .dash-nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      transition: color 0.2s;
+    }
+    .dash-nav__links a:hover { color: white; }
+    .dash-nav__links a[aria-current="page"] {
+      color: var(--teal-lt);
+      border-bottom: 1px solid var(--teal-lt);
+      padding-bottom: 2px;
+    }
+
+    /* ── Page layout ──────────────────────────────────────────── */
+    .dash-layout {
+      max-width: var(--max-w);
+      margin: 0 auto;
+      padding: 88px 24px 64px;
+    }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      display: flex; align-items: flex-end; justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--stone);
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 400;
+      line-height: 1.15;
+    }
+    .page-header__title span {
+      font-style: italic;
+    }
+    .page-header__subtitle {
+      font-size: 0.88rem;
+      color: var(--ash);
+      margin-top: 6px;
+    }
+
+    /* ── Date-range filter bar ────────────────────────────────── */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 16px 20px;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      margin-bottom: 40px;
+    }
+    .filter-bar__label {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      flex-shrink: 0;
+    }
+    .filter-bar__group {
+      display: flex; align-items: center; gap: 8px;
+    }
+    .filter-bar__group span {
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+    .filter-bar input[type="date"] {
+      padding: 7px 10px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+    .filter-bar input[type="date"]:focus { border-color: var(--teal); }
+    .filter-bar__apply {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 20px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--teal);
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .filter-bar__apply:hover { background: #22665c; }
+    .filter-bar__clear {
+      background: none;
+      border: none;
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      color: var(--ash);
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
+    }
+    .filter-bar__clear:hover { color: var(--ink); }
+    .filter-bar__status {
+      margin-left: auto;
+      font-size: 0.75rem;
+      color: var(--ash);
+      font-style: italic;
+    }
+
+    /* ── Content placeholder sections ────────────────────────── */
+    .dash-placeholder {
+      border: 1px dashed var(--stone);
+      padding: 48px 32px;
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; text-align: center;
+      background: white;
+      color: var(--ash);
+      margin-bottom: 24px;
+    }
+    .dash-placeholder__title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+      color: var(--ink);
+    }
+    .dash-placeholder__sub {
+      font-size: 0.85rem;
+      line-height: 1.7;
+    }
+
+    /* ── Active-range banner ──────────────────────────────────── */
+    .range-banner {
+      display: none;
+      padding: 8px 16px;
+      background: var(--teal-lt);
+      border: 1px solid var(--teal);
+      font-size: 0.82rem;
+      color: var(--teal);
+      margin-bottom: 24px;
+    }
+    .range-banner.visible { display: block; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .filter-bar { flex-direction: column; align-items: flex-start; }
+      .filter-bar__status { margin-left: 0; }
+      .page-header { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Auth guard + nav injection (dashboard-shell.js) -->
+  <div id="dashboard-nav"></div>
+
+  <!-- ── Page layout ──────────────────────────────────────────── -->
+  <main class="dash-layout">
+
+    <!-- Page header -->
+    <header class="page-header">
+      <div>
+        <h1 class="page-header__title">Team <span>dashboard</span></h1>
+        <p class="page-header__subtitle">Workload overview, recent activity, and team health metrics.</p>
+      </div>
+    </header>
+
+    <!-- ── Date-range filter bar ──────────────────────────────── -->
+    <div class="filter-bar" id="filter-bar" role="search" aria-label="Date range filter">
+      <span class="filter-bar__label">Date range</span>
+      <div class="filter-bar__group">
+        <label for="filter-from" class="sr-only">From date</label>
+        <input type="date" id="filter-from" name="from" aria-label="From date" />
+        <span aria-hidden="true">→</span>
+        <label for="filter-to" class="sr-only">To date</label>
+        <input type="date" id="filter-to" name="to" aria-label="To date" />
+      </div>
+      <button class="filter-bar__apply" id="filter-apply" type="button">Apply</button>
+      <button class="filter-bar__clear" id="filter-clear" type="button">Clear</button>
+      <span class="filter-bar__status" id="filter-status" aria-live="polite"></span>
+    </div>
+
+    <!-- Active range banner -->
+    <div class="range-banner" id="range-banner" role="status" aria-live="polite"></div>
+
+    <!-- ── Content sections (populated by sub-issues) ─────────── -->
+    <div class="dash-placeholder" id="section-workload" aria-label="Workload section placeholder">
+      <p class="dash-placeholder__title">Workload overview</p>
+      <p class="dash-placeholder__sub">Per-member open and in-progress item counts will appear here.<br/>Populated in a subsequent sub-issue.</p>
+    </div>
+
+    <div class="dash-placeholder" id="section-activity" aria-label="Activity section placeholder">
+      <p class="dash-placeholder__title">Recent activity</p>
+      <p class="dash-placeholder__sub">Team activity feed filtered by the selected date range will appear here.<br/>Populated in a subsequent sub-issue.</p>
+    </div>
+
+  </main>
+
+  <!-- ── Dashboard shell (auth guard + nav) ───────────────────── -->
+  <script type="module" src="dashboard-shell.js"></script>
+
+  <!-- ── Date-range filter logic ──────────────────────────────── -->
+  <script type="module">
+    /**
+     * Module-level date-range state.
+     * Other dashboard sections import the event 'wander:rangechange' to react.
+     *
+     * Event detail shape: { from: string|null, to: string|null }
+     * Both are ISO date strings (YYYY-MM-DD) or null when not set.
+     */
+
+    /** @type {{ from: string|null, to: string|null }} */
+    let currentRange = { from: null, to: null };
+
+    const inputFrom   = document.getElementById('filter-from');
+    const inputTo     = document.getElementById('filter-to');
+    const btnApply    = document.getElementById('filter-apply');
+    const btnClear    = document.getElementById('filter-clear');
+    const statusEl    = document.getElementById('filter-status');
+    const bannerEl    = document.getElementById('range-banner');
+
+    /** Dispatch the custom event so all sections can react. */
+    function dispatchRangeChange(range) {
+      const event = new CustomEvent('wander:rangechange', {
+        bubbles: true,
+        detail: { ...range },
+      });
+      document.dispatchEvent(event);
+    }
+
+    /** Update the UI to reflect currentRange. */
+    function updateUI() {
+      const { from, to } = currentRange;
+      if (from || to) {
+        const label = [from && `From ${from}`, to && `To ${to}`].filter(Boolean).join(' ');
+        statusEl.textContent = `Active filter: ${label}`;
+        bannerEl.textContent = `Showing results ${label.toLowerCase()}. Clear the filter to see all data.`;
+        bannerEl.classList.add('visible');
+      } else {
+        statusEl.textContent = '';
+        bannerEl.textContent = '';
+        bannerEl.classList.remove('visible');
+      }
+    }
+
+    /** Apply button handler. */
+    btnApply.addEventListener('click', () => {
+      const from = inputFrom.value || null;
+      const to   = inputTo.value   || null;
+
+      if (from && to && from > to) {
+        statusEl.textContent = 'Error: "From" date must not be after "To" date.';
+        return;
+      }
+
+      currentRange = { from, to };
+      updateUI();
+      dispatchRangeChange(currentRange);
+    });
+
+    /** Clear button handler. */
+    btnClear.addEventListener('click', () => {
+      inputFrom.value = '';
+      inputTo.value   = '';
+      currentRange = { from: null, to: null };
+      updateUI();
+      dispatchRangeChange(currentRange);
+    });
+
+    // Allow Enter in either date input to trigger Apply.
+    [inputFrom, inputTo].forEach(input => {
+      input.addEventListener('keydown', e => {
+        if (e.key === 'Enter') btnApply.click();
+      });
+    });
+  </script>
+
+</body>
+</html>
