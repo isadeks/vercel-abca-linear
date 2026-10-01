@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Billing — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; width: 100%; object-fit: cover; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+
+    /* ── Page header ── */
+    .page-header {
+      padding: 140px 0 64px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 16px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .page-header__sub {
+      font-size: 1rem;
+      color: var(--ash);
+      max-width: 540px;
+      line-height: 1.7;
+    }
+
+    /* ── Billing section ── */
+    .billing-section {
+      padding: 80px 0 120px;
+    }
+
+    /* ── Plan cards grid ── */
+    .plans-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-bottom: 64px;
+    }
+    @media (max-width: 860px) {
+      .plans-grid { grid-template-columns: 1fr; max-width: 440px; }
+    }
+
+    .plan-card {
+      background: white;
+      border: 1px solid var(--stone);
+      padding: 40px 32px;
+      position: relative;
+      transition: box-shadow 0.2s, border-color 0.2s;
+    }
+    .plan-card:hover {
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    .plan-card--featured {
+      border-color: var(--teal);
+      box-shadow: 0 4px 24px rgba(42,122,111,0.12);
+    }
+    .plan-card__badge {
+      position: absolute;
+      top: -1px; right: 24px;
+      background: var(--teal);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 5px 12px;
+    }
+    .plan-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .plan-card__tagline {
+      font-size: 0.85rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+      line-height: 1.5;
+    }
+    .plan-card__price {
+      display: flex;
+      align-items: baseline;
+      gap: 4px;
+      margin-bottom: 28px;
+    }
+    .plan-card__amount {
+      font-family: var(--font-serif);
+      font-size: 3rem;
+      font-weight: 300;
+      line-height: 1;
+    }
+    .plan-card__period {
+      font-size: 0.85rem;
+      color: var(--ash);
+    }
+    .plan-card__features {
+      list-style: none;
+      margin-bottom: 36px;
+    }
+    .plan-card__features li {
+      font-size: 0.88rem;
+      color: var(--ash);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--sand);
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .plan-card__features li::before {
+      content: '✓';
+      color: var(--teal);
+      font-weight: 600;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .plan-card__features li.unavailable {
+      opacity: 0.4;
+    }
+    .plan-card__features li.unavailable::before {
+      content: '–';
+      color: var(--ash);
+    }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--ink);
+      color: var(--ink);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      background: transparent;
+      font-family: var(--font-sans);
+      width: 100%;
+      justify-content: center;
+    }
+    .btn:hover { background: var(--ink); color: white; }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+    .btn--outline-teal {
+      border-color: var(--teal);
+      color: var(--teal);
+    }
+    .btn--outline-teal:hover { background: var(--teal); color: white; }
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ── Current plan info ── */
+    .current-plan {
+      background: var(--teal-lt);
+      border: 1px solid var(--teal);
+      padding: 32px 40px;
+      margin-bottom: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .current-plan__label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 6px;
+    }
+    .current-plan__name {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+    }
+    .current-plan__meta {
+      font-size: 0.85rem;
+      color: var(--ash);
+      margin-top: 4px;
+    }
+    .current-plan__actions {
+      display: flex;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .current-plan__actions .btn {
+      width: auto;
+    }
+
+    /* ── Billing info ── */
+    .billing-info {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 64px;
+    }
+    @media (max-width: 700px) {
+      .billing-info { grid-template-columns: 1fr; }
+    }
+    .billing-info__section {
+      background: white;
+      border: 1px solid var(--stone);
+      padding: 32px;
+    }
+    .billing-info__heading {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 20px;
+    }
+    .billing-info__row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--sand);
+      font-size: 0.9rem;
+    }
+    .billing-info__row:last-child { border-bottom: none; }
+    .billing-info__label { color: var(--ash); }
+    .billing-info__value { font-weight: 500; }
+
+    /* ── Section heading ── */
+    .section-heading {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 300;
+      margin-bottom: 8px;
+    }
+    .section-subheading {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 40px;
+    }
+
+    /* ── Invoice snippet ── */
+    .invoices-preview {
+      background: white;
+      border: 1px solid var(--stone);
+    }
+    .invoices-preview__row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--sand);
+      gap: 16px;
+    }
+    .invoices-preview__row:last-child { border-bottom: none; }
+    .invoices-preview__date { font-size: 0.85rem; color: var(--ash); min-width: 80px; }
+    .invoices-preview__desc { font-size: 0.9rem; flex: 1; }
+    .invoices-preview__amount { font-weight: 500; font-size: 0.9rem; }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 0.65rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .badge--paid { background: var(--teal-lt); color: var(--teal); }
+    .badge--open { background: #fdf3d0; color: #8a6a00; }
+    .badge--void { background: var(--stone); color: var(--ash); }
+
+    .invoices-preview__actions { display: flex; gap: 8px; align-items: center; }
+    .link-small {
+      font-size: 0.78rem;
+      color: var(--teal);
+      text-decoration: underline;
+      cursor: pointer;
+    }
+    .link-small:hover { color: var(--ink); }
+
+    /* ── Message banner ── */
+    .message {
+      display: none;
+      padding: 16px 20px;
+      font-size: 0.9rem;
+      margin-bottom: 24px;
+      border-left: 3px solid;
+    }
+    .message--success { background: var(--teal-lt); border-color: var(--teal); color: var(--teal); }
+    .message--error { background: #fde8e4; border-color: var(--coral); color: var(--coral); }
+    .message.show { display: block; }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--ink);
+      padding: 64px 0 40px;
+      color: rgba(255,255,255,0.6);
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 300;
+      color: white;
+      margin-bottom: 12px;
+    }
+    .footer__tagline { font-size: 0.85rem; line-height: 1.7; }
+    .footer__heading {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+      margin-bottom: 16px;
+    }
+    .footer__links { list-style: none; }
+    .footer__links li { margin-bottom: 10px; }
+    .footer__links a { font-size: 0.85rem; color: rgba(255,255,255,0.6); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.8rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.6); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 860px) {
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 500px) {
+      .footer__grid { grid-template-columns: 1fr; }
+      .footer__bottom { flex-direction: column; gap: 8px; text-align: center; }
+    }
+
+    /* ── Loading skeleton ── */
+    .skeleton {
+      background: linear-gradient(90deg, var(--stone) 25%, var(--sand) 50%, var(--stone) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.4s infinite;
+      border-radius: 2px;
+    }
+    @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="invoices.html">Invoices</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Account</p>
+      <h1 class="page-header__title">Billing &amp; Subscription</h1>
+      <p class="page-header__sub">Manage your Wander subscription plan. Upgrade, downgrade, or cancel at any time.</p>
+    </div>
+  </header>
+
+  <main class="billing-section">
+    <div class="container">
+
+      <!-- Status message -->
+      <div class="message" id="statusMessage" role="alert" aria-live="polite"></div>
+
+      <!-- Current plan (shown when subscription is active) -->
+      <div class="current-plan" id="currentPlan" style="display:none;">
+        <div>
+          <p class="current-plan__label">Current plan</p>
+          <p class="current-plan__name" id="currentPlanName">Explorer</p>
+          <p class="current-plan__meta" id="currentPlanMeta">Renews 1 Aug 2026 · £12 / month</p>
+        </div>
+        <div class="current-plan__actions">
+          <button class="btn btn--outline-teal" id="manageBtn" type="button">Manage payment</button>
+          <button class="btn" id="cancelBtn" type="button">Cancel plan</button>
+        </div>
+      </div>
+
+      <!-- Plan selection heading -->
+      <h2 class="section-heading">Choose a plan</h2>
+      <p class="section-subheading">All plans include a 14-day free trial. No card required to start.</p>
+
+      <!-- Plan cards -->
+      <div class="plans-grid">
+
+        <!-- Free -->
+        <div class="plan-card" data-plan="free" data-price-id="">
+          <h3 class="plan-card__name">Free</h3>
+          <p class="plan-card__tagline">Get a taste of independent travel journalism.</p>
+          <div class="plan-card__price">
+            <span class="plan-card__amount">£0</span>
+            <span class="plan-card__period">/ month</span>
+          </div>
+          <ul class="plan-card__features">
+            <li>5 destination guides / month</li>
+            <li>Community newsletter</li>
+            <li class="unavailable">Offline reading</li>
+            <li class="unavailable">Interactive itineraries</li>
+            <li class="unavailable">Booking discounts</li>
+            <li class="unavailable">Priority support</li>
+          </ul>
+          <button class="btn" data-plan-btn="free" type="button">Get started free</button>
+        </div>
+
+        <!-- Explorer (featured) -->
+        <div class="plan-card plan-card--featured" data-plan="explorer" data-price-id="price_explorer_monthly">
+          <span class="plan-card__badge">Most popular</span>
+          <h3 class="plan-card__name">Explorer</h3>
+          <p class="plan-card__tagline">For the curious traveller who plans ahead.</p>
+          <div class="plan-card__price">
+            <span class="plan-card__amount">£12</span>
+            <span class="plan-card__period">/ month</span>
+          </div>
+          <ul class="plan-card__features">
+            <li>Unlimited destination guides</li>
+            <li>Community newsletter</li>
+            <li>Offline reading</li>
+            <li>Interactive itineraries</li>
+            <li class="unavailable">Booking discounts</li>
+            <li class="unavailable">Priority support</li>
+          </ul>
+          <button class="btn btn--teal" data-plan-btn="explorer" type="button">Start free trial</button>
+        </div>
+
+        <!-- Journeyman -->
+        <div class="plan-card" data-plan="journeyman" data-price-id="price_journeyman_monthly">
+          <h3 class="plan-card__name">Journeyman</h3>
+          <p class="plan-card__tagline">For frequent travellers who want everything.</p>
+          <div class="plan-card__price">
+            <span class="plan-card__amount">£29</span>
+            <span class="plan-card__period">/ month</span>
+          </div>
+          <ul class="plan-card__features">
+            <li>Unlimited destination guides</li>
+            <li>Community newsletter</li>
+            <li>Offline reading</li>
+            <li>Interactive itineraries</li>
+            <li>Booking discounts (up to 15%)</li>
+            <li>Priority support</li>
+          </ul>
+          <button class="btn" data-plan-btn="journeyman" type="button">Start free trial</button>
+        </div>
+
+      </div>
+
+      <!-- Billing info + Payment method -->
+      <div class="billing-info" id="billingInfo" style="display:none;">
+        <div class="billing-info__section">
+          <p class="billing-info__heading">Billing details</p>
+          <div class="billing-info__row">
+            <span class="billing-info__label">Email</span>
+            <span class="billing-info__value" id="billingEmail">—</span>
+          </div>
+          <div class="billing-info__row">
+            <span class="billing-info__label">Next billing date</span>
+            <span class="billing-info__value" id="billingNextDate">—</span>
+          </div>
+          <div class="billing-info__row">
+            <span class="billing-info__label">Amount</span>
+            <span class="billing-info__value" id="billingAmount">—</span>
+          </div>
+        </div>
+        <div class="billing-info__section">
+          <p class="billing-info__heading">Payment method</p>
+          <div class="billing-info__row">
+            <span class="billing-info__label">Card</span>
+            <span class="billing-info__value" id="billingCard">Visa ···· 4242</span>
+          </div>
+          <div class="billing-info__row">
+            <span class="billing-info__label">Expires</span>
+            <span class="billing-info__value" id="billingExpiry">12 / 2027</span>
+          </div>
+          <div class="billing-info__row" style="border-bottom:none; padding-top:24px;">
+            <button class="btn btn--outline-teal" type="button" id="updateCardBtn" style="width:auto;">Update card</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent invoices preview -->
+      <h2 class="section-heading">Recent invoices</h2>
+      <p class="section-subheading">Your last three payments. <a href="invoices.html" class="link-small">View all invoices →</a></p>
+
+      <div class="invoices-preview" id="invoicesPreview">
+        <div class="invoices-preview__row" id="invoicesLoading">
+          <span style="color:var(--ash); font-size:0.9rem;">Loading invoices…</span>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Account</p>
+          <ul class="footer__links">
+            <li><a href="billing.html">Billing</a></li>
+            <li><a href="invoices.html">Invoices</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    'use strict';
+
+    // ── Utility helpers ──────────────────────────────────────────
+    function showMessage(text, type = 'success') {
+      const el = document.getElementById('statusMessage');
+      el.textContent = text;
+      el.className = `message message--${type} show`;
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    function hideMessage() {
+      const el = document.getElementById('statusMessage');
+      el.className = 'message';
+    }
+
+    function formatCurrency(amountCents, currency = 'gbp') {
+      return new Intl.NumberFormat('en-GB', {
+        style: 'currency',
+        currency: currency.toUpperCase(),
+      }).format(amountCents / 100);
+    }
+    function formatDate(unixTs) {
+      return new Date(unixTs * 1000).toLocaleDateString('en-GB', {
+        day: 'numeric', month: 'short', year: 'numeric',
+      });
+    }
+
+    // ── Plan selection ───────────────────────────────────────────
+    document.querySelectorAll('[data-plan-btn]').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        const planName = btn.dataset.planBtn;
+        if (planName === 'free') {
+          showMessage('You are now on the Free plan. Enjoy Wander!', 'success');
+          return;
+        }
+
+        const card = btn.closest('[data-plan]');
+        const priceId = card?.dataset?.priceId;
+        if (!priceId) {
+          showMessage('Price configuration missing. Please contact support.', 'error');
+          return;
+        }
+
+        btn.disabled = true;
+        btn.textContent = 'Redirecting…';
+
+        try {
+          const res = await fetch('/api/checkout', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              priceId,
+              successUrl: `${location.origin}/billing.html?checkout=success`,
+              cancelUrl:  `${location.origin}/billing.html?checkout=cancelled`,
+            }),
+          });
+
+          if (!res.ok) {
+            const err = await res.json().catch(() => ({}));
+            throw new Error(err.error ?? `Server error (${res.status})`);
+          }
+
+          const { url } = await res.json();
+          if (url) {
+            window.location.href = url;
+          } else {
+            throw new Error('No checkout URL returned.');
+          }
+        } catch (err) {
+          showMessage(`Could not start checkout: ${err.message}`, 'error');
+          btn.disabled = false;
+          btn.textContent = 'Start free trial';
+        }
+      });
+    });
+
+    // ── Cancel plan ──────────────────────────────────────────────
+    document.getElementById('cancelBtn')?.addEventListener('click', () => {
+      if (!confirm('Are you sure you want to cancel your subscription? You will lose access at the end of the current billing period.')) return;
+      showMessage('Cancellation requested. You will keep access until the end of the billing period.', 'success');
+    });
+
+    // ── Update card ──────────────────────────────────────────────
+    document.getElementById('updateCardBtn')?.addEventListener('click', () => {
+      showMessage('Redirecting to payment portal…', 'success');
+      // In production: redirect to Stripe Customer Portal
+    });
+
+    // ── Handle checkout redirect params ─────────────────────────
+    (function handleReturnFromCheckout() {
+      const params = new URLSearchParams(location.search);
+      if (params.get('checkout') === 'success') {
+        showMessage('🎉 Subscription activated! Welcome to Wander.', 'success');
+        history.replaceState(null, '', location.pathname);
+      } else if (params.get('checkout') === 'cancelled') {
+        showMessage('Checkout cancelled. Your plan has not changed.', 'error');
+        history.replaceState(null, '', location.pathname);
+      }
+    })();
+
+    // ── Load recent invoices ─────────────────────────────────────
+    async function loadRecentInvoices() {
+      const container = document.getElementById('invoicesPreview');
+      const loadingRow = document.getElementById('invoicesLoading');
+
+      try {
+        const res = await fetch('/api/invoices?limit=3');
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const { invoices } = await res.json();
+
+        container.innerHTML = '';
+
+        if (!invoices || invoices.length === 0) {
+          container.innerHTML = '<div class="invoices-preview__row"><span style="color:var(--ash);font-size:0.9rem;">No invoices yet.</span></div>';
+          return;
+        }
+
+        invoices.forEach((inv) => {
+          const row = document.createElement('div');
+          row.className = 'invoices-preview__row';
+          const statusClass = inv.status === 'paid' ? 'badge--paid' : inv.status === 'open' ? 'badge--open' : 'badge--void';
+          row.innerHTML = `
+            <span class="invoices-preview__date">${inv.createdAt ? formatDate(inv.createdAt) : '—'}</span>
+            <span class="invoices-preview__desc">Invoice ${inv.number ?? inv.id}</span>
+            <span class="invoices-preview__amount">${inv.amountPaid != null ? formatCurrency(inv.amountPaid, inv.currency) : '—'}</span>
+            <span class="badge ${statusClass}">${inv.status}</span>
+            <div class="invoices-preview__actions">
+              ${inv.pdfUrl ? `<a class="link-small" href="${inv.pdfUrl}" target="_blank" rel="noopener">PDF</a>` : ''}
+              ${inv.hostedUrl ? `<a class="link-small" href="${inv.hostedUrl}" target="_blank" rel="noopener">View</a>` : ''}
+            </div>`;
+          container.appendChild(row);
+        });
+      } catch (err) {
+        if (loadingRow) {
+          loadingRow.innerHTML = '<span style="color:var(--ash);font-size:0.9rem;">Could not load invoices.</span>';
+        }
+      }
+    }
+
+    loadRecentInvoices();
+  </script>
+</body>
+</html>
