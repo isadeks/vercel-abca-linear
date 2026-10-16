@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
   <style>
     /* ── Reset & base ─────────────────────────────────────────── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -560,6 +561,7 @@
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme"></button>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
@@ -833,6 +835,7 @@
     }, { passive: true });
 
   </script>
+  <script type="module" src="theme.js"></script>
 
 </body>
 </html>

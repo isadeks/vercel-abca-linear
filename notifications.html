@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="theme.css" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+    .nav__links a[aria-current="page"] { color: var(--teal); }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      padding: 120px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+    .page-header__sub {
+      font-size: 0.95rem;
+      color: var(--ash);
+      max-width: 480px;
+      line-height: 1.7;
+    }
+
+    /* ── Notifications section ────────────────────────────────── */
+    .notifications-section {
+      padding: 64px 0 96px;
+    }
+
+    /* ── Loading state ────────────────────────────────────────── */
+    .notifications-loading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--ash);
+      font-size: 0.9rem;
+    }
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--stone);
+      border-top-color: var(--teal);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      flex-shrink: 0;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ── Error state ──────────────────────────────────────────── */
+    .notifications-error {
+      display: none;
+      padding: 24px;
+      background: #fdf1ee;
+      border: 1px solid var(--coral);
+      color: var(--coral);
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
+
+    /* ── Empty state ──────────────────────────────────────────── */
+    .notifications-empty {
+      display: none;
+      padding: 64px 0;
+      text-align: center;
+    }
+    .notifications-empty__icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 20px;
+      color: var(--stone);
+    }
+    .notifications-empty__title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .notifications-empty__sub {
+      font-size: 0.88rem;
+      color: var(--ash);
+    }
+
+    /* ── Notification list ────────────────────────────────────── */
+    .notifications-list {
+      display: none;
+      list-style: none;
+      display: none;
+      flex-direction: column;
+      gap: 0;
+      border: 1px solid var(--stone);
+    }
+    .notif-item {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: start;
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--stone);
+      transition: background 0.15s;
+    }
+    .notif-item:last-child {
+      border-bottom: none;
+    }
+    .notif-item:hover {
+      background: var(--sand);
+    }
+
+    /* type icon badge */
+    .notif-item__icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--teal-lt);
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .notif-item__icon svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .notif-item__body {}
+
+    .notif-item__type {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 4px;
+    }
+    .notif-item__message {
+      font-size: 0.92rem;
+      color: var(--ink);
+      line-height: 1.55;
+    }
+
+    .notif-item__time {
+      font-size: 0.75rem;
+      color: var(--ash);
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-top: 3px;
+    }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 40px 0 28px;
+    }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+    }
+    @media (max-width: 560px) {
+      .notif-item { grid-template-columns: auto 1fr; }
+      .notif-item__time { grid-column: 2; padding-top: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="notifications.html" aria-current="page">Notifications</a></li>
+    </ul>
+    <button id="theme-toggle" class="theme-toggle" aria-label="Switch to dark theme" title="Switch to dark theme"></button>
+  </nav>
+
+  <!-- ── Page header ───────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">Your account</p>
+      <h1 class="page-header__title">Notifications</h1>
+      <p class="page-header__sub">Stay up to date with booking confirmations, new guides, price alerts, and more.</p>
+    </div>
+  </header>
+
+  <!-- ── Notifications ─────────────────────────────────────────── -->
+  <section class="notifications-section" aria-label="Notifications">
+    <div class="container">
+
+      <!-- Loading state -->
+      <div class="notifications-loading" id="notifications-loading" aria-live="polite" aria-label="Loading notifications">
+        <div class="spinner" role="status" aria-hidden="true"></div>
+        <span>Loading notifications…</span>
+      </div>
+
+      <!-- Error state -->
+      <div class="notifications-error" id="notifications-error" role="alert" aria-live="assertive">
+        <strong>Unable to load notifications.</strong>
+        <span id="notifications-error-detail"> Please try refreshing the page.</span>
+      </div>
+
+      <!-- Empty state -->
+      <div class="notifications-empty" id="notifications-empty" aria-live="polite">
+        <svg class="notifications-empty__icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+          <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+        </svg>
+        <p class="notifications-empty__title">You're all caught up</p>
+        <p class="notifications-empty__sub">No notifications to show right now.</p>
+      </div>
+
+      <!-- Notifications list (populated by JS) -->
+      <ul class="notifications-list" id="notifications-list" aria-label="Notification items"></ul>
+
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Type → display label map ─────────────────────────────────
+    const TYPE_LABELS = {
+      booking_confirmed: 'Booking confirmed',
+      new_guide:         'New guide',
+      price_alert:       'Price alert',
+      itinerary_update:  'Itinerary update',
+      newsletter:        'Newsletter',
+      reminder:          'Reminder',
+      review_request:    'Review request',
+    };
+
+    // ── Icon SVG per notification type ───────────────────────────
+    function iconForType(type) {
+      switch (type) {
+        case 'booking_confirmed':
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>';
+        case 'price_alert':
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>';
+        case 'reminder':
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+        case 'review_request':
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+        default:
+          // bell icon for guide, newsletter, itinerary_update, etc.
+          return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>';
+      }
+    }
+
+    // ── Relative-time formatter ──────────────────────────────────
+    function relativeTime(isoString) {
+      const now  = Date.now();
+      const then = new Date(isoString).getTime();
+      const diff = now - then;
+      const minute = 60 * 1000;
+      const hour   = 60 * minute;
+      const day    = 24 * hour;
+
+      if (diff < minute)    return 'just now';
+      if (diff < hour)      return `${Math.floor(diff / minute)}m ago`;
+      if (diff < day)       return `${Math.floor(diff / hour)}h ago`;
+      if (diff < 7 * day)   return `${Math.floor(diff / day)}d ago`;
+
+      return new Date(isoString).toLocaleDateString('en-GB', {
+        day:   'numeric',
+        month: 'short',
+        year:  'numeric',
+      });
+    }
+
+    // ── Render helpers ───────────────────────────────────────────
+    function renderNotification(item) {
+      const li = document.createElement('li');
+      li.className = 'notif-item';
+      const label = TYPE_LABELS[item.type] || item.type.replace(/_/g, ' ');
+
+      li.innerHTML =
+        '<div class="notif-item__icon">' + iconForType(item.type) + '</div>' +
+        '<div class="notif-item__body">' +
+          '<p class="notif-item__type">' + escapeHtml(label) + '</p>' +
+          '<p class="notif-item__message">' + escapeHtml(item.message) + '</p>' +
+        '</div>' +
+        '<time class="notif-item__time" datetime="' + escapeHtml(item.timestamp) + '">' +
+          escapeHtml(relativeTime(item.timestamp)) +
+        '</time>';
+
+      return li;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ── State transitions ────────────────────────────────────────
+    const elLoading = document.getElementById('notifications-loading');
+    const elError   = document.getElementById('notifications-error');
+    const elEmpty   = document.getElementById('notifications-empty');
+    const elList    = document.getElementById('notifications-list');
+
+    function showLoading() {
+      elLoading.style.display = 'flex';
+      elError.style.display   = 'none';
+      elEmpty.style.display   = 'none';
+      elList.style.display    = 'none';
+    }
+
+    function showError(msg) {
+      elLoading.style.display = 'none';
+      elError.style.display   = 'block';
+      document.getElementById('notifications-error-detail').textContent =
+        msg ? ' ' + msg : ' Please try refreshing the page.';
+    }
+
+    function showEmpty() {
+      elLoading.style.display = 'none';
+      elEmpty.style.display   = 'block';
+    }
+
+    function showList(items) {
+      elLoading.style.display = 'none';
+      elList.innerHTML = '';
+      items.forEach((item) => elList.appendChild(renderNotification(item)));
+      elList.style.display = 'flex';
+    }
+
+    // ── Fetch notifications ──────────────────────────────────────
+    showLoading();
+
+    fetch('/api/notifications')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Server returned ' + response.status);
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data) || data.length === 0) {
+          showEmpty();
+        } else {
+          showList(data);
+        }
+      })
+      .catch((err) => {
+        showError(err && err.message ? err.message : null);
+      });
+  </script>
+  <script type="module" src="theme.js"></script>
+
+</body>
+</html>
