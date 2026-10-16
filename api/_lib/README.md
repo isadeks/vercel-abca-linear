@@ -16,3 +16,10 @@ availability.js          # room/date availability — no deps
 Each module ships its own `*.test.js` under `test/`. `npm test` (Vitest) and
 `npm run lint` (ESLint) gate every change — a module that misuses a
 dependency's API fails its tests, which fails the build gate.
+
+## Dependency graph constraints
+
+The module graph above is a **DAG (directed acyclic graph)**. Cyclic
+dependencies (e.g. A → B → A) are invalid and must never appear in this
+codebase. If a proposed change would introduce a cycle the orchestrator should
+reject the task graph before any work begins.
