@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Our Team — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1100px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Navigation ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem; font-weight: 400;
+      letter-spacing: 0.06em; color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--teal); transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .page-hero {
+      padding: 96px 0 64px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-hero__eyebrow {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 16px;
+    }
+    .page-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300; line-height: 1.1; margin-bottom: 20px;
+    }
+    .page-hero__sub {
+      font-family: var(--font-serif);
+      font-size: 1.25rem; font-weight: 300; font-style: italic;
+      color: var(--ash); max-width: 560px; line-height: 1.6;
+    }
+
+    /* ── Team section ── */
+    .team-section { padding: 72px 0 96px; }
+
+    .section-label {
+      font-size: 0.72rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: var(--font-serif);
+      font-size: 2rem; font-weight: 400;
+      margin-bottom: 40px;
+    }
+
+    /* Editorial team — large cards with photo left, bio right */
+    .staff-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      margin-bottom: 64px;
+    }
+    @media (max-width: 760px) { .staff-grid { grid-template-columns: 1fr; } }
+
+    .staff-card {
+      display: flex;
+      gap: 0;
+      background: var(--sand);
+      border: 1px solid var(--stone);
+      overflow: hidden;
+    }
+    .staff-card__photo {
+      width: 140px;
+      flex-shrink: 0;
+      background: var(--stone);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .staff-card__photo-placeholder {
+      width: 140px;
+      height: 100%;
+      min-height: 180px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 2.5rem; font-weight: 300;
+      color: var(--ash);
+      background: var(--stone);
+      letter-spacing: 0.04em;
+    }
+    .staff-card__body {
+      padding: 28px 24px;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .staff-card__role {
+      font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 6px;
+    }
+    .staff-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.5rem; font-weight: 400; margin-bottom: 10px;
+    }
+    .staff-card__bio {
+      font-size: 0.85rem; color: var(--ash); line-height: 1.75;
+    }
+
+    /* Contributors — smaller grid */
+    .contributors-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 860px) { .contributors-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .contributors-grid { grid-template-columns: 1fr; } }
+
+    .contributor-card {
+      background: var(--cream);
+      border: 1px solid var(--stone);
+      padding: 28px 24px;
+    }
+    .contributor-card__photo-placeholder {
+      width: 64px; height: 64px;
+      border-radius: 50%;
+      background: var(--stone);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-serif);
+      font-size: 1.4rem; font-weight: 300;
+      color: var(--ash);
+      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+    .contributor-card__role {
+      font-size: 0.65rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 4px;
+    }
+    .contributor-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.25rem; font-weight: 400; margin-bottom: 8px;
+    }
+    .contributor-card__bio {
+      font-size: 0.82rem; color: var(--ash); line-height: 1.75;
+    }
+
+    /* ── Footer ── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem; font-weight: 400;
+      color: white; margin-bottom: 14px; letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem; line-height: 1.7; max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: rgba(255,255,255,0.35); margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 560px) {
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html" class="nav__back">← Home</a>
+  </nav>
+
+  <div class="page-hero">
+    <div class="container">
+      <p class="page-hero__eyebrow">The People Behind Wander</p>
+      <h1 class="page-hero__title">Writers, editors,<br/>and wanderers</h1>
+      <p class="page-hero__sub">A small, independent team that believes good travel writing is worth doing slowly and doing well.</p>
+    </div>
+  </div>
+
+  <div class="team-section">
+    <div class="container">
+
+      <!-- Editorial team -->
+      <p class="section-label">Editorial</p>
+      <h2 class="section-title">Our core team</h2>
+
+      <div class="staff-grid">
+
+        <div class="staff-card">
+          <div class="staff-card__photo">
+            <div class="staff-card__photo-placeholder">MK</div>
+          </div>
+          <div class="staff-card__body">
+            <p class="staff-card__role">Editor-in-Chief</p>
+            <h3 class="staff-card__name">Margaret Keane</h3>
+            <p class="staff-card__bio">Margaret has been writing about travel for twenty years. She joined Wander at its founding after a decade at a national broadsheet, where she edited the Saturday travel supplement. She has reported from forty-six countries and is rarely without a notebook.</p>
+          </div>
+        </div>
+
+        <div class="staff-card">
+          <div class="staff-card__photo">
+            <div class="staff-card__photo-placeholder">TH</div>
+          </div>
+          <div class="staff-card__body">
+            <p class="staff-card__role">Deputy Editor</p>
+            <h3 class="staff-card__name">Thomas Hayward</h3>
+            <p class="staff-card__bio">Thomas oversees long-form features and the deep-dive guide series. He spent six years as a foreign correspondent in East Asia and holds an MSc in cultural geography. He is the author of two books on slow travel in Japan.</p>
+          </div>
+        </div>
+
+        <div class="staff-card">
+          <div class="staff-card__photo">
+            <div class="staff-card__photo-placeholder">SL</div>
+          </div>
+          <div class="staff-card__body">
+            <p class="staff-card__role">Senior Editor, Europe</p>
+            <h3 class="staff-card__name">Sofia Larsen</h3>
+            <p class="staff-card__bio">Sofia specialises in Southern and Nordic Europe. Based between Lisbon and Stockholm, she has contributed to Wander since its second year and became a staff editor in 2021. She is particularly interested in the intersection of food, landscape, and local identity.</p>
+          </div>
+        </div>
+
+        <div class="staff-card">
+          <div class="staff-card__photo">
+            <div class="staff-card__photo-placeholder">RO</div>
+          </div>
+          <div class="staff-card__body">
+            <p class="staff-card__role">Commissioning Editor</p>
+            <h3 class="staff-card__name">Ravi Oberoi</h3>
+            <p class="staff-card__bio">Ravi manages the contributor network and commissions new work for the site. He has a background in literary publishing and a deep knowledge of South Asian travel writing. He is based in London and travels extensively for research.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Contributing writers -->
+      <p class="section-label">Contributors</p>
+      <h2 class="section-title">Contributing writers</h2>
+
+      <div class="contributors-grid">
+
+        <div class="contributor-card">
+          <div class="contributor-card__photo-placeholder">AN</div>
+          <p class="contributor-card__role">Contributing Writer</p>
+          <h3 class="contributor-card__name">Amara Nwosu</h3>
+          <p class="contributor-card__bio">Amara writes on West and Central Africa. A journalist and documentary filmmaker based in Lagos, she brings a rigorous, on-the-ground perspective to every piece.</p>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-card__photo-placeholder">JM</div>
+          <p class="contributor-card__role">Contributing Writer</p>
+          <h3 class="contributor-card__name">James Morrow</h3>
+          <p class="contributor-card__bio">James covers Patagonia, the Andes, and the wider Southern Cone. A former mountaineer and geography lecturer, he has lived in Chile for the past twelve years.</p>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-card__photo-placeholder">YT</div>
+          <p class="contributor-card__role">Contributing Writer</p>
+          <h3 class="contributor-card__name">Yuki Tanaka</h3>
+          <p class="contributor-card__bio">Yuki focuses on Japan and the Korean peninsula. Her writing is known for its attention to seasonal rhythm and the smaller rituals of daily life that most travel guides ignore.</p>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-card__photo-placeholder">CB</div>
+          <p class="contributor-card__role">Contributing Writer</p>
+          <h3 class="contributor-card__name">Clara Bouchard</h3>
+          <p class="contributor-card__bio">Clara writes about France, Italy, and the Mediterranean. A trained chef who turned to travel writing, she is especially attuned to the relationship between cuisine, culture, and place.</p>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-card__photo-placeholder">ES</div>
+          <p class="contributor-card__role">Contributing Writer</p>
+          <h3 class="contributor-card__name">Erik Strand</h3>
+          <p class="contributor-card__bio">Erik covers the Nordic and Arctic regions. A native of Bergen, he is a regular contributor to several Scandinavian publications and has twice crossed Norway by ski.</p>
+        </div>
+
+        <div class="contributor-card">
+          <div class="contributor-card__photo-placeholder">PA</div>
+          <p class="contributor-card__role">Contributing Writer</p>
+          <h3 class="contributor-card__name">Priya Acharya</h3>
+          <p class="contributor-card__bio">Priya writes on India and Sri Lanka, with a particular focus on the Deccan and the coasts of Kerala. She has a doctorate in postcolonial literature and teaches writing in Mumbai.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="team.html">Team</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
