@@ -147,6 +147,56 @@
       line-height: 1.75;
     }
 
+    /* Popular searches */
+    .popular-searches {
+      margin-top: 56px;
+      padding: 40px;
+      background: var(--sand);
+      border-top: 3px solid var(--teal);
+    }
+    .popular-searches__eyebrow {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 10px;
+    }
+    .popular-searches__heading {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .popular-searches__sub {
+      font-size: 0.875rem;
+      color: var(--ash);
+      margin-bottom: 24px;
+    }
+    .popular-searches__list {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .popular-searches__list li a {
+      display: inline-block;
+      padding: 8px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-size: 0.875rem;
+      color: var(--ink);
+      border-bottom: none;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+    }
+    .popular-searches__list li a:hover {
+      background: var(--teal-lt);
+      border-color: var(--teal);
+      color: var(--teal);
+      opacity: 1;
+    }
+
     footer {
       background: var(--ink);
       color: rgba(255,255,255,0.5);
@@ -251,6 +301,25 @@
           <p class="value-card__desc">We believe travel can be a force for good — when it benefits local communities, treads lightly on landscapes, and supports the businesses that make a place worth visiting.</p>
         </div>
       </div>
+
+      <!-- Popular searches -->
+      <section class="popular-searches" aria-label="Popular searches">
+        <p class="popular-searches__eyebrow">Popular searches</p>
+        <h2 class="popular-searches__heading">People also look for</h2>
+        <p class="popular-searches__sub">A selection of topics readers explore most on Wander.</p>
+        <ul class="popular-searches__list">
+          <li><a href="destinations.html">best destinations in Europe</a></li>
+          <li><a href="kyoto-guide.html">Kyoto off the beaten path</a></li>
+          <li><a href="amalfi-guide.html">Amalfi Coast travel tips</a></li>
+          <li><a href="santorini-guide.html">Santorini hidden gems</a></li>
+          <li><a href="patagonia-guide.html">Patagonia hiking routes</a></li>
+          <li><a href="norway-guide.html">Norway fjords itinerary</a></li>
+          <li><a href="rajasthan-guide.html">Rajasthan cultural guide</a></li>
+          <li><a href="destinations.html">solo travel guides</a></li>
+          <li><a href="destinations.html">sustainable travel destinations</a></li>
+          <li><a href="quiz.html">find your next destination</a></li>
+        </ul>
+      </section>
 
       <h2>Write for us</h2>
       <p>We work with a small group of contributing writers — people who combine deep expertise in a destination with the ability to write about it clearly and engagingly. If you are a writer with first-hand knowledge of a region we don't currently cover and believe you could contribute something exceptional, we'd be pleased to hear from you.</p>
