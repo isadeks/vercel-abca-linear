@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+
+    /* ── Search page ──────────────────────────────────────────── */
+    .search-page {
+      padding: 120px 0 80px;
+      min-height: 100vh;
+    }
+
+    .search-page__header {
+      margin-bottom: 48px;
+    }
+
+    .search-page__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+
+    .search-page__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+
+    .search-page__title em { font-style: italic; }
+
+    .search-page__sub {
+      font-size: 0.95rem;
+      color: var(--ash);
+      max-width: 480px;
+      line-height: 1.75;
+    }
+
+    /* ── Search box ───────────────────────────────────────────── */
+    .search-box {
+      display: flex;
+      gap: 0;
+      margin-bottom: 48px;
+      border: 1px solid var(--stone);
+      background: white;
+      transition: border-color 0.2s;
+    }
+
+    .search-box:focus-within {
+      border-color: var(--teal);
+    }
+
+    .search-box__input {
+      flex: 1;
+      padding: 16px 20px;
+      font-family: var(--font-sans);
+      font-size: 1rem;
+      color: var(--ink);
+      border: none;
+      outline: none;
+      background: transparent;
+    }
+
+    .search-box__input::placeholder { color: #b0a898; }
+
+    .search-box__btn {
+      padding: 16px 24px;
+      background: var(--teal);
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      transition: background 0.2s;
+    }
+
+    .search-box__btn:hover { background: #22665c; }
+
+    /* ── Results ──────────────────────────────────────────────── */
+    .search-results__meta {
+      font-size: 0.85rem;
+      color: var(--ash);
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .search-results__meta strong { color: var(--ink); }
+
+    .result-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .result-item {
+      padding: 24px 0;
+      border-bottom: 1px solid var(--stone);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .result-item:last-child { border-bottom: none; }
+
+    .result-item__title {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      color: var(--teal);
+      transition: color 0.2s;
+    }
+
+    .result-item__title:hover { color: #22665c; }
+
+    .result-item__url {
+      font-size: 0.78rem;
+      color: var(--ash);
+      letter-spacing: 0.04em;
+    }
+
+    .result-item__score {
+      font-size: 0.75rem;
+      color: #b0a898;
+    }
+
+    .search-empty {
+      padding: 64px 0;
+      text-align: center;
+      color: var(--ash);
+    }
+
+    .search-empty__icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+      opacity: 0.3;
+    }
+
+    .search-empty__title {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+
+    .search-error {
+      padding: 24px;
+      background: #fff5f3;
+      border: 1px solid #f5c6bb;
+      color: var(--coral);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .search-error strong { display: block; margin-bottom: 4px; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 40px 0;
+    }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    @media (max-width: 700px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="search.html" aria-current="page">Search</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Search page ──────────────────────────────────────────── -->
+  <main class="search-page">
+    <div class="container">
+      <header class="search-page__header">
+        <p class="search-page__eyebrow">Site search</p>
+        <h1 class="search-page__title">Find your next <em>destination</em></h1>
+        <p class="search-page__sub">Search across all our destinations, guides, and articles.</p>
+      </header>
+
+      <div class="search-box" role="search">
+        <input
+          type="search"
+          class="search-box__input"
+          id="searchInput"
+          placeholder="Try &ldquo;Japan&rdquo;, &ldquo;adventure&rdquo;, &ldquo;Mediterranean&rdquo;&hellip;"
+          aria-label="Search destinations and guides"
+          autocomplete="off"
+        />
+        <button type="button" class="search-box__btn" id="searchBtn" aria-label="Search">
+          Search
+        </button>
+      </div>
+
+      <div id="searchStatus" aria-live="polite"></div>
+      <div id="searchResults"></div>
+    </div>
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module">
+    // Import fuzzyRank from the required vendor module.
+    // NOTE: ./vendor/fuzzy-rank-engine.mjs is a required dependency.
+    import { fuzzyRank } from './vendor/fuzzy-rank-engine.mjs';
+
+    const INDEX_URL = './search-index.json';
+
+    let searchIndex = null;
+
+    // Load the search index from search-index.json
+    async function loadIndex() {
+      const response = await fetch(INDEX_URL);
+      if (!response.ok) {
+        throw new Error(`Failed to load search index: ${response.status} ${response.statusText}`);
+      }
+      return response.json();
+    }
+
+    // Run a search query against the loaded index using fuzzyRank
+    function runSearch(query, index) {
+      if (!query.trim()) return [];
+
+      // Build a flat list of searchable documents, then rank them via fuzzyRank
+      const docs = index.map((entry) => ({
+        ...entry,
+        // Combine title and keywords into a single searchable text field
+        text: [entry.title, ...(entry.keywords || [])].join(' '),
+      }));
+
+      return fuzzyRank(query, docs, { textField: 'text' });
+    }
+
+    // Render ranked results into the DOM
+    function renderResults(query, results) {
+      const status = document.getElementById('searchStatus');
+      const container = document.getElementById('searchResults');
+
+      if (!query.trim()) {
+        status.innerHTML = '';
+        container.innerHTML = '';
+        return;
+      }
+
+      if (results.length === 0) {
+        status.innerHTML = '';
+        container.innerHTML = `
+          <div class="search-empty">
+            <div class="search-empty__icon">&#128269;</div>
+            <p class="search-empty__title">No results found</p>
+            <p>Try different keywords or browse our <a href="destinations.html" style="color:var(--teal);border-bottom:1px solid var(--teal)">destinations page</a>.</p>
+          </div>`;
+        return;
+      }
+
+      status.innerHTML = `<p class="search-results__meta">Showing <strong>${results.length}</strong> result${results.length !== 1 ? 's' : ''} for &ldquo;<strong>${escapeHtml(query)}</strong>&rdquo;</p>`;
+
+      container.innerHTML = `
+        <ol class="result-list" role="list">
+          ${results.map((item) => `
+            <li class="result-item">
+              <a href="${escapeHtml(item.url)}" class="result-item__title">${escapeHtml(item.title)}</a>
+              <span class="result-item__url">${escapeHtml(item.url)}</span>
+              ${item.score != null ? `<span class="result-item__score">Relevance: ${(item.score * 100).toFixed(0)}%</span>` : ''}
+            </li>`).join('')}
+        </ol>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showError(message) {
+      const container = document.getElementById('searchResults');
+      container.innerHTML = `
+        <div class="search-error">
+          <strong>Search unavailable</strong>
+          ${escapeHtml(message)}
+        </div>`;
+    }
+
+    // ── Bootstrap ────────────────────────────────────────────────
+    async function init() {
+      try {
+        searchIndex = await loadIndex();
+      } catch (err) {
+        showError(`Could not load search index. ${err.message}`);
+        return;
+      }
+
+      const input = document.getElementById('searchInput');
+      const btn   = document.getElementById('searchBtn');
+
+      function doSearch() {
+        const query = input.value;
+        try {
+          const results = runSearch(query, searchIndex);
+          renderResults(query, results);
+        } catch (err) {
+          showError(`Search error: ${err.message}`);
+        }
+      }
+
+      btn.addEventListener('click', doSearch);
+      input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') doSearch();
+      });
+
+      // Run search for any pre-filled query (e.g. from URL param ?q=)
+      const params = new URLSearchParams(window.location.search);
+      const preQuery = params.get('q') || '';
+      if (preQuery) {
+        input.value = preQuery;
+        doSearch();
+      }
+    }
+
+    init();
+  </script>
+
+</body>
+</html>
