@@ -68,6 +68,22 @@
     .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
+    .abca-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      padding: 3px 9px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      font-size: 0.68rem;
+      letter-spacing: 0.06em;
+      color: rgba(255,255,255,0.4);
+      white-space: nowrap;
+    }
+    .abca-badge__dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #5e6ad2;
+      flex-shrink: 0;
+    }
     @media (max-width: 900px) { .nav { padding: 18px 24px; } .footer__grid { grid-template-columns: 1fr 1fr; } }
     @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
   </style>
@@ -159,6 +175,7 @@
       </div>
       <div class="footer__bottom">
         <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span class="abca-badge"><span class="abca-badge__dot"></span>Built with ABCA</span>
         <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
       </div>
     </div>
