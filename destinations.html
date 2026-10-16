@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>All Destinations — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -60,10 +61,21 @@
     @media (max-width: 900px) { .dest-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 560px) { .dest-grid { grid-template-columns: 1fr; } }
 
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.65s ease, transform 0.65s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     .dest-card {
       position: relative; overflow: hidden; cursor: pointer;
       display: block;
+      box-shadow: 0 2px 16px rgba(26,23,20,0.07);
+      transition: box-shadow 0.3s;
     }
+    .dest-card:hover { box-shadow: 0 10px 40px rgba(26,23,20,0.14); }
     .dest-card:hover .dest-card__img { transform: scale(1.04); }
     .dest-card__img {
       height: 320px;
@@ -123,7 +135,7 @@
 
   <div class="destinations-body">
     <div class="container">
-      <div class="dest-grid">
+      <div class="dest-grid reveal">
 
         <a href="amalfi-guide.html" class="dest-card">
           <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=800&q=80" alt="Amalfi Coast, Italy" />
@@ -222,6 +234,14 @@
       </div>
     </div>
   </footer>
+
+  <script>
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.08 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>

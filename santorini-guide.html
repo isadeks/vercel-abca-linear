@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Santorini: Greece's Volcanic Island — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -22,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 800px;
+      --shadow-sm: 0 2px 16px rgba(26,23,20,0.07);
     }
 
     html { scroll-behavior: smooth; }
@@ -181,6 +183,12 @@
     .city-card {
       background: var(--sand);
       padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .city-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(26,23,20,0.11);
     }
     .city-card__name {
       font-family: var(--font-serif);
@@ -218,6 +226,25 @@
       font-style: italic;
     }
 
+    /* ── Reading progress bar ── */
+    #read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--teal);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     /* ── Back CTA ── */
     .guide-back-cta {
       padding: 64px 0;
@@ -250,6 +277,7 @@
   </style>
 </head>
 <body>
+  <div id="read-progress"></div>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -273,23 +301,23 @@
         Born from one of the largest volcanic eruptions in recorded history, Santorini sits inside the flooded caldera of an ancient supervolcano — a crescent of white and blue perched on dark cliffs above a sea that sparkles like hammered silver. No island in the Mediterranean delivers a more dramatic first impression.
       </p>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Why Santorini?</h2>
         <p>The island is famous for a reason, and that reason is the view. The caldera's inner edge is lined with cliff-top villages — most famously Oia and Fira — where whitewashed Cycladic architecture tumbles down volcanic rock, capped with the cobalt-blue domed churches that have become one of the most recognisable images in travel photography. At sunset, the cliffs turn amber and rose as the sun drops into the caldera, and the light stays golden long after dark.</p>
         <p>Beyond the postcard imagery, Santorini rewards those who explore its quieter side: the black-sand beaches of the south, the ancient settlement of Akrotiri (a Bronze Age city preserved by the eruption like a Minoan Pompeii), and a wine culture unlike anywhere else in the world, producing distinctive whites from vines grown in ashy volcanic soil.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Practical tip</p>
         <p>The path from Fira to Oia along the caldera rim is one of the world's great walks — approximately 10 kilometres of clifftop trail with non-stop views. Allow 3–4 hours and start in the morning to arrive in Oia in time for a late lunch. The path can be slippery in places; proper footwear is recommended. Return to Fira by bus.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>The villages</h2>
         <p>Each of Santorini's main villages has a distinct character. Oia is the most beautiful and most photographed — its narrow lanes, infinity pools, and cave houses carved into the cliff draw enormous crowds at sunset. Arriving early in the morning gives you two hours of relative peace before the day visitors arrive. Fira, the capital, is more commercial but lively and well-connected. Pyrgos, the highest village, offers views in every direction and fewer crowds.</p>
       </div>
 
-      <div class="guide-city">
+      <div class="guide-city reveal">
         <div class="city-card">
           <h3 class="city-card__name">Oia</h3>
           <p class="city-card__desc">The most iconic village — whitewashed lanes, blue domes, and infinity pools on the caldera rim. Arrive before 9 am for empty streets, and find a viewpoint early on the evening of your sunset visit.</p>
@@ -312,28 +340,28 @@
         </div>
       </div>
 
-      <figure class="guide-img-block">
+      <figure class="guide-img-block reveal">
         <img src="https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=1200&q=80" alt="Santorini caldera at sunset" />
         <figcaption>The caldera at sunset from Oia — the crowds are real, but the light makes it worth every effort to claim a viewpoint an hour in advance.</figcaption>
       </figure>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>When to go</h2>
         <p>Late April through June and September through October are ideal — warm, clear, and substantially less crowded than July and August. The summer peak brings the island to near-capacity; restaurants are fully booked, roads are congested, and the famous Oia sunset viewpoint becomes a battle for position. Shoulder season visitors see the same island in far more civilised conditions.</p>
         <p>November through March is quiet and atmospheric — many businesses close, but those that remain often offer extraordinary value and a glimpse of real island life. The climate is mild by northern European standards, though evenings require a jacket.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Where to stay</h2>
         <p>Santorini has two distinct accommodation categories: cave houses and villas carved into the caldera cliff (spectacular views, usually in Oia or Fira, at premium prices) and conventional hotels in the interior and on the east coast (more affordable, closer to the beaches, without caldera views). For a first visit, spending at least two nights in a caldera-view property repays the cost — waking to that panorama at dawn is one of the island's defining experiences. Mystique, Canaves Oia, and Katikies are among the most celebrated properties.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Budget guide</p>
         <p>Santorini is one of Greece's most expensive islands. Budget accommodation starts at €50–90 per night in the interior; caldera-view cave houses begin at €200 and rise steeply. Meals range from €15–25 per person at local tavernas to €80–120 per person at caldera-view restaurants. Daily budget excluding accommodation: €60–100 for modest spending; €150–250 for the full experience.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Food &amp; wine</h2>
         <p>Santorini's volcanic soil produces an extraordinary indigenous white wine grape, Assyrtiko — a dry, mineral, citrus-sharp wine unlike anything else in Greece. The Santo Wines and Venetsanos wineries both have spectacular caldera-view tasting terraces. Locally grown cherry tomatoes (tomataki) are another speciality — intensely sweet due to the mineral-rich volcanic soil, they appear in salads, sauces, and the small sun-dried fritters sold as street food throughout the island.</p>
         <p>The island's food scene has matured alongside its tourism industry. For excellent value, seek out simple psarotavernes (fish tavernas) in Ammoudi Bay below Oia, where the catch comes in daily from the caldera's fishing boats.</p>
@@ -349,6 +377,23 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <script>
+    // Reading progress bar
+    const bar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Scroll-reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>

@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Kyoto: Japan's Ancient Capital — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -22,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 800px;
+      --shadow-sm: 0 2px 16px rgba(26,23,20,0.07);
     }
 
     html { scroll-behavior: smooth; }
@@ -181,6 +183,12 @@
     .city-card {
       background: var(--sand);
       padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .city-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(26,23,20,0.11);
     }
     .city-card__name {
       font-family: var(--font-serif);
@@ -218,6 +226,25 @@
       font-style: italic;
     }
 
+    /* ── Reading progress bar ── */
+    #read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--teal);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     /* ── Back CTA ── */
     .guide-back-cta {
       padding: 64px 0;
@@ -250,6 +277,7 @@
   </style>
 </head>
 <body>
+  <div id="read-progress"></div>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -273,23 +301,23 @@
         For over a thousand years, Kyoto was the imperial capital of Japan — a city of temples, tea houses, and garden philosophy where a different aesthetic logic governs every surface, every season, and every hour of the day. No city in the world rewards slow, attentive travel quite like this one.
       </p>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Why Kyoto?</h2>
         <p>While Tokyo dazzles with its velocity and modernity, Kyoto offers something rarer: depth. The city survived the Second World War largely intact and preserves over 1,600 Buddhist temples, 400 Shinto shrines, and 17 UNESCO World Heritage sites. Walking its older districts — particularly Gion, Higashiyama, and the preserved machiya (townhouse) streets of Nishiki — you encounter a Japan that has been tended with extraordinary care for centuries.</p>
         <p>The seasonal calendar shapes the experience profoundly. Cherry blossom season (late March to early April) and autumn foliage (mid-November) are transformative but crowded. For a more serene visit, come in early June (just before the rainy season) or February, when cold days and thin crowds leave the garden temples nearly empty.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Practical tip</p>
         <p>The IC card (Suica or ICOCA) is essential — a rechargeable transit card that works on buses, subways, and trains throughout the Kansai region. Kyoto's bus network is comprehensive but confusing; the subway is fast and simple. Many of the eastern temples (Higashiyama) are best reached on foot or by taxi in the early morning, before tour groups arrive from Osaka.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>The districts</h2>
         <p>Kyoto rewards a neighbourhood-by-neighbourhood approach. Each district has its own atmosphere: Gion, the geisha quarter, is best walked at dusk when ochaya (teahouses) glow behind paper screens; Arashiyama in the western hills offers bamboo groves and riverside temples; the Philosopher's Path (Tetsugaku-no-michi) north of Nanzenji follows a canal lined with cherry trees and connects a chain of garden temples.</p>
       </div>
 
-      <div class="guide-city">
+      <div class="guide-city reveal">
         <div class="city-card">
           <h3 class="city-card__name">Gion</h3>
           <p class="city-card__desc">Kyoto's preserved geisha district — wooden ochaya lining stone-paved lanes, occasional glimpses of maiko (apprentice geisha) in full kimono. Visit at dusk on Hanamikoji Street.</p>
@@ -312,28 +340,28 @@
         </div>
       </div>
 
-      <figure class="guide-img-block">
+      <figure class="guide-img-block reveal">
         <img src="https://images.unsplash.com/photo-1504109586057-7a2ae83d1338?w=1200&q=80" alt="Miyajima torii gate, Japan" />
         <figcaption>The floating torii of Itsukushima Shrine at Miyajima Island — one of Japan's most iconic views, best experienced at high tide when the gate appears to rise from the sea.</figcaption>
       </figure>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>When to go</h2>
         <p>Cherry blossom season (late March–early April) and autumn foliage (mid-October–late November) are Kyoto's most celebrated times — the city is magnificent but extremely crowded and expensive. Accommodation must be booked months in advance during these periods. June and September offer warm weather with fewer crowds; January and February are cold but serene, with temple gardens dusted with occasional snow.</p>
         <p>The Gion Matsuri festival in July is one of Japan's most important — an entire month of processions, street food, and traditional performances. Arrive in the final week for the grand parade of wooden floats through the city centre.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Where to stay</h2>
         <p>Staying in a traditional machiya (wooden townhouse) or ryokan (Japanese inn) elevates the Kyoto experience considerably. A good ryokan includes a tatami room, futon bedding, kaiseki dinner, and a communal onsen — it is one of Japan's most distinctive hospitality experiences. Central locations in Nakagyo or the eastern Higashiyama area place you within walking distance of the major sites. For those who prefer a hotel, the Ritz-Carlton Kyoto on the Kamogawa River is superbly positioned.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Budget guide</p>
         <p>Budget travellers staying in hostels can manage on ¥6,000–10,000 (€35–60) per day. A modest but comfortable experience — business hotel, restaurant meals — runs ¥18,000–30,000 (€110–180) per day. A quality ryokan with kaiseki dinner and breakfast typically costs ¥30,000–70,000 (€180–420) per person per night. The major temples charge ¥500–1,000 (€3–6) entry each.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Food &amp; drink</h2>
         <p>Kyoto cuisine (Kyo-ryori) is among Japan's most refined — delicate seasonal ingredients prepared with minimal intervention to let natural flavours and textures lead. Kaiseki, the multi-course tasting menu derived from the tea ceremony tradition, is the city's highest culinary expression. Tofu dishes, yudofu (simmered tofu in dashi broth), and obanzai (Kyoto-style small shared dishes) reflect the city's Buddhist temple cooking heritage.</p>
         <p>The Nishiki Market — a narrow covered arcade known as "Kyoto's Kitchen" — is the best place to sample local produce, pickles, fresh tofu, and grilled skewers. For coffee and a slower morning, Kyoto's specialty coffee scene is quietly excellent, clustered particularly around the Shimogamo and Nakagyo districts.</p>
@@ -349,6 +377,23 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <script>
+    // Reading progress bar
+    const bar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Scroll-reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>

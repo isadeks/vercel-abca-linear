@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The Amalfi Coast: Italy's Most Dramatic Shoreline — Wander</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' fill='%232a7a6f' rx='4'/><text x='16' y='23' font-family='Georgia,serif' font-size='20' font-style='italic' fill='white' text-anchor='middle'>W</text></svg>" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
@@ -11,17 +12,18 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --sand:    #f5f0e8;
-      --cream:   #faf8f4;
-      --stone:   #e8e0d0;
-      --ink:     #1a1714;
-      --ash:     #6b6560;
-      --teal:    #2a7a6f;
-      --teal-lt: #d5ecea;
-      --coral:   #c9624a;
+      --sand:      #f5f0e8;
+      --cream:     #faf8f4;
+      --stone:     #e8e0d0;
+      --ink:       #1a1714;
+      --ash:       #6b6560;
+      --teal:      #2a7a6f;
+      --teal-lt:   #d5ecea;
+      --coral:     #c9624a;
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
-      --max-w: 800px;
+      --max-w:     800px;
+      --shadow-sm: 0 2px 16px rgba(26,23,20,0.07);
     }
 
     html { scroll-behavior: smooth; }
@@ -181,6 +183,12 @@
     .city-card {
       background: var(--sand);
       padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .city-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 28px rgba(26,23,20,0.11);
     }
     .city-card__name {
       font-family: var(--font-serif);
@@ -218,6 +226,25 @@
       font-style: italic;
     }
 
+    /* ── Reading progress bar ── */
+    #read-progress {
+      position: fixed;
+      top: 0; left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--teal);
+      z-index: 200;
+      transition: width 0.1s linear;
+    }
+
+    /* ── Scroll-reveal ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
     /* ── Back CTA ── */
     .guide-back-cta {
       padding: 64px 0;
@@ -250,6 +277,7 @@
   </style>
 </head>
 <body>
+  <div id="read-progress"></div>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -273,23 +301,23 @@
         Clinging to cliffs above a sea of impossible blue, the Amalfi Coast is one of Europe's most celebrated stretches of coastline — a UNESCO World Heritage landscape where lemon groves tumble over whitewashed terraces and fishing villages cling to the rock as if in defiance of gravity.
       </p>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Why the Amalfi Coast?</h2>
         <p>The Costiera Amalfitana stretches for 50 kilometres along the southern edge of the Sorrentine Peninsula, linking a string of cliff-hugging villages that have been drawing travellers since the days of the Roman Empire. The landscape is vertigo-inducing in the best possible way: terraced gardens of lemon and olive trees, ancient staircase paths connecting villages that can only be reached on foot, and a sea that changes colour from turquoise to cobalt depending on the angle of the light.</p>
         <p>This is southern Italy at its most theatrical — the food is superb, the architecture is ancient and beguiling, and every viewpoint seems designed to make you question how anything so beautiful can exist. Come in shoulder season to experience the coast without the summer crush.</p>
       </div>
 
-      <div class="guide-tip">
+      <div class="guide-tip reveal">
         <p class="guide-tip__label">Practical tip</p>
         <p>The coastal road (SS163) is notoriously narrow and congested in July and August. Consider basing yourself in one village and using the public ferry service to move between towns — it's cheaper, more relaxed, and often faster than driving. Sorrento, Positano, Amalfi town, and Ravello are the main bases, each with a distinct character.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>The villages</h2>
         <p>Each village on the coast has its own character. Positano is the most photographed — a cascade of pink and terracotta houses tumbling to a pebble beach, best appreciated from the water at golden hour. Amalfi town is the historic heart of the coast, once a powerful medieval maritime republic with a cathedral worth lingering in. Ravello, perched 350 metres above the sea, offers a quieter, more aristocratic atmosphere and some of the most spectacular gardens in Italy.</p>
       </div>
 
-      <div class="guide-city">
+      <div class="guide-city reveal">
         <div class="city-card">
           <h3 class="city-card__name">Positano</h3>
           <p class="city-card__desc">The most iconic village on the coast, with pastel-coloured buildings cascading down a steep hillside to a pebble beach. Crowded in summer, but spellbinding at dawn or dusk when the day-trippers have gone.</p>
@@ -312,18 +340,18 @@
         </div>
       </div>
 
-      <figure class="guide-img-block">
+      <figure class="guide-img-block reveal">
         <img src="https://images.unsplash.com/photo-1499678329028-101435549a4e?w=1200&q=80" alt="Positano village on the Amalfi Coast at dusk" />
         <figcaption>Positano at dusk — the village glows amber as the last ferries depart and the day-trippers thin out, leaving only the sound of the sea.</figcaption>
       </figure>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>When to go</h2>
         <p>April, May, and October are the ideal months — warm enough to swim, uncrowded enough to walk the coastal paths without queuing, and with accommodation prices significantly lower than peak season. June and early July are beautiful but busy. August is spectacular in terms of light and sea temperature but extremely crowded; expect queues everywhere and premium prices.</p>
         <p>The coast is accessible year-round, and winter has its own quiet charm — village life returns to normal, restaurants revert to traditional menus, and the light is soft and atmospheric. Some smaller establishments close between November and March.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Where to stay</h2>
         <p>Accommodation on the Amalfi Coast ranges from simple B&amp;Bs in village houses (often reached by staircase paths, so pack light) to grand cliff-top hotels with infinity pools and panoramic terraces. Le Sirenuse in Positano is one of Italy's great hotels; Hotel Santa Caterina in Amalfi offers similar splendour with direct sea access via a lift cut through the cliff. For something more intimate, look for family-run agriturismos in the hills above the coast where the lemon groves begin.</p>
       </div>
@@ -333,7 +361,7 @@
         <p>The Amalfi Coast is one of Italy's most expensive regions. Budget travellers staying in simple guesthouses and eating at trattorie can manage on €100–150 per day. Mid-range visitors should budget €200–350 per day. The coast's top hotels run from €400–1,500 per night in peak season. Shoulder season (April–May, October) reduces these figures by 30–50%.</p>
       </div>
 
-      <div class="guide-section">
+      <div class="guide-section reveal">
         <h2>Food &amp; drink</h2>
         <p>The Amalfi Coast's cuisine is defined by its lemons — the sfusato amalfitano variety, grown on the coastal terraces, is larger, less acidic, and more fragrant than any supermarket lemon. Limoncello, lemon pastries, and fresh pasta with lemon and seafood appear on every menu. The anchovies from Cetara (a small fishing village east of Amalfi) are among the finest in Italy — look for colatura di alici, the local anchovy sauce used as a seasoning.</p>
         <p>Seafood is excellent throughout: grilled octopus, fresh-caught sea bream, and pasta with clams cooked simply in white wine and parsley. Finish with delizia al limone — a dome-shaped sponge cake soaked in limoncello cream that captures the coast in a single dessert.</p>
@@ -349,6 +377,23 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <script>
+    // Reading progress bar
+    const bar = document.getElementById('read-progress');
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      bar.style.width = (docHeight > 0 ? (scrollTop / docHeight) * 100 : 0) + '%';
+    }, { passive: true });
+
+    // Scroll-reveal
+    const revealEls = document.querySelectorAll('.reveal');
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); ro.unobserve(e.target); } });
+    }, { threshold: 0.1 });
+    revealEls.forEach(el => ro.observe(el));
+  </script>
 
 </body>
 </html>
