@@ -82,19 +82,21 @@
     /* ── Hero ─────────────────────────────────────────────────── */
     .hero {
       position: relative; height: 100vh; min-height: 600px;
-      display: flex; align-items: flex-end;
+      display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
     .hero__bg {
       position: absolute; inset: 0;
       background:
         linear-gradient(to bottom, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%),
+        linear-gradient(135deg, rgba(79,70,229,0.45) 0%, rgba(139,92,246,0.45) 100%),
         url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80') center/cover no-repeat;
     }
     .hero__content {
       position: relative; z-index: 2;
-      padding: 0 40px 80px;
+      padding: 120px 40px 60px;
       max-width: 680px;
+      text-align: center;
     }
     .hero__eyebrow {
       font-size: 0.72rem;
@@ -102,7 +104,7 @@
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: rgba(255,255,255,0.7);
-      margin-bottom: 16px;
+      margin-bottom: 24px;
     }
     .hero__title {
       font-family: var(--font-serif);
@@ -110,15 +112,24 @@
       font-weight: 300;
       line-height: 1.05;
       color: white;
-      margin-bottom: 20px;
+      margin-bottom: 28px;
     }
     .hero__title em { font-style: italic; }
+    .hero__subtitle {
+      font-family: var(--font-serif);
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      font-weight: 300;
+      font-style: italic;
+      color: rgba(255,255,255,0.85);
+      margin-bottom: 28px;
+      line-height: 1.4;
+    }
     .hero__sub {
       font-size: 1rem;
       font-weight: 300;
       color: rgba(255,255,255,0.8);
       max-width: 420px;
-      margin-bottom: 32px;
+      margin: 0 auto 40px;
       line-height: 1.7;
     }
     .btn {
@@ -198,7 +209,7 @@
 
     /* ── Scroll hint ──────────────────────────────────────────── */
     .hero__scroll {
-      position: absolute; bottom: 32px; right: 40px; z-index: 2;
+      position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); z-index: 2;
       display: flex; flex-direction: column; align-items: center; gap: 8px;
       font-size: 0.68rem;
       font-weight: 500;
@@ -523,7 +534,7 @@
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
       .nav__links { display: none; }
-      .hero__content { padding: 0 24px 60px; }
+      .hero__content { padding: 100px 24px 60px; }
 
       .featured__grid {
         grid-template-columns: 1fr 1fr;
@@ -568,6 +579,7 @@
     <div class="hero__content">
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
+      <p class="hero__subtitle">Stories worth travelling for.</p>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
       <a href="#destinations" class="btn">Explore destinations</a>
     </div>
