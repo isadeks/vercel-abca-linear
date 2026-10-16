@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Seville: Spain's Sun-Drenched Soul — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="index.html#destinations" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1555881400-74d7acaacd8b?w=1600&q=80" alt="Seville, Spain" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">City &nbsp;·&nbsp; Spain</p>
+      <h1 class="guide-hero__title">Seville:<br/>Spain's sun-drenched soul</h1>
+      <p class="guide-hero__meta">9 min read &nbsp;·&nbsp; Four-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        Few cities in Europe carry their history so openly on the streets. Seville is a place where Moorish palaces share walls with Baroque churches, where flamenco spills out of dimly lit tablaos after midnight, and where the scent of orange blossom — from tens of thousands of bitter orange trees planted across the city — drifts through narrow lanes on warm spring evenings. It is the capital of Andalusia, and emphatically its soul.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Seville?</h2>
+        <p>Seville holds a unique place among Spanish cities. It was the port through which much of the New World's silver flowed in the 16th century, making it briefly the wealthiest city in Europe — a legacy still visible in the extraordinary scale of its cathedral, the largest Gothic church in the world, and in the opulence of the Real Alcázar, the royal palace complex whose Mudéjar interiors rival anything in Granada or Córdoba.</p>
+        <p>But Seville is not merely a monument city. Its street life is among the most vibrant in Spain: the tapas bars of the Triana district are as central to the experience as the grand sights, and the city's deep relationship with flamenco — born here in Andalusia — means that authentic live performance is never far away. Seville rewards those who walk slowly and stay up late.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>Seville in July and August is genuinely extreme — temperatures regularly exceed 40°C and the city empties of locals. The ideal window is mid-March through May (spring, when the orange trees flower and Semana Santa and Feria de Abril electrify the city) or late September through November. If you must visit in summer, adopt the Spanish rhythm: rest from 2–6 pm, then explore from evening onward when the heat relents.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The neighbourhoods</h2>
+        <p>Seville's character is shaped by its barrios — each with a distinct personality and social history. The historic core is compact enough to walk between most neighbourhoods in under twenty minutes, but each rewards unhurried exploration on its own terms.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Santa Cruz</h3>
+          <p class="city-card__desc">The old Jewish quarter: a labyrinth of whitewashed lanes, flower-draped balconies, and hidden courtyards that open unexpectedly onto shaded plazas. Home to the cathedral and the Alcázar, it is the city's most-visited district — most beautiful in the early morning before the crowds arrive.</p>
+          <span class="city-card__detail">Historic core</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Triana</h3>
+          <p class="city-card__desc">Across the Guadalquivir from the old city, Triana is Seville's working-class soul — the birthplace of flamenco, a centre of ceramic craftsmanship, and home to the city's best tapas bars. Cross the Triana Bridge at dusk and find a terrace overlooking the river for the definitive Seville evening.</p>
+          <span class="city-card__detail">Best for food &amp; flamenco</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Alameda de Hércules</h3>
+          <p class="city-card__desc">A long, tree-lined promenade anchored by Roman columns, the Alameda is the bohemian heart of modern Seville. Lined with bars, independent restaurants, and terrace cafés, it is where the young and local gather — quieter at noon, lively from 8 pm and beyond.</p>
+          <span class="city-card__detail">Bohemian &amp; local</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">El Arenal</h3>
+          <p class="city-card__desc">The former harbour district between the cathedral and the river, El Arenal is home to the Plaza de Toros de la Real Maestranza — one of the oldest and most beautiful bullrings in Spain — and to the Torre del Oro, the 13th-century watchtower that once guarded the river's chain. Good tapas bars line the riverfront.</p>
+          <span class="city-card__detail">Historic harbour quarter</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1504893524553-b855bce32c67?w=1200&q=80" alt="Real Alcázar gardens, Seville" />
+        <figcaption>The gardens of the Real Alcázar — a living palimpsest of Moorish, Gothic, and Renaissance architecture accumulated across seven centuries of royal use.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Spring is Seville's finest season. Late March through May brings warm days of 20–28°C, the orange trees in full blossom, and the city's two great festivals: Semana Santa (Holy Week), when candlelit processions of extraordinary solemnity fill every street for a full week before Easter; and the Feria de Abril, a week-long festival of flamenco, equestrian displays, and celebration in the fairground district south of the city, attended by Sevillanos in traditional dress.</p>
+        <p>October is also excellent — the heat has broken, the light is golden and long, and the city feels unhurried. The cooler months from November through February are quiet and relatively mild, with daytime highs of 15–18°C and the occasional cold snap. This is a fine time to visit the monuments without queues and to eat and drink at leisure.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Sevillano cuisine is rooted in the Andalusian tradition of tapas culture — small plates, ordered standing at a bar, paired with cold fino or manzanilla sherry from the nearby town of Jerez. The local specialities are humble and excellent: espinacas con garbanzos (spinach with chickpeas, heavily spiced), carrillada (slow-braised pork cheek), and fresh pescaíto frito (fried fish) from the bars along the river. The custom of the free tapa — a small bite served automatically with each drink, still observed in some traditional bars — survives better in Seville than anywhere else in Spain.</p>
+        <p>For a concentrated experience of Sevillano bar culture, spend a late morning walking the tapas bars of Calle Mateos Gago in Santa Cruz, then cross to Triana in the evening for the more local bar scene around Calle San Jacinto. Casa Morales, in operation since 1850, and El Rinconcillo, the city's oldest bar, are institutions worth seeking out.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Seville is one of Spain's better-value cities. Mid-range hotels in the historic centre run €80–150 per night; budget options and guesthouses from €40–70. A full tapas evening with wine — working through four or five bars — rarely costs more than €25–35 per person. Entry to the Real Alcázar costs €14.50; the cathedral and Giralda tower €12. Daily budget excluding accommodation: €50–80 for comfortable spending.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's ancient temples to Patagonia's wild south — there's always another journey waiting.</p>
+      <a href="index.html#guides" class="btn">Browse all guides</a>
+    </div>
+  </div>
+
+</body>
+</html>
