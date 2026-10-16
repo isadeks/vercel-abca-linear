@@ -6,6 +6,8 @@
   <title>Wander — Travel Guide</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+  <link rel="preload" as="image" href="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1600&q=80" fetchpriority="high" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
     /* ── Reset & base ─────────────────────────────────────────── */
@@ -613,7 +615,7 @@
         <!-- Hero card -->
         <article class="dest-card dest-card--hero">
           <a href="amalfi-guide.html" aria-label="Read Amalfi Coast guide">
-            <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1200&q=80" alt="Amalfi Coast, Italy" />
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?w=1200&q=80" alt="Amalfi Coast, Italy" loading="lazy" />
             <div class="dest-card__overlay"></div>
           </a>
           <div class="dest-card__body">
@@ -626,7 +628,7 @@
         <!-- Small card 1 -->
         <article class="dest-card">
           <a href="kyoto-guide.html" aria-label="Read Kyoto guide">
-            <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan" />
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=800&q=80" alt="Kyoto, Japan" loading="lazy" />
             <div class="dest-card__overlay"></div>
           </a>
           <div class="dest-card__body">
@@ -638,7 +640,7 @@
         <!-- Small card 2 -->
         <article class="dest-card">
           <a href="santorini-guide.html" aria-label="Read Santorini guide">
-            <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Santorini, Greece" />
+            <img class="dest-card__img" src="https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e?w=800&q=80" alt="Santorini, Greece" loading="lazy" />
             <div class="dest-card__overlay"></div>
           </a>
           <div class="dest-card__body">
@@ -664,7 +666,7 @@
         <article class="guide-card">
           <a href="patagonia-guide.html">
             <div class="guide-card__img-wrap">
-              <img class="guide-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Patagonia, South America" />
+              <img class="guide-card__img" src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=800&q=80" alt="Patagonia, South America" loading="lazy" />
             </div>
           </a>
           <div class="guide-card__body">
@@ -681,7 +683,7 @@
         <article class="guide-card">
           <a href="rajasthan-guide.html">
             <div class="guide-card__img-wrap">
-              <img class="guide-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" />
+              <img class="guide-card__img" src="https://images.unsplash.com/photo-1548013146-72479768bada?w=800&q=80" alt="Rajasthan, India" loading="lazy" />
             </div>
           </a>
           <div class="guide-card__body">
@@ -698,7 +700,7 @@
         <article class="guide-card">
           <a href="norway-guide.html">
             <div class="guide-card__img-wrap">
-              <img class="guide-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Norwegian fjords" />
+              <img class="guide-card__img" src="https://images.unsplash.com/photo-1531366936337-7c912a4589a7?w=800&q=80" alt="Norwegian fjords" loading="lazy" />
             </div>
           </a>
           <div class="guide-card__body">
@@ -732,31 +734,31 @@
       <div class="regions__row">
 
         <a href="norway-guide.html" class="region-pill">
-          <img class="region-pill__img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Europe" />
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Europe" loading="lazy" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Europe</p>
         </a>
 
         <a href="kyoto-guide.html" class="region-pill">
-          <img class="region-pill__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80" alt="Asia" />
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=600&q=80" alt="Asia" loading="lazy" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Asia</p>
         </a>
 
         <a href="patagonia-guide.html" class="region-pill">
-          <img class="region-pill__img" src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=600&q=80" alt="Americas" />
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1526392060635-9d6019884377?w=600&q=80" alt="Americas" loading="lazy" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Americas</p>
         </a>
 
         <a href="destinations.html" class="region-pill">
-          <img class="region-pill__img" src="https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=600&q=80" alt="Africa" />
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1489493585363-d69421e0edd3?w=600&q=80" alt="Africa" loading="lazy" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Africa</p>
         </a>
 
         <a href="destinations.html" class="region-pill">
-          <img class="region-pill__img" src="https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80" alt="Oceania" />
+          <img class="region-pill__img" src="https://images.unsplash.com/photo-1507699622108-4be3abd695ad?w=600&q=80" alt="Oceania" loading="lazy" />
           <div class="region-pill__overlay"></div>
           <p class="region-pill__label">Oceania</p>
         </a>
