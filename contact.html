@@ -273,7 +273,7 @@
           </div>
         </div>
 
-        <form class="contact-form" onsubmit="return false;">
+        <form class="contact-form" onsubmit="Analytics.track('contact_submit', { page: location.pathname }); return false;">
           <div class="form-row">
             <div class="form-group">
               <label for="name">Name</label>
@@ -345,5 +345,10 @@
     </div>
   </footer>
 
+
+  <script src="analytics.js"></script>
+  <script>
+    Analytics.track('page_view', { page: location.pathname });
+  </script>
 </body>
 </html>
