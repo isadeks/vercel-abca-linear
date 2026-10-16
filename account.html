@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Account Settings — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+    .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+    .nav__links a.active { color: var(--teal); border-bottom: 1px solid var(--teal); padding-bottom: 2px; }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      padding: 120px 0 48px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 400;
+      line-height: 1.1;
+      color: var(--ink);
+    }
+
+    /* ── Settings layout ──────────────────────────────────────── */
+    .settings-layout {
+      padding: 56px 0 96px;
+    }
+    .settings-layout__inner {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 56px;
+      align-items: start;
+    }
+
+    /* ── Settings sidebar nav ─────────────────────────────────── */
+    .settings-nav {
+      position: sticky;
+      top: 88px;
+    }
+    .settings-nav__list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    .settings-nav__item a {
+      display: block;
+      padding: 10px 14px;
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--ash);
+      border-radius: 4px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .settings-nav__item a:hover {
+      background: var(--stone);
+      color: var(--ink);
+    }
+    .settings-nav__item a.active {
+      background: var(--teal-lt);
+      color: var(--teal);
+      font-weight: 500;
+    }
+
+    /* ── Settings panel ───────────────────────────────────────── */
+    .settings-panel {
+      min-width: 0;
+    }
+    .settings-section {
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .settings-section:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+    .settings-section__heading {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    .settings-section__sub {
+      font-size: 0.88rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    /* ── Profile card ─────────────────────────────────────────── */
+    .profile-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 28px;
+      background: white;
+      border: 1px solid var(--stone);
+    }
+    .profile-card__avatar-wrap {
+      flex-shrink: 0;
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: var(--stone);
+      position: relative;
+    }
+    .profile-card__avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .profile-card__avatar--placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--teal-lt);
+      color: var(--teal);
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+    }
+    .profile-card__info {
+      flex: 1;
+      min-width: 0;
+    }
+    .profile-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 4px;
+      color: var(--ink);
+    }
+    .profile-card__name--loading {
+      background: var(--stone);
+      border-radius: 4px;
+      width: 180px;
+      height: 28px;
+      display: block;
+      animation: shimmer 1.4s ease-in-out infinite;
+    }
+    .profile-card__email {
+      font-size: 0.88rem;
+      color: var(--ash);
+      margin-bottom: 10px;
+    }
+    .profile-card__email--loading {
+      background: var(--stone);
+      border-radius: 4px;
+      width: 220px;
+      height: 16px;
+      display: block;
+      animation: shimmer 1.4s ease-in-out infinite;
+      margin-bottom: 10px;
+    }
+    .profile-card__badge {
+      display: inline-block;
+      padding: 3px 10px;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      background: var(--teal-lt);
+      color: var(--teal);
+      border-radius: 2px;
+    }
+
+    @keyframes shimmer {
+      0%   { opacity: 0.5; }
+      50%  { opacity: 1; }
+      100% { opacity: 0.5; }
+    }
+
+    /* ── Form fields ──────────────────────────────────────────── */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-label {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ash);
+    }
+    .form-input {
+      padding: 12px 16px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      font-family: var(--font-sans);
+      font-size: 0.92rem;
+      color: var(--ink);
+      outline: none;
+      transition: border-color 0.2s;
+      width: 100%;
+    }
+    .form-input:focus { border-color: var(--teal); }
+    .form-input:disabled {
+      background: var(--sand);
+      color: var(--ash);
+      cursor: not-allowed;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 12px 24px;
+      font-family: var(--font-sans);
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--stone);
+      color: var(--ink);
+      background: transparent;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s, border-color 0.2s;
+    }
+    .btn:hover { background: var(--stone); }
+    .btn--teal {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--teal:hover { background: #22665c; border-color: #22665c; }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+
+      .settings-layout__inner {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      .settings-nav {
+        position: static;
+      }
+      .settings-nav__list {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .form-row { grid-template-columns: 1fr; }
+
+      .footer__grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 560px) {
+      .profile-card { flex-direction: column; text-align: center; }
+      .footer__grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="destinations.html">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="account.html" class="active">Account</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">My account</p>
+      <h1 class="page-header__title">Account settings</h1>
+    </div>
+  </header>
+
+  <!-- ── Settings ─────────────────────────────────────────────── -->
+  <main class="settings-layout">
+    <div class="container">
+      <div class="settings-layout__inner">
+
+        <!-- Sidebar nav -->
+        <nav class="settings-nav" aria-label="Settings sections">
+          <ul class="settings-nav__list">
+            <li class="settings-nav__item">
+              <a href="#profile" class="active">Profile</a>
+            </li>
+            <li class="settings-nav__item">
+              <a href="#preferences">Preferences</a>
+            </li>
+            <li class="settings-nav__item">
+              <a href="#notifications">Notifications</a>
+            </li>
+          </ul>
+        </nav>
+
+        <!-- Main panel -->
+        <div class="settings-panel">
+
+          <!-- Profile section -->
+          <section class="settings-section" id="profile">
+            <h2 class="settings-section__heading">Profile</h2>
+            <p class="settings-section__sub">Your public identity on Wander — shown on saved guides and trip notes.</p>
+
+            <!-- Profile card — populated by JS -->
+            <div class="profile-card" id="profile-card">
+              <div class="profile-card__avatar-wrap">
+                <div class="profile-card__avatar--placeholder" id="avatar-placeholder" aria-hidden="true">A</div>
+              </div>
+              <div class="profile-card__info">
+                <span class="profile-card__name--loading" id="name-loading" aria-hidden="true"></span>
+                <strong class="profile-card__name" id="profile-name" hidden></strong>
+                <span class="profile-card__email--loading" id="email-loading" aria-hidden="true"></span>
+                <span class="profile-card__email" id="profile-email" hidden></span>
+                <span class="profile-card__badge" id="profile-badge" hidden></span>
+              </div>
+            </div>
+
+            <!-- Edit form -->
+            <form id="profile-form" style="margin-top: 28px;" onsubmit="return false;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label" for="field-name">Display name</label>
+                  <input class="form-input" type="text" id="field-name" name="name" placeholder="Your name" autocomplete="name" />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="field-email">Email address</label>
+                  <input class="form-input" type="email" id="field-email" name="email" placeholder="your@email.com" autocomplete="email" disabled />
+                </div>
+              </div>
+              <button type="submit" class="btn btn--teal">Save changes</button>
+            </form>
+          </section>
+
+          <!-- Preferences placeholder (future task) -->
+          <section class="settings-section" id="preferences">
+            <h2 class="settings-section__heading">Preferences</h2>
+            <p class="settings-section__sub">Travel style, climate preferences, and newsletter cadence — coming in the next update.</p>
+          </section>
+
+          <!-- Notifications placeholder (future task) -->
+          <section class="settings-section" id="notifications">
+            <h2 class="settings-section__heading">Notifications</h2>
+            <p class="settings-section__sub">Email and push notification settings — coming in the next update.</p>
+          </section>
+
+        </div><!-- /.settings-panel -->
+      </div><!-- /.settings-layout__inner -->
+    </div><!-- /.container -->
+  </main>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+            <li><a href="index.html#guides">Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="index.html#guides">Packing lists</a></li>
+            <li><a href="contact.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Fetch user profile from /api/user and populate the profile card
+    async function loadProfile() {
+      const nameEl       = document.getElementById('profile-name');
+      const emailEl      = document.getElementById('profile-email');
+      const badgeEl      = document.getElementById('profile-badge');
+      const nameLoad     = document.getElementById('name-loading');
+      const emailLoad    = document.getElementById('email-loading');
+      const placeholder  = document.getElementById('avatar-placeholder');
+      const fieldName    = document.getElementById('field-name');
+      const fieldEmail   = document.getElementById('field-email');
+
+      try {
+        const res  = await fetch('/api/user');
+        if (!res.ok) throw new Error('Non-OK response');
+        const user = await res.json();
+
+        // Swap loading skeletons for real content
+        nameLoad.hidden  = true;
+        emailLoad.hidden = true;
+
+        nameEl.textContent  = user.name;
+        emailEl.textContent = user.email;
+        nameEl.hidden  = false;
+        emailEl.hidden = false;
+
+        if (user.memberSince) {
+          const [year] = user.memberSince.split('-');
+          badgeEl.textContent = `Member since ${year}`;
+          badgeEl.hidden = false;
+        }
+
+        // Swap placeholder initials for real avatar or keep initials
+        if (user.avatarUrl) {
+          const img = document.createElement('img');
+          img.className = 'profile-card__avatar';
+          img.src       = user.avatarUrl;
+          img.alt       = user.name;
+          img.width     = 80;
+          img.height    = 80;
+          img.onerror   = () => {
+            placeholder.textContent = (user.name || 'A')[0].toUpperCase();
+          };
+          placeholder.replaceWith(img);
+        } else {
+          placeholder.textContent = (user.name || 'A')[0].toUpperCase();
+        }
+
+        // Pre-fill form
+        fieldName.value  = user.name;
+        fieldEmail.value = user.email;
+
+      } catch (err) {
+        // Hide loading skeletons and show a fallback
+        nameLoad.hidden  = true;
+        emailLoad.hidden = true;
+        nameEl.textContent = 'Unable to load profile';
+        nameEl.hidden = false;
+      }
+    }
+
+    // Sidebar section tracking
+    function initSidebarNav() {
+      const links    = document.querySelectorAll('.settings-nav__item a');
+      const sections = document.querySelectorAll('.settings-section');
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const id = entry.target.id;
+            links.forEach(l => {
+              l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+            });
+          }
+        });
+      }, { rootMargin: '-30% 0px -60% 0px' });
+
+      sections.forEach(s => observer.observe(s));
+    }
+
+    loadProfile();
+    initSidebarNav();
+  </script>
+
+</body>
+</html>
