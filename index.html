@@ -519,6 +519,48 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Surprise Me ─────────────────────────────────────────── */
+    .surprise {
+      padding: 120px 0;
+      background: #141210;
+      text-align: center;
+    }
+    .surprise__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin-bottom: 24px;
+    }
+    .surprise__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.6rem, 6vw, 5rem);
+      font-weight: 300;
+      color: white;
+      line-height: 1.08;
+      margin-bottom: 28px;
+    }
+    .surprise__title em { font-style: italic; }
+    .surprise__sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: rgba(255,255,255,0.5);
+      max-width: 520px;
+      margin: 0 auto 48px;
+      line-height: 1.75;
+    }
+    .btn--surprise {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+      padding: 18px 48px;
+      font-size: 0.82rem;
+      letter-spacing: 0.16em;
+    }
+    .btn--surprise:hover { background: #22665c; border-color: #22665c; color: white; }
+    .btn--surprise svg { flex-shrink: 0; }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -558,6 +600,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="#surprise">Surprise me</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -722,6 +765,27 @@
     <cite class="pullquote__attr">Wander editorial</cite>
   </blockquote>
 
+  <!-- ── Surprise Me ──────────────────────────────────────────────── -->
+  <section class="surprise" id="surprise">
+    <div class="container">
+      <p class="surprise__eyebrow">Feeling spontaneous?</p>
+      <h2 class="surprise__title">Let the world <em>choose</em> for you</h2>
+      <p class="surprise__sub">Can't decide where to go next? Hit the button and we'll pick a destination at random — you might just find your new favourite place.</p>
+      <button class="btn btn--surprise" id="surpriseBtn" type="button">
+        <!-- dice icon -->
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+          <rect x="1.5" y="1.5" width="15" height="15" rx="2.5" stroke="currentColor" stroke-width="1.4"/>
+          <circle cx="5.5" cy="5.5" r="1.2" fill="currentColor"/>
+          <circle cx="12.5" cy="5.5" r="1.2" fill="currentColor"/>
+          <circle cx="9"    cy="9"   r="1.2" fill="currentColor"/>
+          <circle cx="5.5"  cy="12.5" r="1.2" fill="currentColor"/>
+          <circle cx="12.5" cy="12.5" r="1.2" fill="currentColor"/>
+        </svg>
+        Surprise me
+      </button>
+    </div>
+  </section>
+
   <!-- ── Regions ────────────────────────────────────────────────── -->
   <section class="regions" id="regions">
     <div class="container">
@@ -831,6 +895,20 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+
+    // Surprise Me — random destination picker
+    const destinations = [
+      'amalfi-guide.html',
+      'kyoto-guide.html',
+      'santorini-guide.html',
+      'patagonia-guide.html',
+      'rajasthan-guide.html',
+      'norway-guide.html',
+    ];
+    document.getElementById('surpriseBtn').addEventListener('click', () => {
+      const pick = destinations[Math.floor(Math.random() * destinations.length)];
+      window.location.href = pick;
+    });
 
   </script>
 
