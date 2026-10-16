@@ -247,6 +247,24 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn:hover { background: var(--teal); color: white; }
+
+    /* ── Footer ── */
+    footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 60px 0 36px; }
+    .footer__grid { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 48px; }
+    .footer__brand { font-family: var(--font-serif); font-size: 2rem; font-weight: 400; color: white; margin-bottom: 14px; letter-spacing: 0.04em; }
+    .footer__tagline { font-size: 0.83rem; line-height: 1.7; max-width: 220px; }
+    .footer__heading { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.18em; text-transform: uppercase; color: rgba(255,255,255,0.35); margin-bottom: 18px; }
+    .footer__links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer__links a { font-size: 0.88rem; color: rgba(255,255,255,0.5); transition: color 0.2s; }
+    .footer__links a:hover { color: white; }
+    .footer__social { display: flex; gap: 16px; margin-top: 20px; }
+    .footer__social a { font-size: 0.78rem; color: rgba(255,255,255,0.45); transition: color 0.2s; }
+    .footer__social a:hover { color: white; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 28px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+    @media (max-width: 900px) { .nav { padding: 18px 24px; } .footer__grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .footer__grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -349,5 +367,52 @@
     </div>
   </div>
 
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Wander. Wonder. Repeat.</p>
+          <div class="footer__social">
+            <a href="#" aria-label="Instagram">Instagram</a>
+            <a href="#" aria-label="Pinterest">Pinterest</a>
+            <a href="#" aria-label="X / Twitter">X</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Legal</p>
+          <ul class="footer__links">
+            <li><a href="privacy.html">Privacy Policy</a></li>
+            <li><a href="terms.html">Terms</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; <span id="copy-yr">2026</span> Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy Policy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
+
+<script>document.getElementById('copy-yr').textContent=new Date().getFullYear();</script>
 </body>
 </html>
