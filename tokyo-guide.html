@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tokyo: The City That Never Sleeps — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 800px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ── */
+    .nav {
+      position: sticky; top: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__back {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--teal);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .nav__back:hover { opacity: 0.7; }
+
+    /* ── Hero ── */
+    .guide-hero {
+      position: relative;
+      height: 60vh;
+      min-height: 420px;
+      overflow: hidden;
+    }
+    .guide-hero__img {
+      height: 100%;
+      object-fit: cover;
+    }
+    .guide-hero__overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.55) 100%);
+    }
+    .guide-hero__content {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 48px 40px;
+      max-width: 860px;
+    }
+    .guide-hero__cat {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.7);
+      margin-bottom: 12px;
+    }
+    .guide-hero__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 300;
+      line-height: 1.1;
+      color: white;
+      margin-bottom: 16px;
+    }
+    .guide-hero__meta {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.65);
+    }
+
+    /* ── Article ── */
+    .guide-body {
+      padding: 64px 0 96px;
+    }
+    .guide-body .container {
+      max-width: 720px;
+    }
+
+    .guide-intro {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 300;
+      line-height: 1.65;
+      color: var(--ash);
+      margin-bottom: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid var(--stone);
+    }
+
+    .guide-section {
+      margin-bottom: 48px;
+    }
+    .guide-section h2 {
+      font-family: var(--font-serif);
+      font-size: 1.9rem;
+      font-weight: 400;
+      margin-bottom: 18px;
+      color: var(--ink);
+    }
+    .guide-section p {
+      font-size: 0.97rem;
+      line-height: 1.8;
+      color: #3d3830;
+      margin-bottom: 16px;
+    }
+
+    .guide-tip {
+      background: var(--teal-lt);
+      border-left: 3px solid var(--teal);
+      padding: 20px 24px;
+      margin: 32px 0;
+      border-radius: 0 4px 4px 0;
+    }
+    .guide-tip__label {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 8px;
+    }
+    .guide-tip p {
+      font-size: 0.9rem;
+      color: #2a5750;
+      margin: 0;
+      line-height: 1.7;
+    }
+
+    .guide-city {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 32px 0;
+    }
+    @media (max-width: 600px) {
+      .guide-city { grid-template-columns: 1fr; }
+    }
+
+    .city-card {
+      background: var(--sand);
+      padding: 24px;
+    }
+    .city-card__name {
+      font-family: var(--font-serif);
+      font-size: 1.3rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .city-card__desc {
+      font-size: 0.85rem;
+      color: var(--ash);
+      line-height: 1.7;
+      margin-bottom: 12px;
+    }
+    .city-card__detail {
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--teal);
+    }
+
+    .guide-img-block {
+      margin: 40px 0;
+      overflow: hidden;
+    }
+    .guide-img-block img {
+      width: 100%;
+      max-height: 420px;
+      object-fit: cover;
+    }
+    .guide-img-block figcaption {
+      font-size: 0.75rem;
+      color: var(--ash);
+      padding: 10px 0 0;
+      font-style: italic;
+    }
+
+    /* ── Back CTA ── */
+    .guide-back-cta {
+      padding: 64px 0;
+      background: var(--sand);
+      text-align: center;
+    }
+    .guide-back-cta h3 {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 400;
+      margin-bottom: 8px;
+    }
+    .guide-back-cta p {
+      font-size: 0.9rem;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 14px 28px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border: 1px solid var(--teal);
+      color: var(--teal);
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn:hover { background: var(--teal); color: white; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <a href="destinations.html" class="nav__back">← All destinations</a>
+  </nav>
+
+  <div class="guide-hero">
+    <img class="guide-hero__img" src="https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1600&q=80" alt="Tokyo skyline at night" />
+    <div class="guide-hero__overlay"></div>
+    <div class="guide-hero__content">
+      <p class="guide-hero__cat">Urban &nbsp;·&nbsp; Japan</p>
+      <h1 class="guide-hero__title">Tokyo:<br/>the city that never sleeps</h1>
+      <p class="guide-hero__meta">10 min read &nbsp;·&nbsp; Four-day itinerary</p>
+    </div>
+  </div>
+
+  <section class="guide-body">
+    <div class="container">
+
+      <p class="guide-intro">
+        No city on earth moves quite like Tokyo — a place where the ultra-modern and the deeply traditional exist in effortless, daily conversation. From neon-lit alleys of Shinjuku to silent Shinto shrines tucked between skyscrapers, Tokyo rewards every pace of travel, every appetite, and every level of curiosity.
+      </p>
+
+      <div class="guide-section">
+        <h2>Why Tokyo?</h2>
+        <p>Tokyo is frequently ranked the world's most populous metropolitan area, yet it functions with a precision and calm that continually astonishes first-time visitors. The city is extraordinarily safe, scrupulously clean, and navigated by one of the world's most efficient transit networks. Yet beyond its famous efficiency lies immense variety: 23 distinct wards, each with its own personality, sub-culture, and micro-neighbourhoods that could occupy a dedicated traveller for weeks.</p>
+        <p>Tokyo also excels at food. The city holds more Michelin stars than any other in the world, but the same obsessive quality extends down to the neighbourhood ramen shop and the basement food halls (depachika) beneath every major department store. Eating well in Tokyo at every budget is not a challenge — it is simply a matter of choosing where to begin.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Practical tip</p>
+        <p>A Suica or Pasmo IC card is essential — load it with yen and tap in and out of trains, buses, and even some convenience stores. The JR Yamanote Line loops around the city's main districts and is the single most useful line for visitors. Download Google Maps or the HyperDia app offline before you arrive; Tokyo's train network is vast but well-labelled in English at all major stations.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>The neighbourhoods</h2>
+        <p>Tokyo's scale can be overwhelming, but it is best understood as a collection of distinct villages, each with its own character. Pick three or four areas per day and allow yourself to wander between them on foot — some of the city's best discoveries happen between the places on your list.</p>
+      </div>
+
+      <div class="guide-city">
+        <div class="city-card">
+          <h3 class="city-card__name">Shinjuku</h3>
+          <p class="city-card__desc">Tokyo's most frenetic district — host to the world's busiest train station, dense towers of neon, the Golden Gai bar alley, and the enormous Shinjuku Gyoen garden. Best after dark when the energy is electric.</p>
+          <span class="city-card__detail">Evening essential</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Shibuya</h3>
+          <p class="city-card__desc">Home to the famous scramble crossing, excellent vintage shopping in Shimokitazawa nearby, and a rooftop view from Shibuya Sky that captures the city's full, staggering scale on clear days.</p>
+          <span class="city-card__detail">Afternoon to evening</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Yanaka</h3>
+          <p class="city-card__desc">Tokyo's most intact old neighbourhood — a quiet maze of wooden temples, craft workshops, and low-slung houses that survived wartime destruction. The Yanaka Cemetery at cherry blossom time is breathtaking.</p>
+          <span class="city-card__detail">Morning walk recommended</span>
+        </div>
+        <div class="city-card">
+          <h3 class="city-card__name">Akihabara</h3>
+          <p class="city-card__desc">The electronics and anime district, a sensory overload of neon signage and multi-storey gadget shops. Even without interest in technology, the spectacle is worth a single afternoon for the sheer density of it.</p>
+          <span class="city-card__detail">Afternoon excursion</span>
+        </div>
+      </div>
+
+      <figure class="guide-img-block">
+        <img src="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?w=1200&q=80" alt="Senso-ji temple, Asakusa, Tokyo" />
+        <figcaption>Senso-ji in Asakusa is Tokyo's oldest and most visited temple — best seen at dawn, before the crowds arrive, when the incense smoke curls upward in near-silence.</figcaption>
+      </figure>
+
+      <div class="guide-section">
+        <h2>When to go</h2>
+        <p>Spring (late March–early April) brings cherry blossom season and is Tokyo at its most beautiful — parks fill with hanami (flower-viewing) picnics, and the city takes on a pastel, festive atmosphere. Autumn (October–November) is equally rewarding: warm days, cool evenings, and the gradual reddening of ginkgo trees lining Meiji Jingu Gaien. Both seasons are busy and require advance hotel bookings.</p>
+        <p>Summer (July–August) is hot, humid, and alive with matsuri (street festivals), including the spectacular Sumida River fireworks display. Winter is mild by northern standards and largely crowd-free — the city still operates at full intensity, and the lack of tourists makes it considerably more enjoyable in popular spots.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Where to stay</h2>
+        <p>For first-time visitors, Shinjuku or Shibuya offer the easiest access to the full range of the city. Boutique options in Yanaka or Asakusa place you in a quieter, more traditional slice of Tokyo. Capsule hotels — once purely utilitarian — now range from budget to design-forward experiences and represent a genuinely interesting way to engage with Tokyo's ingenuity around space. The Park Hyatt Shinjuku (made famous by Lost in Translation) remains one of the world's great urban hotel experiences, with a cocktail bar view that is difficult to match.</p>
+      </div>
+
+      <div class="guide-tip">
+        <p class="guide-tip__label">Budget guide</p>
+        <p>Budget travellers staying in capsule hotels or hostels can manage on ¥5,000–9,000 (€30–55) per day for accommodation and meals from convenience stores and ramen shops. A comfortable mid-range experience runs ¥20,000–35,000 (€120–210) per day. Fine dining at a kaiseki or sushi omakase restaurant can easily reach ¥30,000–80,000 (€180–480) per person for dinner alone — budget separately for any special meals and book weeks in advance.</p>
+      </div>
+
+      <div class="guide-section">
+        <h2>Food &amp; drink</h2>
+        <p>Tokyo's food culture is so deep and specialised that entire neighbourhoods are devoted to single ingredients or cooking styles. Tsukiji Outer Market remains the best place for breakfast sushi and fresh seafood snacks; the ramen shops clustered around train stations in almost every district offer intense, region-specific broths. Izakayas — informal Japanese pubs serving small plates alongside beer, sake, and whisky highballs — are the ideal setting for an unhurried evening.</p>
+        <p>The depachika (department store basement food halls) beneath the major stores in Shinjuku and Ginza are destinations in themselves — an extraordinary parade of perfectly crafted confectionery, prepared foods, imported specialities, and Japanese artisan producers. They make ideal rainy-day exploring and are the best place in the city to assemble a picnic for the parks.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="guide-back-cta">
+    <div class="container">
+      <h3>Discover more guides</h3>
+      <p>From Kyoto's silent temples to Patagonia's wind-scoured peaks — there's always another journey waiting.</p>
+      <a href="destinations.html" class="btn">Browse all destinations</a>
+    </div>
+  </div>
+
+</body>
+</html>
