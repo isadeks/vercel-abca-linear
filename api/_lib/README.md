@@ -13,6 +13,6 @@ availability.js          # room/date availability — no deps
         └─ booking.js     # imports pricing + validation — createBooking()
 ```
 
-Each module ships its own `*.test.js` under `test/`. `npm test` (Vitest) and
+Each module ships its own `*.test.js` under `test/`. Both `npm test` (Vitest) and
 `npm run lint` (ESLint) gate every change — a module that misuses a
-dependency's API fails its tests, which fails the build gate.
+dependency's API will fail its tests and fail the build gate.

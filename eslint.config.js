@@ -1,5 +1,5 @@
-// Flat ESLint config (ESLint 9). Scopes linting to the booking API + tests —
-// the static HTML/inline scripts predate this toolchain and are out of scope.
+// Flat ESLint config (ESLint 9). Linting is scoped to the booking API and
+// tests — the static HTML/inline scripts predate this toolchain and are out of scope.
 export default [
   {
     files: ['api/**/*.js', 'test/**/*.js'],
