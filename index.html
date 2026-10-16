@@ -519,6 +519,76 @@
     .footer__bottom a { color: rgba(255,255,255,0.45); }
     .footer__bottom a:hover { color: white; }
 
+    /* ── Testimonials ─────────────────────────────────────────── */
+    .testimonials {
+      padding: 96px 0;
+      background: var(--sand);
+    }
+    .testimonials__header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+    .testimonials__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .testimonials__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 400;
+      color: var(--ink);
+      line-height: 1.2;
+    }
+    .testimonials__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+    }
+    .testimonial-card {
+      background: var(--cream);
+      padding: 36px 32px 32px;
+      border: 1px solid var(--stone);
+      display: flex;
+      flex-direction: column;
+    }
+    .testimonial-card__quote-mark {
+      font-family: var(--font-serif);
+      font-size: 4rem;
+      line-height: 0.85;
+      color: var(--teal);
+      margin-bottom: 16px;
+      font-weight: 300;
+    }
+    .testimonial-card__text {
+      font-family: var(--font-serif);
+      font-size: 1.15rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--ink);
+      line-height: 1.65;
+      flex: 1;
+      margin-bottom: 28px;
+    }
+    .testimonial-card__author {
+      border-top: 1px solid var(--stone);
+      padding-top: 20px;
+    }
+    .testimonial-card__name {
+      font-size: 0.88rem;
+      font-weight: 500;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .testimonial-card__role {
+      font-size: 0.78rem;
+      color: var(--ash);
+      letter-spacing: 0.04em;
+    }
+
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
       .nav { padding: 18px 24px; }
@@ -532,6 +602,7 @@
 
       .curated__list  { grid-template-columns: 1fr 1fr; }
       .regions__row   { grid-template-columns: repeat(3, 1fr); }
+      .testimonials__grid { grid-template-columns: 1fr 1fr; }
 
       .newsletter__inner { grid-template-columns: 1fr; gap: 36px; }
 
@@ -543,6 +614,7 @@
       .dest-card--hero { grid-column: 1; }
       .curated__list  { grid-template-columns: 1fr; }
       .regions__row   { grid-template-columns: repeat(2, 1fr); }
+      .testimonials__grid { grid-template-columns: 1fr; }
       .footer__grid   { grid-template-columns: 1fr; }
       .pullquote      { padding: 64px 24px; }
     }
@@ -572,6 +644,46 @@
       <a href="#destinations" class="btn">Explore destinations</a>
     </div>
     <div class="hero__scroll">Scroll</div>
+  </section>
+
+  <!-- ── Testimonials ─────────────────────────────────────────── -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="testimonials__header">
+        <p class="testimonials__eyebrow">Traveller stories</p>
+        <h2 class="testimonials__title">What readers are saying</h2>
+      </div>
+      <div class="testimonials__grid">
+
+        <article class="testimonial-card">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <p class="testimonial-card__text">Wander's Amalfi guide saved us from every tourist trap and led us straight to the best hidden coves. We'll never plan a trip without it again.</p>
+          <div class="testimonial-card__author">
+            <p class="testimonial-card__name">Alex Rivera</p>
+            <p class="testimonial-card__role">Product Designer, Northwind Studio</p>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <p class="testimonial-card__text">The Kyoto guide nailed the balance between practical detail and genuine inspiration. Two weeks in Japan, zero wasted hours — this shipped our whole itinerary in a day.</p>
+          <div class="testimonial-card__author">
+            <p class="testimonial-card__name">Maya Chen</p>
+            <p class="testimonial-card__role">CTO, Farside Travel Tech</p>
+          </div>
+        </article>
+
+        <article class="testimonial-card">
+          <div class="testimonial-card__quote-mark">&ldquo;</div>
+          <p class="testimonial-card__text">Patagonia felt genuinely unknowable until I read this guide. The trail notes and gear advice were worth every minute — best four days of hiking in my life.</p>
+          <div class="testimonial-card__author">
+            <p class="testimonial-card__name">Sam Torres</p>
+            <p class="testimonial-card__role">Adventure Photographer</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
   </section>
 
   <!-- ── Quiz CTA ─────────────────────────────────────────────── -->
