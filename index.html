@@ -23,6 +23,7 @@
       --font-serif: 'Cormorant Garamond', Georgia, serif;
       --font-sans:  'Inter', system-ui, sans-serif;
       --max-w: 1160px;
+      --header-h: 52px;
     }
 
     html { scroll-behavior: smooth; }
@@ -42,9 +43,25 @@
     .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
     .sr-only   { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
+    /* ── Site header bar ─────────────────────────────────────── */
+    .site-header {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      height: var(--header-h);
+      background: #2563EB;
+      display: flex; align-items: center;
+      padding: 0 40px;
+    }
+    .site-header__title {
+      font-family: var(--font-serif);
+      font-size: 1.35rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      color: white;
+    }
+
     /* ── Nav ──────────────────────────────────────────────────── */
     .nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      position: fixed; top: var(--header-h); left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 20px 40px;
       background: transparent;
@@ -139,6 +156,19 @@
       color: white;
     }
     .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
+    .btn--primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--primary:hover { background: #22665c; border-color: #22665c; color: white; }
+
+    .hero__cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
     /* ── Quiz CTA banner ──────────────────────────────────────── */
     .quiz-cta {
@@ -550,6 +580,11 @@
 </head>
 <body>
 
+  <!-- ── Site header bar ──────────────────────────────────────── -->
+  <header class="site-header">
+    <span class="site-header__title">Wander — Travel Guide</span>
+  </header>
+
   <!-- ── Nav ─────────────────────────────────────────────────── -->
   <nav class="nav" id="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -569,7 +604,10 @@
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <div class="hero__cta-group">
+        <a href="quiz.html" class="btn btn--primary">Start free trial</a>
+        <a href="#destinations" class="btn">Explore destinations</a>
+      </div>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
