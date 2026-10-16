@@ -5,6 +5,9 @@
 // sub-issues add real module tests alongside this one.
 import { describe, it, expect } from 'vitest';
 
+// INTENTIONAL STRESS-TEST LINT ERROR (ABCA-363): unused variable violates no-unused-vars rule.
+const intentionalLintError = 'stress-test failure';
+
 describe('toolchain baseline', () => {
   it('runs the test runner', () => {
     expect(1 + 1).toBe(2);
