@@ -559,6 +559,7 @@
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
+      <li><a href="login.html" id="auth-nav-link">Sign in</a></li>
     </ul>
   </nav>
 
@@ -832,6 +833,36 @@
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
 
+    // Auth nav link — show Sign out when logged in
+    (function () {
+      const authLink = document.getElementById('auth-nav-link');
+      if (!authLink) return;
+
+      function isLoggedIn() {
+        return !!sessionStorage.getItem('wander_token');
+      }
+
+      function updateAuthLink() {
+        if (isLoggedIn()) {
+          const user = JSON.parse(sessionStorage.getItem('wander_user') || '{}');
+          authLink.textContent = 'Sign out';
+          authLink.href = '#';
+          authLink.title = `Signed in as ${user.email || ''}`;
+          authLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            sessionStorage.removeItem('wander_token');
+            sessionStorage.removeItem('wander_user');
+            updateAuthLink();
+          }, { once: true });
+        } else {
+          authLink.textContent = 'Sign in';
+          authLink.href = 'login.html';
+          authLink.title = '';
+        }
+      }
+
+      updateAuthLink();
+    })();
   </script>
 
 </body>
