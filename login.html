@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+
+    /* ── Main layout ──────────────────────────────────────────── */
+    .main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+
+    /* ── Card ─────────────────────────────────────────────────── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--stone);
+      border-radius: 12px;
+      padding: 48px 40px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 2px 20px rgba(26,23,20,0.06);
+    }
+
+    .card__title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      margin-bottom: 8px;
+      text-align: center;
+    }
+
+    .card__subtitle {
+      font-size: 0.875rem;
+      color: var(--ash);
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    /* ── Divider ──────────────────────────────────────────────── */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 24px 0;
+      color: var(--ash);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--stone);
+    }
+
+    /* ── Buttons ──────────────────────────────────────────────── */
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      cursor: pointer;
+      border: none;
+      transition: opacity 0.15s, transform 0.1s;
+    }
+    .btn:hover  { opacity: 0.88; }
+    .btn:active { transform: scale(0.98); }
+    .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+    .btn--google {
+      background: #fff;
+      color: #3c4043;
+      border: 1px solid #dadce0;
+    }
+    .btn--github {
+      background: #24292f;
+      color: #fff;
+      margin-top: 12px;
+    }
+    .btn--primary {
+      background: var(--teal);
+      color: #fff;
+    }
+
+    /* ── Form ─────────────────────────────────────────────────── */
+    .form__group {
+      margin-bottom: 16px;
+    }
+    .form__label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 6px;
+    }
+    .form__input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--stone);
+      border-radius: 6px;
+      font-family: var(--font-sans);
+      font-size: 0.875rem;
+      color: var(--ink);
+      background: var(--cream);
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form__input:focus {
+      border-color: var(--teal);
+    }
+
+    /* ── Error & success banners ──────────────────────────────── */
+    .banner {
+      border-radius: 6px;
+      padding: 10px 14px;
+      font-size: 0.8rem;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .banner--error {
+      background: #fdecea;
+      color: var(--coral);
+      border: 1px solid #f5c5c0;
+    }
+    .banner--success {
+      background: var(--teal-lt);
+      color: var(--teal);
+      border: 1px solid #9dd3ce;
+    }
+    .banner.is-visible { display: block; }
+
+    /* ── Footer link ──────────────────────────────────────────── */
+    .card__footer {
+      margin-top: 24px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--ash);
+    }
+    .card__footer a {
+      color: var(--teal);
+      font-weight: 500;
+    }
+    .card__footer a:hover { text-decoration: underline; }
+
+    /* ── OAuth icons (inline SVG) ─────────────────────────────── */
+    .icon { width: 18px; height: 18px; flex-shrink: 0; }
+  </style>
+</head>
+<body>
+  <!-- Nav -->
+  <nav class="nav" aria-label="Main navigation">
+    <a href="/" class="nav__logo">Wander</a>
+  </nav>
+
+  <!-- Main -->
+  <main class="main">
+    <div class="card">
+      <h1 class="card__title">Sign in</h1>
+      <p class="card__subtitle">Welcome back — choose how you'd like to continue</p>
+
+      <!-- Error / success banners -->
+      <div id="banner-error"   class="banner banner--error"   role="alert"   aria-live="assertive"></div>
+      <div id="banner-success" class="banner banner--success" role="status" aria-live="polite"></div>
+
+      <!-- OAuth provider buttons -->
+      <button id="btn-google" class="btn btn--google" type="button" aria-label="Continue with Google">
+        <!-- Google "G" logo -->
+        <svg class="icon" viewBox="0 0 18 18" aria-hidden="true">
+          <path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615Z"/>
+          <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18Z"/>
+          <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332Z"/>
+          <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58Z"/>
+        </svg>
+        Continue with Google
+      </button>
+
+      <button id="btn-github" class="btn btn--github" type="button" aria-label="Continue with GitHub">
+        <!-- GitHub mark -->
+        <svg class="icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd" d="M10 0C4.477 0 0 4.477 0 10c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.342-3.369-1.342-.454-1.153-1.11-1.461-1.11-1.461-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.268 2.75 1.026A9.578 9.578 0 0 1 10 4.836a9.58 9.58 0 0 1 2.504.337c1.909-1.294 2.747-1.026 2.747-1.026.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C17.138 18.163 20 14.417 20 10c0-5.523-4.477-10-10-10Z" clip-rule="evenodd"/>
+        </svg>
+        Continue with GitHub
+      </button>
+
+      <!-- Email / password divider -->
+      <div class="divider">or</div>
+
+      <!-- Local login form -->
+      <form id="form-login" novalidate>
+        <div class="form__group">
+          <label class="form__label" for="email">Email</label>
+          <input
+            class="form__input"
+            id="email"
+            type="email"
+            name="email"
+            autocomplete="email"
+            placeholder="you@example.com"
+            required
+          />
+        </div>
+        <div class="form__group">
+          <label class="form__label" for="password">Password</label>
+          <input
+            class="form__input"
+            id="password"
+            type="password"
+            name="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            required
+          />
+        </div>
+        <button class="btn btn--primary" type="submit">Sign in with email</button>
+      </form>
+
+      <p class="card__footer">
+        Don't have an account?
+        <a href="/register.html">Create one</a>
+      </p>
+    </div>
+  </main>
+
+  <script>
+    // ── Helpers ──────────────────────────────────────────────────
+    function showError(msg) {
+      const el = document.getElementById('banner-error');
+      el.textContent = msg;
+      el.classList.add('is-visible');
+      document.getElementById('banner-success').classList.remove('is-visible');
+    }
+    function showSuccess(msg) {
+      const el = document.getElementById('banner-success');
+      el.textContent = msg;
+      el.classList.add('is-visible');
+      document.getElementById('banner-error').classList.remove('is-visible');
+    }
+    function clearBanners() {
+      document.getElementById('banner-error').classList.remove('is-visible');
+      document.getElementById('banner-success').classList.remove('is-visible');
+    }
+
+    // ── Check for error / token from OAuth callback redirect ─────
+    (function handleOAuthReturn() {
+      const params = new URLSearchParams(window.location.search);
+      const errorMsg = params.get('error');
+      if (errorMsg) {
+        showError('OAuth sign-in failed: ' + errorMsg);
+        // Clean up the URL
+        history.replaceState({}, '', window.location.pathname);
+        return;
+      }
+
+      // Access token arrives in the URL fragment (#token=...) so it is
+      // never sent to the server.
+      const hash = new URLSearchParams(window.location.hash.slice(1));
+      const token = hash.get('token');
+      if (token) {
+        localStorage.setItem('accessToken', token);
+        showSuccess('Signed in successfully! Redirecting…');
+        history.replaceState({}, '', window.location.pathname);
+        setTimeout(() => { window.location.href = '/'; }, 1200);
+      }
+    })();
+
+    // ── OAuth provider buttons ───────────────────────────────────
+    function startOAuth(provider) {
+      clearBanners();
+      window.location.href = `/api/auth/oauth-init?provider=${provider}`;
+    }
+
+    document.getElementById('btn-google').addEventListener('click', () => startOAuth('google'));
+    document.getElementById('btn-github').addEventListener('click', () => startOAuth('github'));
+
+    // ── Local email/password login ───────────────────────────────
+    document.getElementById('form-login').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearBanners();
+
+      const email    = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const btn      = e.target.querySelector('button[type="submit"]');
+
+      if (!email || !password) {
+        showError('Email and password are required.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Signing in…';
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ email, password }),
+          credentials: 'include',
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          showError(data.error ?? 'Sign-in failed. Please try again.');
+          return;
+        }
+        localStorage.setItem('accessToken', data.accessToken);
+        showSuccess('Signed in! Redirecting…');
+        setTimeout(() => { window.location.href = '/'; }, 1000);
+      } catch {
+        showError('Network error. Please check your connection and try again.');
+      } finally {
+        btn.disabled    = false;
+        btn.textContent = 'Sign in with email';
+      }
+    });
+  </script>
+</body>
+</html>
