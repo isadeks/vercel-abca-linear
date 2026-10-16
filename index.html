@@ -121,6 +121,12 @@
       margin-bottom: 32px;
       line-height: 1.7;
     }
+    .hero__actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
+    }
     .btn {
       display: inline-flex; align-items: center; gap: 10px;
       padding: 14px 28px;
@@ -569,7 +575,13 @@
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <div class="hero__actions">
+        <a href="booking.html" class="btn btn--teal">
+          Book your trip
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#destinations" class="btn">Explore destinations</a>
+      </div>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
