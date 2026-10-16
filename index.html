@@ -196,6 +196,44 @@
       .quiz-cta__meta { flex-wrap: wrap; }
     }
 
+    /* ── Plan my trip CTA banner ──────────────────────────────── */
+    .plan-cta {
+      background: var(--teal-lt);
+      padding: 72px 0;
+    }
+    .plan-cta__inner {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 40px;
+      align-items: center;
+    }
+    .plan-cta__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .plan-cta__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+    .plan-cta__title em { font-style: italic; }
+    .plan-cta__sub {
+      font-size: 0.9rem;
+      color: var(--ash);
+      line-height: 1.75;
+      max-width: 500px;
+    }
+    @media (max-width: 700px) {
+      .plan-cta__inner { grid-template-columns: 1fr; }
+    }
+
     /* ── Scroll hint ──────────────────────────────────────────── */
     .hero__scroll {
       position: absolute; bottom: 32px; right: 40px; z-index: 2;
@@ -558,6 +596,7 @@
       <li><a href="#guides">Guides</a></li>
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="booking.html">Plan my trip</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
   </nav>
@@ -647,6 +686,25 @@
           </div>
         </article>
 
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Plan my trip CTA ──────────────────────────────────────── -->
+  <section class="plan-cta">
+    <div class="container">
+      <div class="plan-cta__inner">
+        <div>
+          <p class="plan-cta__eyebrow">Ready when you are</p>
+          <h2 class="plan-cta__title">Found somewhere<br/>you <em>love?</em></h2>
+          <p class="plan-cta__sub">Turn inspiration into an itinerary. Request a live quote for any Wander destination — pick your dates, and we'll confirm availability and pricing.</p>
+        </div>
+        <div>
+          <a href="booking.html" class="btn btn--teal">
+            Plan my trip
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </div>
       </div>
     </div>
   </section>
@@ -803,6 +861,7 @@
           <p class="footer__heading">Plan</p>
           <ul class="footer__links">
             <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="booking.html">Plan my trip</a></li>
             <li><a href="#guides">Itineraries</a></li>
             <li><a href="#guides">Packing lists</a></li>
             <li><a href="contact.html">Visa info</a></li>
