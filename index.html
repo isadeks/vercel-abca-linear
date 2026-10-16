@@ -139,6 +139,19 @@
       color: white;
     }
     .btn--teal:hover { background: #22665c; border-color: #22665c; color: white; }
+    .btn--primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: white;
+    }
+    .btn--primary:hover { background: #22665c; border-color: #22665c; color: white; }
+
+    .hero__cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
 
     /* ── Quiz CTA banner ──────────────────────────────────────── */
     .quiz-cta {
@@ -569,7 +582,10 @@
       <p class="hero__eyebrow">Volume XII — Summer 2026</p>
       <h1 class="hero__title">The world<br/>is <em>waiting</em></h1>
       <p class="hero__sub">Carefully crafted travel guides for curious souls. Discover places that still feel genuinely themselves.</p>
-      <a href="#destinations" class="btn">Explore destinations</a>
+      <div class="hero__cta-group">
+        <a href="quiz.html" class="btn btn--primary">Start free trial</a>
+        <a href="#destinations" class="btn">Explore destinations</a>
+      </div>
     </div>
     <div class="hero__scroll">Scroll</div>
   </section>
