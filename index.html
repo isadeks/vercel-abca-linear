@@ -78,6 +78,22 @@
     .nav__links a:hover { color: white; }
     .nav.scrolled .nav__links a { color: var(--ash); }
     .nav.scrolled .nav__links a:hover { color: var(--ink); }
+    .nav__login {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.85);
+      background: none;
+      border: 1px solid rgba(255,255,255,0.5);
+      border-radius: 4px;
+      padding: 6px 14px;
+      cursor: pointer;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .nav__login:hover { color: white; border-color: white; }
+    .nav.scrolled .nav__login { color: var(--ash); border-color: var(--ash); }
+    .nav.scrolled .nav__login:hover { color: var(--ink); border-color: var(--ink); }
 
     /* ── Hero ─────────────────────────────────────────────────── */
     .hero {
@@ -560,6 +576,7 @@
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
     </ul>
+    <button class="nav__login" type="button">Log in</button>
   </nav>
 
   <!-- ── Hero ─────────────────────────────────────────────────── -->
