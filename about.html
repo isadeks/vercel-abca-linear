@@ -204,9 +204,57 @@
     @media (max-width: 560px) {
       .footer__grid { grid-template-columns: 1fr; }
     }
+
+    /* ── Dark-mode toggle ─────────────────────────────────────────── */
+    .dark-toggle {
+      position: fixed; top: 16px; right: 20px; z-index: 9999;
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.35);
+      background: rgba(0,0,0,0.28); backdrop-filter: blur(6px);
+      cursor: pointer; display: flex; align-items: center;
+      justify-content: center; font-size: 1.1rem; padding: 0;
+      transition: background 0.2s, border-color 0.2s;
+      color: white;
+    }
+    .dark-toggle:hover { background: rgba(0,0,0,0.48); }
+    body.dark .dark-toggle {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.25);
+    }
+    body.dark .dark-toggle:hover { background: rgba(255,255,255,0.22); }
+
+    /* ── Dark mode ────────────────────────────────────────────────── */
+    body.dark {
+      --cream:   #1c1917;
+      --sand:    #141210;
+      --stone:   #2e2b27;
+      --ash:     #a09890;
+      --teal:    #3dab9c;
+      --teal-lt: #1e3734;
+      color: #f0ece5;
+    }
+    body.dark .nav {
+      background: rgba(20,18,16,0.95);
+      border-bottom-color: var(--stone);
+    }
+    body.dark .nav .nav__logo { color: #f0ece5; }
+    body.dark .nav .nav__back { color: var(--teal); }
+    body.dark .nav.scrolled {
+      background: rgba(20,18,16,0.92);
+    }
+    body.dark .nav.scrolled .nav__logo { color: #f0ece5; }
+    body.dark .nav.scrolled .nav__links a { color: var(--ash); }
+    body.dark .nav.scrolled .nav__links a:hover { color: #f0ece5; }
+    body.dark .newsletter__form input[type="email"] {
+      background: var(--stone); border-color: #3d3a36; color: #f0ece5;
+    }
+    body.dark .newsletter__form input[type="email"]::placeholder { color: #6b6560; }
   </style>
 </head>
 <body>
+
+  <!-- ── Dark-mode toggle ──────────────────────────────────────── -->
+  <button class="dark-toggle" id="dark-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">🌙</button>
 
   <nav class="nav">
     <a href="index.html" class="nav__logo">Wander</a>
@@ -298,5 +346,19 @@
     </div>
   </footer>
 
+  <script>
+    // Dark-mode toggle
+    (function () {
+      const btn = document.getElementById('dark-toggle');
+      function applyDark(on) {
+        document.body.classList.toggle('dark', on);
+        btn.textContent = on ? '☀️' : '🌙';
+        btn.setAttribute('aria-label', on ? 'Switch to light mode' : 'Switch to dark mode');
+      }
+      btn.addEventListener('click', function () {
+        applyDark(!document.body.classList.contains('dark'));
+      });
+    }());
+  </script>
 </body>
 </html>
