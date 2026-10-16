@@ -825,7 +825,14 @@
     </div>
   </footer>
 
+  <script src="seo.js"></script>
   <script>
+    applyMeta({
+      title:       'Wander — Curated Travel Guides for Curious Explorers',
+      description: 'Carefully crafted travel guides for curious souls. Discover destinations in Europe, Asia, the Americas, and beyond — written for people who prefer places over packages.',
+      canonical:   'https://www.wander.travel/'
+    });
+
     // Sticky nav background on scroll
     const nav = document.getElementById('nav');
     window.addEventListener('scroll', () => {
