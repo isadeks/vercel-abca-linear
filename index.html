@@ -196,6 +196,44 @@
       .quiz-cta__meta { flex-wrap: wrap; }
     }
 
+    /* ── Trusted-by strip ────────────────────────────────────── */
+    .trusted {
+      padding: 40px 0;
+      background: var(--sand);
+      border-top: 1px solid var(--stone);
+      border-bottom: 1px solid var(--stone);
+    }
+    .trusted__label {
+      text-align: center;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 28px;
+    }
+    .trusted__logos {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .trusted__logo {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: #b5aca0;
+      user-select: none;
+      transition: color 0.2s;
+    }
+    .trusted__logo:hover { color: var(--ash); }
+    @media (max-width: 560px) {
+      .trusted__logos { gap: 28px; }
+      .trusted__logo  { font-size: 1.05rem; }
+    }
+
     /* ── Scroll hint ──────────────────────────────────────────── */
     .hero__scroll {
       position: absolute; bottom: 32px; right: 40px; z-index: 2;
@@ -596,6 +634,20 @@
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </a>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Trusted by ───────────────────────────────────────────── -->
+  <section class="trusted" aria-label="Trusted by">
+    <div class="container">
+      <p class="trusted__label">Trusted by teams at</p>
+      <div class="trusted__logos" aria-hidden="true">
+        <span class="trusted__logo">Northwind</span>
+        <span class="trusted__logo">Globex</span>
+        <span class="trusted__logo">Initech</span>
+        <span class="trusted__logo">Umbrella</span>
+        <span class="trusted__logo">Hooli</span>
       </div>
     </div>
   </section>
