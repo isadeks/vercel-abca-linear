@@ -247,6 +247,12 @@
       transition: background 0.2s, color 0.2s;
     }
     .btn:hover { background: var(--teal); color: white; }
+
+    /* ── Footer ── */
+    footer { background: var(--ink); color: rgba(255,255,255,0.5); padding: 48px 0 32px; margin-top: 0; }
+    .footer__bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.75rem; }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
   </style>
 </head>
 <body>
@@ -348,6 +354,15 @@
       <a href="index.html#guides" class="btn">Browse all guides</a>
     </div>
   </div>
+
+  <footer>
+    <div class="container">
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a></span>
+      </div>
+    </div>
+  </footer>
 
 </body>
 </html>
