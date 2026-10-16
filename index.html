@@ -559,6 +559,9 @@
       <li><a href="#regions">Regions</a></li>
       <li><a href="quiz.html">Where to go?</a></li>
       <li><a href="#newsletter">Newsletter</a></li>
+      <!-- Auth-aware links — toggled by dashboard-shell.js -->
+      <li><a href="login.html" class="nav__signin">Sign in</a></li>
+      <li><a href="billing.html" class="nav__account" style="display:none;">Account</a></li>
     </ul>
   </nav>
 
@@ -831,7 +834,13 @@
     window.addEventListener('scroll', () => {
       nav.classList.toggle('scrolled', window.scrollY > 60);
     }, { passive: true });
+  </script>
 
+  <!-- Auth-aware nav: show Sign in vs Account link based on session state -->
+  <script type="module">
+    import { initDashboard } from '/js/dashboard-shell.js';
+    // requireAuth: false — index.html is public, but we still hydrate the nav.
+    initDashboard({ requireAuth: false });
   </script>
 
 </body>
