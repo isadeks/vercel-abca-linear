@@ -2,7 +2,7 @@
 // the static HTML/inline scripts predate this toolchain and are out of scope.
 export default [
   {
-    files: ['api/**/*.js', 'test/**/*.js'],
+    files: ['api/**/*.js', 'js/**/*.js', 'test/**/*.js'],
     languageOptions: {
       ecmaVersion: 2023,
       sourceType: 'module',
