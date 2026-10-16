@@ -46,7 +46,8 @@
     .nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 20px 40px;
+      gap: 48px;
+      padding: 20px 64px;
       background: transparent;
       transition: background 0.3s, backdrop-filter 0.3s;
     }
@@ -65,7 +66,7 @@
     }
     .nav.scrolled .nav__logo { color: var(--ink); }
     .nav__links {
-      display: flex; gap: 32px; list-style: none;
+      display: flex; gap: 40px; list-style: none;
     }
     .nav__links a {
       font-size: 0.8rem;
@@ -521,7 +522,7 @@
 
     /* ── Responsive ───────────────────────────────────────────── */
     @media (max-width: 900px) {
-      .nav { padding: 18px 24px; }
+      .nav { padding: 18px 24px; gap: 16px; }
       .nav__links { display: none; }
       .hero__content { padding: 0 24px 60px; }
 
