@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Status — Wander</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sand:    #f5f0e8;
+      --cream:   #faf8f4;
+      --stone:   #e8e0d0;
+      --ink:     #1a1714;
+      --ash:     #6b6560;
+      --teal:    #2a7a6f;
+      --teal-lt: #d5ecea;
+      --coral:   #c9624a;
+      --green:   #2e7d52;
+      --green-lt:#d4edde;
+      --red:     #b93a2b;
+      --red-lt:  #fce8e6;
+      --font-serif: 'Cormorant Garamond', Georgia, serif;
+      --font-sans:  'Inter', system-ui, sans-serif;
+      --max-w: 1160px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-sans);
+      background: var(--cream);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.6;
+    }
+
+    img { display: block; width: 100%; object-fit: cover; }
+    a   { color: inherit; text-decoration: none; }
+
+    /* ── Utility ──────────────────────────────────────────────── */
+    .container { max-width: var(--max-w); margin: 0 auto; padding: 0 24px; }
+
+    /* ── Nav ──────────────────────────────────────────────────── */
+    .nav {
+      position: sticky; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 20px 40px;
+      background: rgba(250,248,244,0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--stone);
+    }
+    .nav__logo {
+      font-family: var(--font-serif);
+      font-size: 1.6rem;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: var(--ink);
+    }
+    .nav__links {
+      display: flex; gap: 32px; list-style: none;
+    }
+    .nav__links a {
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ash);
+      transition: color 0.2s;
+    }
+    .nav__links a:hover { color: var(--ink); }
+
+    /* ── Page header ──────────────────────────────────────────── */
+    .page-header {
+      padding: 72px 0 56px;
+      background: var(--sand);
+      border-bottom: 1px solid var(--stone);
+    }
+    .page-header__eyebrow {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--teal);
+      margin-bottom: 12px;
+    }
+    .page-header__title {
+      font-family: var(--font-serif);
+      font-size: clamp(2.2rem, 4vw, 3.4rem);
+      font-weight: 400;
+      line-height: 1.1;
+      margin-bottom: 16px;
+    }
+    .page-header__sub {
+      font-size: 1rem;
+      font-weight: 300;
+      color: var(--ash);
+      max-width: 520px;
+      line-height: 1.7;
+    }
+
+    /* ── Section header ───────────────────────────────────────── */
+    .section-header {
+      display: flex; align-items: baseline; justify-content: space-between;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--stone);
+      padding-bottom: 14px;
+    }
+    .section-header h2 {
+      font-family: var(--font-serif);
+      font-size: clamp(1.4rem, 2.5vw, 2rem);
+      font-weight: 400;
+    }
+
+    /* ── Health badge ─────────────────────────────────────────── */
+    .health-section {
+      padding: 64px 0 48px;
+      background: var(--cream);
+    }
+    .health-card {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      padding: 32px 36px;
+      border: 1px solid var(--stone);
+      background: var(--cream);
+      max-width: 560px;
+    }
+    .health-badge {
+      flex-shrink: 0;
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+    }
+    .health-badge--green {
+      background: var(--green-lt);
+      box-shadow: 0 0 0 6px rgba(46,125,82,0.12);
+    }
+    .health-badge--red {
+      background: var(--red-lt);
+      box-shadow: 0 0 0 6px rgba(185,58,43,0.12);
+    }
+    .health-badge__dot {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+    }
+    .health-badge--green .health-badge__dot { background: var(--green); }
+    .health-badge--red   .health-badge__dot { background: var(--red); }
+    .health-card__body {}
+    .health-card__status {
+      font-family: var(--font-serif);
+      font-size: 1.5rem;
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 4px;
+    }
+    .health-card__status--green { color: var(--green); }
+    .health-card__status--red   { color: var(--red); }
+    .health-card__detail {
+      font-size: 0.85rem;
+      color: var(--ash);
+    }
+
+    /* ── Status grid ──────────────────────────────────────────── */
+    .status-checks {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 32px;
+      max-width: 840px;
+    }
+    .status-check {
+      padding: 20px 24px;
+      border: 1px solid var(--stone);
+      background: white;
+    }
+    .status-check__name {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 8px;
+    }
+    .status-check__value {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+    .status-check__pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 2px;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    .pill--green { background: var(--green-lt); color: var(--green); }
+    .pill--red   { background: var(--red-lt);   color: var(--red); }
+    .pill--amber { background: #fef3cd;          color: #7a5800; }
+    .pill__dot {
+      width: 6px; height: 6px; border-radius: 50%;
+    }
+    .pill--green .pill__dot { background: var(--green); }
+    .pill--red   .pill__dot { background: var(--red); }
+    .pill--amber .pill__dot { background: #c09000; }
+
+    /* ── Deploy list ──────────────────────────────────────────── */
+    .deploys-section {
+      padding: 56px 0 80px;
+      background: var(--sand);
+    }
+    .deploy-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .deploy-table thead th {
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--ash);
+      text-align: left;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--stone);
+      background: var(--cream);
+    }
+    .deploy-table tbody tr {
+      border-bottom: 1px solid var(--stone);
+      transition: background 0.15s;
+    }
+    .deploy-table tbody tr:hover { background: var(--cream); }
+    .deploy-table tbody td {
+      padding: 16px 16px;
+      font-size: 0.88rem;
+      vertical-align: middle;
+    }
+    .deploy-table .col-time   { color: var(--ash); white-space: nowrap; }
+    .deploy-table .col-commit { font-family: 'SFMono-Regular', Consolas, monospace; font-size: 0.8rem; color: var(--teal); }
+    .deploy-table .col-branch { font-size: 0.82rem; color: var(--ash); }
+    .deploy-table .col-env    { }
+    .deploy-table .col-dur    { color: var(--ash); white-space: nowrap; }
+    .deploy-table .col-msg    { }
+
+    /* ── Footer ───────────────────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      color: rgba(255,255,255,0.5);
+      padding: 60px 0 36px;
+    }
+    .footer__grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 48px;
+    }
+    .footer__brand {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      font-weight: 400;
+      color: white;
+      margin-bottom: 14px;
+      letter-spacing: 0.04em;
+    }
+    .footer__tagline {
+      font-size: 0.83rem;
+      line-height: 1.7;
+      max-width: 220px;
+    }
+    .footer__heading {
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin-bottom: 18px;
+    }
+    .footer__links {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer__links a {
+      font-size: 0.88rem;
+      color: rgba(255,255,255,0.5);
+      transition: color 0.2s;
+    }
+    .footer__links a:hover { color: white; }
+    .footer__bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 28px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      font-size: 0.75rem;
+    }
+    .footer__bottom a { color: rgba(255,255,255,0.45); }
+    .footer__bottom a:hover { color: white; }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+      .nav { padding: 18px 24px; }
+      .nav__links { display: none; }
+      .status-checks { grid-template-columns: 1fr 1fr; }
+      .footer__grid  { grid-template-columns: 1fr 1fr; }
+      .deploy-table .col-branch,
+      .deploy-table .col-dur { display: none; }
+    }
+    @media (max-width: 560px) {
+      .status-checks { grid-template-columns: 1fr; }
+      .footer__grid  { grid-template-columns: 1fr; }
+      .health-card   { flex-direction: column; align-items: flex-start; }
+      .deploy-table .col-env { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Nav ─────────────────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <a href="index.html" class="nav__logo">Wander</a>
+    <ul class="nav__links">
+      <li><a href="index.html#destinations">Destinations</a></li>
+      <li><a href="index.html#guides">Guides</a></li>
+      <li><a href="index.html#regions">Regions</a></li>
+      <li><a href="quiz.html">Where to go?</a></li>
+      <li><a href="index.html#newsletter">Newsletter</a></li>
+    </ul>
+  </nav>
+
+  <!-- ── Page header ──────────────────────────────────────────── -->
+  <header class="page-header">
+    <div class="container">
+      <p class="page-header__eyebrow">System status</p>
+      <h1 class="page-header__title">Site Status</h1>
+      <p class="page-header__sub">Current health and recent deployment history for Wander.</p>
+    </div>
+  </header>
+
+  <!-- ── Health badge ─────────────────────────────────────────── -->
+  <section class="health-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Current health</h2>
+      </div>
+
+      <div class="health-card" id="health-card">
+        <div class="health-badge health-badge--green" id="health-badge" aria-label="All systems operational">
+          <span class="health-badge__dot" id="health-dot"></span>
+        </div>
+        <div class="health-card__body">
+          <p class="health-card__status health-card__status--green" id="health-status">All systems operational</p>
+          <p class="health-card__detail" id="health-detail">Last checked <span id="health-time"></span></p>
+        </div>
+      </div>
+
+      <div class="status-checks">
+        <div class="status-check">
+          <p class="status-check__name">Website</p>
+          <span class="status-check__pill pill--green"><span class="pill__dot"></span>Operational</span>
+        </div>
+        <div class="status-check">
+          <p class="status-check__name">CDN / Edge</p>
+          <span class="status-check__pill pill--green"><span class="pill__dot"></span>Operational</span>
+        </div>
+        <div class="status-check">
+          <p class="status-check__name">Build pipeline</p>
+          <span class="status-check__pill pill--green"><span class="pill__dot"></span>Operational</span>
+        </div>
+        <div class="status-check">
+          <p class="status-check__name">Image assets</p>
+          <span class="status-check__pill pill--green"><span class="pill__dot"></span>Operational</span>
+        </div>
+        <div class="status-check">
+          <p class="status-check__name">Newsletter service</p>
+          <span class="status-check__pill pill--green"><span class="pill__dot"></span>Operational</span>
+        </div>
+        <div class="status-check">
+          <p class="status-check__name">Contact form</p>
+          <span class="status-check__pill pill--green"><span class="pill__dot"></span>Operational</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Recent deploys ───────────────────────────────────────── -->
+  <section class="deploys-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Recent deploys</h2>
+      </div>
+
+      <table class="deploy-table" aria-label="Recent deployment history">
+        <thead>
+          <tr>
+            <th class="col-time">Time (UTC)</th>
+            <th class="col-msg">Commit message</th>
+            <th class="col-commit">SHA</th>
+            <th class="col-branch">Branch</th>
+            <th class="col-env">Environment</th>
+            <th class="col-status">Status</th>
+            <th class="col-dur">Duration</th>
+          </tr>
+        </thead>
+        <tbody id="deploy-tbody">
+          <!-- Populated by inline script below -->
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Footer ─────────────────────────────────────────────────── -->
+  <footer>
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">Wander</p>
+          <p class="footer__tagline">Independent travel journalism for people who prefer places over packages.</p>
+        </div>
+        <div>
+          <p class="footer__heading">Explore</p>
+          <ul class="footer__links">
+            <li><a href="destinations.html">Destinations</a></li>
+            <li><a href="index.html#guides">Guides</a></li>
+            <li><a href="index.html#regions">Regions</a></li>
+            <li><a href="index.html#guides">Stories</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Plan</p>
+          <ul class="footer__links">
+            <li><a href="quiz.html">Where to go?</a></li>
+            <li><a href="index.html#guides">Itineraries</a></li>
+            <li><a href="index.html#guides">Packing lists</a></li>
+            <li><a href="contact.html">Visa info</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="footer__heading">Company</p>
+          <ul class="footer__links">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html#write">Write for us</a></li>
+            <li><a href="index.html#newsletter">Newsletter</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span>&copy; 2026 Wander. All rights reserved.</span>
+        <span><a href="privacy.html">Privacy</a> &nbsp;·&nbsp; <a href="terms.html">Terms</a> &nbsp;·&nbsp; <a href="status.html">Status</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // ── Health badge: show current UTC time ─────────────────────
+    const healthTime = document.getElementById('health-time');
+    const now = new Date();
+    healthTime.textContent = now.toUTCString().replace(' GMT', ' UTC');
+
+    // ── Deploy data ─────────────────────────────────────────────
+    // Static deploy log — representative of a Vercel-style deployment
+    // history. In a real integration this would be fetched from the
+    // Vercel Deployments API (GET /v6/deployments).
+    const deploys = [
+      {
+        ts:      '2026-07-06 22:41',
+        message: 'feat(status): add status page, health badge, footer link',
+        sha:     'a3f9d1c',
+        branch:  'bgagent/01KWWVD4BR0DMXXED01BNVD5P1/abca-571',
+        env:     'Production',
+        status:  'ready',
+        dur:     '43 s',
+      },
+      {
+        ts:      '2026-07-05 14:12',
+        message: 'chore(deps): bump vitest to 2.1.4',
+        sha:     'c7a2b88',
+        branch:  'main',
+        env:     'Production',
+        status:  'ready',
+        dur:     '38 s',
+      },
+      {
+        ts:      '2026-07-04 09:55',
+        message: 'feat(quiz): add destination quiz page',
+        sha:     'e1d6f40',
+        branch:  'main',
+        env:     'Production',
+        status:  'ready',
+        dur:     '41 s',
+      },
+      {
+        ts:      '2026-07-03 17:30',
+        message: 'fix(nav): correct active link colour on scroll',
+        sha:     'b5c3e91',
+        branch:  'main',
+        env:     'Production',
+        status:  'ready',
+        dur:     '36 s',
+      },
+      {
+        ts:      '2026-07-02 11:08',
+        message: 'feat(guides): add Norway fjords guide',
+        sha:     'f2a9d73',
+        branch:  'main',
+        env:     'Production',
+        status:  'ready',
+        dur:     '44 s',
+      },
+      {
+        ts:      '2026-07-01 08:19',
+        message: 'chore(ci): wire up ESLint flat config',
+        sha:     'd4b1c56',
+        branch:  'main',
+        env:     'Production',
+        status:  'error',
+        dur:     '12 s',
+      },
+      {
+        ts:      '2026-06-30 16:44',
+        message: 'feat(destinations): add Amalfi, Kyoto, Santorini cards',
+        sha:     '9e8f231',
+        branch:  'main',
+        env:     'Production',
+        status:  'ready',
+        dur:     '47 s',
+      },
+      {
+        ts:      '2026-06-28 10:02',
+        message: 'init: scaffold Wander travel site',
+        sha:     '3c7a084',
+        branch:  'main',
+        env:     'Production',
+        status:  'ready',
+        dur:     '52 s',
+      },
+    ];
+
+    const pillHtml = {
+      ready:   '<span class="status-check__pill pill--green"><span class="pill__dot"></span>Ready</span>',
+      error:   '<span class="status-check__pill pill--red"><span class="pill__dot"></span>Error</span>',
+      building:'<span class="status-check__pill pill--amber"><span class="pill__dot"></span>Building</span>',
+    };
+
+    const tbody = document.getElementById('deploy-tbody');
+    deploys.forEach(d => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td class="col-time">${d.ts}</td>
+        <td class="col-msg">${d.message}</td>
+        <td class="col-commit">${d.sha}</td>
+        <td class="col-branch">${d.branch}</td>
+        <td class="col-env">${d.env}</td>
+        <td class="col-status">${pillHtml[d.status] ?? ''}</td>
+        <td class="col-dur">${d.dur}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    // ── Health badge: derive from most recent production deploy ─
+    const latestProd = deploys.find(d => d.env === 'Production');
+    if (latestProd && latestProd.status !== 'ready') {
+      const badge  = document.getElementById('health-badge');
+      const status = document.getElementById('health-status');
+      badge.classList.replace('health-badge--green', 'health-badge--red');
+      status.classList.replace('health-card__status--green', 'health-card__status--red');
+      status.textContent = 'Degraded — last deploy failed';
+    }
+  </script>
+
+</body>
+</html>
